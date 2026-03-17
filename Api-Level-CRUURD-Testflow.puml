@@ -1,0 +1,139 @@
+@startuml Api-Level-CRUURD-Testflow
+title RAIkeep API-Level Remote CRUURD Test Flow
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam linetype ortho
+skinparam SequenceArrowThickness 2
+skinparam RoundCorner 12
+skinparam ParticipantPadding 22
+skinparam BoxPadding 16
+skinparam NoteBackgroundColor #fff7d6
+skinparam NoteBorderColor #d4b106
+skinparam SequenceLifeLineBorderColor #64748b
+skinparam SequenceLifeLineBackgroundColor #f8fafc
+skinparam ParticipantBorderColor #0f766e
+skinparam ParticipantBackgroundColor #ccfbf1
+skinparam ActorBorderColor #1d4ed8
+skinparam ActorBackgroundColor #dbeafe
+skinparam DatabaseBorderColor #7c2d12
+skinparam DatabaseBackgroundColor #ffedd5
+skinparam ArrowColor #9b2c2c
+skinparam ArrowFontColor #374151
+skinparam ArrowFontName "Casual"
+skinparam DefaultFontName "Casual"
+skinparam DefaultFontSize 18
+skinparam TitleFontName "Papyrus"
+skinparam TitleFontSize 28
+
+actor Developer
+participant "Nkosikasi\nmacOS\nTest Runner" as Mac
+participant "RemoteTestEnvironment\nRemoteCloudSyncProbe + RemoteApiProbe" as Harness
+database "Google Drive\nSync Backend" as Cloud
+participant "Mzansi Disk Observer\nSSH" as UbuntuDisk
+participant "otw.software API\nOpenAPI" as Api
+
+Developer -> Mac : Start API-level CRUURD test
+Mac -> Harness : Load remote-test-config.json
+Harness -> Mac : Resolve local GoogleDrive root
+Harness -> UbuntuDisk : Verify ssh reachability and remote GoogleDrive root
+Harness -> Api : Verify API reachability and scenario endpoint
+
+note over Harness
+Scenario:
+Create -> Read -> Update -> Update -> Read -> Delete
+Each write stage measures:
+- local completion
+- remote disk visibility
+- remote API visibility
+end note
+
+group Create
+	Harness -> Mac : Create PitItem locally and save JsonPit
+	Mac -> Mac : Record local create timestamp
+	Mac -> Cloud : Sync upload begins
+	par Propagation tracking
+		Harness -> UbuntuDisk : WaitForFileContainingAll(created content)
+		UbuntuDisk --> Harness : disk-visible timestamp
+	else API tracking
+		loop until created item visible or timeout
+			Harness -> Api : GET created item
+			Api --> Harness : 404 or created payload
+		end
+		Harness -> Harness : Record API-visible timestamp
+	end
+	Harness -> Harness : Assert create stage ordering and payload
+end
+
+group Read
+	Harness -> Api : GET created item
+	Api --> Harness : current payload
+	Harness -> Harness : Assert expected created state
+end
+
+group Update 1
+	Harness -> Mac : Update item fields and save JsonPit
+	Mac -> Mac : Record update1 local timestamp
+	Mac -> Cloud : Sync update1 begins
+	par Propagation tracking
+		Harness -> UbuntuDisk : WaitForFileContainingAll(update1 content)
+		UbuntuDisk --> Harness : disk-visible timestamp
+	else API tracking
+		loop until update1 visible or timeout
+			Harness -> Api : GET item
+			Api --> Harness : stale or update1 payload
+		end
+		Harness -> Harness : Record API-visible timestamp
+	end
+	Harness -> Harness : Assert update1 state
+end
+
+group Update 2
+	Harness -> Mac : Update item again and save JsonPit
+	Mac -> Mac : Record update2 local timestamp
+	Mac -> Cloud : Sync update2 begins
+	par Propagation tracking
+		Harness -> UbuntuDisk : WaitForFileContainingAll(update2 content)
+		UbuntuDisk --> Harness : disk-visible timestamp
+	else API tracking
+		loop until update2 visible or timeout
+			Harness -> Api : GET item
+			Api --> Harness : stale or update2 payload
+		end
+		Harness -> Harness : Record API-visible timestamp
+	end
+	Harness -> Harness : Assert update2 state
+end
+
+group Read Again
+	Harness -> Api : GET item
+	Api --> Harness : final payload
+	Harness -> Harness : Assert final updated state and no stale values
+end
+
+group Delete
+	Harness -> Mac : Delete item locally
+	Mac -> Mac : Record delete local timestamp
+	Mac -> Cloud : Sync delete begins
+	par Propagation tracking
+		Harness -> UbuntuDisk : WaitForMissing(file or item content)
+		UbuntuDisk --> Harness : disk-missing timestamp
+	else API tracking
+		loop until deleted item gone or timeout
+			Harness -> Api : GET item
+			Api --> Harness : payload or not-found
+		end
+		Harness -> Harness : Record API-missing timestamp
+	end
+	Harness -> Harness : Assert delete stage ordering and absence
+end
+
+Harness --> Developer : Pass with full propagation timing report
+
+note over UbuntuDisk,Api
+Disk visibility and API visibility are separate facts.
+Both must be measured.
+Disk sync success does not guarantee API freshness.
+end note
+
+@enduml

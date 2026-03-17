@@ -30,6 +30,13 @@ Verified result at the time of this note:
 - succeeded: 144
 - skipped: 5
 
+In addition, later focused validation around the recent cloud-test restructuring passed for the affected OsLib cloud test set.
+
+Focused result at the time of this note:
+
+- targeted cloud test batch: 27 passed
+- failed: 0
+
 ## Current aligned package version
 
 The workspace is currently aligned on version `3.3.0` for:
@@ -97,6 +104,60 @@ Under `OsLib`:
 
 - `Os-ClassDiagram.puml`
 
+At the `RAIkeep` root:
+
+- `MANIFESTO.md`
+
+## Current cloud-test state
+
+The OsLib cloud-related tests were recently split into two honest layers.
+
+Real cloud tests now target actual provider-backed roots on the machine that runs the tests:
+
+- `OsLib/OsLib.Tests/CloudStorageDiscoveryTests.cs`
+- `OsLib/OsLib.Tests/CloudStorageAgreementTests.cs`
+- `OsLib/OsLib.Tests/CloudStorageProviderPathTests.cs`
+- `OsLib/OsLib.Tests/CloudStorageRealWorldIntegrationTests.cs`
+
+Mechanics-oriented tests now hold the sandboxed/config/probe logic:
+
+- `OsLib/OsLib.Tests/CloudStorageConfigMechanicsTests.cs`
+- `OsLib/OsLib.Tests/CloudStorageAgreementMechanicsTests.cs`
+- `OsLib/OsLib.Tests/CloudStoragePathMechanicsTests.cs`
+
+Supporting helper:
+
+- `OsLib/OsLib.Tests/CloudStorageRealTestEnvironment.cs`
+
+This means the naming is now much closer to reality than before: sandboxed tests no longer present themselves as real cloud-provider tests.
+
+## Current configuration concern
+
+Although the real cloud tests no longer fake cloud roots through sandbox environment redirection, they still transitively depend on production code paths that consult environment variables.
+
+Key current facts:
+
+- `Os.CloudStorage.cs` still resolves the default config path through OS/environment-driven logic
+- `OsConfigFile.CreateDefaultData()` still derives defaults from system home/temp/backup resolution
+- cloud provider discovery still probes machine-state locations derived from home/app-data conventions
+- `CloudStorageMachineStateTests.cs` still prints environment-variable-based machine discovery inputs
+
+This is now considered a mismatch with the desired direction.
+
+## Agreed next direction
+
+The next intended change is to move real cloud tests and their setup toward explicit `OsConfigFile`-based configuration only.
+
+Agreed direction:
+
+- read configuration from `~/.config/RAIkeep/osconfig.json`
+- accept `~` resolution as the one explicit exception
+- do not use environment variables to choose config locations for this path
+- keep environment-variable-based discovery only where explicitly justified, and not in the real cloud test flow
+- keep using `Save()` rather than `Persist()`
+
+This work has not yet been implemented at the time of this note. The current state is analysis complete, design direction agreed, implementation pending.
+
 ## PlantUML conventions established in this session
 
 For package layout:
@@ -124,10 +185,12 @@ For package/member text diagrams:
 
 - `RAIkeep.slnx`
 - `README.md`
+- `MANIFESTO.md`
 - `.gitmodules`
 - `RAIkeep-Package-Dependencies.puml`
 - `RAIkeep-Library-Dependencies.puml`
 - `OsLib/Os-ClassDiagram.puml`
+- `CURRENT-STATE.md`
 
 ## Suggested prompt for a future session
 

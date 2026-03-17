@@ -1,0 +1,113 @@
+@startuml Cloud-Sync-Integration-Testflow
+title RAIkeep Real Cloud Sync Integration Test Flow
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam linetype ortho
+skinparam SequenceArrowThickness 2
+skinparam RoundCorner 12
+skinparam ParticipantPadding 24
+skinparam BoxPadding 16
+skinparam NoteBackgroundColor #fff7d6
+skinparam NoteBorderColor #d4b106
+skinparam SequenceLifeLineBorderColor #64748b
+skinparam SequenceLifeLineBackgroundColor #f8fafc
+skinparam ParticipantBorderColor #0f766e
+skinparam ParticipantBackgroundColor #ccfbf1
+skinparam ActorBorderColor #1d4ed8
+skinparam ActorBackgroundColor #dbeafe
+skinparam DatabaseBorderColor #7c2d12
+skinparam DatabaseBackgroundColor #ffedd5
+skinparam ArrowColor #9b2c2c
+skinparam ArrowFontColor #374151
+skinparam ArrowFontName "Casual"
+skinparam DefaultFontName "Casual"
+skinparam DefaultFontSize 18
+skinparam TitleFontName "Papyrus"
+skinparam TitleFontSize 28
+
+actor Developer
+participant "Nkosikasi\nmacOS\nTest Runner" as Mac
+participant "RAIkeep Test Harness\nRemoteCloudSyncProbe" as Harness
+database "Cloud Provider\nBackend" as Cloud
+participant "Mzansi\nUbuntu\nSSH Observer" as Ubuntu
+participant "PinovaP2\nWindows\nOptional Observer" as Windows
+participant "Provider API Probe\nOptional" as Api
+
+Developer -> Mac : Start real-cloud integration test
+Mac -> Harness : Run scenario(provider, sourceNode, observers)
+
+note over Harness
+Recommended first scenario:
+- source node writes file
+- remote nodes wait for appearance
+- verify content
+- rename file
+- verify rename propagated
+- delete file
+- verify vanishing
+end note
+
+Harness -> Mac : Create test id and source path
+Harness -> Mac : Write file into provider root
+Mac -> Mac : Record local write completion timestamp
+
+par Cloud provider sync begins
+	Mac -> Cloud : Local sync client uploads change
+else Optional backend timing
+	Harness -> Api : Query object visibility by provider API
+	Api --> Harness : backend-visible timestamp or not-found
+else Remote Linux observation
+	Harness -> Ubuntu : SshFileProbe.WaitForFileContainingAll(...)
+	Ubuntu -> Ubuntu : Poll local synced filesystem
+	Ubuntu --> Harness : first-seen timestamp + content hash
+else Optional Windows observation
+	Harness -> Windows : SshFileProbe.WaitForFileContainingAll(...)
+	Windows -> Windows : Poll local synced filesystem
+	Windows --> Harness : first-seen timestamp + content hash
+end
+
+Harness -> Harness : Compare timestamps and content
+Harness -> Harness : Persist propagation metrics
+
+alt File appeared on required observers in time
+	Harness -> Mac : Rename file
+	Mac -> Mac : Record rename timestamp
+
+	par Rename propagation
+		Mac -> Cloud : Local sync client uploads rename
+	else Linux rename observation
+		Harness -> Ubuntu : SshFileProbe.WaitForRename(...)
+		Ubuntu --> Harness : rename-visible timestamp
+	else Windows rename observation
+		Harness -> Windows : SshFileProbe.WaitForRename(...)
+		Windows --> Harness : rename-visible timestamp
+	end
+
+	Harness -> Mac : Delete renamed file
+	Mac -> Mac : Record delete timestamp
+
+	par Deletion propagation
+		Mac -> Cloud : Local sync client uploads deletion
+	else Linux delete observation
+		Harness -> Ubuntu : SshFileProbe.WaitForMissing(...)
+		Ubuntu --> Harness : delete-visible timestamp
+	else Windows delete observation
+		Harness -> Windows : SshFileProbe.WaitForMissing(...)
+		Windows --> Harness : delete-visible timestamp
+	end
+
+	Harness --> Developer : Pass with timing report
+else Visibility timeout or mismatch
+	Harness -> Harness : Capture provider, node, operation, timeout, paths
+	Harness -> Harness : Capture local state, remote state, API state
+	Harness --> Developer : Fail with diagnostic report
+end
+
+note over Developer,Api
+Provider API checks are diagnostic only.
+The real truth for RAIkeep is whether the synced file
+becomes visible and usable on the other nodes.
+end note
+
+@enduml
