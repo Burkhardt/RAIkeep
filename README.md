@@ -6,7 +6,7 @@ It keeps the child repositories available together for local integration work wh
 
 ## Current Aligned Version
 
-The current aligned workspace version is `3.3.0` for:
+The current aligned workspace version is `3.4.0` for:
 
 - `JsonPit`
 - `OsLib`

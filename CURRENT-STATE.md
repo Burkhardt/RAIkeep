@@ -13,7 +13,27 @@ This file captures the current working state of the `RAIkeep` umbrella workspace
 
 The intent is to keep package repos independent while using `RAIkeep` as the cross-library integration workspace.
 
-## Verified baseline
+## Latest umbrella validation
+
+Most recent command:
+
+```bash
+dotnet test RAIkeep.slnx --nologo -v minimal
+```
+
+Most recent result:
+
+- total: 192
+- failed: 2
+- succeeded: 188
+- skipped: 2
+
+Current failing tests:
+
+- `OsLib.Tests.CloudRemoteSyncTests.TextFile_SyncsWithMzansi(provider: GoogleDrive)`
+- `OsLib.Tests.CloudStorageAgreementMechanicsTests.CloudStorageRoot_UsesDocumentedDefaultOrder_ForConfiguredRoots()`
+
+## Earlier verified baseline
 
 The umbrella solution baseline was verified successfully.
 
@@ -39,7 +59,7 @@ Focused result at the time of this note:
 
 ## Current aligned package version
 
-The workspace is currently aligned on version `3.3.0` for:
+The workspace is currently aligned on version `3.4.0` for:
 
 - `JsonPit`
 - `OsLib`
