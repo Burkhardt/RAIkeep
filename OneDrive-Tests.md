@@ -2,6 +2,12 @@
 
 Date: 2026-03-16
 
+## 3.5.0 scope note
+
+As of `RAIkeep 3.5.0`, `OneDrive` is one of the three supported cloud providers in the packaged stack alongside `GoogleDrive` and `Dropbox`.
+
+For `JsonPit`, `PitItem.Id` is now the canonical identifier. Legacy persisted payloads that still use `Name` are normalized internally to `Id`, and the framework-managed `Name` field is dropped during normalization.
+
 ## Purpose
 
 This note lists the current OneDrive-relevant tests in `RAIkeep`, what each test is meant to prove, how to debug through it, and what runtime or propagation timeframe to expect.
@@ -185,12 +191,12 @@ OneDrive case:
 
 What it tests:
 
-- backup logic removes the configured OneDrive root prefix from the backup-relative path
+- backup logic removes the configured OneDrive root prefix from the backup-relative `RaiPath`
 - backup output goes into `localBackupDir`, not back into the cloud root
 
 Expected behavior:
 
-- backup relative path becomes `Work/Reports`
+- backup relative path becomes `Work/Reports/`
 - backup file exists under the local backup directory
 - source file still exists
 
@@ -200,7 +206,7 @@ Expected runtime:
 
 How to debug:
 
-- step through `RaiFile.GetBackupRelativeDirectoryPath(...)`
+- step through `RaiFile.GetBackupRelativeDirectoryPath(...)` and confirm it returns a `RaiPath`
 - then through `source.backup(copy: true)`
 
 ### 3. Provider Path and Cloud-Flag Tests

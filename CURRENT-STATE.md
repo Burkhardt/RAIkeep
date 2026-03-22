@@ -23,15 +23,12 @@ dotnet test RAIkeep.slnx --nologo -v minimal
 
 Most recent result:
 
-- total: 192
-- failed: 2
-- succeeded: 188
-- skipped: 2
+- total: 200
+- failed: 0
+- succeeded: 200
+- skipped: 0
 
-Current failing tests:
-
-- `OsLib.Tests.CloudRemoteSyncTests.TextFile_SyncsWithMzansi(provider: GoogleDrive)`
-- `OsLib.Tests.CloudStorageAgreementMechanicsTests.CloudStorageRoot_UsesDocumentedDefaultOrder_ForConfiguredRoots()`
+The previously skipped remote SSH and remote cloud-sync tests now pass after repairing the remote `mzansi` `osconfig.json`.
 
 ## Earlier verified baseline
 
@@ -59,12 +56,19 @@ Focused result at the time of this note:
 
 ## Current aligned package version
 
-The workspace is currently aligned on version `3.4.0` for:
+The workspace is currently aligned on version `3.5.0` for:
 
 - `JsonPit`
 - `OsLib`
 - `RaiUtils`
 - `RaiImage`
+
+## 3.5.0 documentation decisions
+
+- The supported cloud-provider claim for the packaged `RAIkeep` stack is now `OneDrive`, `GoogleDrive`, and `Dropbox`.
+- `JsonPit` now documents `PitItem.Id` as the canonical identifier.
+- Legacy payloads that only carry `Name` are converted internally to `Id`, and the framework drops the legacy `Name` field during normalization.
+- `Name` remains available for application-defined custom data outside the framework identifier contract.
 
 ## Solution structure
 
@@ -149,34 +153,27 @@ Supporting helper:
 
 - `OsLib/OsLib.Tests/CloudStorageRealTestEnvironment.cs`
 
+Remote environment-backed tests that are now active and passing:
+
+- `OsLib/OsLib.Tests/CloudRemoteSyncTests.cs`
+- `JsonPit/JsonPit.Tests/CloudRemoteSyncTests.cs`
+- `OsLib/OsLib.Tests/RemoteSshTests.cs`
+
 This means the naming is now much closer to reality than before: sandboxed tests no longer present themselves as real cloud-provider tests.
 
-## Current configuration concern
+## Current release state
 
-Although the real cloud tests no longer fake cloud roots through sandbox environment redirection, they still transitively depend on production code paths that consult environment variables.
+The `3.5.0` release-alignment work is now implemented across the workspace.
 
 Key current facts:
 
-- `Os.CloudStorage.cs` still resolves the default config path through OS/environment-driven logic
-- `OsConfigFile.CreateDefaultData()` still derives defaults from system home/temp/backup resolution
-- cloud provider discovery still probes machine-state locations derived from home/app-data conventions
-- `CloudStorageMachineStateTests.cs` still prints environment-variable-based machine discovery inputs
+- package versions are aligned to `3.5.0`
+- OsLib path/config/logging semantics were refactored and documented
+- release-note files were added or updated across the package repos
+- the remote `mzansi` test setup is now valid enough for the remote SSH and cloud-sync tests to execute successfully
+- the latest clean full-suite validation is green
 
-This is now considered a mismatch with the desired direction.
-
-## Agreed next direction
-
-The next intended change is to move real cloud tests and their setup toward explicit `OsConfigFile`-based configuration only.
-
-Agreed direction:
-
-- read configuration from `~/.config/RAIkeep/osconfig.json`
-- accept `~` resolution as the one explicit exception
-- do not use environment variables to choose config locations for this path
-- keep environment-variable-based discovery only where explicitly justified, and not in the real cloud test flow
-- keep using `Save()` rather than `Persist()`
-
-This work has not yet been implemented at the time of this note. The current state is analysis complete, design direction agreed, implementation pending.
+The next step is no longer architectural implementation. It is final review, check-in, and release labeling.
 
 ## PlantUML conventions established in this session
 

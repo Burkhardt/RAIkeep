@@ -65,14 +65,14 @@ This document summarizes the refactoring and cleanup work completed in the RAIke
   - `TempDir`
   - `LocalBackupDir`
   - `DefaultCloudOrder`
-  - nested cloud roots for Dropbox, OneDrive, Google Drive, and iCloud
+  - nested cloud roots for Dropbox, OneDrive, and Google Drive
 - Preserved provider probing and effective cloud-root caching.
 - Implemented lazy config initialization to avoid recursive static-constructor re-entry during path normalization and cloud detection.
 
 ### Cloud Configuration Redesign
 
 - Replaced the older cloud-only typed config approach with a broader top-level `Os.Config` model.
-- Kept convenience compatibility accessors such as `GooglePath`, `ICloudPath`, and `GetCloudDirPath(...)` on `OsConfigModel` to reduce migration churn.
+- Kept convenience compatibility accessors such as `GooglePath` and `GetCloudDirPath(...)` on `OsConfigModel` to reduce migration churn.
 - Kept `GetDefaultCloudConfigPath()` only as an obsolete compatibility alias to `GetDefaultConfigPath()`.
 - Changed cloud discovery precedence to:
   1. explicit values in `Os.Config`

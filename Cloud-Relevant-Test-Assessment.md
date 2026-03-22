@@ -4,14 +4,15 @@ Date: 2026-03-13
 
 ## Scope
 
-This note assesses how well the current RAIkeep test suite detects problems that only show up in real cloud-backed sync environments, especially in the context of the core RAIkeep idea: several servers synchronized through one of four cloud providers.
+This note assesses how well the current RAIkeep test suite detects problems that only show up in real cloud-backed sync environments, especially in the context of the core RAIkeep idea: several servers synchronized through one of the supported cloud providers.
 
 Supported providers in scope:
 
 - Dropbox
 - OneDrive
 - GoogleDrive
-- ICloud
+
+As of `RAIkeep 3.5.0`, the packaged support claim is focused on `Dropbox`, `OneDrive`, and `GoogleDrive`.
 
 ## Honest Bottom Line
 
@@ -83,7 +84,7 @@ Without these tests, the cloud support would mostly be validated by hermetic sim
 
 ### 1. Most cloud tests are still hermetic and config-driven
 
-Many tests create local folders like `DropboxRoot`, `OneDriveRoot`, `GoogleDriveRoot`, and `ICloudRoot` under a temp test root and then inject those paths into config.
+Many tests create local folders like `DropboxRoot`, `OneDriveRoot`, and `GoogleDriveRoot` under a temp test root and then inject those paths into config.
 
 Those tests are still useful, but they are not real cloud tests. They are local SSD tests with provider names attached.
 

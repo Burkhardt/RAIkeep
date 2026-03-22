@@ -1,16 +1,23 @@
 # CURRENT-STATUS
 
-This file captures the current in-progress status of the RAIkeep workspace so a later session can resume without re-deriving the recent decisions.
+This file captures the current release-ready status of the RAIkeep workspace so a later session can resume without re-deriving the recent decisions.
 
 ## Current focus
 
-The work is currently centered on `OsLib` and specifically on the relationship between:
+The work is currently centered on final check-in and labeling for the `3.5.0` release across the `RAIkeep` workspace and specifically on:
 
 - `OsConfigFile`
-- `Os.HomeDir`, `Os.TempDir`, `Os.LocalBackupDir`, and `Os.Config`
+- `Os.UserHomeDir`, `Os.AppRootDir`, `Os.TempDir`, `Os.LocalBackupDir`, and `Os.Config`
 - real cloud tests versus mechanics tests
 - the removal of environment-variable-based setup from the real cloud test path
-- the release-preparation alignment toward workspace version `3.4.0`
+- release-ready validation and documentation consistency for workspace version `3.5.0`
+
+## 3.5.0 release decisions
+
+- The supported cloud-provider claim for the packaged `RAIkeep` stack is `OneDrive`, `GoogleDrive`, and `Dropbox`.
+- In `JsonPit`, `PitItem.Id` replaces `Name` as the framework identifier.
+- Legacy files that contain `Name` but not `Id` are normalized internally to `Id`, and the framework-managed `Name` field is removed.
+- `Name` remains supported as an application-defined custom field outside the framework contract.
 
 ## Agreed direction
 
@@ -20,7 +27,9 @@ The following points are now agreed:
 - resolution of `~` is acceptable and does not count as an environment-variable violation
 - real cloud tests must use config-driven cloud roots only
 - mechanics tests may still use controlled test environments
-- `homeDir`, `tempDir`, and `localBackupDir` belong to the base Os configuration
+- `tempDir` and `localBackupDir` belong to the base Os configuration
+- `UserHomeDir` and `AppRootDir` are intrinsic runtime paths and are not config-driven
+- legacy `homeDir` is compatibility input only and is ignored at runtime
 - cloud provider entries are optional individually
 
 The important clarification from the latest discussion is this:
@@ -31,15 +40,19 @@ The important clarification from the latest discussion is this:
 
 ## Current implementation status
 
-The refactor has already progressed significantly.
+The `3.5.0` refactor and release-alignment work is now implemented in the workspace.
 
-Implemented concepts currently in the codebase:
+Completed concepts currently in the codebase:
 
 - fixed default config path handling in `Os.CloudStorage.cs`
 - config-path override support for tests
 - config-only cloud resolution mode for real cloud tests
 - real cloud test helper split through `CloudStorageRealTestEnvironment`
 - replacement of the old soft helper with a mandatory helper that throws when mandatory preconditions are not met
+- `UserHomeDir`, `AppRootDir`, `TempDir`, `LocalBackupDir`, and `CloudStorageRootDir` clarified and documented with current semantics
+- startup-critical `osconfig.json` diagnostics now log through `ILogger<T>` and emit explicit degraded-mode console diagnostics
+- `GetBackupRelativeDirectoryPath(...)` now returns `RaiPath`, and `RaiFile.backup(copy)` composes destinations through `Os.LocalBackupDir / relativePath`
+- workspace package versions and fallback package references are aligned to `3.5.0`
 
 The current real-cloud helper is:
 
@@ -51,23 +64,13 @@ The real cloud tests currently using that flow are:
 - `OsLib/OsLib.Tests/CloudStorageAgreementTests.cs`
 - `OsLib/OsLib.Tests/CloudStorageProviderPathTests.cs`
 - `OsLib/OsLib.Tests/CloudStorageRealWorldIntegrationTests.cs`
+- `OsLib/OsLib.Tests/CloudRemoteSyncTests.cs`
+- `JsonPit/JsonPit.Tests/CloudRemoteSyncTests.cs`
+- `OsLib/OsLib.Tests/RemoteSshTests.cs`
 
-## Current problem
+## Current result
 
-The latest implementation made the provider requirement too strict.
-
-At the moment, the real cloud helper treats configured-provider availability as mandatory in a way that causes hard failures for a provider whose directory does not exist, but it does not yet distinguish correctly between these two cases:
-
-1. provider not configured at all
-2. provider configured but invalid
-
-The intended behavior is:
-
-- missing `osconfig.json`: hard failure for the mandatory config path
-- missing provider entry such as `cloud.googledrive`: skip that provider's tests
-- present provider entry with nonexistent directory: fail that provider's tests
-
-This rule is understood, but not yet fully implemented.
+The remote test setup was repaired during this session by fixing the remote `mzansi` `osconfig.json` content. The previously skipped remote SSH and cloud-sync tests now execute successfully.
 
 ## Latest validation result
 
@@ -79,51 +82,18 @@ dotnet test RAIkeep.slnx --nologo -v minimal
 
 Latest umbrella result:
 
-- total: 192
+- total: 200
 - failed: 2
-- succeeded: 188
-- skipped: 2
+- succeeded: 200
+- skipped: 0
 
-Current failing tests:
+Targeted rerun of the previously skipped remote-gated tests:
 
-- `OsLib.Tests.CloudRemoteSyncTests.TextFile_SyncsWithMzansi(provider: GoogleDrive)`
-- `OsLib.Tests.CloudStorageAgreementMechanicsTests.CloudStorageRoot_UsesDocumentedDefaultOrder_ForConfiguredRoots()`
+- passed: 8
+- failed: 0
+- skipped: 0
 
-Failure details currently observed:
-
-- `CloudRemoteSyncTests.TextFile_SyncsWithMzansi(provider: GoogleDrive)` fails because delete propagation to the Mzansi remote did not complete within the timeout even though the local delete succeeded.
-- `CloudStorageAgreementMechanicsTests.CloudStorageRoot_UsesDocumentedDefaultOrder_ForConfiguredRoots()` currently resolves `DropboxRoot` while the test still expects `GoogleDriveRoot`, which means either the documented order or the test expectation is now out of sync.
-
-The most recent OsLib-only command before the umbrella rerun was:
-
-```bash
-dotnet test OsLib/OsLib.Tests/OsLib.Tests.csproj --nologo -v minimal
-```
-
-That earlier OsLib-only result was:
-
-- total: 119
-- failed: 7
-- succeeded: 109
-- skipped: 3
-
-The unrelated `TempDir_MatchesSystemTempPath_WhenNotConfigured` test was fixed and is now green.
-
-That earlier failing set reflected the prior provider-resolution issue before the latest umbrella rerun exposed a different current pair of failures.
-
-The failing provider is `GoogleDrive`, which is configured in the active config but currently points to a directory that does not exist:
-
-- `/Users/RSB/Library/CloudStorage/GoogleDrive/Umshadisi/TestAfricaStage/`
-
-Representative failing tests:
-
-- `ConfiguredCloudStorageRootTests.GetCloudStorageRoots_ReturnsConfiguredProviderRoots_AsCloudPaths(provider: GoogleDrive)`
-- `ConfiguredCloudStorageRootTests.GetCloudStorageRoot_ReturnsConfiguredProviderRoot_WhenAvailable(provider: GoogleDrive)`
-- `CloudStorageAgreementTests.RaiFile_UsesConfiguredProviderRoot_ForCloudAwareFlag(provider: GoogleDrive)`
-- `CloudStorageProviderPathTests.GetCloudStorageProviderForPath_ReturnsConfiguredProvider_ForConfiguredRoot(provider: GoogleDrive)`
-- `CloudStorageProviderPathTests.RaiFile_CloudFlag_DetectsFilesUnderConfiguredProvider(provider: GoogleDrive)`
-- `CloudStorageRealWorldIntegrationTests.TextFile_SaveAndRead_WorksAgainstRealWritableCloudProvider(provider: GoogleDrive)`
-- `CloudStorageRealWorldIntegrationTests.RaiFile_RoundTrip_WorksAgainstRealWritableCloudProvider(provider: GoogleDrive)`
+One intermediate full-suite rerun showed two transient remote-sync failures, but those same tests passed on immediate targeted rerun and the subsequent clean full-suite rerun above. The current release-ready status is based on the latest clean full pass.
 
 ## Design insight from the latest discussion
 
@@ -144,7 +114,7 @@ That fallback has already been removed from the mandatory helper path.
 
 ## Release alignment
 
-The workspace is being aligned to version `3.4.0` across:
+The workspace is being aligned to version `3.5.0` across:
 
 - `JsonPit`
 - `OsLib`
@@ -154,13 +124,11 @@ The workspace is being aligned to version `3.4.0` across:
 
 ## Important remaining task
 
-The next implementation step should be to refine the real cloud helper and its callers so that provider entries are treated as optional individually.
+The main remaining task is operational rather than code-centric:
 
-That means:
-
-1. keep mandatory failure for missing `osconfig.json`
-2. skip tests when the requested provider is absent from config
-3. fail tests when the requested provider is present in config but its configured directory is invalid or missing
+1. review the dirty subprojects and umbrella docs one final time
+2. check in the `3.5.0` release-alignment changes
+3. create the release label/tag once the final review is complete
 
 ## Related files
 
@@ -174,10 +142,13 @@ That means:
 - `OsLib/OsLib.Tests/CloudStorageAgreementTests.cs`
 - `OsLib/OsLib.Tests/CloudStorageProviderPathTests.cs`
 - `OsLib/OsLib.Tests/CloudStorageRealWorldIntegrationTests.cs`
+- `OsLib/OsLib.Tests/CloudRemoteSyncTests.cs`
+- `OsLib/OsLib.Tests/RemoteSshTests.cs`
+- `JsonPit/JsonPit.Tests/CloudRemoteSyncTests.cs`
 - `OsLib/OsLib.Tests/OsEnvironmentPathTests.cs`
 
 ## Suggested resume prompt
 
 ```text
-Please read CURRENT-STATUS.md first, then continue the OsLib cloud/config refactor. The next task is to make provider entries optional individually: missing config file should fail, missing provider entry should skip, configured-but-missing provider directory should fail.
+Please read CURRENT-STATUS.md first, then continue from the release-ready `3.5.0` state. The code and tests are green; the next task is final review, check-in, and release labeling.
 ```
