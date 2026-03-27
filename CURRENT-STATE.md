@@ -56,19 +56,17 @@ Focused result at the time of this note:
 
 ## Current aligned package version
 
-The workspace is currently aligned on version `3.5.0` for:
+The workspace is currently aligned on version `3.6.0` for:
 
 - `JsonPit`
 - `OsLib`
 - `RaiUtils`
 - `RaiImage`
 
-## 3.5.0 documentation decisions
+## 3.6.0 documentation decisions
 
-- The supported cloud-provider claim for the packaged `RAIkeep` stack is now `OneDrive`, `GoogleDrive`, and `Dropbox`.
-- `JsonPit` now documents `PitItem.Id` as the canonical identifier.
-- Legacy payloads that only carry `Name` are converted internally to `Id`, and the framework drops the legacy `Name` field during normalization.
-- `Name` remains available for application-defined custom data outside the framework identifier contract.
+- `OsLib 3.6.0` fixes the `CanonicalFile` constructor crash (infinite recursion in `Name` getter/setter) and updates path-convention tests.
+- All four packages are aligned on version `3.6.0`.
 
 ## Solution structure
 
