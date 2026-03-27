@@ -18,7 +18,7 @@ skinparam NoteBackgroundColor #fff7d6
 skinparam NoteBorderColor #d4b106
 
 package "OsLib" as P_OsLib {
-	rectangle "Ⓒ Os\nⒸ ConfigFile\nⒸ OsConfigFile\nⒸ OsConfigModel\nⒸ CloudModel\nⒸ RaiFile\nⒸ RaiPath\nⒸ RaiSystem\nⒸ TextFile\nⒸ CsvFile\nⒸ TmpFile\nⒸ CanonicalFile\nⒸ CanonicalPath\nⒸ PathConventionType" as M_OsLib
+	rectangle "Ⓒ Os\nⒸ ConfigFile\nⒸ OsConfigFile\nⒸ OsConfigModel\nⒸ CloudModel\nⒸ RaiFile\nⒸ RaiPath\nⒸ RaiSystem\nⒸ TextFile\nⒸ CsvFile\nⒸ TmpFile\nⒸ CanonicalFile\nⒸ CanonicalPath <<deprecated>>\nⒸ PathConventionType" as M_OsLib
 }
 
 package "OsLib.Tests" <<tests>> as T_OsLib {

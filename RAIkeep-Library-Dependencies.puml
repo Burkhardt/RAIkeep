@@ -51,7 +51,7 @@ package "OsLib" as P_OsLib {
 	class CsvFile
 	class TmpFile
 	class CanonicalFile
-	class CanonicalPath
+	class "CanonicalPath\n<<deprecated>>" as CanonicalPath
 	class PathConventionType
 }
 
