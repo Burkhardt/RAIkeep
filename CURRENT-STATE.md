@@ -56,17 +56,16 @@ Focused result at the time of this note:
 
 ## Current aligned package version
 
-The workspace is currently aligned on version `3.6.0` for:
+The workspace is currently aligned on version `3.6.1` for:
 
 - `JsonPit`
 - `OsLib`
 - `RaiUtils`
 - `RaiImage`
 
-## 3.6.0 documentation decisions
+## 3.6.1 documentation decisions
 
-- `OsLib 3.6.0` fixes the `CanonicalFile` constructor crash (infinite recursion in `Name` getter/setter) and updates path-convention tests.
-- All four packages are aligned on version `3.6.0`.
+- Patch: corrects NuGet publish order. All four packages are aligned on version `3.6.1`.
 
 ## Solution structure
 

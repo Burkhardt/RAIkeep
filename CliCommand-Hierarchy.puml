@@ -1,4 +1,5 @@
 @startuml CliCommandHierarchy
+' Release: 3.6.1
 skinparam classAttributeIconSize 0
 hide empty members
 
