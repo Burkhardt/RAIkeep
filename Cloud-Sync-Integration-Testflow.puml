@@ -1,5 +1,5 @@
 @startuml Cloud-Sync-Integration-Testflow
-' Release: 3.6.1
+' Release: 3.7.0
 title RAIkeep Real Cloud Sync Integration Test Flow
 
 skinparam backgroundColor white

@@ -56,16 +56,16 @@ Focused result at the time of this note:
 
 ## Current aligned package version
 
-The workspace is currently aligned on version `3.6.1` for:
+The workspace is currently aligned on version `3.7.0` for:
 
 - `JsonPit`
 - `OsLib`
 - `RaiUtils`
 - `RaiImage`
 
-## 3.6.1 documentation decisions
+## 3.7.0 documentation decisions
 
-- Patch: corrects NuGet publish order. All four packages are aligned on version `3.6.1`.
+- Patch: corrects NuGet publish order. All four packages are aligned on version `3.7.0`.
 
 ## Solution structure
 

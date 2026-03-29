@@ -4,9 +4,9 @@ This file captures the current release-ready status of the RAIkeep workspace so 
 
 ## Current focus
 
-The `3.6.1` patch corrects the NuGet publish order and aligns all packages on version `3.6.1`.
+The `3.7.0` patch corrects the NuGet publish order and aligns all packages on version `3.7.0`.
 
-## 3.6.1 release decisions
+## 3.7.0 release decisions
 
 - The supported cloud-provider claim for the packaged `RAIkeep` stack is `OneDrive`, `GoogleDrive`, and `Dropbox`.
 - In `JsonPit`, `PitItem.Id` replaces `Name` as the framework identifier.
@@ -46,7 +46,7 @@ Completed concepts currently in the codebase:
 - `UserHomeDir`, `AppRootDir`, `TempDir`, `LocalBackupDir`, and `CloudStorageRootDir` clarified and documented with current semantics
 - startup-critical `osconfig.json` diagnostics now log through `ILogger<T>` and emit explicit degraded-mode console diagnostics
 - `GetBackupRelativeDirectoryPath(...)` now returns `RaiPath`, and `RaiFile.backup(copy)` composes destinations through `Os.LocalBackupDir / relativePath`
-- workspace package versions and fallback package references are aligned to `3.6.1`
+- workspace package versions and fallback package references are aligned to `3.7.0`
 
 The current real-cloud helper is:
 
@@ -108,7 +108,7 @@ That fallback has already been removed from the mandatory helper path.
 
 ## Release alignment
 
-The workspace is being aligned to version `3.6.1` across:
+The workspace is being aligned to version `3.7.0` across:
 
 - `JsonPit`
 - `OsLib`
@@ -121,7 +121,7 @@ The workspace is being aligned to version `3.6.1` across:
 The main remaining task is operational rather than code-centric:
 
 1. review the dirty subprojects and umbrella docs one final time
-2. check in the `3.6.1` release-alignment changes
+2. check in the `3.7.0` release-alignment changes
 3. create the release label/tag once the final review is complete
 
 ## Related files
@@ -144,5 +144,5 @@ The main remaining task is operational rather than code-centric:
 ## Suggested resume prompt
 
 ```text
-Please read CURRENT-STATUS.md first, then continue from the release-ready `3.6.1` state. The code and tests are green; the next task is final review, check-in, and release labeling.
+Please read CURRENT-STATUS.md first, then continue from the release-ready `3.7.0` state. The code and tests are green; the next task is final review, check-in, and release labeling.
 ```
