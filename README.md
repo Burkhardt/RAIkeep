@@ -6,14 +6,14 @@ It keeps the child repositories available together for local integration work wh
 
 ## Current Aligned Version
 
-The current aligned workspace version is `3.7.0` for:
+The current aligned workspace version is `3.7.3` for:
 
 - `JsonPit`
 - `OsLib`
 - `RaiUtils`
 - `RaiImage`
 
-## 3.7.0 Decisions
+## 3.7.3 Decisions
 
 - Patch release: corrects the NuGet publish order. OsLibCore is now published before RaiUtils, RaiImage, and JsonPit.
 

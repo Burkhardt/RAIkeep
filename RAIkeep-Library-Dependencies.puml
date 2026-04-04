@@ -1,12 +1,12 @@
 @startuml RAIkeep-Library-Dependencies
-' Release: 3.7.0
+' Release: 3.7.3
 title RAIkeep Library Dependencies
 
 top to bottom direction
 
 skinparam TitleFontSize 48
 skinparam TitleFontColor #727375
-skinparam TitleFontName "Papyrus"
+skinparam TitleFontName "Casual"
 skinparam HeaderFontSize 36
 skinparam DiagramFontSize 24
 skinparam backgroundColor white
@@ -43,9 +43,6 @@ package "OsLib" as P_OsLib {
 	class "Os" as COs [[Os-ClassDiagram.svg{Open Details Diagram for class Os}]]
 	class RaiFile
 	class ConfigFile
-	class OsConfigFile
-	class OsConfigModel
-	class CloudModel
 	class RaiPath
 	class RaiSystem
 	class TextFile
