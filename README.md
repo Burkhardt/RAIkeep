@@ -21,12 +21,16 @@ The current aligned workspace version is `3.7.3` for:
 
 - `JsonPit`
 - `OsLib`
+- `PitSeeder`
 - `RaiUtils`
 - `RaiImage`
+
+`PitSeeder` is included in the umbrella workspace so the CLI can build against the local `JsonPit` and `OsLib` source projects while package publishing catches up.
 
 ## Local validation
 
 From the repository root:
 
+- `dotnet build RAIkeep.slnx`
 - `dotnet test RAIkeep.slnx`
 - `dotnet test RaiImage/RaiImage.slnx`
