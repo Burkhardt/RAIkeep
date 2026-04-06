@@ -11,8 +11,8 @@ skinparam HeaderFontSize 36
 skinparam DiagramFontSize 24
 skinparam backgroundColor white
 skinparam shadowing false
-skinparam PackageStyle package
 skinparam linetype ortho
+skinparam PackageStyle package
 skinparam ArrowColor #4b5563
 skinparam PackageBorderColor #1f2937
 skinparam PackageFontColor #021f5eca
