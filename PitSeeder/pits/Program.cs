@@ -21,6 +21,8 @@ public static class Icons
 public static class Messages
 {
 	public static bool Debug { get; set; } = false;
+	public static string? CloudProvider { get; set; }
+	public static RaiPath? PitRoot { get; set;}
 	private static readonly string[] WwwaFiles = { "Person", "Object", "Place", "Activity" };
 	public static string? Destination { get; set; }
 	public static string? Source { get; set; }
@@ -44,7 +46,7 @@ public static class Messages
 		$"--destination\t\t{Icons.Upload} {WwwaDestinationFileStatus("Place")}",
 		$"--source\t\t{Icons.File} {WwwaSourceFileStatus("Activity")}",
 		$"--destination\t\t{Icons.Upload} {WwwaDestinationFileStatus("Activity")}",
-		$"{Icons.Info} CloudStorageRootDir\t{Icons.Folder} {(Os.CloudStorageRootDir.Exists() ? Icons.Success : Icons.NotAvailable)} {Icons.Upload}\t{Os.CloudStorageRootDir.Path}",
+		$"{Icons.Info} PitRoot{Messages.CloudProvider}\t{Icons.Folder} {(Messages.PitRoot?.Exists() == true ? Icons.Success : Icons.NotAvailable)} {Icons.Upload}\t{Messages.PitRoot?.FullPath}",
 		$"--source:\t\t{(Wwwa ? Icons.Folder : Icons.File)}\t{SourceDisplayPath()}",
 		$"--destination:\t\t{(Wwwa ? Icons.Folder : Icons.File)} {Icons.Upload}\t{DestinationDisplayPath()}",
 	];
@@ -203,6 +205,27 @@ internal static class Program
 				Messages.WriteSuccess(GetVersion());
 				return 0;
 			}
+			var destParam = ParamValue(args, "-d", "--destination", "--dest", "—d", "—destination", "—dest") ?? "output";
+			string? cloudProvider = ParamValue(args, "-c", "--cloudprovider", "—c", "—cloudprovider");
+			Messages.CloudProvider = cloudProvider;
+			if (string.IsNullOrWhiteSpace(cloudProvider))
+			{
+				// No cloud provider: Trust the shell. Use destParam exactly as-is.
+				Messages.Destination = destParam;
+			}
+			else
+			{
+				// Cloud provider requested: Resolve root and append destParam as a relative path
+				string? cloudDir = Os.Config?.Cloud?[cloudProvider];
+				if (string.IsNullOrWhiteSpace(cloudDir))
+				{
+					Messages.WriteError($"The requested cloud provider '{cloudProvider}' is missing or empty in {Os.DefaultConfigFileLocation}.");
+					return 1;
+				}
+				Messages.PitRoot = new RaiPath(cloudDir);
+				// Combine the cloud root with the passed-in destination (acting as a RaiRelPath)
+				Messages.Destination = (Messages.PitRoot / destParam).Path;
+			}
 			if (HasOption(args, "-b", "--debug"))
 				Messages.Debug = true;
 			if (!HasOption(args, "-n", "--nologo", "—n", "—nologo"))
@@ -214,19 +237,18 @@ internal static class Program
 			}
 			var source = Messages.Source = ParamValue(args, "-s", "--source", "—s", "—source");
 			Messages.WriteInfo($"Source: {source}");
-			var destination = Messages.Destination = ParamValue(args, "-d", "--destination", "--dest", "—d", "—destination", "—dest") ?? new RaiPath("output").Path;
-			Messages.WriteInfo($"Destination: {destination}");
+			Messages.WriteInfo($"Destination: {Messages.Destination}");
 			var wwwa = Messages.Wwwa = HasOption(args, "-wwwa", "--wwwa", "—wwwa");
 			Messages.WriteInfo($"WWWA Mode: {wwwa}");
 			if (wwwa)
 			{
-				if (string.IsNullOrWhiteSpace(source) || string.IsNullOrWhiteSpace(destination))
+				if (string.IsNullOrWhiteSpace(source) || string.IsNullOrWhiteSpace(Messages.Destination))
 				{
 					Messages.WriteError("WWWA mode requires a source directory specified with --source \n\tand a destination directory specified with --destination.");
 					return 1;
 				}
 				var sourceDir = new RaiPath(source.EndsWith(Os.DIR) ? source : source + Os.DIR);
-				var destDir = new RaiPath(destination.EndsWith(Os.DIR) ? destination : destination + Os.DIR);
+				var destDir = new RaiPath(Messages.Destination.EndsWith(Os.DIR) ? Messages.Destination : Messages.Destination + Os.DIR);
 				Messages.WriteInfo($"WWWA RunBulkSeed({sourceDir.Path}, {destDir.Path}) started...");
 				var rc = RunBulkSeed(sourceDir, destDir);
 				Messages.WriteInfo($"WWWA RunBulkSeed({sourceDir.Path}, {destDir.Path}) completed.");
@@ -234,10 +256,14 @@ internal static class Program
 				return rc;
 			}
 			if (source != null)
-				return RunSingleSeed(source, destination);
+				return RunSingleSeed(source, Messages.Destination);
+
 			Messages.WriteHelp();
 		}
-		catch (Exception ex) { Messages.WriteError($"unknow option; an internal error occurred.\n{ex.Message}"); }
+		catch (Exception ex)
+		{
+			Messages.WriteError($"unknown option; an internal error occurred.\n{ex.Message}");
+		}
 		return 1;
 		#endregion Processing_cli_Params
 	}
