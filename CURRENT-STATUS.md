@@ -4,24 +4,26 @@ This file captures the current release-ready status of the RAIkeep workspace so 
 
 ## Current focus
 
-The `3.7.3` patch corrects the NuGet publish order and aligns all packages on version `3.7.3`.
+The current docs-and-architecture alignment pass is `3.7.5`.
 
-## 3.7.3 release decisions
+## 3.7.5 release decisions
 
-- The supported cloud-provider claim for the packaged `RAIkeep` stack is `OneDrive`, `GoogleDrive`, and `Dropbox`.
-- In `JsonPit`, `PitItem.Id` replaces `Name` as the framework identifier.
-- Legacy files that contain `Name` but not `Id` are normalized internally to `Id`, and the framework-managed `Name` field is removed.
-- `Name` remains supported as an application-defined custom field outside the framework contract.
+- The active OsLib config contract is `osconfig.json5` with PascalCase property names and lazy `dynamic` access through `Os.Config`.
+- `UserHomeDir` and `AppRootDir` are intrinsic runtime values.
+- `TempDir` and `LocalBackupDir` remain config-driven.
+- `CloudPathWiring` initializes `RaiPath.CloudEvaluator`, and `RaiPath` buffers its `Cloud` state.
+- Directory wait logic lives in `RaiPath`; file wait logic lives in `RaiFile`.
+- Older references to `CloudStorageRootDir`, public `LoadConfig(...)`, provider-selection helpers, and observer-specific `Os` APIs are historical only.
 
 ## Agreed direction
 
 The following points are now agreed:
 
-- the canonical Os config location is `~/.config/RAIkeep/osconfig.json`
+- the canonical Os config location is `~/.config/RAIkeep/osconfig.json5`
 - resolution of `~` is acceptable and does not count as an environment-variable violation
 - real cloud tests must use config-driven cloud roots only
 - mechanics tests may still use controlled test environments
-- `tempDir` and `localBackupDir` belong to the base Os configuration
+- `TempDir` and `LocalBackupDir` belong to the base Os configuration
 - `UserHomeDir` and `AppRootDir` are intrinsic runtime paths and are not config-driven
 - legacy `homeDir` is compatibility input only and is ignored at runtime
 - cloud provider entries are optional individually
@@ -34,19 +36,15 @@ The important clarification from the latest discussion is this:
 
 ## Current implementation status
 
-The `3.5.0` refactor and release-alignment work is now implemented in the workspace.
-
 Completed concepts currently in the codebase:
 
-- fixed default config path handling in `Os.CloudStorage.cs`
-- config-path override support for tests
-- config-only cloud resolution mode for real cloud tests
-- real cloud test helper split through `CloudStorageRealTestEnvironment`
-- replacement of the old soft helper with a mandatory helper that throws when mandatory preconditions are not met
-- `UserHomeDir`, `AppRootDir`, `TempDir`, `LocalBackupDir`, and `CloudStorageRootDir` clarified and documented with current semantics
-- startup-critical `osconfig.json` diagnostics now log through `ILogger<T>` and emit explicit degraded-mode console diagnostics
-- `GetBackupRelativeDirectoryPath(...)` now returns `RaiPath`, and `RaiFile.backup(copy)` composes destinations through `Os.LocalBackupDir / relativePath`
-- workspace package versions and fallback package references are aligned to `3.7.3`
+- `Os.Config` is lazy, internal-load, and backed by `osconfig.json5`
+- `Os.IsConfigLoaded` exposes config lifecycle state without opening a public reload API
+- `CloudPathWiring` provides the delegate bridge from `Os.Config` to `RaiPath.CloudEvaluator`
+- `RaiPath` buffers its `Cloud` state and owns directory wait logic
+- `RaiFile` copies the buffered `Cloud` flag and owns file wait logic
+- the fake config-writing test backdoor was removed from `OsLib.Tests`
+- OsLib diagrams and current docs are being aligned to the post-purge architecture
 
 The current real-cloud helper is:
 
@@ -64,30 +62,17 @@ The real cloud tests currently using that flow are:
 
 ## Current result
 
-The remote test setup was repaired during this session by fixing the remote `mzansi` `osconfig.json` content. The previously skipped remote SSH and cloud-sync tests now execute successfully.
+The most recent verified command in this session is the OsLib test project:
+
+- `dotnet test OsLib/OsLib.Tests/OsLib.Tests.csproj --nologo -v minimal`
+- result: 50 passed, 0 failed
 
 ## Latest validation result
 
-Most recent umbrella command:
+Latest directly verified result in this workspace state:
 
-```bash
-dotnet test RAIkeep.slnx --nologo -v minimal
-```
-
-Latest umbrella result:
-
-- total: 200
-- failed: 2
-- succeeded: 200
-- skipped: 0
-
-Targeted rerun of the previously skipped remote-gated tests:
-
-- passed: 8
-- failed: 0
-- skipped: 0
-
-One intermediate full-suite rerun showed two transient remote-sync failures, but those same tests passed on immediate targeted rerun and the subsequent clean full-suite rerun above. The current release-ready status is based on the latest clean full pass.
+- OsLib test project build and test pass succeeded
+- the older umbrella and remote-observer notes below this point should be treated as historical context unless revalidated
 
 ## Design insight from the latest discussion
 

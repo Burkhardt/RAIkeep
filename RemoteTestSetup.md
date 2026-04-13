@@ -2,6 +2,12 @@
 
 Date: 2026-03-13
 
+## Historical note for 3.7.5
+
+This document describes an older remote-observer harness.
+
+It is still useful as setup history, but it does not describe the current OsLib public API surface. In particular, it still references `osconfig.json`, remote observer topology files, and older cloud-root resolution behavior that no longer belongs to `Os` itself.
+
 ## 3.5.0 scope note
 
 As of `RAIkeep 3.5.0`, the supported cloud-provider claim for the package stack is `OneDrive`, `GoogleDrive`, and `Dropbox`.
@@ -12,15 +18,15 @@ For `JsonPit`, the canonical item identifier is now `Id`. Legacy files that stil
 
 The current setup is now config-driven.
 
-1. Local cloud provider roots use `osconfig.json`.
+1. Local cloud provider roots use `osconfig.json5`.
 2. Remote observer topology uses `remote-test-config.json`.
-3. Remote cloud roots are read from the remote machine's own `osconfig.json` over ssh.
+3. Remote cloud roots are read from the remote machine's own `osconfig.json5` over ssh.
 
 So the answer is:
 
-- local cloud root: `~/.config/RAIkeep/osconfig.json` on macOS and Linux
+- local cloud root: `~/.config/RAIkeep/osconfig.json5` on macOS and Linux
 - remote ssh target: `~/.config/RAIkeep/remote-test-config.json`
-- remote Google Drive root: taken from Mzansi's `~/.config/RAIkeep/osconfig.json`
+- remote Google Drive root: taken from Mzansi's `~/.config/RAIkeep/osconfig.json5`
 
 ## What Uses Config Files
 

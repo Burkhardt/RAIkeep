@@ -1,41 +1,40 @@
 @startuml RAIkeep-Library-Dependencies
-' Release: 3.7.3
+' Release: 3.7.5
 title RAIkeep Library Dependencies
 
 top to bottom direction
 
-skinparam TitleFontSize 48
-skinparam TitleFontColor #727375
-skinparam TitleFontName "Casual"
-skinparam HeaderFontSize 36
-skinparam DiagramFontSize 24
 skinparam backgroundColor white
 skinparam shadowing false
 skinparam linetype ortho
+skinparam DiagramFontName "Casual"
+skinparam DiagramFontSize 36
+skinparam TitleFontName "Casual"
+skinparam TitleFontSize 48
+skinparam TitleFontColor #111827
+skinparam HeaderFontSize 36
 skinparam PackageStyle package
-skinparam ArrowColor #4b5563
-skinparam PackageBorderColor #1f2937
-skinparam PackageFontColor #021f5eca
+skinparam ArrowColor #9b2c2c
+skinparam ArrowFontColor #374151
+skinparam ArrowFontName "Casual"
+skinparam PackageBorderColor #0f766e
+skinparam PackageFontColor #111827
 skinparam PackageFontSize 24
 skinparam PackageFontName "Casual"
-skinparam PackageBackgroundColor #bfd8f078
-skinparam IconPackageColor #e8a8f1
-skinparam ClassBorderColor #004203
-skinparam ClassBackgroundColor #f9fafb
+skinparam PackageBackgroundColor #ccfbf1
+skinparam IconPackageColor #fef3c7
+skinparam ClassBorderColor #0f766e
 skinparam NoteBackgroundColor #fff7d6
 skinparam NoteBorderColor #d4b106
-skinparam NoteShadowing true
+skinparam NoteShadowing false
 skinparam NoteFontName "Casual"
 skinparam NoteFontSize 14
-skinparam ClassBackgroundColor #e8f6ec
+skinparam ClassBackgroundColor #ccfbf1
 skinparam ClassFontName "Casual"
 skinparam ClassFontSize 13
-skinparam ArrowFontName "Casual"
 skinparam ArrowFontSize 16
-skinparam ArrowFontColor #727375
 skinparam ArrowTextAlignment right
-skinparam ArrowColor #9b2c2c
-skinparam LegendBackgroundColor #f5cfea94
+skinparam LegendBackgroundColor #fff7d6
 skinparam LegendFontName "Casual"
 skinparam LegendFontSize 14
 
@@ -99,8 +98,8 @@ P_RaiImage ..[norank]> P_RaiUtils : ProjectReference
 
 note left of P_OsLib
 	Foundation library for OS, paths,
-	files, temp files, reusable typed config,
-	and cloud-root discovery.
+	files, temp files, lazy config access,
+	and cloud-aware path/file helpers.
 end note
 
 note bottom of P_RaiUtils

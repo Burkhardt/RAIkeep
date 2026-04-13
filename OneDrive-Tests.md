@@ -2,6 +2,14 @@
 
 Date: 2026-03-16
 
+## Historical note for 3.7.5
+
+This note captures a pre-`3.7.5` test inventory.
+
+It still mentions removed APIs such as `GetCloudStorageRoots(...)`, `GetCloudStorageRoot(...)`, and public `LoadConfig(...)`, plus an older remote-observer harness. Keep it as debugging history, not as the current OsLib API contract.
+
+For the live model, use `Os.Config`, `osconfig.json5`, explicit `Cloud.*` entries, and buffered cloud state on `RaiPath` / `RaiFile`.
+
 ## 3.5.0 scope note
 
 As of `RAIkeep 3.5.0`, `OneDrive` is one of the three supported cloud providers in the packaged stack alongside `GoogleDrive` and `Dropbox`.
@@ -33,7 +41,7 @@ The most important distinction is:
 
 From the current machine state during this session:
 
-- local `osconfig.json` contains `onedrive: /Users/Shared/AfricaStageOneDrive/`
+- local `osconfig.json5` contains `Cloud.OneDrive: /Users/Shared/AfricaStageOneDrive/`
 - `/Users/Shared/AfricaStageOneDrive/` exists
 - `remote-test-config.json` contains observer `mzansi`
 
@@ -42,7 +50,7 @@ That means the local preconditions for real local OneDrive tests look present.
 What was not verified in this session:
 
 - whether `Mzansi` is reachable by ssh right now
-- whether `Mzansi` has a valid OneDrive root configured in its own `~/.config/RAIkeep/osconfig.json`
+- whether `Mzansi` has a valid OneDrive root configured in its own `~/.config/RAIkeep/osconfig.json5`
 
 So local real-provider OneDrive tests are likely runnable here, while remote OneDrive sync tests are only probable, not confirmed.
 

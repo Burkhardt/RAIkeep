@@ -38,7 +38,7 @@ For real cloud tests in particular, explicit configuration must win and environm
 
 The shared configuration location is:
 
-`~/.config/RAIkeep/osconfig.json`
+`~/.config/RAIkeep/osconfig.json5`
 
 Resolution of `~` is accepted. The use of environment variables to choose different config locations is not the intended direction.
 

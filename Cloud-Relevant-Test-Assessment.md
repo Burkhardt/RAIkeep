@@ -2,6 +2,12 @@
 
 Date: 2026-03-13
 
+## Historical note for 3.7.5
+
+This assessment was written against the earlier provider-root API surface.
+
+Where it mentions `Os.GetCloudStorageRoot(...)` or similar helpers, read that as historical context. The current OsLib model uses `Os.Config`, `CloudPathWiring`, `RaiPath.CloudEvaluator`, and buffered `RaiPath.Cloud` / `RaiFile.Cloud` state instead.
+
 ## Scope
 
 This note assesses how well the current RAIkeep test suite detects problems that only show up in real cloud-backed sync environments, especially in the context of the core RAIkeep idea: several servers synchronized through one of the supported cloud providers.
@@ -61,7 +67,7 @@ That is already better than a purely synthetic setup.
 
 ### 1. They verify real provider-root discovery on an actual machine
 
-The suite does exercise `Os.GetCloudStorageRoot(provider)` against the machine's actual state.
+The suite did exercise provider-root resolution against the machine's actual state.
 
 That is important because discovery logic is exactly the kind of thing that often fails due to path conventions, machine-specific setups, and provider installation differences.
 

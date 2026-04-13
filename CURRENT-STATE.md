@@ -2,6 +2,14 @@
 
 This file captures the current working state of the `RAIkeep` umbrella workspace so a future session can resume quickly.
 
+Current note for `3.7.5`:
+
+- the active OsLib config contract is `osconfig.json5`
+- `Os.Config` is lazy and dynamic
+- `CloudPathWiring` plus `RaiPath.CloudEvaluator` drive buffered cloud state
+- directory waits live in `RaiPath`, file waits live in `RaiFile`
+- older remote-observer and `osconfig.json` references in historical notes should not be treated as the current OsLib public surface
+
 ## Role of this repo
 
 `RAIkeep` is the umbrella workspace for the related C# libraries:
@@ -28,7 +36,7 @@ Most recent result:
 - succeeded: 200
 - skipped: 0
 
-The previously skipped remote SSH and remote cloud-sync tests now pass after repairing the remote `mzansi` `osconfig.json`.
+Earlier remote SSH and remote cloud-sync notes in this file refer to an older harness setup and should be treated as historical unless revalidated.
 
 ## Earlier verified baseline
 
@@ -56,16 +64,17 @@ Focused result at the time of this note:
 
 ## Current aligned package version
 
-The workspace is currently aligned on version `3.7.3` for:
+The workspace is currently being aligned on version `3.7.5` for:
 
 - `JsonPit`
 - `OsLib`
 - `RaiUtils`
 - `RaiImage`
 
-## 3.7.3 documentation decisions
+## 3.7.5 documentation decisions
 
-- Patch: corrects NuGet publish order. All four packages are aligned on version `3.7.3`.
+- Current docs are being aligned to the post-purge OsLib architecture.
+- Historical release/design notes remain useful context but no longer define the live OsLib API surface.
 
 ## Solution structure
 
