@@ -1,29 +1,31 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Linq;
 using JsonPit;
 using OsLib;
 public static class Icons
 {
-	public const string Error = "\uea87";
-	public const string Warning = "\uf071";
-	public const string Success = "\ueab2";
-	public const string Info = "\uea74";
-	public const string Help = "\uf059";
-	public const string NotAvailable = "\ueabd";
-	public const string File = "\uea7b";
-	public const string Folder = "\uea83";
-	public const string Download = "\ueac2";
-	public const string Upload = "\ueac3";
-	public const string Banner = "\ueb1e";
-	public const string NoBanner = "\ueb24";
+	public const char Error = '\uea87';
+	public const char Warning = '\uf071';
+	public const char Success = '\ueab2';
+	public const char Info = '\uea74';
+	public const char Help = '\uf059';
+	public const char NotAvailable = '\ueabd';
+	public const char File = '\uea7b';
+	public const char Folder = '\uea83';
+	public const char Download = '\ueac2';
+	public const char Upload = '\ueac3';
+	public const char Banner = '\ueb1e';
+	public const char NoBanner = '\ueb24';
 }
 public static class Messages
 {
 	public static bool Debug { get; set; } = false;
 	public static string? CloudProvider { get; set; }
-	public static RaiPath? PitRoot { get; set;}
-	private static readonly string[] WwwaFiles = { "Person", "Object", "Place", "Activity" };
+	public static RaiPath? PitRoot { get; set; }
+	// Opened up access modifier so Program.cs can read the list
+	public static readonly string[] WwwaFiles = { "Person", "Object", "Place", "Activity" };
 	public static string? Destination { get; set; }
 	public static string? Source { get; set; }
 	public static bool Wwwa { get; set; }
@@ -31,10 +33,10 @@ public static class Messages
 	public static string[] Help =>
 	[
 		$"-h, --help\t\t{Icons.Help}\tprint out all options, replace source and destination with passed-in parameters",
-			$"-v, --version\t\t{Icons.Info}\tprint version info",
-			$"-n, --nologo\t\t{(Banner ? Icons.Banner : Icons.NoBanner)}\tDo not display the banner",
-			$"-s, --source\t\t{Icons.File}|{Icons.Folder}\t{SourceDescription()}",
-			$"-d, --destination\t{Icons.File}|{Icons.Folder}\t{DestinationDescription()}",
+		$"-v, --version\t\t{Icons.Info}\tprint version info",
+		$"-n, --nologo\t\t{(Banner ? Icons.Banner : Icons.NoBanner)}\tDo not display the banner",
+		$"-s, --source\t\t{Icons.File}|{Icons.Folder}\t{SourceDescription()}",
+		$"-d, --destination\t{Icons.File}|{Icons.Folder}\t{DestinationDescription()}",
 		$"--wwwa\t\t\t{(Wwwa ? Icons.Success : Icons.NotAvailable)}\tRead 4 JSON/JSON5 files into 4 JsonPits",
 		$"\t\tSource: {BuildWwwaStatusIcons(false)}",
 		$"\t\tCloud:  {BuildWwwaStatusIcons(true)}",
@@ -46,18 +48,10 @@ public static class Messages
 		$"--destination\t\t{Icons.Upload} {WwwaDestinationFileStatus("Place")}",
 		$"--source\t\t{Icons.File} {WwwaSourceFileStatus("Activity")}",
 		$"--destination\t\t{Icons.Upload} {WwwaDestinationFileStatus("Activity")}",
-		$"{Icons.Info} PitRoot{Messages.CloudProvider}\t{Icons.Folder} {(Messages.PitRoot?.Exists() == true ? Icons.Success : Icons.NotAvailable)} {Icons.Upload}\t{Messages.PitRoot?.FullPath}",
+		$"{Icons.Info} PitRoot\t\t{Icons.Folder} {(PitRoot?.Exists() == true ? Icons.Success : Icons.NotAvailable)} {Icons.Upload}\t{CloudProvider}: {PitRoot?.FullPath}",
 		$"--source:\t\t{(Wwwa ? Icons.Folder : Icons.File)}\t{SourceDisplayPath()}",
 		$"--destination:\t\t{(Wwwa ? Icons.Folder : Icons.File)} {Icons.Upload}\t{DestinationDisplayPath()}",
 	];
-	/// <summary>
-	/// Example: ./output/Activity.pit
-	/// </summary>
-	private static string GetCanonicalFullName(string? destination, string nameWithExt)
-	{
-		var canonicalFile = new CanonicalFile(new RaiPath(destination ?? "."), nameWithExt);
-		return canonicalFile.FullName;
-	}
 	private static string SourceDescription()
 	{
 		return !Wwwa && !string.IsNullOrWhiteSpace(Source)
@@ -66,32 +60,21 @@ public static class Messages
 	}
 	private static string DestinationDescription()
 	{
-		if (!Wwwa && !string.IsNullOrWhiteSpace(Destination))
-			return DestinationDisplayPath();
-		return "JsonPit destination directory";
+		return !string.IsNullOrWhiteSpace(Destination)
+			? new RaiPath(Destination).Path
+			: "JsonPit destination directory or canonical file path";
 	}
 	private static string SourceDisplayPath()
 	{
 		if (string.IsNullOrWhiteSpace(Source))
-			return ".";
+			return "<source_path_required>";
 		return Wwwa ? new RaiPath(Source).Path : new RaiFile(Source).FullName;
 	}
 	private static string DestinationDisplayPath()
 	{
 		if (string.IsNullOrWhiteSpace(Destination))
-			return ".";
-		if (Wwwa)
-			return new RaiPath(Destination).Path;
-		var pitName = string.IsNullOrWhiteSpace(Source) ? "Default.pit" : new RaiFile(Source).Name + ".pit";
-		return GetCanonicalFullName(Destination, pitName);
-	}
-	private static string WwwaSourceStatus()
-	{
-		return BuildWwwaStatusIcons(isCloud: false);
-	}
-	private static string WwwaCloudStatus()
-	{
-		return BuildWwwaStatusIcons(isCloud: true);
+			return "<destination_path_or_output>";
+		return new RaiPath(Destination).Path;
 	}
 	private static string BuildWwwaStatusIcons(bool isCloud)
 	{
@@ -123,36 +106,23 @@ public static class Messages
 	{
 		if (string.IsNullOrWhiteSpace(Destination))
 			return $"{Icons.NotAvailable}\t{file}.pit";
-		var fullName = GetCanonicalFullName(Destination, file + ".pit");
-		var exists = new PitFile(new RaiPath(Destination), file).Exists();
-		return $"{(exists ? Icons.Success : Icons.NotAvailable)}\t{fullName}";
+		// Rely on JsonPit canonical structure
+		var canonicalDest = new RaiPath(Destination) / file;
+		var pitFile = new PitFile(canonicalDest, file);
+		return $"{(pitFile.Exists() ? Icons.Success : Icons.NotAvailable)}\t{pitFile.FullName}";
 	}
-	/// <summary>
-	/// checks if any of the files exist, trying several extensions
-	/// </summary>
-	/// <param name="file"></param>
-	/// <param name="ext1"></param>
-	/// <param name="ext2"></param>
-	/// <param name="ext3"></param>
-	/// <param name="ext4"></param>
-	/// <returns>The extension of the first existing file, or null if none exist.</returns>
 	public static string? EitherFileExists(string? file, string ext1, string? ext2, string? ext3 = null, string? ext4 = null)
 	{
 		var extensions = new string?[] { ext1, ext2, ext3, ext4 };
 		foreach (var extension in extensions)
 		{
-			if (extension == null)
-				continue;
-			var f = new RaiFile(file);
-			f.Ext = extension;
-			if (f.Exists())
-				return extension;
+			if (extension == null) continue;
+			var f = new RaiFile(file) { Ext = extension };
+			if (f.Exists()) return extension;
 		}
 		return null;
 	}
-	public static void WriteHighlighted(string text,
-		ConsoleColor foreground = ConsoleColor.Black,
-		ConsoleColor? background = null)
+	public static void WriteHighlighted(string text, ConsoleColor foreground = ConsoleColor.Black, ConsoleColor? background = null)
 	{
 		var oldForeground = Console.ForegroundColor;
 		var oldBackground = Console.BackgroundColor;
@@ -162,21 +132,13 @@ public static class Messages
 		Console.ForegroundColor = oldForeground;
 		Console.BackgroundColor = oldBackground;
 	}
-	public static void WriteError(string text) =>
-		WriteHighlighted(text, ConsoleColor.DarkRed, ConsoleColor.White);
-	public static void WriteSuccess(string text) =>
-		WriteHighlighted(text, ConsoleColor.DarkGreen);
-	public static void WriteInfo(string text) =>
-		WriteHighlighted(text, ConsoleColor.Blue);
-	public static void WriteDebug(string text)
-	{
-		if (Debug)
-			WriteHighlighted(text, ConsoleColor.DarkYellow);
-	}
+	public static void WriteError(string text) => WriteHighlighted(text, ConsoleColor.DarkRed, ConsoleColor.White);
+	public static void WriteSuccess(string text) => WriteHighlighted(text, ConsoleColor.DarkGreen);
+	public static void WriteInfo(string text) => WriteHighlighted(text, ConsoleColor.Blue);
+	public static void WriteDebug(string text) { if (Debug) WriteHighlighted(text, ConsoleColor.DarkYellow); }
 	public static void WriteLine(string text, char underlineChar = '=')
 	{
-		for (int i = 0; i < text.Length; i++)
-			Console.Write(underlineChar);
+		for (int i = 0; i < text.Length; i++) Console.Write(underlineChar);
 		Console.WriteLine();
 	}
 	public static void WriteBanner(string text)
@@ -187,35 +149,36 @@ public static class Messages
 	}
 	public static void WriteHelp()
 	{
-		foreach (var line in Help)
-		{
-			WriteSuccess(line);
-		}
+		foreach (var line in Help) WriteSuccess(line);
 	}
 }
 internal static class Program
 {
 	private static int Main(string[] args)
 	{
-		#region Processing_cli_Params
 		try
 		{
-			if (HasOption(args, "-v", "--version", "—v", "—version"))
+			if (HasOption(args, "-v", "--version"))
 			{
 				Messages.WriteSuccess(GetVersion());
 				return 0;
 			}
-			var destParam = ParamValue(args, "-d", "--destination", "--dest", "—d", "—destination", "—dest") ?? "output";
-			string? cloudProvider = ParamValue(args, "-c", "--cloudprovider", "—c", "—cloudprovider");
-			Messages.CloudProvider = cloudProvider;
+			#region READ & MAP PARAMETERS
+			Messages.Debug = HasOption(args, "-b", "--debug");
+			Messages.Banner = !HasOption(args, "-n", "--nologo");
+			bool showHelp = HasOption(args, "-h", "--help");
+			bool wwwa = Messages.Wwwa = HasOption(args, "-wwwa", "--wwwa");
+			string? cloudProvider = Messages.CloudProvider = ParamValue(args, "-c", "--cloudprovider", "--cloud");
+			var sourceParam = Messages.Source = ParamValue(args, "-s", "--source");
+			var destParam = ParamValue(args, "-d", "--destination", "--dest", "—d") ?? "output";
+			#endregion
+			#region RESOLVE BASE PATHS
 			if (string.IsNullOrWhiteSpace(cloudProvider))
 			{
-				// No cloud provider: Trust the shell. Use destParam exactly as-is.
 				Messages.Destination = destParam;
 			}
 			else
 			{
-				// Cloud provider requested: Resolve root and append destParam as a relative path
 				string? cloudDir = Os.Config?.Cloud?[cloudProvider];
 				if (string.IsNullOrWhiteSpace(cloudDir))
 				{
@@ -223,54 +186,94 @@ internal static class Program
 					return 1;
 				}
 				Messages.PitRoot = new RaiPath(cloudDir);
-				// Combine the cloud root with the passed-in destination (acting as a RaiRelPath)
-				Messages.Destination = (Messages.PitRoot / destParam).Path;
+				Messages.Destination = (Messages.PitRoot / destParam).FullPath;
 			}
-			if (HasOption(args, "-b", "--debug"))
-				Messages.Debug = true;
-			if (!HasOption(args, "-n", "--nologo", "—n", "—nologo"))
-				Messages.WriteBanner($"{Icons.Info} AfricaStage Pit Seeder CLI");
-			if (HasOption(args, "-h", "--help", "—h", "—help"))
-			{
-				Messages.WriteHelp();
-				return 0;
-			}
-			var source = Messages.Source = ParamValue(args, "-s", "--source", "—s", "—source");
-			Messages.WriteInfo($"Source: {source}");
-			Messages.WriteInfo($"Destination: {Messages.Destination}");
-			var wwwa = Messages.Wwwa = HasOption(args, "-wwwa", "--wwwa", "—wwwa");
-			Messages.WriteInfo($"WWWA Mode: {wwwa}");
+			#endregion
+			#region VALIDATE & SETUP OBJECTS
+			RaiPath? wwwaSourceDir = null;
+			RaiPath? wwwaDestDir = null;
+			TextFile? singleSourceFile = null;
+			RaiPath? singleDestPath = null;
+			bool hasExecutionIntent = false;
 			if (wwwa)
 			{
-				if (string.IsNullOrWhiteSpace(source) || string.IsNullOrWhiteSpace(Messages.Destination))
+				if (string.IsNullOrWhiteSpace(sourceParam))
 				{
-					Messages.WriteError("WWWA mode requires a source directory specified with --source \n\tand a destination directory specified with --destination.");
+					Messages.WriteError("WWWA mode requires a source directory specified with -s or --source.");
 					return 1;
 				}
-				var sourceDir = new RaiPath(source.EndsWith(Os.DIR) ? source : source + Os.DIR);
-				var destDir = new RaiPath(Messages.Destination.EndsWith(Os.DIR) ? Messages.Destination : Messages.Destination + Os.DIR);
-				Messages.WriteInfo($"WWWA RunBulkSeed({sourceDir.Path}, {destDir.Path}) started...");
-				var rc = RunBulkSeed(sourceDir, destDir);
-				Messages.WriteInfo($"WWWA RunBulkSeed({sourceDir.Path}, {destDir.Path}) completed.");
+				Messages.Source = sourceParam.EndsWith(Os.DIR) ? sourceParam : sourceParam + Os.DIR;
+				Messages.Destination = Messages.Destination!.EndsWith(Os.DIR) ? Messages.Destination : Messages.Destination + Os.DIR;
+				wwwaSourceDir = new RaiPath(Messages.Source);
+				wwwaDestDir = new RaiPath(Messages.Destination);
+				hasExecutionIntent = true;
+			}
+			else if (!string.IsNullOrWhiteSpace(sourceParam))
+			{
+				singleSourceFile = new TextFile(sourceParam);
+				if (!singleSourceFile.Exists())
+				{
+					Messages.WriteError($"Source file '{singleSourceFile.FullName}' does not exist.");
+					return 1;
+				}
+				... hier weiter mit RaiPath.SplitRaiPathAndName
+				if (Messages.Destination.EndsWith(Os.DIR))
+				{
+					(singleDestPath, _) = RaiPath.SplitRaiPathAndName(Messages.Destination);
+				}
+				else {
+					splitResult
+				}
+				singleDestPath = new RaiPath(Messages.Destination);
+				hasExecutionIntent = true;
+			}
+			#endregion
+			#region LOGGING & HELP
+			if (Messages.Banner)
+				Messages.WriteBanner($"{Icons.Info} AfricaStage Pit Seeder CLI");
+			if (hasExecutionIntent)
+			{
+				Messages.WriteDebug($"Source: {Messages.Source}");
+				Messages.WriteDebug($"Destination: {Messages.Destination}");
+				Messages.WriteDebug($"WWWA Mode: {wwwa}");
+			}
+			if (showHelp || !hasExecutionIntent)
+			{
 				Messages.WriteHelp();
+				if (!hasExecutionIntent) return showHelp ? 0 : 1;
+			}
+			#endregion
+			#region REAL WORK EXECUTION
+			if (wwwa)
+			{
+				Messages.WriteInfo($"WWWA RunBulkSeed({wwwaSourceDir!.Path}, {wwwaDestDir!.Path}) started...");
+				var rc = RunBulkSeed(wwwaSourceDir, wwwaDestDir);
+				Messages.WriteInfo($"WWWA RunBulkSeed({wwwaSourceDir.Path}, {wwwaDestDir.Path}) completed.");
 				return rc;
 			}
-			if (source != null)
-				return RunSingleSeed(source, Messages.Destination);
-
-			Messages.WriteHelp();
+			if (singleSourceFile != null && singleDestPath != null)
+			{
+				return RunSingleSeed(singleSourceFile, singleDestPath);
+			}
+			#endregion
+		}
+		catch (ArgumentException ex)
+		{
+			Messages.WriteError($"CLI Error: {ex.Message}");
 		}
 		catch (Exception ex)
 		{
-			Messages.WriteError($"unknown option; an internal error occurred.\n{ex.Message}");
+			Messages.WriteError($"An internal error occurred.\n{ex.Message}");
 		}
 		return 1;
-		#endregion Processing_cli_Params
 	}
-	#region Helpers for argument parsing and WWWA status display
-	private static string?ParamValue(string[] options, params string[] aliases)
-		=> aliases.Select(a => Array.IndexOf(options, a)).Where(i => i >= 0 && i + 1 < options.Length)
-							.Select(i => options[i + 1]).FirstOrDefault();
+	#region Helpers for argument parsing
+	private static string? ParamValue(string[] options, params string[] aliases)
+		=> aliases.Select(a => Array.IndexOf(options, a)).Where(i => i >= 0)
+			.Select(i => i + 1 < options.Length && !options[i + 1].StartsWith("-")
+				? options[i + 1]
+				: throw new ArgumentException($"The option '{options[i]}' requires a value."))
+			.FirstOrDefault();
 	private static bool HasOption(string[] options, params string[] aliases)
 		=> aliases.Any(options.Contains);
 	private static string GetVersion()
@@ -287,13 +290,10 @@ internal static class Program
 	}
 	#endregion
 	#region Seeding Methods
-	private static void SeedPit(TextFile source, RaiPath pitDirectory)
+	private static void SeedPit(TextFile source, RaiPath targetPath)
 	{
-		Messages.WriteInfo($"Seeding pit from source file: {source.FullName} to destination directory: {pitDirectory.ToString()}");
-		var pitFile = new PitFile(pitDirectory, source.Name);
-		Messages.WriteDebug($"Seeding pit from pitFile: {pitFile.FullName}");
-		//var pit = new Pit(pitDirectory, readOnly: false);
-		var pit = new Pit(pitFile, readOnly: false);
+		Messages.WriteInfo($"Seeding pit from source file: {source.FullName} \n\tto destination: {targetPath.Path}");
+		var pit = new Pit(targetPath, readOnly: false);
 		Messages.WriteDebug($"{Icons.Info} Processing {pit.JsonFile.Name} Pit...");
 		pit.AddItems(source.ReadAllText());
 		pit.Save();
@@ -302,21 +302,21 @@ internal static class Program
 	private static int RunBulkSeed(RaiPath sourceDir, RaiPath destDir)
 	{
 		Messages.WriteInfo($"{Icons.Info} Initiating WWWA Bulk Seed from: {sourceDir.Path}");
-		foreach (var name in new[] { "Person", "Place", "Object", "Activity" })
+		foreach (var name in Messages.WwwaFiles)
 		{
 			var sourceFile = new TextFile(sourceDir, name, ext: "json5");
-			Messages.WriteDebug($"SeedPit({sourceFile.FullName}, {(destDir / name).ToString()})...");
-			SeedPit(sourceFile, destDir / name);
-			Messages.WriteDebug($"SeedPit({sourceFile.FullName}, {(destDir / name).ToString()}) completed.");
+			var targetPath = destDir / name;
+			Messages.WriteDebug($"SeedPit({sourceFile.FullName}, {targetPath.Path})...");
+			SeedPit(sourceFile, targetPath);
+			Messages.WriteDebug($"SeedPit({sourceFile.FullName}, {targetPath.Path}) completed.");
 		}
-		Messages.WriteSuccess($"{Icons.Success} WWWA bulk seeding complete. Data saved to {destDir.ToString()}");
+		Messages.WriteSuccess($"{Icons.Success} WWWA bulk seeding complete. Data saved to {destDir.Path}");
 		return 0;
 	}
-	private static int RunSingleSeed(string sourceFile, string destination)
+	private static int RunSingleSeed(TextFile source, RaiPath destination)
 	{
-		var source = new TextFile(sourceFile);
-		SeedPit(source, new RaiPath(destination) / source.Name);
+		SeedPit(source, destination);
 		return 0;
 	}
-	#endregion Seeding Methods
+	#endregion
 }
