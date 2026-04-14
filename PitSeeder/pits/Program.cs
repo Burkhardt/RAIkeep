@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Linq;
 using JsonPit;
 using OsLib;
@@ -24,7 +22,6 @@ public static class Messages
 	public static bool Debug { get; set; } = false;
 	public static string? CloudProvider { get; set; }
 	public static RaiPath? PitRoot { get; set; }
-	// Opened up access modifier so Program.cs can read the list
 	public static readonly string[] WwwaFiles = { "Person", "Object", "Place", "Activity" };
 	public static string? Destination { get; set; }
 	public static string? Source { get; set; }
@@ -60,8 +57,13 @@ public static class Messages
 	}
 	private static string DestinationDescription()
 	{
+		// fix destination if it's not a canonical file
+		var dest = new PitFile(Destination).FullName;
+		// dest should be canonical now... but maybe we have to split it.
+		(RaiPath p, string n) = RaiPath.SplitRaiPathAndName(dest);
+		// check what we have here ... and also: is this the righ place to doing it?
 		return !string.IsNullOrWhiteSpace(Destination)
-			? new RaiPath(Destination).Path
+			? Destination
 			: "JsonPit destination directory or canonical file path";
 	}
 	private static string SourceDisplayPath()
@@ -74,7 +76,8 @@ public static class Messages
 	{
 		if (string.IsNullOrWhiteSpace(Destination))
 			return "<destination_path_or_output>";
-		return new RaiPath(Destination).Path;
+		// By the time Help is called, Phase 3 has already perfectly resolved the string.
+		return Destination;
 	}
 	private static string BuildWwwaStatusIcons(bool isCloud)
 	{
@@ -147,7 +150,7 @@ public static class Messages
 		Console.WriteLine(text);
 		WriteLine(text);
 	}
-	public static void WriteHelp()
+	public static void WriteHelp() 
 	{
 		foreach (var line in Help) WriteSuccess(line);
 	}
@@ -177,8 +180,7 @@ internal static class Program
 			{
 				Messages.Destination = destParam;
 			}
-			else
-			{
+			else {
 				string? cloudDir = Os.Config?.Cloud?[cloudProvider];
 				if (string.IsNullOrWhiteSpace(cloudDir))
 				{
@@ -193,7 +195,7 @@ internal static class Program
 			RaiPath? wwwaSourceDir = null;
 			RaiPath? wwwaDestDir = null;
 			TextFile? singleSourceFile = null;
-			RaiPath? singleDestPath = null;
+			PitFile? singleDestPitFile = null;
 			bool hasExecutionIntent = false;
 			if (wwwa)
 			{
@@ -216,15 +218,13 @@ internal static class Program
 					Messages.WriteError($"Source file '{singleSourceFile.FullName}' does not exist.");
 					return 1;
 				}
-				... hier weiter mit RaiPath.SplitRaiPathAndName
-				if (Messages.Destination.EndsWith(Os.DIR))
-				{
-					(singleDestPath, _) = RaiPath.SplitRaiPathAndName(Messages.Destination);
-				}
+				if (Messages.Destination!.EndsWith(Os.DIR))
+					singleDestPitFile = new PitFile(Messages.Destination);
 				else {
-					splitResult
+					var (path, name) = RaiPath.SplitRaiPathAndName(Messages.Destination);
+					singleDestPitFile = new PitFile(path, name);
 				}
-				singleDestPath = new RaiPath(Messages.Destination);
+				Messages.Destination = singleDestPitFile.FullName;
 				hasExecutionIntent = true;
 			}
 			#endregion
@@ -251,9 +251,10 @@ internal static class Program
 				Messages.WriteInfo($"WWWA RunBulkSeed({wwwaSourceDir.Path}, {wwwaDestDir.Path}) completed.");
 				return rc;
 			}
-			if (singleSourceFile != null && singleDestPath != null)
+			if (singleSourceFile != null && singleDestPitFile != null)
 			{
-				return RunSingleSeed(singleSourceFile, singleDestPath);
+				SeedPit(singleSourceFile, singleDestPitFile);
+				return 0;
 			}
 			#endregion
 		}
@@ -290,10 +291,10 @@ internal static class Program
 	}
 	#endregion
 	#region Seeding Methods
-	private static void SeedPit(TextFile source, RaiPath targetPath)
+	private static void SeedPit(TextFile source, PitFile pitFile)
 	{
-		Messages.WriteInfo($"Seeding pit from source file: {source.FullName} \n\tto destination: {targetPath.Path}");
-		var pit = new Pit(targetPath, readOnly: false);
+		Messages.WriteInfo($"Seeding pit from source file: {source.FullName} \n\tto destination: {pitFile.FullName}");
+		var pit = new Pit(pitFile, readOnly: false);
 		Messages.WriteDebug($"{Icons.Info} Processing {pit.JsonFile.Name} Pit...");
 		pit.AddItems(source.ReadAllText());
 		pit.Save();
@@ -305,17 +306,12 @@ internal static class Program
 		foreach (var name in Messages.WwwaFiles)
 		{
 			var sourceFile = new TextFile(sourceDir, name, ext: "json5");
-			var targetPath = destDir / name;
-			Messages.WriteDebug($"SeedPit({sourceFile.FullName}, {targetPath.Path})...");
-			SeedPit(sourceFile, targetPath);
-			Messages.WriteDebug($"SeedPit({sourceFile.FullName}, {targetPath.Path}) completed.");
+			var targetPitFile = new PitFile(destDir / name, name);
+			Messages.WriteDebug($"SeedPit({sourceFile.FullName}, {targetPitFile.FullName})...");
+			SeedPit(sourceFile, targetPitFile);
+			Messages.WriteDebug($"SeedPit({sourceFile.FullName}, {targetPitFile.FullName}) completed.");
 		}
 		Messages.WriteSuccess($"{Icons.Success} WWWA bulk seeding complete. Data saved to {destDir.Path}");
-		return 0;
-	}
-	private static int RunSingleSeed(TextFile source, RaiPath destination)
-	{
-		SeedPit(source, destination);
 		return 0;
 	}
 	#endregion

@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<Title>PitSeeder</Title>
 		<Description>Command-line seeder for JsonPit data stores.</Description>
-		<Version>3.7.4</Version>
+		<Version>3.7.5</Version>
 		<PackageId>PitSeeder</PackageId>
 		<Author>Rainer Burkhardt</Author>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
@@ -12,7 +12,7 @@
 		<RepositoryUrl>https://github.com/Burkhardt/RAIkeep.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-		<PackageReleaseNotes>3.7.4 patch: PitSeeder now builds inside the RAIkeep workspace and defaults to local JsonPit and OsLib sources to support pre-release integration testing.</PackageReleaseNotes>
+		<PackageReleaseNotes>3.7.5 patch: PitSeeder now builds inside the RAIkeep workspace and defaults to local JsonPit and OsLib sources to support pre-release integration testing.</PackageReleaseNotes>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net10.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
