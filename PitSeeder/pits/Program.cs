@@ -40,23 +40,22 @@ public static class Messages
 	public static bool Banner { get; set; }
 	public static string[] Help =>
 	[
-		$"-h, --help\t\t{Icons.Help}\tprint out all options",
+		$"-h, --help\t{Icons.Help}\tprint out all options",
 		$"-v, --version\t{Icons.Info}\tprint version info",
 		$"-n, --nologo\t{(Banner ? Icons.Banner : Icons.NoBanner)}\tdo not display the banner",
-		$"-b, --debug\t\t{Icons.Info}\tenable debug output",
+		$"-b, --debug\t{Icons.Info}\tenable debug output",
 		$"-r, --pitroot\t{Icons.Folder}\t{PitRootDescription()}",
-		$"-c, --cloud\t\t{Icons.Folder}\t{CloudDescription()}",
+		$"-c, --cloud\t{Icons.Folder}\t{CloudDescription()}",
 		$"-s, --source\t{Icons.File}\t{SourceDescription()}",
 		$"-e, --export\t{Icons.Download}\t{ExportDescription()}",
-		$"--json\t\t\t{(Json ? Icons.Success : Icons.NotAvailable)}\texport to stdout (for piping to jq, grep, etc.)",
-		$"--wwwa\t\t\t{(Wwwa ? Icons.Success : Icons.NotAvailable)}\toperate on all 4 pits (Person, Object, Place, Activity)",
-		$"<pit name>\t\t{Icons.File}\t{PitNameDescription()}",
-		$"",
-		$"{Icons.Info} PitRoot\t\t{PitRootStatusLine()}",
-		$"  Person\t\t{WwwaPitStatus("Person")}",
-		$"  Object\t\t{WwwaPitStatus("Object")}",
-		$"  Place\t\t\t{WwwaPitStatus("Place")}",
-		$"  Activity\t\t{WwwaPitStatus("Activity")}",
+		$"--json\t\t{(Json ? Icons.Success : Icons.NotAvailable)}\texport to stdout (for piping to jq, grep, etc.)",
+		$"--wwwa\t\t{(Wwwa ? Icons.Success : Icons.NotAvailable)}\toperate on all 4 pits (Person, Object, Place, Activity)",
+		$"{Icons.Info} PitName\t{Icons.File}\t{PitNameDescription()}",
+		$"{Icons.Info} PitRoot\t{PitRootStatusLine()}",
+		$"{Icons.Info} Person\t{WwwaPitStatus("Person")}",
+		$"{Icons.Info} Object\t{WwwaPitStatus("Object")}",
+		$"{Icons.Info} Place\t\t{WwwaPitStatus("Place")}",
+		$"{Icons.Info} Activity\t{WwwaPitStatus("Activity")}",
 	];
 	private static string PitRootDescription()
 	{

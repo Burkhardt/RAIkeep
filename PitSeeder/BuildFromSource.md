@@ -279,7 +279,7 @@ Example on `Mzansi`, using the four sample seeding files from the `RAIkeep` chec
 
 ```bash
 cd /srv/ServerData/OneDriveData/RAIkeep
-pits --wwwa -s sample/ -d WwwaTests/
+pits --wwwa -s sample/ -r WwwaTests/
 ```
 
 This creates:

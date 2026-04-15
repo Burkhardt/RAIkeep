@@ -31,8 +31,8 @@
 		<OsLibProjectPath Condition="'$(RAIkeepRoot)' != '' and Exists('$(RAIkeepRoot)/OsLib/OsLib.csproj')">$(RAIkeepRoot)/OsLib/OsLib.csproj</OsLibProjectPath>
 		<UseLocalRAIkeepSources Condition="'$(UseLocalRAIkeepSources)' == '' and '$(JsonPitProjectPath)' != '' and '$(OsLibProjectPath)' != ''">true</UseLocalRAIkeepSources>
 		<UseLocalRAIkeepSources Condition="'$(UseLocalRAIkeepSources)' == ''">false</UseLocalRAIkeepSources>
-		<JsonPitPackageVersion Condition="'$(JsonPitPackageVersion)' == ''">3.7.2</JsonPitPackageVersion>
-		<OsLibPackageVersion Condition="'$(OsLibPackageVersion)' == ''">3.7.2</OsLibPackageVersion>
+		<JsonPitPackageVersion Condition="'$(JsonPitPackageVersion)' == ''">3.7.5</JsonPitPackageVersion>
+		<OsLibPackageVersion Condition="'$(OsLibPackageVersion)' == ''">3.7.5</OsLibPackageVersion>
 
 		<CloudSamplePath Condition="'$(CloudSamplePath)' == ''"></CloudSamplePath>
 	</PropertyGroup>

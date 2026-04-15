@@ -75,7 +75,7 @@ Writes `~/export/Person.json` containing the projected current state of all item
 ### Export a single pit to stdout
 
 ```bash
-pits -r /path/to/pitroot/ Person --json
+pits -n -r /path/to/pitroot/ Person --json
 ```
 
 Output:
