@@ -95,10 +95,10 @@ Output:
 
 ### Pipe to jq
 
-Because `--json` writes to stdout, standard UNIX piping works:
+Because `--json` writes to stdout, standard UNIX piping works (just add -n to suppress the banner):
 
 ```bash
-pits -r /path/to/pitroot/ Person --json | jq '.[] | select(.Id == "Nomsa") | .Instruments'
+pits -n -r /path/to/pitroot/ Person --json | jq '.[] | select(.Id == "Nomsa") | .Instruments'
 ```
 
 ```json
@@ -134,11 +134,18 @@ becomes:
 The same works with stdout:
 
 ```bash
-pits -r /path/to/pitroot/ --wwwa --json | jq '.Activity[] | select(.Id == "SDZSP26") | .Venue.Name'
+pits -n -r /path/to/pitroot/ --wwwa --json | jq '.Place[] | select((.Id | startswith("SD")) or (.Name | contains("Zoo"))) | {Id, Name}'
 ```
 
-```
-"San Diego Zoo Safari Park"
+```json
+{
+  "Id": "SanDiegoZoo",
+  "Name": "San Diego Zoo"
+}
+{
+  "Id": "SDZSafariPark",
+  "Name": "San Diego Zoo Safari Park"
+}
 ```
 
 ### Cloud provider support
