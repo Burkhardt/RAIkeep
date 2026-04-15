@@ -25,6 +25,7 @@ public static class Messages
 	public static readonly string[] WwwaFiles = { "Person", "Object", "Place", "Activity" };
 	public static string? Destination { get; set; }
 	public static string? Source { get; set; }
+	public static string? Export { get; set; }
 	public static bool Wwwa { get; set; }
 	public static bool Banner { get; set; }
 	public static string[] Help =>
@@ -34,6 +35,7 @@ public static class Messages
 		$"-n, --nologo\t\t{(Banner ? Icons.Banner : Icons.NoBanner)}\tDo not display the banner",
 		$"-s, --source\t\t{Icons.File}|{Icons.Folder}\t{SourceDescription()}",
 		$"-d, --destination\t{Icons.File}|{Icons.Folder}\t{DestinationDescription()}",
+		$"-e, --export\t\t{Icons.Download}\t{ExportDescription()}",
 		$"--wwwa\t\t\t{(Wwwa ? Icons.Success : Icons.NotAvailable)}\tRead 4 JSON/JSON5 files into 4 JsonPits",
 		$"\t\tSource: {BuildWwwaStatusIcons(false)}",
 		$"\t\tCloud:  {BuildWwwaStatusIcons(true)}",
@@ -65,6 +67,14 @@ public static class Messages
 		return !string.IsNullOrWhiteSpace(Destination)
 			? Destination
 			: "JsonPit destination directory or canonical file path";
+	}
+	private static string ExportDescription()
+	{
+		if (string.IsNullOrWhiteSpace(Export) || string.IsNullOrWhiteSpace(Source))
+			return "Export pit from -s to a json file into the given directory";
+		var pitFile = new PitFile(Source);
+		var exportFile = new RaiFile(new RaiPath(Export), pitFile.Name, "json");
+		return exportFile.FullName;
 	}
 	private static string SourceDisplayPath()
 	{
@@ -173,22 +183,26 @@ internal static class Program
 			bool wwwa = Messages.Wwwa = HasOption(args, "-wwwa", "--wwwa");
 			string? cloudProvider = Messages.CloudProvider = ParamValue(args, "-c", "--cloudprovider", "--cloud");
 			var sourceParam = Messages.Source = ParamValue(args, "-s", "--source");
-			var destParam = ParamValue(args, "-d", "--destination", "--dest", "—d") ?? "output";
+			var destParam = ParamValue(args, "-d", "--destination", "--dest", "—d");
+			var exportParam = Messages.Export = ParamValue(args, "-e", "--export");
 			#endregion
 			#region RESOLVE BASE PATHS
-			if (string.IsNullOrWhiteSpace(cloudProvider))
+			if (!string.IsNullOrWhiteSpace(destParam))
 			{
-				Messages.Destination = destParam;
-			}
-			else {
-				string? cloudDir = Os.Config?.Cloud?[cloudProvider];
-				if (string.IsNullOrWhiteSpace(cloudDir))
+				if (string.IsNullOrWhiteSpace(cloudProvider))
 				{
-					Messages.WriteError($"The requested cloud provider '{cloudProvider}' is missing or empty in {Os.DefaultConfigFileLocation}.");
-					return 1;
+					Messages.Destination = destParam;
 				}
-				Messages.PitRoot = new RaiPath(cloudDir);
-				Messages.Destination = (Messages.PitRoot / destParam).FullPath;
+				else {
+					string? cloudDir = Os.Config?.Cloud?[cloudProvider];
+					if (string.IsNullOrWhiteSpace(cloudDir))
+					{
+						Messages.WriteError($"The requested cloud provider '{cloudProvider}' is missing or empty in {Os.DefaultConfigFileLocation}.");
+						return 1;
+					}
+					Messages.PitRoot = new RaiPath(cloudDir);
+					Messages.Destination = (Messages.PitRoot / destParam).FullPath;
+				}
 			}
 			#endregion
 			#region VALIDATE & SETUP OBJECTS
@@ -196,6 +210,7 @@ internal static class Program
 			RaiPath? wwwaDestDir = null;
 			TextFile? singleSourceFile = null;
 			PitFile? singleDestPitFile = null;
+			RaiPath? exportPath = null;
 			bool hasExecutionIntent = false;
 			if (wwwa)
 			{
@@ -204,8 +219,13 @@ internal static class Program
 					Messages.WriteError("WWWA mode requires a source directory specified with -s or --source.");
 					return 1;
 				}
+				if (string.IsNullOrWhiteSpace(Messages.Destination))
+				{
+					Messages.WriteError("WWWA mode requires a destination directory specified with -d or --destination.");
+					return 1;
+				}
 				Messages.Source = sourceParam.EndsWith(Os.DIR) ? sourceParam : sourceParam + Os.DIR;
-				Messages.Destination = Messages.Destination!.EndsWith(Os.DIR) ? Messages.Destination : Messages.Destination + Os.DIR;
+				Messages.Destination = Messages.Destination.EndsWith(Os.DIR) ? Messages.Destination : Messages.Destination + Os.DIR;
 				wwwaSourceDir = new RaiPath(Messages.Source);
 				wwwaDestDir = new RaiPath(Messages.Destination);
 				hasExecutionIntent = true;
@@ -218,14 +238,22 @@ internal static class Program
 					Messages.WriteError($"Source file '{singleSourceFile.FullName}' does not exist.");
 					return 1;
 				}
-				if (Messages.Destination!.EndsWith(Os.DIR))
-					singleDestPitFile = new PitFile(Messages.Destination);
-				else {
-					var (path, name) = RaiPath.SplitRaiPathAndName(Messages.Destination);
-					singleDestPitFile = new PitFile(path, name);
+				if (!string.IsNullOrWhiteSpace(exportParam))
+				{
+					exportPath = new RaiPath(exportParam);
+					hasExecutionIntent = true;
 				}
-				Messages.Destination = singleDestPitFile.FullName;
-				hasExecutionIntent = true;
+				else if (!string.IsNullOrWhiteSpace(Messages.Destination))
+				{
+					if (Messages.Destination.EndsWith(Os.DIR))
+						singleDestPitFile = new PitFile(Messages.Destination);
+					else {
+						var (path, name) = RaiPath.SplitRaiPathAndName(Messages.Destination);
+						singleDestPitFile = new PitFile(path, name);
+					}
+					Messages.Destination = singleDestPitFile.FullName;
+					hasExecutionIntent = true;
+				}
 			}
 			#endregion
 			#region LOGGING & HELP
@@ -235,6 +263,7 @@ internal static class Program
 			{
 				Messages.WriteDebug($"Source: {Messages.Source}");
 				Messages.WriteDebug($"Destination: {Messages.Destination}");
+				Messages.WriteDebug($"Export: {Messages.Export}");
 				Messages.WriteDebug($"WWWA Mode: {wwwa}");
 			}
 			if (showHelp || !hasExecutionIntent)
@@ -250,6 +279,11 @@ internal static class Program
 				var rc = RunBulkSeed(wwwaSourceDir, wwwaDestDir);
 				Messages.WriteInfo($"WWWA RunBulkSeed({wwwaSourceDir.Path}, {wwwaDestDir.Path}) completed.");
 				return rc;
+			}
+			if (singleSourceFile != null && exportPath != null)
+			{
+				ExportPit(singleSourceFile, exportPath);
+				return 0;
 			}
 			if (singleSourceFile != null && singleDestPitFile != null)
 			{
@@ -299,6 +333,16 @@ internal static class Program
 		pit.AddItems(source.ReadAllText());
 		pit.Save();
 		Messages.WriteSuccess($"{Icons.Success} Initialized and saved {pit.JsonFile.Name} to {pit.JsonFile.FullName}");
+	}
+	private static void ExportPit(TextFile source, RaiPath exportPath)
+	{
+		var pitFile = new PitFile(source.FullName);
+		Messages.WriteInfo($"Exporting pit from: {pitFile.FullName}");
+		var pit = new Pit(pitFile, readOnly: true);
+		exportPath.mkdir();
+		pit.ExportJson(exportPath);
+		var exportFile = new RaiFile(exportPath, pit.JsonFile.Name, "json");
+		Messages.WriteSuccess($"{Icons.Success} Exported {pit.JsonFile.Name} to {exportFile.FullName}");
 	}
 	private static int RunBulkSeed(RaiPath sourceDir, RaiPath destDir)
 	{
