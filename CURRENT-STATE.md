@@ -2,12 +2,13 @@
 
 This file captures the current working state of the `RAIkeep` umbrella workspace so a future session can resume quickly.
 
-Current note for `3.7.5`:
+Current note for `3.7.6`:
 
-- the active OsLib config contract is `osconfig.json5`
+- the active OsLib config contract is `RAIkeep.json5`
 - `Os.Config` is lazy and dynamic
 - `CloudPathWiring` plus `RaiPath.CloudEvaluator` drive buffered cloud state
 - directory waits live in `RaiPath`, file waits live in `RaiFile`
+- `RaiFile.BackdateCreationTime(...)` now supports deterministic `FileAge` manipulation with configurable sync propagation delay
 - older remote-observer and `osconfig.json` references in historical notes should not be treated as the current OsLib public surface
 
 ## Role of this repo
@@ -64,14 +65,14 @@ Focused result at the time of this note:
 
 ## Current aligned package version
 
-The workspace is currently being aligned on version `3.7.5` for:
+The workspace is currently being aligned on version `3.7.6` for:
 
 - `JsonPit`
 - `OsLib`
 - `RaiUtils`
 - `RaiImage`
 
-## 3.7.5 documentation decisions
+## 3.7.6 documentation decisions
 
 - Current docs are being aligned to the post-purge OsLib architecture.
 - Historical release/design notes remain useful context but no longer define the live OsLib API surface.
@@ -169,12 +170,13 @@ This means the naming is now much closer to reality than before: sandboxed tests
 
 ## Current release state
 
-The `3.5.0` release-alignment work is now implemented across the workspace.
+The `3.7.6` release-alignment work is the current umbrella baseline.
 
 Key current facts:
 
-- package versions are aligned to `3.5.0`
+- package versions are being aligned to `3.7.6`
 - OsLib path/config/logging semantics were refactored and documented
+- OsLib now exposes `RaiFile.BackdateCreationTime(...)` and `SyncPropagationDelayMs` configuration for remote-sync timing control
 - release-note files were added or updated across the package repos
 - the remote `mzansi` test setup is now valid enough for the remote SSH and cloud-sync tests to execute successfully
 - the latest clean full-suite validation is green

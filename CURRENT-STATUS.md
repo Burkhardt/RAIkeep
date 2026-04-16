@@ -4,22 +4,24 @@ This file captures the current release-ready status of the RAIkeep workspace so 
 
 ## Current focus
 
-The current docs-and-architecture alignment pass is `3.7.5`.
+The current release-and-docs alignment pass is `3.7.6`.
 
-## 3.7.5 release decisions
+## 3.7.6 release decisions
 
-- The active OsLib config contract is `osconfig.json5` with PascalCase property names and lazy `dynamic` access through `Os.Config`.
+- The active OsLib config contract is `RAIkeep.json5` with PascalCase property names and lazy `dynamic` access through `Os.Config`.
 - `UserHomeDir` and `AppRootDir` are intrinsic runtime values.
 - `TempDir` and `LocalBackupDir` remain config-driven.
+- `SyncPropagationDelayMs` is optional config and can override metadata-propagation waits.
 - `CloudPathWiring` initializes `RaiPath.CloudEvaluator`, and `RaiPath` buffers its `Cloud` state.
 - Directory wait logic lives in `RaiPath`; file wait logic lives in `RaiFile`.
+- `RaiFile.BackdateCreationTime(...)` manipulates `CreationTimeUtc`, nudges sync via a sentinel file, and honors the configured propagation delay order.
 - Older references to `CloudStorageRootDir`, public `LoadConfig(...)`, provider-selection helpers, and observer-specific `Os` APIs are historical only.
 
 ## Agreed direction
 
 The following points are now agreed:
 
-- the canonical Os config location is `~/.config/RAIkeep/osconfig.json5`
+- the canonical Os config location is `~/.config/RAIkeep.json5`
 - resolution of `~` is acceptable and does not count as an environment-variable violation
 - real cloud tests must use config-driven cloud roots only
 - mechanics tests may still use controlled test environments
@@ -38,11 +40,13 @@ The important clarification from the latest discussion is this:
 
 Completed concepts currently in the codebase:
 
-- `Os.Config` is lazy, internal-load, and backed by `osconfig.json5`
+- `Os.Config` is lazy, internal-load, and backed by `RAIkeep.json5`
 - `Os.IsConfigLoaded` exposes config lifecycle state without opening a public reload API
 - `CloudPathWiring` provides the delegate bridge from `Os.Config` to `RaiPath.CloudEvaluator`
 - `RaiPath` buffers its `Cloud` state and owns directory wait logic
 - `RaiFile` copies the buffered `Cloud` flag and owns file wait logic
+- `RaiFile.DefaultSyncPropagationDelayMs` provides the in-process fallback for metadata propagation waits
+- `RaiFile.BackdateCreationTime(...)` supports deterministic remote-sync test setup without forcing one global latency for every machine
 - the fake config-writing test backdoor was removed from `OsLib.Tests`
 - OsLib diagrams and current docs are being aligned to the post-purge architecture
 
@@ -65,7 +69,7 @@ The real cloud tests currently using that flow are:
 The most recent verified command in this session is the OsLib test project:
 
 - `dotnet test OsLib/OsLib.Tests/OsLib.Tests.csproj --nologo -v minimal`
-- result: 50 passed, 0 failed
+- result: 56 passed, 0 failed
 
 ## Latest validation result
 
@@ -93,7 +97,7 @@ That fallback has already been removed from the mandatory helper path.
 
 ## Release alignment
 
-The workspace is being aligned to version `3.7.3` across:
+The workspace is being aligned to version `3.7.6` across:
 
 - `JsonPit`
 - `OsLib`
@@ -106,7 +110,7 @@ The workspace is being aligned to version `3.7.3` across:
 The main remaining task is operational rather than code-centric:
 
 1. review the dirty subprojects and umbrella docs one final time
-2. check in the `3.7.3` release-alignment changes
+2. check in the `3.7.6` release-alignment changes
 3. create the release label/tag once the final review is complete
 
 ## Related files
@@ -129,5 +133,5 @@ The main remaining task is operational rather than code-centric:
 ## Suggested resume prompt
 
 ```text
-Please read CURRENT-STATUS.md first, then continue from the release-ready `3.7.3` state. The code and tests are green; the next task is final review, check-in, and release labeling.
+Please read CURRENT-STATUS.md first, then continue from the release-ready `3.7.6` state. The code and tests are green; the next task is final review, check-in, and release labeling.
 ```

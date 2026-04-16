@@ -1,21 +1,23 @@
 # RAIkeep
 
-`RAIkeep` is the umbrella workspace for the related `JsonPit`, `OsLib`, `RaiUtils`, and `RaiImage` libraries.
+`RAIkeep` is the umbrella workspace for the related `JsonPit`, `OsLib`, `RaiUtils`, and `RaiImage` libraries plus the `PitSeeder` CLI.
 
 It keeps the child repositories available together for local integration work while preserving each package's own identity, solution files, and release flow.
 
 ## Current Aligned Version
 
-The current aligned workspace version is `3.7.3` for:
+The current aligned workspace version is `3.7.6` for:
 
 - `JsonPit`
 - `OsLib`
+- `PitSeeder`
 - `RaiUtils`
 - `RaiImage`
 
-## 3.7.3 Decisions
+## 3.7.6 Decisions
 
-- Patch release: corrects the NuGet publish order. OsLibCore is now published before RaiUtils, RaiImage, and JsonPit.
+- Patch release: aligns the package line on `3.7.6` across all five projects in the workspace.
+- OsLib now exposes `RaiFile.BackdateCreationTime(...)` with configurable sync propagation delay handling for remote-sync workflows.
 
 ## Included repositories
 
