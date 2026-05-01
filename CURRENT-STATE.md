@@ -2,13 +2,14 @@
 
 This file captures the current working state of the `RAIkeep` umbrella workspace so a future session can resume quickly.
 
-Current note for `3.7.6`:
+Current note for `3.7.7`:
 
 - the active OsLib config contract is `RAIkeep.json5`
 - `Os.Config` is lazy and dynamic
 - `CloudPathWiring` plus `RaiPath.CloudEvaluator` drive buffered cloud state
 - directory waits live in `RaiPath`, file waits live in `RaiFile`
 - `RaiFile.BackdateCreationTime(...)` now supports deterministic `FileAge` manipulation with configurable sync propagation delay
+- live markdown and PlantUML release markers were refreshed for the `3.7.7` package line
 - older remote-observer and `osconfig.json` references in historical notes should not be treated as the current OsLib public surface
 
 ## Role of this repo
@@ -32,9 +33,9 @@ dotnet test RAIkeep.slnx --nologo -v minimal
 
 Most recent result:
 
-- total: 200
+- total: 214
 - failed: 0
-- succeeded: 200
+- succeeded: 214
 - skipped: 0
 
 Earlier remote SSH and remote cloud-sync notes in this file refer to an older harness setup and should be treated as historical unless revalidated.
@@ -65,17 +66,19 @@ Focused result at the time of this note:
 
 ## Current aligned package version
 
-The workspace is currently being aligned on version `3.7.6` for:
+The workspace is currently being aligned on version `3.7.7` for:
 
 - `JsonPit`
 - `OsLib`
+- `PitSeeder`
 - `RaiUtils`
 - `RaiImage`
 
-## 3.7.6 documentation decisions
+## 3.7.7 documentation decisions
 
 - Current docs are being aligned to the post-purge OsLib architecture.
 - Historical release/design notes remain useful context but no longer define the live OsLib API surface.
+- Active package diagrams now carry the `3.7.7` release marker so current diagrams are easy to distinguish from historical design artifacts.
 
 ## Solution structure
 
@@ -170,14 +173,15 @@ This means the naming is now much closer to reality than before: sandboxed tests
 
 ## Current release state
 
-The `3.7.6` release-alignment work is the current umbrella baseline.
+The `3.7.7` release-alignment work is the current umbrella baseline.
 
 Key current facts:
 
-- package versions are being aligned to `3.7.6`
+- package versions are being aligned to `3.7.7`
 - OsLib path/config/logging semantics were refactored and documented
 - OsLib now exposes `RaiFile.BackdateCreationTime(...)` and `SyncPropagationDelayMs` configuration for remote-sync timing control
 - release-note files were added or updated across the package repos
+- active PlantUML headers were refreshed across the umbrella and child-package diagrams
 - the remote `mzansi` test setup is now valid enough for the remote SSH and cloud-sync tests to execute successfully
 - the latest clean full-suite validation is green
 

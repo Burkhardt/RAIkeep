@@ -6,7 +6,7 @@ It keeps the child repositories available together for local integration work wh
 
 ## Current Aligned Version
 
-The current aligned workspace version is `3.7.6` for:
+The current aligned workspace version is `3.7.7` for:
 
 - `JsonPit`
 - `OsLib`
@@ -14,10 +14,10 @@ The current aligned workspace version is `3.7.6` for:
 - `RaiUtils`
 - `RaiImage`
 
-## 3.7.6 Decisions
+## 3.7.7 Decisions
 
-- Patch release: aligns the package line on `3.7.6` across all five projects in the workspace.
-- OsLib now exposes `RaiFile.BackdateCreationTime(...)` with configurable sync propagation delay handling for remote-sync workflows.
+- Patch release: aligns the package line on `3.7.7` across all five projects in the workspace.
+- Current markdown and PlantUML surfaces were refreshed so the live release docs match the current codebase state.
 
 ## Included repositories
 

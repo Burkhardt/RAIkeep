@@ -4,9 +4,9 @@ This file captures the current release-ready status of the RAIkeep workspace so 
 
 ## Current focus
 
-The current release-and-docs alignment pass is `3.7.6`.
+The current release-and-docs alignment pass is `3.7.7`.
 
-## 3.7.6 release decisions
+## 3.7.7 release decisions
 
 - The active OsLib config contract is `RAIkeep.json5` with PascalCase property names and lazy `dynamic` access through `Os.Config`.
 - `UserHomeDir` and `AppRootDir` are intrinsic runtime values.
@@ -15,6 +15,7 @@ The current release-and-docs alignment pass is `3.7.6`.
 - `CloudPathWiring` initializes `RaiPath.CloudEvaluator`, and `RaiPath` buffers its `Cloud` state.
 - Directory wait logic lives in `RaiPath`; file wait logic lives in `RaiFile`.
 - `RaiFile.BackdateCreationTime(...)` manipulates `CreationTimeUtc`, nudges sync via a sentinel file, and honors the configured propagation delay order.
+- Current markdown and PlantUML release markers were refreshed so the live release surface matches the current codebase state.
 - Older references to `CloudStorageRootDir`, public `LoadConfig(...)`, provider-selection helpers, and observer-specific `Os` APIs are historical only.
 
 ## Agreed direction
@@ -66,16 +67,16 @@ The real cloud tests currently using that flow are:
 
 ## Current result
 
-The most recent verified command in this session is the OsLib test project:
+The most recent verified command in this session is the umbrella solution test:
 
-- `dotnet test OsLib/OsLib.Tests/OsLib.Tests.csproj --nologo -v minimal`
-- result: 56 passed, 0 failed
+- `dotnet test RAIkeep.slnx --nologo -v minimal`
+- result: 214 passed, 0 failed, 0 skipped
 
 ## Latest validation result
 
 Latest directly verified result in this workspace state:
 
-- OsLib test project build and test pass succeeded
+- umbrella solution build and test pass succeeded
 - the older umbrella and remote-observer notes below this point should be treated as historical context unless revalidated
 
 ## Design insight from the latest discussion
@@ -97,7 +98,7 @@ That fallback has already been removed from the mandatory helper path.
 
 ## Release alignment
 
-The workspace is being aligned to version `3.7.6` across:
+The workspace is being aligned to version `3.7.7` across:
 
 - `JsonPit`
 - `OsLib`
@@ -109,9 +110,9 @@ The workspace is being aligned to version `3.7.6` across:
 
 The main remaining task is operational rather than code-centric:
 
-1. review the dirty subprojects and umbrella docs one final time
-2. check in the `3.7.6` release-alignment changes
-3. create the release label/tag once the final review is complete
+1. publish `OsLibCore 3.7.7`
+2. wait for confirmation before publishing the downstream packages in order
+3. continue with `RaiUtils`, `RaiImage`, `JsonPit`, and `pits`
 
 ## Related files
 
@@ -133,5 +134,5 @@ The main remaining task is operational rather than code-centric:
 ## Suggested resume prompt
 
 ```text
-Please read CURRENT-STATUS.md first, then continue from the release-ready `3.7.6` state. The code and tests are green; the next task is final review, check-in, and release labeling.
+Please read CURRENT-STATUS.md first, then continue from the release-ready `3.7.7` state. The code and tests are green; the next task is staged package publishing starting with OsLibCore.
 ```
