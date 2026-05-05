@@ -193,7 +193,7 @@ Items in any pit can reference items in other pits using these section keywords.
 
 ## Build and Publish
 
-- Current release notes: [RELEASE_NOTES_3.7.8.md](RELEASE_NOTES_3.7.8.md)
+- Current release notes: [RELEASE_NOTES_3.7.8.1.md](RELEASE_NOTES_3.7.8.1.md)
 
 See [BuildFromSource.md](BuildFromSource.md) for:
 

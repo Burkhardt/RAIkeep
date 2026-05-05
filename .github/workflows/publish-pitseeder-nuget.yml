@@ -1,0 +1,51 @@
+name: Publish PitSeeder NuGet Tool
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Validate tag matches pits.csproj version
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          CSPROJ_VERSION=$(grep -oPm1 "(?<=<Version>)[^<]+" PitSeeder/pits/pits.csproj)
+          echo "Tag version: ${TAG_VERSION}"
+          echo "Project version: ${CSPROJ_VERSION}"
+          if [[ "${TAG_VERSION}" != "${CSPROJ_VERSION}" ]]; then
+            echo "Tag version does not match PitSeeder/pits/pits.csproj <Version>."
+            exit 1
+          fi
+
+      - name: Restore
+        run: dotnet restore PitSeeder/PitSeeder.slnx
+
+      - name: Build
+        run: dotnet build PitSeeder/PitSeeder.slnx --configuration Release --no-restore
+
+      - name: Pack
+        run: dotnet pack PitSeeder/pits/pits.csproj --configuration Release --no-build
+
+      - name: Publish to NuGet
+        run: |
+          dotnet nuget push "PitSeeder/artifacts/nuget/*.nupkg" \
+            --api-key "${{ secrets.NUGET_API_KEY }}" \
+            --source "https://api.nuget.org/v3/index.json" \
+            --skip-duplicate

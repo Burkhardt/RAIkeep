@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<Title>PitSeeder</Title>
 		<Description>Command-line tool for seeding, exporting, and querying JsonPit data stores. Supports WWWA foreign key resolution, JSON export to file or stdout, and piping to jq.</Description>
-		<Version>3.7.8</Version>
+		<Version>3.7.8.1</Version>
 		<PackageId>PitSeeder</PackageId>
 		<Authors>Rainer Burkhardt</Authors>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
@@ -13,7 +13,7 @@
 		<RepositoryUrl>https://github.com/Burkhardt/RAIkeep.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-		<PackageReleaseNotes>3.7.8: Version-symmetry patch aligning fallback package versions with JsonPit 3.7.8 and OsLibCore 3.7.8.</PackageReleaseNotes>
+		<PackageReleaseNotes>3.7.8.1: Adds automated RAIkeep workflow publishing for the PitSeeder NuGet tool and keeps dependency alignment with JsonPit 3.7.8 and OsLibCore 3.7.8.</PackageReleaseNotes>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net10.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
