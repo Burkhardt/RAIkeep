@@ -1,8 +1,8 @@
-# Release Notes 3.8.9
+# Release Notes 3.7.9
 
 ## Summary
 
-- Patch release for the `PitSeeder` .NET tool package version `3.8.9`.
+- Patch release for the `PitSeeder` .NET tool package version `3.7.9`.
 - Publishes the NuGet tool package from the `RAIkeep` repository via GitHub Actions.
 - Publishes self-contained `pits` binaries for `osx-arm64`, `osx-x64`, `linux-x64`, and `win-x64` as GitHub release assets.
 - Aligns fallback package version defaults with `JsonPit 3.7.9` and `OsLibCore 3.7.9`.
@@ -18,5 +18,5 @@
 
 ## Validation
 
-- `dotnet publish PitSeeder/pits/pits.csproj --configuration Release --runtime linux-x64 --self-contained true /p:PublishSingleFile=true /p:UseLocalRAIkeepSources=true /p:RAIkeepRoot=/path/to/RAIkeep --output PitSeeder/artifacts/publish/linux-x64-ci-smoke`
+- `dotnet publish PitSeeder/pits/pits.csproj --configuration Release --runtime linux-x64 --self-contained true /p:PublishSingleFile=true --output PitSeeder/artifacts/publish/linux-x64-ci-smoke-nooverride`
 - Result: local self-contained publish succeeded.
