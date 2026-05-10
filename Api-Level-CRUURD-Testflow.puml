@@ -1,5 +1,5 @@
 @startuml Api-Level-CRUURD-Testflow
-' Release: 3.7.9
+' Release: 3.8.0
 title RAIkeep API-Level Remote CRUURD Test Flow
 
 skinparam backgroundColor white

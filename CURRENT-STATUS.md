@@ -4,9 +4,9 @@ This file captures the current release-ready status of the RAIkeep workspace so 
 
 ## Current focus
 
-The current release-and-docs alignment pass is `3.7.9`.
+The current release-and-docs alignment pass is `3.8.0`.
 
-## 3.7.9 release decisions
+## 3.8.0 release decisions
 
 - The active OsLib config contract is `RAIkeep.json5` with PascalCase property names and lazy `dynamic` access through `Os.Config`.
 - `UserHomeDir` and `AppRootDir` are intrinsic runtime values.
@@ -70,7 +70,7 @@ The real cloud tests currently using that flow are:
 The most recent verified command in this session is the umbrella solution test:
 
 - `dotnet test RAIkeep.slnx --nologo -v minimal`
-- result: 220 passed, 0 failed, 0 skipped
+- result: 223 passed, 0 failed, 0 skipped
 
 ## Latest validation result
 
@@ -98,21 +98,25 @@ That fallback has already been removed from the mandatory helper path.
 
 ## Release alignment
 
-The workspace is being aligned to version `3.7.9` across:
+The workspace is aligned to version `3.8.0` across:
 
 - `JsonPit`
 - `OsLib`
 - `RaiUtils`
 - `RaiImage`
-- the umbrella `RAIkeep` workspace documentation and release tag
+- `PitSeeder`
+- the umbrella `RAIkeep` workspace documentation and submodule references
 
-## Important remaining task
+## Current operational note
 
-The main remaining task is operational rather than code-centric:
+- The staged package publishing sequence for `OsLibCore`, `RaiUtils`, `RaiImage`, `JsonPit`, and `PitSeeder` is complete for `3.8.0`.
+- The umbrella repo should now track the corresponding child-repo SHAs and current root release markers.
 
-1. publish `OsLibCore 3.7.9`
-2. wait for confirmation before publishing the downstream packages in order
-3. continue with `RaiUtils`, `RaiImage`, `JsonPit`, and `pits`
+## Suggested resume prompt
+
+```text
+Please read CURRENT-STATUS.md first, then continue from the release-ready `3.8.0` umbrella baseline. The package releases are published; the main follow-up work is normal integration and maintenance from that state.
+```
 
 ## Related files
 
@@ -130,9 +134,3 @@ The main remaining task is operational rather than code-centric:
 - `OsLib/OsLib.Tests/RemoteSshTests.cs`
 - `JsonPit/JsonPit.Tests/CloudRemoteSyncTests.cs`
 - `OsLib/OsLib.Tests/OsEnvironmentPathTests.cs`
-
-## Suggested resume prompt
-
-```text
-Please read CURRENT-STATUS.md first, then continue from the release-ready `3.7.9` state. The code and tests are green; the next task is staged package publishing starting with OsLibCore.
-```
