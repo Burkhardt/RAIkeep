@@ -6,17 +6,18 @@ It keeps the child repositories available together for local integration work wh
 
 ## Current Aligned Version
 
-The current aligned workspace version is `3.7.7` for:
+The current aligned workspace package version is `3.7.9` for:
 
 - `JsonPit`
 - `OsLib`
-- `PitSeeder`
 - `RaiUtils`
 - `RaiImage`
 
-## 3.7.7 Decisions
+`PitSeeder` remains on its own release line and is not part of this NuGet tag-trigger pass.
 
-- Patch release: aligns the package line on `3.7.7` across all five projects in the workspace.
+## 3.7.9 Decisions
+
+- Patch release: aligns the package line on `3.7.9` across the four NuGet-published libraries in the workspace.
 - Current markdown and PlantUML surfaces were refreshed so the live release docs match the current codebase state.
 
 ## Included repositories

@@ -4,9 +4,9 @@ This file captures the current release-ready status of the RAIkeep workspace so 
 
 ## Current focus
 
-The current release-and-docs alignment pass is `3.7.7`.
+The current release-and-docs alignment pass is `3.7.9`.
 
-## 3.7.7 release decisions
+## 3.7.9 release decisions
 
 - The active OsLib config contract is `RAIkeep.json5` with PascalCase property names and lazy `dynamic` access through `Os.Config`.
 - `UserHomeDir` and `AppRootDir` are intrinsic runtime values.
@@ -70,7 +70,7 @@ The real cloud tests currently using that flow are:
 The most recent verified command in this session is the umbrella solution test:
 
 - `dotnet test RAIkeep.slnx --nologo -v minimal`
-- result: 214 passed, 0 failed, 0 skipped
+- result: 220 passed, 0 failed, 0 skipped
 
 ## Latest validation result
 
@@ -98,7 +98,7 @@ That fallback has already been removed from the mandatory helper path.
 
 ## Release alignment
 
-The workspace is being aligned to version `3.7.7` across:
+The workspace is being aligned to version `3.7.9` across:
 
 - `JsonPit`
 - `OsLib`
@@ -110,7 +110,7 @@ The workspace is being aligned to version `3.7.7` across:
 
 The main remaining task is operational rather than code-centric:
 
-1. publish `OsLibCore 3.7.7`
+1. publish `OsLibCore 3.7.9`
 2. wait for confirmation before publishing the downstream packages in order
 3. continue with `RaiUtils`, `RaiImage`, `JsonPit`, and `pits`
 
@@ -134,5 +134,5 @@ The main remaining task is operational rather than code-centric:
 ## Suggested resume prompt
 
 ```text
-Please read CURRENT-STATUS.md first, then continue from the release-ready `3.7.7` state. The code and tests are green; the next task is staged package publishing starting with OsLibCore.
+Please read CURRENT-STATUS.md first, then continue from the release-ready `3.7.9` state. The code and tests are green; the next task is staged package publishing starting with OsLibCore.
 ```
