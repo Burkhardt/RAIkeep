@@ -193,7 +193,13 @@ Items in any pit can reference items in other pits using these section keywords.
 
 ## Build and Publish
 
-- Current release notes: [RELEASE_NOTES_3.7.8.1.md](RELEASE_NOTES_3.7.8.1.md)
+- Current release notes: [RELEASE_NOTES_3.8.9.md](RELEASE_NOTES_3.8.9.md)
+
+When a matching tag is pushed from the `RAIkeep` repository, the GitHub Actions workflow at `.github/workflows/publish-pitseeder-nuget.yml` now:
+
+- publishes the `PitSeeder` NuGet tool package from `PitSeeder/pits/pits.csproj`
+- builds self-contained single-file `pits` binaries for `osx-arm64`, `osx-x64`, `linux-x64`, and `win-x64`
+- uploads those self-contained binaries as GitHub release assets on the matching tag
 
 See [BuildFromSource.md](BuildFromSource.md) for:
 

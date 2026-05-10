@@ -101,6 +101,8 @@ Important tradeoff:
 
 ## Pack And Publish The NuGet Tool
 
+The repository also contains a tag-triggered GitHub Actions workflow at `.github/workflows/publish-pitseeder-nuget.yml`. On a matching `v<version>` tag in the `RAIkeep` repository, that workflow publishes the NuGet tool package and also produces self-contained release assets for `osx-arm64`, `osx-x64`, `linux-x64`, and `win-x64`.
+
 The project is configured so that `dotnet pack` creates a NuGet package for the `pits` command.
 
 Create the package:
