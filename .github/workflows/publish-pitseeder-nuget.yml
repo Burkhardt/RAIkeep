@@ -93,8 +93,6 @@ jobs:
             --runtime "${{ matrix.rid }}" \
             --self-contained true \
             /p:PublishSingleFile=true \
-            /p:UseLocalRAIkeepSources=true \
-            /p:RAIkeepRoot="${GITHUB_WORKSPACE}" \
             --output "PitSeeder/artifacts/publish/${{ matrix.rid }}"
 
       - name: Archive self-contained binary
