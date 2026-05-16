@@ -4,9 +4,9 @@ This file captures the current release-ready status of the RAIkeep workspace so 
 
 ## Current focus
 
-The current release-and-docs alignment pass is `3.8.1`.
+The current release-and-docs alignment pass is `3.8.6`.
 
-## 3.8.1 release decisions
+## 3.8.6 release decisions
 
 - The active OsLib config contract is `RAIkeep.json5` with PascalCase property names and lazy `dynamic` access through `Os.Config`.
 - `UserHomeDir` and `AppRootDir` are intrinsic runtime values.
@@ -98,7 +98,7 @@ That fallback has already been removed from the mandatory helper path.
 
 ## Release alignment
 
-The workspace is aligned to version `3.8.1` across:
+The workspace is aligned to version `3.8.6` across:
 
 - `JsonPit`
 - `OsLib`
@@ -109,13 +109,13 @@ The workspace is aligned to version `3.8.1` across:
 
 ## Current operational note
 
-- The staged package publishing sequence for `OsLibCore`, `RaiUtils`, `RaiImage`, `JsonPit`, and `PitSeeder` is complete for `3.8.1`.
+- The staged package publishing sequence for `OsLibCore`, `RaiUtils`, `RaiImage`, `JsonPit`, and `PitSeeder` is complete for `3.8.6`.
 - The umbrella repo should now track the corresponding child-repo SHAs and current root release markers.
 
 ## Suggested resume prompt
 
 ```text
-Please read CURRENT-STATUS.md first, then continue from the release-ready `3.8.1` umbrella baseline. The package releases are published; the main follow-up work is normal integration and maintenance from that state.
+Please read CURRENT-STATUS.md first, then continue from the release-ready `3.8.6` umbrella baseline. The package releases are published; the main follow-up work is normal integration and maintenance from that state.
 ```
 
 ## Related files

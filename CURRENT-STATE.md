@@ -2,14 +2,14 @@
 
 This file captures the current working state of the `RAIkeep` umbrella workspace so a future session can resume quickly.
 
-Current note for `3.8.1`:
+Current note for `3.8.6`:
 
 - the active OsLib config contract is `RAIkeep.json5`
 - `Os.Config` is lazy and dynamic
 - `CloudPathWiring` plus `RaiPath.CloudEvaluator` drive buffered cloud state
 - directory waits live in `RaiPath`, file waits live in `RaiFile`
 - `RaiFile.BackdateCreationTime(...)` now supports deterministic `FileAge` manipulation with configurable sync propagation delay
-- live markdown and PlantUML release markers were refreshed for the `3.8.1` package line
+- live markdown and PlantUML release markers were refreshed for the `3.8.6` package line
 - older remote-observer and `osconfig.json` references in historical notes should not be treated as the current OsLib public surface
 
 ## Role of this repo
@@ -66,7 +66,7 @@ Focused result at the time of this note:
 
 ## Current aligned package version
 
-The workspace is aligned on version `3.8.1` for:
+The workspace is aligned on version `3.8.6` for:
 
 - `JsonPit`
 - `OsLib`
@@ -74,11 +74,11 @@ The workspace is aligned on version `3.8.1` for:
 - `RaiImage`
 - `PitSeeder`
 
-## 3.8.1 documentation decisions
+## 3.8.6 documentation decisions
 
 - Current docs are being aligned to the post-purge OsLib architecture.
 - Historical release/design notes remain useful context but no longer define the live OsLib API surface.
-- Active package diagrams now carry the `3.8.1` release marker so current diagrams are easy to distinguish from historical design artifacts.
+- Active package diagrams now carry the `3.8.6` release marker so current diagrams are easy to distinguish from historical design artifacts.
 
 ## Solution structure
 
@@ -173,11 +173,11 @@ This means the naming is now much closer to reality than before: sandboxed tests
 
 ## Current release state
 
-The `3.8.1` release-alignment work is the current umbrella baseline.
+The `3.8.6` release-alignment work is the current umbrella baseline.
 
 Key current facts:
 
-- package versions are aligned to `3.8.1`
+- package versions are aligned to `3.8.6`
 - OsLib path/config/logging semantics were refactored and documented
 - OsLib now exposes `RaiFile.BackdateCreationTime(...)` and `SyncPropagationDelayMs` configuration for remote-sync timing control
 - release-note files were added or updated across the package repos

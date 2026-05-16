@@ -193,7 +193,7 @@ Items in any pit can reference items in other pits using these section keywords.
 
 ## Build and Publish
 
-- Current release notes: [RELEASE_NOTES_3.8.1.md](RELEASE_NOTES_3.8.1.md)
+- Current release notes: [RELEASE_NOTES_3.8.6.md](RELEASE_NOTES_3.8.6.md)
 
 When a matching tag is pushed from the `RAIkeep` repository, the GitHub Actions workflow at `.github/workflows/publish-pitseeder-nuget.yml` now:
 
