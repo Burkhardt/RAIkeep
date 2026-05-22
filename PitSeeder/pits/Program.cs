@@ -51,6 +51,8 @@ public static class Messages
 		$"--json\t\t{(Json ? Icons.Success : Icons.NotAvailable)}\texport to stdout (for piping to jq, grep, etc.)",
 		$"--wwwa\t\t{(Wwwa ? Icons.Success : Icons.NotAvailable)}\toperate on all 4 pits (Person, Object, Place, Activity)",
 		$"{Icons.Info} PitName\t{Icons.File}\t{PitNameDescription()}",
+		$"\t\t{Icons.Info}\tpositional arg: pit to operate on, or target pit name when used with -s",
+		$"\t\t{Icons.Info}\te.g. 'pits -s patch.json5 -r <root> Activity' seeds Activity.pit from patch.json5",
 		$"{Icons.Info} PitRoot\t{PitRootStatusLine()}",
 		$"{Icons.Info} Person\t{WwwaPitStatus("Person")}",
 		$"{Icons.Info} Object\t{WwwaPitStatus("Object")}",
@@ -92,7 +94,7 @@ public static class Messages
 	{
 		return !string.IsNullOrWhiteSpace(PitName)
 			? PitName
-			: "pit to operate on (e.g., Person)";
+			: "pit to operate on or seed target (e.g., Activity)";
 	}
 	private static string PitRootStatusLine()
 	{
@@ -183,10 +185,7 @@ internal static class Program
 			{
 				var sourcePitFile = new PitFile(sourceParam);
 				// Canonical structure: pitroot/Name/Name.pit → sourcePitFile.Path = .../Name/
-				var canonicalDir = sourcePitFile.Path.Path.TrimEnd(Os.DIR[0]);
-				var parent = System.IO.Path.GetDirectoryName(canonicalDir);
-				if (!string.IsNullOrWhiteSpace(parent))
-					pitRoot = new RaiPath(parent);
+				pitRoot = sourcePitFile.Path.Parent;
 			}
 			Messages.PitRoot = pitRoot;
 			#endregion
@@ -301,7 +300,8 @@ internal static class Program
 				if (!string.IsNullOrWhiteSpace(exportParam))
 					return ExportPitToFile(pitFile, new RaiPath(exportParam));
 			}
-			// Single seed: -s source.json5 -r pitroot
+			// Single seed: -s source.json5 [PitName] -r pitroot
+			// Target pit name is the trailing positional arg if provided, else the source file name.
 			if (!string.IsNullOrWhiteSpace(sourceParam) && pitRoot != null)
 			{
 				var sourceFile = new TextFile(sourceParam);
@@ -310,7 +310,7 @@ internal static class Program
 					Messages.WriteError($"Source file '{sourceFile.FullName}' does not exist.");
 					return 1;
 				}
-				var name = sourceFile.Name;
+				var name = !string.IsNullOrWhiteSpace(pitName) ? pitName : sourceFile.Name;
 				var pitFile = new PitFile(pitRoot / name, name);
 				SeedPit(sourceFile, pitFile);
 				return 0;
@@ -373,7 +373,17 @@ internal static class Program
 		Messages.WriteInfo($"Seeding pit from source file: {source.FullName} \n\tto destination: {pitFile.FullName}");
 		var pit = new Pit(pitFile, readOnly: false);
 		Messages.WriteDebug($"{Icons.Info} Processing {pit.JsonFile.Name} Pit...");
-		pit.AddItems(source.ReadAllText());
+		var payload = source.ReadAllText();
+		var root = JToken.Parse(payload);
+		JArray itemsArray = root switch
+		{
+			JArray arr => arr,
+			// Keyed object map: { "Id1": { ... }, "Id2": { ... } } → take the values
+			JObject obj => new JArray(obj.Properties().Select(p => p.Value)),
+			_ => throw new ArgumentException(
+				$"Source '{source.FullName}' must be a JSON array or keyed object map; got {root.Type}.")
+		};
+		pit.AddItems(itemsArray.ToString());
 		pit.Save();
 		Messages.WriteSuccess($"{Icons.Success} Initialized and saved {pit.JsonFile.Name} to {pit.JsonFile.FullName}");
 	}
