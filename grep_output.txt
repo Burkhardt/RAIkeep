@@ -1,0 +1,367 @@
+[xUnit.net 00:00:01.18]     JsonPit.Tests.JsonPitPersistenceTests.StoreAndLoad_P
+reservesRawHistoryFragments_DoesNotFlatten [FAIL]
+[xUnit.net 00:00:01.18]       Assert.Equal() Failure: Values differ
+[xUnit.net 00:00:01.18]       Expected: 2026-05-15T19:34:35.6803630+00:00
+[xUnit.net 00:00:01.18]       Actual:   2026-05-15T19:44:35.6803870+00:00
+[xUnit.net 00:00:01.18]       Stack Trace:
+[xUnit.net 00:00:01.18]         /Users/RSB/Projects/GitHub/RAIkeep/JsonPit/JsonP
+it.Tests/JsonPitPersistenceTests.cs(52,0): at JsonPit.Tests.JsonPitPersistenceTe
+sts.StoreAndLoad_PreservesRawHistoryFragments_DoesNotFlatten()
+[xUnit.net 00:00:01.18]            at System.Reflection.MethodBaseInvoker.Interp
+retedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:00:01.18]            at System.Reflection.MethodBaseInvoker.Invoke
+WithNoArgs(Object obj, BindingFlags invokeAttr)
+[JsonPit] WARNING: MachineName 'DESKTOP-A1B2C3D' looks auto-generated. Consider 
+setting a memorable hostname. See CONFIGURE_SERVER.md.
+[JsonPit] WARNING: MachineName 'ip-172-31-42-17' looks auto-generated. Consider 
+setting a memorable hostname. See CONFIGURE_SERVER.md.
+[JsonPit] WARNING: MachineName 'WIN-ABCDEF12345' looks auto-generated. Consider 
+setting a memorable hostname. See CONFIGURE_SERVER.md.
+[JsonPit] WARNING: MachineName 'vm-0a1b2c3d4e5f' looks auto-generated. Consider 
+setting a memorable hostname. See CONFIGURE_SERVER.md.
+[JsonPit] WARNING: MachineName '' is too short to be unique. Flag file collision
+s will occur. See CONFIGURE_SERVER.md.
+[JsonPit] WARNING: MachineName '  ' is too short to be unique. Flag file collisi
+ons will occur. See CONFIGURE_SERVER.md.
+[JsonPit] WARNING: MachineName 'ab' is too short to be unique. Flag file collisi
+ons will occur. See CONFIGURE_SERVER.md.
+[JsonPit] WARNING: MachineName '' is too short to be unique. Flag file collision
+s will occur. See CONFIGURE_SERVER.md.
+[JsonPit] WARNING: MachineName 'localhost' is a generic default. Flag file colli
+sions will occur. See CONFIGURE_SERVER.md.
+[JsonPit] WARNING: MachineName 'raspberrypi' is a generic default. Flag file col
+lisions will occur. See CONFIGURE_SERVER.md.
+[JsonPit] WARNING: MachineName 'debian' is a generic default. Flag file collisio
+ns will occur. See CONFIGURE_SERVER.md.
+[JsonPit] WARNING: MachineName 'runner' is a generic default. Flag file collisio
+ns will occur. See CONFIGURE_SERVER.md.
+[JsonPit] WARNING: MachineName 'docker' is a generic default. Flag file collisio
+ns will occur. See CONFIGURE_SERVER.md.
+[JsonPit] WARNING: MachineName 'default' is a generic default. Flag file collisi
+ons will occur. See CONFIGURE_SERVER.md.
+[JsonPit] WARNING: MachineName 'buildkitsandbox' is a generic default. Flag file
+ collisions will occur. See CONFIGURE_SERVER.md.
+[JsonPit] WARNING: MachineName 'ubuntu' is a generic default. Flag file collisio
+ns will occur. See CONFIGURE_SERVER.md.
+[xUnit.net 00:01:51.20]     JsonPit.Tests.RemoteSyncTests.RemoteSync_MasterClien
+t_FullScenario [FAIL]
+[xUnit.net 00:01:51.20]       Mzansi must create change files as a client (not o
+verwrite the pit)
+[xUnit.net 00:01:51.20]       Stack Trace:
+[xUnit.net 00:01:51.20]         /Users/RSB/Projects/GitHub/RAIkeep/JsonPit/JsonP
+it.Tests/RemoteSyncTests.cs(124,0): at JsonPit.Tests.RemoteSyncTests.RemoteSync_
+MasterClient_FullScenario()
+[xUnit.net 00:01:51.20]            at System.Reflection.MethodBaseInvoker.Interp
+retedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:01:51.20]            at System.Reflection.MethodBaseInvoker.Invoke
+WithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:01:51.20]       Output:
+[xUnit.net 00:01:51.20]         Test id : sync-20260515194436-37811
+[xUnit.net 00:01:51.20]         Local   : /Users/RSB/Library/CloudStorage/OneDri
+ve/OneDriveData/RAIkeep/jsonpit-remote-sync-tests/sync-20260515194436-37811/
+[xUnit.net 00:01:51.20]         Mzansi  : /srv/ServerData/OneDriveData/RAIkeep/j
+sonpit-remote-sync-tests/sync-20260515194436-37811
+[xUnit.net 00:01:51.20]         PitFile : /Users/RSB/Library/CloudStorage/OneDri
+ve/OneDriveData/RAIkeep/jsonpit-remote-sync-tests/sync-20260515194436-37811/Sync
+Test/SyncTest.pit
+[xUnit.net 00:01:51.20]         Phase 1  PASS — pit created, Nkosikazi is master
+[xUnit.net 00:01:51.20]         Waiting for pit file to sync to Mzansi ...
+[xUnit.net 00:01:51.20]           synced in 37.8 s
+[xUnit.net 00:01:51.20]         Waiting for Master.flag to sync to Mzansi ...
+[xUnit.net 00:01:51.20]           synced in 0.9 s
+[xUnit.net 00:01:51.20]         pits on Mzansi:
+[xUnit.net 00:01:51.20]         Seeding pit from source file: /tmp/SyncTest.json
+5 
+[xUnit.net 00:01:51.20]                 to destination: /srv/ServerData/OneDrive
+Data/RAIkeep/jsonpit-remote-sync-tests/sync-20260515194436-37811/SyncTest/SyncTe
+st.pit
+[xUnit.net 00:01:51.20]          Initialized and saved SyncTest to /srv/ServerD
+ata/OneDriveData/RAIkeep/jsonpit-remote-sync-tests/sync-20260515194436-37811/Syn
+cTest/SyncTest.pit
+[xUnit.net 00:01:51.20]         
+[xUnit.net 00:01:51.21]     JsonPit.Tests.Pit_GetAt_Tests.GetAt_ProjectsState_By
+ReverseShadowing [FAIL]
+[xUnit.net 00:01:51.21]       Assert.Equal() Failure: Values differ
+[xUnit.net 00:01:51.21]       Expected: 2026-05-15T19:45:25.7140270+00:00
+[xUnit.net 00:01:51.21]       Actual:   2026-05-15T19:46:25.7196720+00:00
+[xUnit.net 00:01:51.21]       Stack Trace:
+[xUnit.net 00:01:51.21]         /Users/RSB/Projects/GitHub/RAIkeep/JsonPit/JsonP
+it.Tests/UnitTests.cs(317,0): at JsonPit.Tests.Pit_GetAt_Tests.GetAt_ProjectsSta
+te_ByReverseShadowing()
+[xUnit.net 00:01:51.21]            at System.Reflection.MethodBaseInvoker.Interp
+retedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:01:51.21]            at System.Reflection.MethodBaseInvoker.Invoke
+WithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:01:51.27]   Finished:    JsonPit.Tests (ID = 'bf1ed7243c510b259f5a
+06147c0b53bbc4d555fe7a21c6f0ec39fab70ffbe542')
+  JsonPit.Tests test net10.0 failed with 3 error(s) (111.8s)
+    /Users/RSB/Projects/GitHub/RAIkeep/JsonPit/JsonPit.Tests/JsonPitPersistenceT
+ests.cs(52): error TESTERROR: 
+      JsonPit.Tests.JsonPitPersistenceTests.StoreAndLoad_PreservesRawHistoryFrag
+      ments_DoesNotFlatten (3ms): Error Message: Assert.Equal() Failure: Values 
+      differ
+      Expected: 2026-05-15T19:34:35.6803630+00:00
+      Actual:   2026-05-15T19:44:35.6803870+00:00
+      Stack Trace:
+         at JsonPit.Tests.JsonPitPersistenceTests.StoreAndLoad_PreservesRawHisto
+      ryFragments_DoesNotFlatten() in /Users/RSB/Projects/GitHub/RAIkeep/JsonPit
+      /JsonPit.Tests/JsonPitPersistenceTests.cs:line 52
+         at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object 
+      obj, IntPtr* args)
+         at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, Bin
+      dingFlags invokeAttr)
+    /Users/RSB/Projects/GitHub/RAIkeep/JsonPit/JsonPit.Tests/RemoteSyncTests.cs(
+124): error TESTERROR: 
+      JsonPit.Tests.RemoteSyncTests.RemoteSync_MasterClient_FullScenario (1m 49s
+      ): Error Message: Mzansi must create change files as a client (not overwri
+      te the pit)
+      Stack Trace:
+         at JsonPit.Tests.RemoteSyncTests.RemoteSync_MasterClient_FullScenario()
+       in /Users/RSB/Projects/GitHub/RAIkeep/JsonPit/JsonPit.Tests/RemoteSyncTes
+      ts.cs:line 124
+         at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object 
+      obj, IntPtr* args)
+         at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, Bin
+      dingFlags invokeAttr)
+        Standard Output Messages:
+       Test id : sync-20260515194436-37811
+       Local   : /Users/RSB/Library/CloudStorage/OneDrive/OneDriveData/RAIkeep/j
+      sonpit-remote-sync-tests/sync-20260515194436-37811/
+       Mzansi  : /srv/ServerData/OneDriveData/RAIkeep/jsonpit-remote-sync-tests/
+      sync-20260515194436-37811
+       PitFile : /Users/RSB/Library/CloudStorage/OneDrive/OneDriveData/RAIkeep/j
+      sonpit-remote-sync-tests/sync-20260515194436-37811/SyncTest/SyncTest.pit
+       Phase 1  PASS — pit created, Nkosikazi is master
+       Waiting for pit file to sync to Mzansi ...
+         synced in 37.8 s
+       Waiting for Master.flag to sync to Mzansi ...
+         synced in 0.9 s
+--
+      JsonPit.Tests.Pit_GetAt_Tests.GetAt_ProjectsState_ByReverseShadowing (6ms)
+      : Error Message: Assert.Equal() Failure: Values differ
+      Expected: 2026-05-15T19:45:25.7140270+00:00
+      Actual:   2026-05-15T19:46:25.7196720+00:00
+      Stack Trace:
+         at JsonPit.Tests.Pit_GetAt_Tests.GetAt_ProjectsState_ByReverseShadowing
+      () in /Users/RSB/Projects/GitHub/RAIkeep/JsonPit/JsonPit.Tests/UnitTests.c
+      s:line 317
+         at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object 
+      obj, IntPtr* args)
+         at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, Bin
+      dingFlags invokeAttr)
+
+Test summary: total: 89, failed: 3, succeeded: 86, skipped: 0, duration: 111.8s
+Build failed with 3 error(s) in 115.3s
+
+RAIkeep on 🌴 main [🔨 4 🔇 1 ] via 🕸 v10.0.102 
+>  cat "/Users/RSB/Library/Application Support/Code/User/workspaceStorage/d085d5
+4d7209ec799c9fda97a06dff12/GitHub.copilot-chat/chat-session-resources/6ec06fe1-7
+bf4-43b7-86d0-7acde982bfbc/call_MHxhVFVLTlBkUDZQTmt3ZEN4Ylo__vscode-177886215730
+2/content.txt"
+Note: The tool simplified the command to ` dotnet test JsonPit/JsonPit.Tests/Jso
+nPit.Tests.csproj --nologo -v minimal` (terminal ID=ae2a8164-0070-48dc-a15c-5b12
+d2cec6cb). This is the output of running that command instead:
+Restore complete (0.7s)
+  OsLib net10.0 succeeded (0.2s) → OsLib/bin/Debug/net10.0/OsLib.dll
+  RaiUtils net10.0 succeeded (0.2s) → RaiUtils/bin/Debug/net10.0/RaiUtils.dll
+  JsonPit net10.0 succeeded (0.2s) → JsonPit/bin/Debug/net10.0/JsonPit.dll
+  JsonPit.Tests net10.0 succeeded (2.1s) → JsonPit/JsonPit.Tests/bin/Debug/net10
+.0/JsonPit.Tests.dll
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 
+10.0.2)
+[xUnit.net 00:00:00.48]   Discovering: JsonPit.Tests
+[xUnit.net 00:00:00.66]   Discovered:  JsonPit.Tests
+[xUnit.net 00:00:00.83]   Starting:    JsonPit.Tests
+[xUnit.net 00:00:01.18]     JsonPit.Tests.JsonPitPersistenceTests.StoreAndLoad_P
+reservesRawHistoryFragments_DoesNotFlatten [FAIL]
+[xUnit.net 00:00:01.18]       Assert.Equal() Failure: Values differ
+[xUnit.net 00:00:01.18]       Expected: 2026-05-15T19:34:35.6803630+00:00
+[xUnit.net 00:00:01.18]       Actual:   2026-05-15T19:44:35.6803870+00:00
+[xUnit.net 00:00:01.18]       Stack Trace:
+[xUnit.net 00:00:01.18]         /Users/RSB/Projects/GitHub/RAIkeep/JsonPit/JsonP
+it.Tests/JsonPitPersistenceTests.cs(52,0): at JsonPit.Tests.JsonPitPersistenceTe
+sts.StoreAndLoad_PreservesRawHistoryFragments_DoesNotFlatten()
+[xUnit.net 00:00:01.18]            at System.Reflection.MethodBaseInvoker.Interp
+retedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:00:01.18]            at System.Reflection.MethodBaseInvoker.Invoke
+WithNoArgs(Object obj, BindingFlags invokeAttr)
+[JsonPit] WARNING: MachineName 'DESKTOP-A1B2C3D' looks auto-generated. Consider 
+setting a memorable hostname. See CONFIGURE_SERVER.md.
+[JsonPit] WARNING: MachineName 'ip-172-31-42-17' looks auto-generated. Consider 
+setting a memorable hostname. See CONFIGURE_SERVER.md.
+[JsonPit] WARNING: MachineName 'WIN-ABCDEF12345' looks auto-generated. Consider 
+setting a memorable hostname. See CONFIGURE_SERVER.md.
+[JsonPit] WARNING: MachineName 'vm-0a1b2c3d4e5f' looks auto-generated. Consider 
+setting a memorable hostname. See CONFIGURE_SERVER.md.
+[JsonPit] WARNING: MachineName '' is too short to be unique. Flag file collision
+s will occur. See CONFIGURE_SERVER.md.
+[JsonPit] WARNING: MachineName '  ' is too short to be unique. Flag file collisi
+ons will occur. See CONFIGURE_SERVER.md.
+[JsonPit] WARNING: MachineName 'ab' is too short to be unique. Flag file collisi
+--
+[xUnit.net 00:01:51.20]       Mzansi must create change files as a client (not o
+verwrite the pit)
+[xUnit.net 00:01:51.20]       Stack Trace:
+[xUnit.net 00:01:51.20]         /Users/RSB/Projects/GitHub/RAIkeep/JsonPit/JsonP
+it.Tests/RemoteSyncTests.cs(124,0): at JsonPit.Tests.RemoteSyncTests.RemoteSync_
+MasterClient_FullScenario()
+[xUnit.net 00:01:51.20]            at System.Reflection.MethodBaseInvoker.Interp
+retedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:01:51.20]            at System.Reflection.MethodBaseInvoker.Invoke
+WithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:01:51.20]       Output:
+[xUnit.net 00:01:51.20]         Test id : sync-20260515194436-37811
+[xUnit.net 00:01:51.20]         Local   : /Users/RSB/Library/CloudStorage/OneDri
+ve/OneDriveData/RAIkeep/jsonpit-remote-sync-tests/sync-20260515194436-37811/
+[xUnit.net 00:01:51.20]         Mzansi  : /srv/ServerData/OneDriveData/RAIkeep/j
+sonpit-remote-sync-tests/sync-20260515194436-37811
+[xUnit.net 00:01:51.20]         PitFile : /Users/RSB/Library/CloudStorage/OneDri
+ve/OneDriveData/RAIkeep/jsonpit-remote-sync-tests/sync-20260515194436-37811/Sync
+Test/SyncTest.pit
+[xUnit.net 00:01:51.20]         Phase 1  PASS — pit created, Nkosikazi is master
+[xUnit.net 00:01:51.20]         Waiting for pit file to sync to Mzansi ...
+[xUnit.net 00:01:51.20]           synced in 37.8 s
+[xUnit.net 00:01:51.20]         Waiting for Master.flag to sync to Mzansi ...
+--
+ReverseShadowing [FAIL]
+[xUnit.net 00:01:51.21]       Assert.Equal() Failure: Values differ
+[xUnit.net 00:01:51.21]       Expected: 2026-05-15T19:45:25.7140270+00:00
+[xUnit.net 00:01:51.21]       Actual:   2026-05-15T19:46:25.7196720+00:00
+[xUnit.net 00:01:51.21]       Stack Trace:
+[xUnit.net 00:01:51.21]         /Users/RSB/Projects/GitHub/RAIkeep/JsonPit/JsonP
+it.Tests/UnitTests.cs(317,0): at JsonPit.Tests.Pit_GetAt_Tests.GetAt_ProjectsSta
+te_ByReverseShadowing()
+[xUnit.net 00:01:51.21]            at System.Reflection.MethodBaseInvoker.Interp
+retedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:01:51.21]            at System.Reflection.MethodBaseInvoker.Invoke
+WithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:01:51.27]   Finished:    JsonPit.Tests (ID = 'bf1ed7243c510b259f5a
+06147c0b53bbc4d555fe7a21c6f0ec39fab70ffbe542')
+  JsonPit.Tests test net10.0 failed with 3 error(s) (111.8s)
+    /Users/RSB/Projects/GitHub/RAIkeep/JsonPit/JsonPit.Tests/JsonPitPersistenceT
+ests.cs(52): error TESTERROR: 
+      JsonPit.Tests.JsonPitPersistenceTests.StoreAndLoad_PreservesRawHistoryFrag
+      ments_DoesNotFlatten (3ms): Error Message: Assert.Equal() Failure: Values 
+      differ
+      Expected: 2026-05-15T19:34:35.6803630+00:00
+      Actual:   2026-05-15T19:44:35.6803870+00:00
+      Stack Trace:
+         at JsonPit.Tests.JsonPitPersistenceTests.StoreAndLoad_PreservesRawHisto
+      ryFragments_DoesNotFlatten() in /Users/RSB/Projects/GitHub/RAIkeep/JsonPit
+      /JsonPit.Tests/JsonPitPersistenceTests.cs:line 52
+         at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object 
+      obj, IntPtr* args)
+         at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, Bin
+      dingFlags invokeAttr)
+    /Users/RSB/Projects/GitHub/RAIkeep/JsonPit/JsonPit.Tests/RemoteSyncTests.cs(
+124): error TESTERROR: 
+      JsonPit.Tests.RemoteSyncTests.RemoteSync_MasterClient_FullScenario (1m 49s
+      ): Error Message: Mzansi must create change files as a client (not overwri
+      te the pit)
+      Stack Trace:
+         at JsonPit.Tests.RemoteSyncTests.RemoteSync_MasterClient_FullScenario()
+       in /Users/RSB/Projects/GitHub/RAIkeep/JsonPit/JsonPit.Tests/RemoteSyncTes
+      ts.cs:line 124
+         at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object 
+      obj, IntPtr* args)
+         at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, Bin
+      dingFlags invokeAttr)
+        Standard Output Messages:
+       Test id : sync-20260515194436-37811
+       Local   : /Users/RSB/Library/CloudStorage/OneDrive/OneDriveData/RAIkeep/j
+      sonpit-remote-sync-tests/sync-20260515194436-37811/
+       Mzansi  : /srv/ServerData/OneDriveData/RAIkeep/jsonpit-remote-sync-tests/
+      sync-20260515194436-37811
+       PitFile : /Users/RSB/Library/CloudStorage/OneDrive/OneDriveData/RAIkeep/j
+      sonpit-remote-sync-tests/sync-20260515194436-37811/SyncTest/SyncTest.pit
+       Phase 1  PASS — pit created, Nkosikazi is master
+       Waiting for pit file to sync to Mzansi ...
+         synced in 37.8 s
+       Waiting for Master.flag to sync to Mzansi ...
+         synced in 0.9 s
+--
+      JsonPit.Tests.Pit_GetAt_Tests.GetAt_ProjectsState_ByReverseShadowing (6ms)
+      : Error Message: Assert.Equal() Failure: Values differ
+      Expected: 2026-05-15T19:45:25.7140270+00:00
+      Actual:   2026-05-15T19:46:25.7196720+00:00
+      Stack Trace:
+         at JsonPit.Tests.Pit_GetAt_Tests.GetAt_ProjectsState_ByReverseShadowing
+      () in /Users/RSB/Projects/GitHub/RAIkeep/JsonPit/JsonPit.Tests/UnitTests.c
+      s:line 317
+         at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object 
+      obj, IntPtr* args)
+         at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, Bin
+      dingFlags invokeAttr)
+
+Test summary: total: 89, failed: 3, succeeded: 86, skipped: 0, duration: 111.8s
+Build failed with 3 error(s) in 115.3s
+
+RAIkeep on 🌴 main [🔨 4 🔇 1 ] via 🕸 v10.0.102 
+> %                                                                             
+
+RAIkeep on 🌴 main [🔨 4 🔇 1 ] via 🕸 v10.0.102 
+>  grep -E "Failed:|Passed:|Skipped:|Total:|Failed " "/Users/RSB/Library/Applica
+tion Support/Code/User/workspaceStorage/d085d54d7209ec799c9fda97a06dff12/GitHub.
+copilot-chat/chat-session-resources/6ec06fe1-7bf4-43b7-86d0-7acde982bfbc/call_MH
+xhVFVLTlBkUDZQTmt3ZEN4Ylo__vscode-1778862157302/content.txt"
+
+RAIkeep on 🌴 main [🔨 4 🔇 1 ] via 🕸 v10.0.102 
+>  cat "/Users/RSB/Library/Application Support/Code/User/workspaceStorage/d085d5
+4d7209ec799c9fda97a06dff12/GitHub.copilot-chat/chat-session-resources/6ec06fe1-7
+bf4-43b7-86d0-7acde982bfbc/call_MHxhVFVLTlBkUDZQTmt3ZEN4Ylo__vscode-177886215730
+2/content.txt" | tail -n 20
+    /Users/RSB/Projects/GitHub/RAIkeep/JsonPit/JsonPit.Tests/UnitTests.cs(317): 
+error TESTERROR: 
+      JsonPit.Tests.Pit_GetAt_Tests.GetAt_ProjectsState_ByReverseShadowing (6ms)
+      : Error Message: Assert.Equal() Failure: Values differ
+      Expected: 2026-05-15T19:45:25.7140270+00:00
+      Actual:   2026-05-15T19:46:25.7196720+00:00
+      Stack Trace:
+         at JsonPit.Tests.Pit_GetAt_Tests.GetAt_ProjectsState_ByReverseShadowing
+      () in /Users/RSB/Projects/GitHub/RAIkeep/JsonPit/JsonPit.Tests/UnitTests.c
+      s:line 317
+         at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object 
+      obj, IntPtr* args)
+         at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, Bin
+      dingFlags invokeAttr)
+
+Test summary: total: 89, failed: 3, succeeded: 86, skipped: 0, duration: 111.8s
+Build failed with 3 error(s) in 115.3s
+
+RAIkeep on 🌴 main [🔨 4 🔇 1 ] via 🕸 v10.0.102 
+> %                                                                             
+
+RAIkeep on 🌴 main [🔨 4 🔇 1 ] via 🕸 v10.0.102 
+>  cat "/Users/RSB/Library/Application Support/Code/User/workspaceStorage/d085d5
+4d7209ec799c9fda97a06dff12/GitHub.copilot-chat/chat-session-resources/6ec06fe1-7
+bf4-43b7-86d0-7acde982bfbc/call_MHxhVFVLTlBkUDZQTmt3ZEN4Ylo__vscode-177886215730
+2/content.txt" | grep "Failed " -A 10
+
+RAIkeep on 🌴 main [🔨 4 🔇 1 ] via 🕸 v10.0.102 
+>  grep -B 3 -A 20 "Error Message:" "/Users/RSB/Library/Application Support/Code
+/User/workspaceStorage/d085d54d7209ec799c9fda97a06dff12/GitHub.copilot-chat/chat
+-session-resources/6ec06fe1-7bf4-43b7-86d0-7acde982bfbc/call_MHxhVFVLTlBkUDZQTmt
+3ZEN4Ylo__vscode-1778862157302/content.txt"
+    /Users/RSB/Projects/GitHub/RAIkeep/JsonPit/JsonPit.Tests/JsonPitPersistenceT
+ests.cs(52): error TESTERROR: 
+      JsonPit.Tests.JsonPitPersistenceTests.StoreAndLoad_PreservesRawHistoryFrag
+      ments_DoesNotFlatten (3ms): Error Message: Assert.Equal() Failure: Values 
+      differ
+      Expected: 2026-05-15T19:34:35.6803630+00:00
+      Actual:   2026-05-15T19:44:35.6803870+00:00
+      Stack Trace:
+         at JsonPit.Tests.JsonPitPersistenceTests.StoreAndLoad_PreservesRawHisto
+      ryFragments_DoesNotFlatten() in /Users/RSB/Projects/GitHub/RAIkeep/JsonPit
+      /JsonPit.Tests/JsonPitPersistenceTests.cs:line 52
+         at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object 
+      obj, IntPtr* args)
+         at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, Bin
+      dingFlags invokeAttr)
+    /Users/RSB/Projects/GitHub/RAIkeep/JsonPit/JsonPit.Tests/RemoteSyncTests.cs(
+124): error TESTERROR: 
+
+RAIkeep on 🌴 main [🔨 4 🔇 1 ] via 🕸 v10.0.102 
+> %                                                                             
+
+RAIkeep on 🌴 main [🔨 4 🔇 1 ] via 🕸 v10.0.102 
+> 
