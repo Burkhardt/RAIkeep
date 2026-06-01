@@ -36,7 +36,7 @@ pits [options] [<pit name>]
 | `-v`, `--version` | Print version info |
 | `-n`, `--nologo` | Suppress the banner |
 | `-b`, `--debug` | Enable debug output |
-| `-r`, `--pitroot` | Root directory containing pits |
+| `-r`, `--pitroot` | Root directory containing pits; when used with `-c`, this is relative to the configured cloud root |
 | `-c`, `--cloud` | Cloud provider name (looks up root in `~/.config/RAIkeep.json5`) |
 | `-s`, `--source` | Source file for import (JSON or JSON5) |
 | `-e`, `--export` | Export directory for JSON output |
@@ -153,10 +153,28 @@ pits -n -r /path/to/pitroot/ --wwwa --json | jq '.Place[] | select((.Id | starts
 Use `-c` to look up a cloud storage root from `~/.config/RAIkeep.json5`:
 
 ```bash
-pits -c OneDrive -r RAIkeep/WwwaTests/ Person --json
+pits -c OneDrive -r LiveAfricaStage Person --json
 ```
 
-This resolves the cloud root from the config and prepends it to the pit root.
+This resolves the cloud root from the config and appends the `-r` value as a provider-relative path. If `OneDrive` is configured as:
+
+```text
+/Users/RSB/Library/CloudStorage/OneDrive/OneDriveData/
+```
+
+then these forms all resolve to the same pit root:
+
+```bash
+pits -c OneDrive -r LiveAfricaStage
+pits -c OneDrive -r LiveAfricaStage/
+pits -c OneDrive -r /LiveAfricaStage
+```
+
+Resolved pit root:
+
+```text
+/Users/RSB/Library/CloudStorage/OneDrive/OneDriveData/LiveAfricaStage/
+```
 
 ### PitRoot inference
 
@@ -193,7 +211,7 @@ Items in any pit can reference items in other pits using these section keywords.
 
 ## Build and Publish
 
-- Current release notes: [RELEASE_NOTES_3.8.6.md](RELEASE_NOTES_3.8.6.md)
+- Current release notes: [RELEASE_NOTES_3.8.10.md](RELEASE_NOTES_3.8.10.md)
 
 When a matching tag is pushed from the `RAIkeep` repository, the GitHub Actions workflow at `.github/workflows/publish-pitseeder-nuget.yml` now:
 

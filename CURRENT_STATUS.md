@@ -6,6 +6,8 @@ This file records the current RAIkeep workspace state after the PitSeeder cloud-
 
 PitSeeder now resolves `-c <provider> -r <pitroot>` by treating the `-r` value as a provider-relative `RaiRelPath`.
 
+PitSeeder release `3.8.10` is prepared as a PitSeeder-only NuGet release. The other NuGet packages are intentionally unchanged.
+
 For example, on this machine:
 
 ```text
@@ -52,11 +54,26 @@ dotnet test PitSeeder/PitSeeder.slnx --nologo -v minimal
 Passed: 3, Failed: 0, Skipped: 0
 ```
 
+PitSeeder package validation:
+
+```text
+dotnet pack PitSeeder/pits/pits.csproj --configuration Release --nologo -v minimal
+Created: PitSeeder/artifacts/nuget/PitSeeder.3.8.10.nupkg
+Verified package contents include README.md
+```
+
 Umbrella validation was run with filesystem access outside the workspace, because the existing suite writes to configured temp and cloud roots:
 
 ```text
 dotnet test RAIkeep.slnx --nologo -v minimal
 Passed: 238, Failed: 0, Skipped: 0
+```
+
+Latest attempted umbrella validation during the `3.8.10` release prep reached the PitSeeder, RaiUtils, OsLib, and RaiImage assemblies successfully, then failed in the unrelated JsonPit remote-sync scenario:
+
+```text
+JsonPit.Tests.RemoteSyncTests.RemoteSync_MasterClient_FullScenario
+Mzansi must create change files as a client (not overwrite the pit)
 ```
 
 Project-level counts from the successful umbrella run:
