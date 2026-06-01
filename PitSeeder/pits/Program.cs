@@ -164,11 +164,7 @@ internal static class Program
 			var pitName = Messages.PitName = PositionalArg(args);
 			#endregion
 			#region RESOLVE PITROOT
-			// 1. Start with explicit -r value
 			RaiPath? pitRoot = null;
-			if (!string.IsNullOrWhiteSpace(pitRootParam))
-				pitRoot = new RaiPath(pitRootParam);
-			// 2. Apply cloud provider prefix if given
 			if (!string.IsNullOrWhiteSpace(cloudProvider))
 			{
 				string? cloudDir = Os.Config?.Cloud?[cloudProvider];
@@ -178,9 +174,15 @@ internal static class Program
 					return 1;
 				}
 				var cloudRoot = new RaiPath(cloudDir);
-				pitRoot = pitRoot != null ? cloudRoot / pitRoot.FullPath.TrimStart('/') : cloudRoot;
+				pitRoot = !string.IsNullOrWhiteSpace(pitRootParam)
+					? cloudRoot / new RaiRelPath(pitRootParam.TrimStart('/', '\\'))
+					: cloudRoot;
 			}
-			// 3. Infer pitroot from -s if it points to a .pit file and no -r was given
+			else if (!string.IsNullOrWhiteSpace(pitRootParam))
+			{
+				pitRoot = new RaiPath(pitRootParam);
+			}
+			// Infer pitroot from -s if it points to a .pit file and no -r was given.
 			if (pitRoot == null && !string.IsNullOrWhiteSpace(sourceParam) && sourceParam.EndsWith(".pit", StringComparison.OrdinalIgnoreCase))
 			{
 				var sourcePitFile = new PitFile(sourceParam);

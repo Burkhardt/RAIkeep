@@ -9,6 +9,7 @@
 	<Project Path="OsLib/OsLib.csproj" />
 	<Folder Name="/PitSeeder/">
 		<Project Path="PitSeeder/pits/pits.csproj" />
+		<Project Path="PitSeeder/pits.Tests/pits.Tests.csproj" />
 	</Folder>
 	<Folder Name="/RaiImage/">
 		<Project Path="RaiImage/RaiImage.Tests/RaiImage.Tests.csproj" />
