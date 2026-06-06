@@ -6,7 +6,7 @@ It keeps the child repositories available together for local integration work wh
 
 ## Current Aligned Version
 
-The current aligned workspace release line is `3.8.11` for:
+The current aligned workspace release line is `3.8.12` for:
 
 - `JsonPit`
 - `OsLib`
@@ -14,10 +14,11 @@ The current aligned workspace release line is `3.8.11` for:
 - `RaiImage`
 - `PitSeeder`
 
-## 3.8.11 Decisions
+## 3.8.12 Decisions
 
-- Release line update: aligns the package line on `3.8.11` across the four NuGet-published libraries in the workspace and the `PitSeeder` CLI.
+- Release line update: aligns the package line on `3.8.12` across the four NuGet-published libraries in the workspace and the `PitSeeder` CLI.
 - Current markdown and PlantUML surfaces were refreshed so the live release docs match the current codebase state.
+- NuGet publishing and the sequential release chain remain tag/workflow-gated and are not part of this local release-prep pass.
 
 ## Included repositories
 

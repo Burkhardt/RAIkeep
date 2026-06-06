@@ -4,9 +4,9 @@ This file captures the current release-ready status of the RAIkeep workspace so 
 
 ## Current focus
 
-The current release-and-docs alignment pass is `3.8.11`.
+The current release-and-docs alignment pass is `3.8.12`.
 
-## 3.8.11 release decisions
+## 3.8.12 release decisions
 
 - The active OsLib config contract is `RAIkeep.json5` with PascalCase property names and lazy `dynamic` access through `Os.Config`.
 - `UserHomeDir` and `AppRootDir` are intrinsic runtime values.
@@ -70,13 +70,15 @@ The real cloud tests currently using that flow are:
 The most recent verified command in this session is the umbrella solution test:
 
 - `dotnet test RAIkeep.slnx --nologo -v minimal`
-- result: 223 passed, 0 failed, 0 skipped
+- result: 243 passed, 0 failed, 1 skipped
 
 ## Latest validation result
 
 Latest directly verified result in this workspace state:
 
 - umbrella solution build and test pass succeeded
+- PlantUML SVG regeneration completed with the local `plantuml` binary
+- package pack validation is partial: `OsLibCore.3.8.12.nupkg` and `RaiUtils.3.8.12.nupkg` were created locally, while solution-level and remaining package pack attempts exited without useful diagnostics before creating packages
 - the older umbrella and remote-observer notes below this point should be treated as historical context unless revalidated
 
 ## Design insight from the latest discussion
@@ -98,7 +100,7 @@ That fallback has already been removed from the mandatory helper path.
 
 ## Release alignment
 
-The workspace is aligned to version `3.8.11` across:
+The workspace is aligned to version `3.8.12` across:
 
 - `JsonPit`
 - `OsLib`
@@ -109,13 +111,14 @@ The workspace is aligned to version `3.8.11` across:
 
 ## Current operational note
 
-- The staged package publishing sequence for `OsLibCore`, `RaiUtils`, `RaiImage`, `JsonPit`, and `PitSeeder` is complete for `3.8.11`.
-- The umbrella repo should now track the corresponding child-repo SHAs and current root release markers.
+- The local `3.8.12` release-prep pass updates package metadata, dependency fallbacks, live release docs, and PlantUML markers.
+- NuGet publishing and the GitHub Sequential NuGet Release Chain were intentionally not triggered.
+- The umbrella repo should track the corresponding child-repo SHAs and current root release markers after child commits are pushed.
 
 ## Suggested resume prompt
 
 ```text
-Please read CURRENT-STATUS.md first, then continue from the release-ready `3.8.11` umbrella baseline. The package releases are published; the main follow-up work is normal integration and maintenance from that state.
+Please read CURRENT-STATUS.md first, then continue from the locally prepared `3.8.12` umbrella baseline. The package releases are not published by this prep pass; trigger tag/workflow publishing only when intentionally releasing to NuGet.
 ```
 
 ## Related files
