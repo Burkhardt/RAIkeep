@@ -37,13 +37,13 @@ jobs:
           fi
 
       - name: Restore
-        run: dotnet restore PitSeeder/PitSeeder.slnx
+        run: dotnet restore PitSeeder/PitSeeder.slnx /p:UseLocalRAIkeepSources=false
 
       - name: Build
-        run: dotnet build PitSeeder/PitSeeder.slnx --configuration Release --no-restore
+        run: dotnet build PitSeeder/PitSeeder.slnx --configuration Release --no-restore /p:UseLocalRAIkeepSources=false
 
       - name: Pack
-        run: dotnet pack PitSeeder/pits/pits.csproj --configuration Release --no-build
+        run: dotnet pack PitSeeder/pits/pits.csproj --configuration Release --no-build /p:UseLocalRAIkeepSources=false
 
       - name: Publish to NuGet
         run: |
@@ -97,6 +97,7 @@ jobs:
             --runtime "${{ matrix.rid }}" \
             --self-contained true \
             /p:PublishSingleFile=true \
+            /p:UseLocalRAIkeepSources=false \
             --output "PitSeeder/artifacts/publish/${{ matrix.rid }}"
 
       - name: Archive self-contained binary
