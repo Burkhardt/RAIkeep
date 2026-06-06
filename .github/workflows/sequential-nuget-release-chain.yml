@@ -46,6 +46,13 @@ jobs:
             --source "https://api.nuget.org/v3/index.json" \
             --skip-duplicate
 
+      # Keep these waits: NuGet can take several minutes to index a newly pushed
+      # package, and the next package in this chain restores against that version.
+      - name: Wait for OsLibCore NuGet indexing
+        if: inputs.publish_to_nuget
+        shell: bash
+        run: sleep 300
+
       - name: Pack RaiUtils
         shell: bash
         run: |
@@ -61,6 +68,11 @@ jobs:
             --api-key "${{ secrets.NUGET_API_KEY }}" \
             --source "https://api.nuget.org/v3/index.json" \
             --skip-duplicate
+
+      - name: Wait for RaiUtils NuGet indexing
+        if: inputs.publish_to_nuget
+        shell: bash
+        run: sleep 300
 
       - name: Pack RaiImage
         shell: bash
@@ -78,6 +90,11 @@ jobs:
             --source "https://api.nuget.org/v3/index.json" \
             --skip-duplicate
 
+      - name: Wait for RaiImage NuGet indexing
+        if: inputs.publish_to_nuget
+        shell: bash
+        run: sleep 300
+
       - name: Pack JsonPit
         shell: bash
         run: |
@@ -93,6 +110,11 @@ jobs:
             --api-key "${{ secrets.NUGET_API_KEY }}" \
             --source "https://api.nuget.org/v3/index.json" \
             --skip-duplicate
+
+      - name: Wait for JsonPit NuGet indexing
+        if: inputs.publish_to_nuget
+        shell: bash
+        run: sleep 300
 
       - name: Pack PitSeeder tool
         shell: bash
