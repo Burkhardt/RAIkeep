@@ -1,0 +1,117 @@
+name: Sequential NuGet Release Chain
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish_to_nuget:
+        description: "Push packed packages to NuGet"
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  release-chain:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Prepare artifacts
+        shell: bash
+        run: mkdir -p artifacts/nuget
+
+      - name: Pack OsLibCore
+        shell: bash
+        run: |
+          dotnet restore OsLib/OsLib.slnx
+          dotnet build OsLib/OsLib.slnx --configuration Release --no-restore
+          dotnet pack OsLib/OsLib.csproj --configuration Release --no-build --output artifacts/nuget
+
+      - name: Publish OsLibCore
+        if: inputs.publish_to_nuget
+        shell: bash
+        run: |
+          dotnet nuget push "artifacts/nuget/OsLibCore.*.nupkg" \
+            --api-key "${{ secrets.NUGET_API_KEY }}" \
+            --source "https://api.nuget.org/v3/index.json" \
+            --skip-duplicate
+
+      - name: Pack RaiUtils
+        shell: bash
+        run: |
+          dotnet restore RaiUtils/RaiUtils.slnx
+          dotnet build RaiUtils/RaiUtils.slnx --configuration Release --no-restore
+          dotnet pack RaiUtils/RaiUtils.csproj --configuration Release --no-build --output artifacts/nuget
+
+      - name: Publish RaiUtils
+        if: inputs.publish_to_nuget
+        shell: bash
+        run: |
+          dotnet nuget push "artifacts/nuget/RaiUtils.*.nupkg" \
+            --api-key "${{ secrets.NUGET_API_KEY }}" \
+            --source "https://api.nuget.org/v3/index.json" \
+            --skip-duplicate
+
+      - name: Pack RaiImage
+        shell: bash
+        run: |
+          dotnet restore RaiImage/RaiImage.slnx
+          dotnet build RaiImage/RaiImage.slnx --configuration Release --no-restore
+          dotnet pack RaiImage/RaiImage.csproj --configuration Release --no-build --output artifacts/nuget
+
+      - name: Publish RaiImage
+        if: inputs.publish_to_nuget
+        shell: bash
+        run: |
+          dotnet nuget push "artifacts/nuget/RaiImage.*.nupkg" \
+            --api-key "${{ secrets.NUGET_API_KEY }}" \
+            --source "https://api.nuget.org/v3/index.json" \
+            --skip-duplicate
+
+      - name: Pack JsonPit
+        shell: bash
+        run: |
+          dotnet restore JsonPit/JsonPit.slnx
+          dotnet build JsonPit/JsonPit.slnx --configuration Release --no-restore
+          dotnet pack JsonPit/JsonPit.csproj --configuration Release --no-build --output artifacts/nuget
+
+      - name: Publish JsonPit
+        if: inputs.publish_to_nuget
+        shell: bash
+        run: |
+          dotnet nuget push "artifacts/nuget/JsonPit.*.nupkg" \
+            --api-key "${{ secrets.NUGET_API_KEY }}" \
+            --source "https://api.nuget.org/v3/index.json" \
+            --skip-duplicate
+
+      - name: Pack PitSeeder tool
+        shell: bash
+        run: |
+          dotnet restore PitSeeder/PitSeeder.slnx
+          dotnet build PitSeeder/PitSeeder.slnx --configuration Release --no-restore
+          dotnet pack PitSeeder/pits/pits.csproj --configuration Release --no-build --output artifacts/nuget
+
+      - name: Publish PitSeeder tool
+        if: inputs.publish_to_nuget
+        shell: bash
+        run: |
+          dotnet nuget push "artifacts/nuget/PitSeeder.*.nupkg" \
+            --api-key "${{ secrets.NUGET_API_KEY }}" \
+            --source "https://api.nuget.org/v3/index.json" \
+            --skip-duplicate
+
+      - name: Upload NuGet artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sequential-nuget-release-chain
+          path: artifacts/nuget/*.nupkg

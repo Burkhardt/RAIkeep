@@ -10,3 +10,6 @@
 [submodule "RaiImage"]
 	path = RaiImage
 	url = https://github.com/Burkhardt/RaiImage.git
+[submodule "PitSeeder"]
+	path = PitSeeder
+	url = https://github.com/Burkhardt/PitSeeder.git

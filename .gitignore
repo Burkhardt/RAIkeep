@@ -3,6 +3,8 @@
 project.lock.json
 .DS_Store
 *.pyc
+.claude/
+_local_pre_github_backup_*/
 
 # Visual Studio Code
 .vscode
