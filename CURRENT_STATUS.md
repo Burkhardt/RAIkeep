@@ -6,7 +6,7 @@ Current note for `3.8.12`:
 - Package metadata, fallback dependency versions, live release docs, and PlantUML markers are aligned in the active repositories.
 - Umbrella validation passed with 243 tests passed, 0 failed, and 1 skipped.
 - Package pack validation is partial: OsLibCore and RaiUtils packages were created locally, while the remaining pack attempts did not produce packages in this sandboxed run.
-- NuGet publishing and the sequential release chain are intentionally not triggered by this prep pass.
+- The intended publishing path is the GitHub Sequential NuGet Release Chain with `publish_to_nuget=true`, which includes PitSeeder.
 - The older `3.8.10` PitSeeder note below is historical context.
 
 This file records the current RAIkeep workspace state after the PitSeeder cloud-relative pitroot fix.

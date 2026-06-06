@@ -18,7 +18,7 @@ The current aligned workspace release line is `3.8.12` for:
 
 - Release line update: aligns the package line on `3.8.12` across the four NuGet-published libraries in the workspace and the `PitSeeder` CLI.
 - Current markdown and PlantUML surfaces were refreshed so the live release docs match the current codebase state.
-- NuGet publishing and the sequential release chain remain tag/workflow-gated and are not part of this local release-prep pass.
+- Publishing is handled by the GitHub Sequential NuGet Release Chain with `publish_to_nuget=true`, which publishes `OsLibCore`, `RaiUtils`, `RaiImage`, `JsonPit`, and `PitSeeder` in order.
 
 ## Included repositories
 

@@ -111,14 +111,14 @@ The workspace is aligned to version `3.8.12` across:
 
 ## Current operational note
 
-- The local `3.8.12` release-prep pass updates package metadata, dependency fallbacks, live release docs, and PlantUML markers.
-- NuGet publishing and the GitHub Sequential NuGet Release Chain were intentionally not triggered.
-- The umbrella repo should track the corresponding child-repo SHAs and current root release markers after child commits are pushed.
+- The `3.8.12` release-prep pass updates package metadata, dependency fallbacks, live release docs, and PlantUML markers.
+- The intended fire-and-forget publishing path is the GitHub Sequential NuGet Release Chain with `publish_to_nuget=true`.
+- The chain publishes `OsLibCore`, `RaiUtils`, `RaiImage`, `JsonPit`, and `PitSeeder` in dependency order.
 
 ## Suggested resume prompt
 
 ```text
-Please read CURRENT-STATUS.md first, then continue from the locally prepared `3.8.12` umbrella baseline. The package releases are not published by this prep pass; trigger tag/workflow publishing only when intentionally releasing to NuGet.
+Please read CURRENT-STATUS.md first, then continue from the prepared `3.8.12` umbrella baseline. Use the GitHub Sequential NuGet Release Chain with `publish_to_nuget=true` for the fire-and-forget publishing step.
 ```
 
 ## Related files

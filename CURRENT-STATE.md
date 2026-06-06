@@ -186,7 +186,7 @@ Key current facts:
 - the latest umbrella solution validation is green with 243 passed and 1 skipped
 - package pack validation is partial: OsLibCore and RaiUtils packages were created locally, while solution-level and remaining package pack attempts exited without useful diagnostics before creating packages
 
-The local release-prep sequence is complete once the child commits, submodule pointers, rendered diagrams, and root docs are pushed. NuGet publishing and release-chain automation are intentionally left untriggered for this prep pass.
+The fire-and-forget release sequence is complete once the child commits, submodule pointers, rendered diagrams, root docs, and GitHub Sequential NuGet Release Chain dispatch with `publish_to_nuget=true` have completed.
 
 ## PlantUML conventions established in this session
 
