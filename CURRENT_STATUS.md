@@ -1,8 +1,8 @@
 # CURRENT_STATUS
 
-Current note for `3.8.12`:
+Current note for `3.8.15`:
 
-- The workspace is being advanced to the coordinated `3.8.12` patch release line.
+- The workspace is being advanced to the coordinated `3.8.15` patch release line.
 - Package metadata, fallback dependency versions, live release docs, and PlantUML markers are aligned in the active repositories.
 - Umbrella validation passed with 243 tests passed, 0 failed, and 1 skipped.
 - Package pack validation is partial: OsLibCore and RaiUtils packages were created locally, while the remaining pack attempts did not produce packages in this sandboxed run.

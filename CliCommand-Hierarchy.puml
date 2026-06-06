@@ -1,5 +1,5 @@
 @startuml CliCommandHierarchy
-' Release: 3.8.12
+' Release: 3.8.15
 skinparam backgroundColor white
 skinparam shadowing false
 skinparam linetype ortho

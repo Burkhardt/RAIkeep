@@ -43,7 +43,7 @@ confirm() {
 csproj_version() {
   local repo_dir="$1"
   local csproj_rel="$2"
-  grep -oPm1 '(?<=<Version>)[^<]+' "$repo_dir/$csproj_rel"
+  perl -ne 'if (/<Version>([^<]+)<\/Version>/) { print "$1\n"; exit }' "$repo_dir/$csproj_rel"
 }
 
 assert_clean() {

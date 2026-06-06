@@ -4,9 +4,9 @@ This file captures the current release-ready status of the RAIkeep workspace so 
 
 ## Current focus
 
-The current release-and-docs alignment pass is `3.8.12`.
+The current release-and-docs alignment pass is `3.8.15`.
 
-## 3.8.12 release decisions
+## 3.8.15 release decisions
 
 - The active OsLib config contract is `RAIkeep.json5` with PascalCase property names and lazy `dynamic` access through `Os.Config`.
 - `UserHomeDir` and `AppRootDir` are intrinsic runtime values.
@@ -78,7 +78,7 @@ Latest directly verified result in this workspace state:
 
 - umbrella solution build and test pass succeeded
 - PlantUML SVG regeneration completed with the local `plantuml` binary
-- package pack validation is partial: `OsLibCore.3.8.12.nupkg` and `RaiUtils.3.8.12.nupkg` were created locally, while solution-level and remaining package pack attempts exited without useful diagnostics before creating packages
+- package pack validation is partial: `OsLibCore.3.8.15.nupkg` and `RaiUtils.3.8.15.nupkg` were created locally, while solution-level and remaining package pack attempts exited without useful diagnostics before creating packages
 - the older umbrella and remote-observer notes below this point should be treated as historical context unless revalidated
 
 ## Design insight from the latest discussion
@@ -100,7 +100,7 @@ That fallback has already been removed from the mandatory helper path.
 
 ## Release alignment
 
-The workspace is aligned to version `3.8.12` across:
+The workspace is aligned to version `3.8.15` across:
 
 - `JsonPit`
 - `OsLib`
@@ -111,14 +111,14 @@ The workspace is aligned to version `3.8.12` across:
 
 ## Current operational note
 
-- The `3.8.12` release-prep pass updates package metadata, dependency fallbacks, live release docs, and PlantUML markers.
+- The `3.8.15` release-prep pass updates package metadata, dependency fallbacks, live release docs, and PlantUML markers.
 - The intended fire-and-forget publishing path is the GitHub Sequential NuGet Release Chain with `publish_to_nuget=true`.
 - The chain publishes `OsLibCore`, `RaiUtils`, `RaiImage`, `JsonPit`, and `PitSeeder` in dependency order.
 
 ## Suggested resume prompt
 
 ```text
-Please read CURRENT-STATUS.md first, then continue from the prepared `3.8.12` umbrella baseline. Use the GitHub Sequential NuGet Release Chain with `publish_to_nuget=true` for the fire-and-forget publishing step.
+Please read CURRENT-STATUS.md first, then continue from the prepared `3.8.15` umbrella baseline. Use the GitHub Sequential NuGet Release Chain with `publish_to_nuget=true` for the fire-and-forget publishing step.
 ```
 
 ## Related files

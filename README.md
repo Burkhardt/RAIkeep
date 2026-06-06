@@ -6,7 +6,7 @@ It keeps the child repositories available together for local integration work wh
 
 ## Current Aligned Version
 
-The current aligned workspace release line is `3.8.12` for:
+The current aligned workspace release line is `3.8.15` for:
 
 - `JsonPit`
 - `OsLib`
@@ -14,9 +14,9 @@ The current aligned workspace release line is `3.8.12` for:
 - `RaiImage`
 - `PitSeeder`
 
-## 3.8.12 Decisions
+## 3.8.15 Decisions
 
-- Release line update: aligns the package line on `3.8.12` across the four NuGet-published libraries in the workspace and the `PitSeeder` CLI.
+- Release line update: aligns the package line on `3.8.15` across the four NuGet-published libraries in the workspace and the `PitSeeder` CLI.
 - Current markdown and PlantUML surfaces were refreshed so the live release docs match the current codebase state.
 - Publishing is handled by the GitHub Sequential NuGet Release Chain with `publish_to_nuget=true`, which publishes `OsLibCore`, `RaiUtils`, `RaiImage`, `JsonPit`, and `PitSeeder` in order.
 
