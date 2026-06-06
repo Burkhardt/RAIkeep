@@ -1,100 +1,63 @@
 # CURRENT_STATUS
 
-Current note for `3.8.15`:
+Current note for `3.9.0`:
 
-- The workspace is being advanced to the coordinated `3.8.15` patch release line.
+- The workspace is prepared on the coordinated `3.9.0` minor release line.
 - Package metadata, fallback dependency versions, live release docs, and PlantUML markers are aligned in the active repositories.
-- Umbrella validation passed with 243 tests passed, 0 failed, and 1 skipped.
-- Package pack validation is partial: OsLibCore and RaiUtils packages were created locally, while the remaining pack attempts did not produce packages in this sandboxed run.
-- The intended publishing path is the GitHub Sequential NuGet Release Chain with `publish_to_nuget=true`, which includes PitSeeder.
-- The older `3.8.10` PitSeeder note below is historical context.
+- RaiImage is the only package with source-level API movement in this line: naming-aware rooted `ImageTreeFile` construction plus public naming inference.
+- Umbrella validation passed with 251 tests passed, 0 failed, and 1 skipped.
+- This prep run does not publish to NuGet and does not dispatch the GitHub Sequential NuGet Release Chain.
 
-This file records the current RAIkeep workspace state after the PitSeeder cloud-relative pitroot fix.
+This file records the current RAIkeep workspace state after the `3.9.0` release-prep pass.
 
 ## Current focus
 
-PitSeeder now resolves `-c <provider> -r <pitroot>` by treating the `-r` value as a provider-relative `RaiRelPath`.
+The active line is a coordinated `3.9.0` workspace release across:
 
-PitSeeder release `3.8.10` is prepared as a PitSeeder-only NuGet release. The other NuGet packages are intentionally unchanged.
-
-For example, on this machine:
-
-```text
-pits -h -c OneDrive -r LiveAfricaStage
-pits -h -c OneDrive -r LiveAfricaStage/
-pits -h -c OneDrive -r /LiveAfricaStage
-```
-
-all resolve to:
-
-```text
-/Users/RSB/Library/CloudStorage/OneDrive/OneDriveData/LiveAfricaStage/
-```
+- `JsonPit`
+- `OsLib`
+- `RaiUtils`
+- `RaiImage`
+- `PitSeeder`
 
 ## Implementation
 
-- `PitSeeder/pits/Program.cs` now distinguishes cloud-backed pitroot resolution from local pitroot resolution.
-- When `-c` is present, `-r` is normalized as a relative path under the configured cloud root.
-- A leading slash in the cloud-relative `-r` value is accepted as CLI convenience, preserving the previously working `/LiveAfricaStage` behavior.
-- When `-c` is absent, `-r` keeps the previous `RaiPath` behavior, so absolute/local pitroot usage remains supported.
-- No OsLib production code was changed.
+- `JsonPit`, `OsLib`, `RaiUtils`, `RaiImage`, and `PitSeeder` package versions were aligned to `3.9.0`.
+- Downstream fallback package references were advanced to the same `3.9.0` line.
+- Live README, API, release-note, and root status documents were refreshed to point at the `3.9.0` baseline.
+- PlantUML release markers were updated and the changed SVGs were regenerated locally.
+- RaiImage docs and diagrams now describe the naming-aware `ImageTreeFile.FromName(...)` factories and public `InferSourceNamingConvention(...)`.
 
 ## Test coverage
 
-A new PitSeeder xUnit test project was added:
+The focused validation set for this prep run covered:
 
+- `JsonPit/JsonPit.Tests/JsonPit.Tests.csproj`
+- `OsLib/OsLib.Tests/OsLib.Tests.csproj`
+- `RaiUtils/tests/RaiUtils.Tests/RaiUtils.Tests.csproj`
+- `RaiImage/RaiImage.Tests/RaiImage.Tests.csproj`
 - `PitSeeder/pits.Tests/pits.Tests.csproj`
-- `PitSeeder/pits.Tests/PitRootCloudResolutionTests.cs`
-
-The new theory covers:
-
-- `LiveAfricaStage`
-- `LiveAfricaStage/`
-- `/LiveAfricaStage`
-
-and asserts that each resolves to the configured OneDrive root plus `LiveAfricaStage/`.
+- `RAIkeep.slnx`
 
 ## Validation
 
-Focused PitSeeder validation:
+Focused package results:
 
-```text
-dotnet test PitSeeder/PitSeeder.slnx --nologo -v minimal
-Passed: 3, Failed: 0, Skipped: 0
-```
+- `JsonPit.Tests`: 88 passed, 1 skipped
+- `OsLib.Tests`: 64 passed
+- `RaiUtils.Tests`: 21 passed
+- `RaiImage.Tests`: 75 passed
+- `pits.Tests`: 3 passed
 
-PitSeeder package validation:
-
-```text
-dotnet pack PitSeeder/pits/pits.csproj --configuration Release --nologo -v minimal
-Created: PitSeeder/artifacts/nuget/PitSeeder.3.8.10.nupkg
-Verified package contents include README.md
-```
-
-Umbrella validation was run with filesystem access outside the workspace, because the existing suite writes to configured temp and cloud roots:
+Umbrella validation:
 
 ```text
 dotnet test RAIkeep.slnx --nologo -v minimal
-Passed: 238, Failed: 0, Skipped: 0
+Passed: 251, Failed: 0, Skipped: 1
 ```
-
-Latest attempted umbrella validation during the `3.8.10` release prep reached the PitSeeder, RaiUtils, OsLib, and RaiImage assemblies successfully, then failed in the unrelated JsonPit remote-sync scenario:
-
-```text
-JsonPit.Tests.RemoteSyncTests.RemoteSync_MasterClient_FullScenario
-Mzansi must create change files as a client (not overwrite the pit)
-```
-
-Project-level counts from the successful umbrella run:
-
-- `pits.Tests`: 3 passed
-- `RaiUtils.Tests`: 21 passed
-- `OsLib.Tests`: 64 passed
-- `RaiImage.Tests`: 61 passed
-- `JsonPit.Tests`: 89 passed
 
 ## Suggested resume prompt
 
 ```text
-Please read CURRENT_STATUS.md first. PitSeeder cloud-relative pitroot resolution is fixed and covered by tests; continue from the passing umbrella solution state.
+Please read CURRENT_STATUS.md first. The `3.9.0` release-prep baseline is validated; continue from the aligned umbrella state.
 ```

@@ -2,14 +2,15 @@
 
 This file captures the current working state of the `RAIkeep` umbrella workspace so a future session can resume quickly.
 
-Current note for `3.8.15`:
+Current note for `3.9.0`:
 
 - the active OsLib config contract is `RAIkeep.json5`
 - `Os.Config` is lazy and dynamic
 - `CloudPathWiring` plus `RaiPath.CloudEvaluator` drive buffered cloud state
 - directory waits live in `RaiPath`, file waits live in `RaiFile`
 - `RaiFile.BackdateCreationTime(...)` now supports deterministic `FileAge` manipulation with configurable sync propagation delay
-- live markdown and PlantUML release markers were refreshed for the `3.8.15` package line
+- live markdown and PlantUML release markers were refreshed for the `3.9.0` package line
+- RaiImage now exposes naming-aware rooted `ImageTreeFile.FromName(...)` factories plus public `InferSourceNamingConvention(...)`
 - older remote-observer and `osconfig.json` references in historical notes should not be treated as the current OsLib public surface
 
 ## Role of this repo
@@ -33,9 +34,9 @@ dotnet test RAIkeep.slnx --nologo -v minimal
 
 Most recent result:
 
-- total: 244
+- total: 252
 - failed: 0
-- succeeded: 243
+- succeeded: 251
 - skipped: 1
 
 Earlier remote SSH and remote cloud-sync notes in this file refer to an older harness setup and should be treated as historical unless revalidated.
@@ -66,7 +67,7 @@ Focused result at the time of this note:
 
 ## Current aligned package version
 
-The workspace is aligned on version `3.8.15` for:
+The workspace is aligned on version `3.9.0` for:
 
 - `JsonPit`
 - `OsLib`
@@ -74,11 +75,12 @@ The workspace is aligned on version `3.8.15` for:
 - `RaiImage`
 - `PitSeeder`
 
-## 3.8.15 documentation decisions
+## 3.9.0 documentation decisions
 
 - Current docs are being aligned to the post-purge OsLib architecture.
 - Historical release/design notes remain useful context but no longer define the live OsLib API surface.
-- Active package diagrams now carry the `3.8.15` release marker so current diagrams are easy to distinguish from historical design artifacts.
+- Active package diagrams now carry the `3.9.0` release marker so current diagrams are easy to distinguish from historical design artifacts.
+- RaiImage live API docs and diagrams now call out the naming-aware rooted short-name construction flow.
 
 ## Solution structure
 
@@ -173,20 +175,21 @@ This means the naming is now much closer to reality than before: sandboxed tests
 
 ## Current release state
 
-The `3.8.15` release-alignment work is the current umbrella baseline.
+The `3.9.0` release-alignment work is the current umbrella baseline.
 
 Key current facts:
 
-- package versions are aligned to `3.8.15`
-- OsLib path/config/logging semantics were refactored and documented
+- package versions are aligned to `3.9.0`
+- OsLib path/config/logging semantics remain aligned and documented
+- RaiImage adds naming-aware rooted `ImageTreeFile` construction for route short names and derivatives
 - OsLib now exposes `RaiFile.BackdateCreationTime(...)` and `SyncPropagationDelayMs` configuration for remote-sync timing control
 - release-note files were added or updated across the package repos
 - active PlantUML headers were refreshed across the umbrella and child-package diagrams
 - the remote `mzansi` test setup is now valid enough for the remote SSH and cloud-sync tests to execute successfully
-- the latest umbrella solution validation is green with 243 passed and 1 skipped
+- the latest umbrella solution validation is green with 251 passed and 1 skipped
 - package pack validation is partial: OsLibCore and RaiUtils packages were created locally, while solution-level and remaining package pack attempts exited without useful diagnostics before creating packages
 
-The fire-and-forget release sequence is complete once the child commits, submodule pointers, rendered diagrams, root docs, and GitHub Sequential NuGet Release Chain dispatch with `publish_to_nuget=true` have completed.
+This prep run intentionally stops before NuGet publication and does not dispatch the GitHub Sequential NuGet Release Chain.
 
 ## PlantUML conventions established in this session
 
