@@ -13,3 +13,6 @@
 [submodule "PitSeeder"]
 	path = PitSeeder
 	url = https://github.com/Burkhardt/PitSeeder.git
+[submodule "iorg"]
+	path = iorg
+	url = https://github.com/Burkhardt/iorg.git

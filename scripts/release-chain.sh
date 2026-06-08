@@ -227,15 +227,15 @@ finalize_parent_pointers() {
   local parent_dir="$ROOT_DIR"
   local changed
 
-  changed="$(git -C "$parent_dir" status --porcelain -- OsLib RaiUtils RaiImage JsonPit || true)"
+  changed="$(git -C "$parent_dir" status --porcelain -- OsLib RaiUtils RaiImage JsonPit iorg || true)"
 
   if [[ -z "$changed" ]]; then
-    log "RAIkeep: no OsLib/RaiUtils/RaiImage/JsonPit pointer changes to commit"
+    log "RAIkeep: no OsLib/RaiUtils/RaiImage/JsonPit/iorg pointer changes to commit"
     return
   fi
 
   log "RAIkeep: committing final released submodule pointers"
-  git -C "$parent_dir" add OsLib RaiUtils RaiImage JsonPit
+  git -C "$parent_dir" add OsLib RaiUtils RaiImage JsonPit iorg
   git -C "$parent_dir" commit -m "chore: sync released submodule pointers to $VER"
   git -C "$parent_dir" push origin main
 }
@@ -254,6 +254,7 @@ final_visibility_summary() {
   check_url raiutils
   check_url raiimage
   check_url jsonpit
+  check_url imgseeder
   check_url pitseeder
 }
 
@@ -264,7 +265,7 @@ main() {
   require_cmd perl
 
   log "Release chain start for $VER"
-  log "Order: OsLib -> RaiUtils -> RaiImage -> JsonPit -> PitSeeder"
+  log "Order: OsLib -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder/iorg -> PitSeeder"
 
   if ! confirm "Proceed with release chain for $VER?"; then
     echo "Aborted."
@@ -275,6 +276,7 @@ main() {
   release_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj" "raiutils" "publish-nuget.yml"
   release_submodule "RaiImage" "RaiImage" "RaiImage.csproj" "raiimage" "publish-nuget.yml"
   release_submodule "JsonPit" "JsonPit" "JsonPit.csproj" "jsonpit" "publish-nuget.yml"
+  release_submodule "ImgSeeder/iorg" "iorg" "iorg.csproj" "imgseeder" "publish-nuget.yml"
 
   release_pitseeder_via_parent_tag
 

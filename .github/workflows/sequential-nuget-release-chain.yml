@@ -116,6 +116,27 @@ jobs:
         shell: bash
         run: sleep 300
 
+      - name: Pack ImgSeeder tool
+        shell: bash
+        run: |
+          dotnet restore iorg/iorg.slnx /p:UseLocalRAIkeepSources=false
+          dotnet build iorg/iorg.slnx --configuration Release --no-restore /p:UseLocalRAIkeepSources=false
+          dotnet pack iorg/iorg.csproj --configuration Release --no-build /p:UseLocalRAIkeepSources=false
+
+      - name: Publish ImgSeeder tool
+        if: inputs.publish_to_nuget
+        shell: bash
+        run: |
+          dotnet nuget push "iorg/artifacts/nuget/ImgSeeder.*.nupkg" \
+            --api-key "${{ secrets.NUGET_API_KEY }}" \
+            --source "https://api.nuget.org/v3/index.json" \
+            --skip-duplicate
+
+      - name: Wait for ImgSeeder NuGet indexing
+        if: inputs.publish_to_nuget
+        shell: bash
+        run: sleep 300
+
       - name: Pack PitSeeder tool
         shell: bash
         run: |
@@ -136,4 +157,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: sequential-nuget-release-chain
-          path: artifacts/nuget/*.nupkg
+          path: |
+            artifacts/nuget/*.nupkg
+            iorg/artifacts/nuget/*.nupkg
