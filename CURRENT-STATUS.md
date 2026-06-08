@@ -4,9 +4,9 @@ This file captures the current release-ready status of the RAIkeep workspace so 
 
 ## Current focus
 
-The current release-and-docs alignment pass is `3.9.1`.
+The current release-and-docs alignment pass is `3.10.0`.
 
-## 3.9.1 release decisions
+## 3.10.0 release decisions
 
 - The active OsLib config contract remains `RAIkeep.json5` with PascalCase property names and lazy `dynamic` access through `Os.Config`.
 - `UserHomeDir` and `AppRootDir` are intrinsic runtime values.
@@ -28,7 +28,7 @@ Completed concepts currently in the codebase:
 - `RaiFile` copies the buffered `Cloud` flag and owns file wait logic
 - `RaiFile.DefaultSyncPropagationDelayMs` provides the in-process fallback for metadata propagation waits
 - `RaiFile.BackdateCreationTime(...)` supports deterministic remote-sync test setup without forcing one global latency for every machine
-- `RAIkeep.slnx` includes the `iorg` CLI and its test project
+- `RAIkeep.slnx` includes `PitSeeder`, the `iorg` CLI, and the `iorg` test project
 - the parent sequential NuGet release chain now includes `ImgSeeder` before `PitSeeder`
 
 ## Current result
@@ -52,24 +52,24 @@ Latest directly verified results in this workspace state:
 
 ## Release alignment
 
-The workspace is aligned to version `3.9.1` across:
+The workspace is aligned to version `3.10.0` across:
 
-- `JsonPit`
 - `OsLib`
 - `RaiUtils`
 - `RaiImage`
-- `ImgSeeder`
+- `JsonPit`
+- `ImgSeeder/iorg`
 - `PitSeeder`
 - the umbrella `RAIkeep` workspace documentation and submodule references
 
 ## Current operational note
 
-- `OsLibCore`, `RaiUtils`, `RaiImage`, and `JsonPit` were published successfully from their repo tag workflows.
-- `ImgSeeder` cannot publish from the child `iorg` workflow because that repo does not have a usable `NUGET_API_KEY` secret.
-- The intended fire-and-forget completion path is now the parent `RAIkeep` Sequential NuGet Release Chain with `publish_to_nuget=true`, which preserves the order `OsLibCore -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder` and the 300-second waits.
+- No `3.10.0` publication was triggered in this prep pass.
+- The existing release automation remains wired in the order `OsLibCore -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder`, with `ImgSeeder/iorg` immediately before `PitSeeder`.
+- The `iorg` child repo still lacks a usable `NUGET_API_KEY` secret, so later publication should continue to use the parent sequential chain for `ImgSeeder` and `PitSeeder`.
 
 ## Suggested resume prompt
 
 ```text
-Please read CURRENT-STATUS.md first, then continue from the prepared `3.9.1` umbrella baseline. Finish publication through the parent sequential NuGet release chain with `publish_to_nuget=true`.
+Please read CURRENT-STATUS.md first, then continue from the prepared `3.10.0` umbrella baseline. Tag and publish only when explicitly requested.
 ```

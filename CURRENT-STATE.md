@@ -2,27 +2,28 @@
 
 This file captures the current working state of the `RAIkeep` umbrella workspace so a future session can resume quickly.
 
-Current note for `3.9.1`:
+Current note for `3.10.0`:
 
 - the active OsLib config contract is `RAIkeep.json5`
 - `Os.Config` is lazy and dynamic
 - `CloudPathWiring` plus `RaiPath.CloudEvaluator` drive buffered cloud state
 - directory waits live in `RaiPath`, file waits live in `RaiFile`
 - `RaiFile.BackdateCreationTime(...)` now supports deterministic `FileAge` manipulation with configurable sync propagation delay
-- live markdown and PlantUML release markers were refreshed for the `3.9.1` package line
+- live markdown and PlantUML release markers were refreshed for the `3.10.0` package line
 - RaiImage now preserves separated and compact trailing image numbers during filename normalization and keeps acronym tokens stable in PascalCase output
-- `iorg` is part of the coordinated package line and the parent release chain
+- `ImgSeeder/iorg` is part of the coordinated package line and the parent release chain
 - older remote-observer and `osconfig.json` references in historical notes should not be treated as the current OsLib public surface
 
 ## Role of this repo
 
-`RAIkeep` is the umbrella workspace for the related C# libraries:
+`RAIkeep` is the umbrella workspace for the related C# libraries and CLIs:
 
-- `JsonPit`
 - `OsLib`
 - `RaiUtils`
 - `RaiImage`
-- `iorg`
+- `JsonPit`
+- `ImgSeeder/iorg`
+- `PitSeeder`
 
 The intent is to keep package repos independent while using `RAIkeep` as the cross-library integration workspace.
 
@@ -69,37 +70,40 @@ Focused result at the time of this note:
 
 ## Current aligned package version
 
-The workspace is aligned on version `3.9.1` for:
+The workspace is aligned on version `3.10.0` for:
 
-- `JsonPit`
 - `OsLib`
 - `RaiUtils`
 - `RaiImage`
+- `JsonPit`
+- `ImgSeeder/iorg`
 - `PitSeeder`
-- `iorg`
 
-## 3.9.1 documentation decisions
+## 3.10.0 documentation decisions
 
 - Current docs are being aligned to the post-purge OsLib architecture.
 - Historical release/design notes remain useful context but no longer define the live OsLib API surface.
-- Active package diagrams now carry the `3.9.1` release marker so current diagrams are easy to distinguish from historical design artifacts.
+- Active package diagrams now carry the `3.10.0` release marker so current diagrams are easy to distinguish from historical design artifacts.
 - RaiImage live API docs and diagrams now call out the trailing-image-number normalization flow used by `ImgSeeder`.
 
 ## Solution structure
 
 `RAIkeep.slnx` includes:
 
-- `JsonPit/JsonPit.csproj`
-- `JsonPit/JsonPit.Tests/JsonPit.Tests.csproj`
 - `OsLib/OsLib.csproj`
 - `OsLib/OsLib.Tests/OsLib.Tests.csproj`
 - `RaiUtils/RaiUtils.csproj`
 - `RaiUtils/tests/RaiUtils.Tests/RaiUtils.Tests.csproj`
 - `RaiImage/RaiImage.csproj`
 - `RaiImage/RaiImage.Tests/RaiImage.Tests.csproj`
+- `JsonPit/JsonPit.csproj`
+- `JsonPit/JsonPit.Tests/JsonPit.Tests.csproj`
 - `iorg/iorg.csproj`
+- `iorg/iorg.Tests/iorg.Tests.csproj`
+- `PitSeeder/pits/pits.csproj`
+- `PitSeeder/pits.Tests/pits.Tests.csproj`
 
-The missing OsLib and RaiUtils test projects were added to the umbrella solution during this session.
+The umbrella solution now carries the package projects and tests needed for the coordinated release line, including `PitSeeder` and `iorg`.
 
 ## JsonPit.Tests sunset
 
@@ -179,11 +183,11 @@ This means the naming is now much closer to reality than before: sandboxed tests
 
 ## Current release state
 
-The `3.9.1` release-alignment work is the current umbrella baseline.
+The `3.10.0` release-alignment work is the current umbrella baseline.
 
 Key current facts:
 
-- package versions are aligned to `3.9.1`
+- package versions are aligned to `3.10.0`
 - OsLib path/config/logging semantics remain aligned and documented
 - RaiImage adds smarter trailing-number normalization for route short names and derivative file names
 - OsLib now exposes `RaiFile.BackdateCreationTime(...)` and `SyncPropagationDelayMs` configuration for remote-sync timing control
@@ -191,11 +195,11 @@ Key current facts:
 - active PlantUML headers were refreshed across the umbrella and child-package diagrams
 - the remote `mzansi` test setup is now valid enough for the remote SSH and cloud-sync tests to execute successfully
 - the latest umbrella solution validation is green with 271 passed and 1 skipped
-- `OsLibCore`, `RaiUtils`, `RaiImage`, and `JsonPit` were published successfully from their repo workflows
-- `ImgSeeder` child-repo publication is blocked only by the missing `NUGET_API_KEY` secret in the `iorg` repository
-- the parent sequential NuGet release chain is configured to publish `ImgSeeder` and `PitSeeder` after the already-published packages, preserving the 300-second waits
+- no `3.10.0` publish workflows were triggered during this prep pass
+- the parent sequential NuGet release chain remains ready for later publication, preserving the order `OsLibCore -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder` and the 300-second waits
+- the `iorg` child repo still lacks a usable `NUGET_API_KEY` secret, so later publication should continue to route `ImgSeeder` through the parent chain
 
-The remaining fire-and-forget completion path is the parent GitHub Sequential NuGet Release Chain with `publish_to_nuget=true`.
+Later publication, if explicitly requested, should use the parent GitHub Sequential NuGet Release Chain.
 
 ## PlantUML conventions established in this session
 
