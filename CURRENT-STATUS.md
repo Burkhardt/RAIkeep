@@ -4,9 +4,9 @@ This file captures the current release-ready status of the RAIkeep workspace so 
 
 ## Current focus
 
-The current release-and-docs alignment pass is `3.10.1`.
+The current release-and-docs alignment pass is `3.10.2`.
 
-## 3.10.1 release decisions
+## 3.10.2 release decisions
 
 - The active OsLib config contract remains `RAIkeep.json5` with PascalCase property names and lazy `dynamic` access through `Os.Config`.
 - `UserHomeDir` and `AppRootDir` are intrinsic runtime values.
@@ -52,7 +52,7 @@ Latest directly verified results in this workspace state:
 
 ## Release alignment
 
-The workspace is aligned to version `3.10.1` across:
+The workspace is aligned to version `3.10.2` across:
 
 - `OsLib`
 - `RaiUtils`
@@ -64,7 +64,7 @@ The workspace is aligned to version `3.10.1` across:
 
 ## Current operational note
 
-- No `3.10.1` publication was triggered in this prep pass.
+- No `3.10.2` publication was triggered in this prep pass.
 - The existing release automation remains wired in the order `OsLibCore -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder`, with `ImgSeeder/iorg` immediately before `PitSeeder`.
 - The parent sequential chain now includes flat-container `.nupkg` verification after each 300-second wait, using lower-case `imgseeder` for the ImgSeeder package id.
 - This environment could not push the prepared child commits or dispatch the parent workflow because shell GitHub access is DNS-blocked and no workflow-dispatch tool is available in-session.
@@ -72,5 +72,5 @@ The workspace is aligned to version `3.10.1` across:
 ## Suggested resume prompt
 
 ```text
-Please read CURRENT-STATUS.md first, then continue from the prepared `3.10.1` umbrella baseline. Push and publish require an environment with GitHub network access.
+Please read CURRENT-STATUS.md first, then continue from the prepared `3.10.2` umbrella baseline. Push and publish require an environment with GitHub network access.
 ```

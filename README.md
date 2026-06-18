@@ -6,7 +6,7 @@ It keeps the child repositories available together for local integration work wh
 
 ## Current Aligned Version
 
-The current aligned workspace release line is `3.10.1` for:
+The current aligned workspace release line is `3.10.2` for:
 
 - `OsLib`
 - `RaiUtils`
@@ -15,9 +15,9 @@ The current aligned workspace release line is `3.10.1` for:
 - `ImgSeeder/iorg`
 - `PitSeeder`
 
-## 3.10.1 Decisions
+## 3.10.2 Decisions
 
-- Patch release update: aligns the package line on `3.10.1` across the four NuGet-published libraries plus the `ImgSeeder` and `PitSeeder` CLIs.
+- Patch release update: aligns the package line on `3.10.2` across the four NuGet-published libraries plus the `ImgSeeder` and `PitSeeder` CLIs.
 - The concrete source-level behavior carried into this minor line remains RaiImage's smarter filename normalization for trailing image numbers and uppercase tokens, plus the integrated `iorg` packaging/test/release-chain flow.
 - Current markdown and PlantUML surfaces were refreshed so the live release docs match the current codebase state.
 - The GitHub Sequential NuGet Release Chain remains the intended later publish path, in the order `OsLibCore -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder`.
