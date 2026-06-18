@@ -53,6 +53,16 @@ jobs:
         shell: bash
         run: sleep 300
 
+      - name: Verify OsLibCore flat-container package
+        if: inputs.publish_to_nuget
+        shell: bash
+        run: |
+          VERSION="$(grep -oPm1 '(?<=<Version>)[^<]+' OsLib/OsLib.csproj)"
+          PACKAGE_ID="oslibcore"
+          until [[ "$(curl -s -o /dev/null -w "%{http_code}" "https://api.nuget.org/v3-flatcontainer/${PACKAGE_ID}/${VERSION}/${PACKAGE_ID}.${VERSION}.nupkg")" == "200" ]]; do
+            sleep 10
+          done
+
       - name: Pack RaiUtils
         shell: bash
         run: |
@@ -73,6 +83,16 @@ jobs:
         if: inputs.publish_to_nuget
         shell: bash
         run: sleep 300
+
+      - name: Verify RaiUtils flat-container package
+        if: inputs.publish_to_nuget
+        shell: bash
+        run: |
+          VERSION="$(grep -oPm1 '(?<=<Version>)[^<]+' RaiUtils/RaiUtils.csproj)"
+          PACKAGE_ID="raiutils"
+          until [[ "$(curl -s -o /dev/null -w "%{http_code}" "https://api.nuget.org/v3-flatcontainer/${PACKAGE_ID}/${VERSION}/${PACKAGE_ID}.${VERSION}.nupkg")" == "200" ]]; do
+            sleep 10
+          done
 
       - name: Pack RaiImage
         shell: bash
@@ -95,6 +115,16 @@ jobs:
         shell: bash
         run: sleep 300
 
+      - name: Verify RaiImage flat-container package
+        if: inputs.publish_to_nuget
+        shell: bash
+        run: |
+          VERSION="$(grep -oPm1 '(?<=<Version>)[^<]+' RaiImage/RaiImage.csproj)"
+          PACKAGE_ID="raiimage"
+          until [[ "$(curl -s -o /dev/null -w "%{http_code}" "https://api.nuget.org/v3-flatcontainer/${PACKAGE_ID}/${VERSION}/${PACKAGE_ID}.${VERSION}.nupkg")" == "200" ]]; do
+            sleep 10
+          done
+
       - name: Pack JsonPit
         shell: bash
         run: |
@@ -115,6 +145,16 @@ jobs:
         if: inputs.publish_to_nuget
         shell: bash
         run: sleep 300
+
+      - name: Verify JsonPit flat-container package
+        if: inputs.publish_to_nuget
+        shell: bash
+        run: |
+          VERSION="$(grep -oPm1 '(?<=<Version>)[^<]+' JsonPit/JsonPit.csproj)"
+          PACKAGE_ID="jsonpit"
+          until [[ "$(curl -s -o /dev/null -w "%{http_code}" "https://api.nuget.org/v3-flatcontainer/${PACKAGE_ID}/${VERSION}/${PACKAGE_ID}.${VERSION}.nupkg")" == "200" ]]; do
+            sleep 10
+          done
 
       - name: Pack ImgSeeder tool
         shell: bash
@@ -137,12 +177,22 @@ jobs:
         shell: bash
         run: sleep 300
 
+      - name: Verify ImgSeeder flat-container package
+        if: inputs.publish_to_nuget
+        shell: bash
+        run: |
+          VERSION="$(grep -oPm1 '(?<=<Version>)[^<]+' iorg/iorg.csproj)"
+          PACKAGE_ID="imgseeder"
+          until [[ "$(curl -s -o /dev/null -w "%{http_code}" "https://api.nuget.org/v3-flatcontainer/${PACKAGE_ID}/${VERSION}/${PACKAGE_ID}.${VERSION}.nupkg")" == "200" ]]; do
+            sleep 10
+          done
+
       - name: Pack PitSeeder tool
         shell: bash
         run: |
-          dotnet restore PitSeeder/PitSeeder.slnx
-          dotnet build PitSeeder/PitSeeder.slnx --configuration Release --no-restore
-          dotnet pack PitSeeder/pits/pits.csproj --configuration Release --no-build --output artifacts/nuget
+          dotnet restore PitSeeder/PitSeeder.slnx /p:UseLocalRAIkeepSources=false
+          dotnet build PitSeeder/PitSeeder.slnx --configuration Release --no-restore /p:UseLocalRAIkeepSources=false
+          dotnet pack PitSeeder/pits/pits.csproj --configuration Release --no-build --output artifacts/nuget /p:UseLocalRAIkeepSources=false
 
       - name: Publish PitSeeder tool
         if: inputs.publish_to_nuget
@@ -152,6 +202,21 @@ jobs:
             --api-key "${{ secrets.NUGET_API_KEY }}" \
             --source "https://api.nuget.org/v3/index.json" \
             --skip-duplicate
+
+      - name: Wait for PitSeeder NuGet indexing
+        if: inputs.publish_to_nuget
+        shell: bash
+        run: sleep 300
+
+      - name: Verify PitSeeder flat-container package
+        if: inputs.publish_to_nuget
+        shell: bash
+        run: |
+          VERSION="$(grep -oPm1 '(?<=<Version>)[^<]+' PitSeeder/pits/pits.csproj)"
+          PACKAGE_ID="pitseeder"
+          until [[ "$(curl -s -o /dev/null -w "%{http_code}" "https://api.nuget.org/v3-flatcontainer/${PACKAGE_ID}/${VERSION}/${PACKAGE_ID}.${VERSION}.nupkg")" == "200" ]]; do
+            sleep 10
+          done
 
       - name: Upload NuGet artifacts
         uses: actions/upload-artifact@v4

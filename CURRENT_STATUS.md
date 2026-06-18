@@ -1,18 +1,18 @@
 # CURRENT_STATUS
 
-Current note for `3.10.0`:
+Current note for `3.10.1`:
 
-- The workspace is prepared on the coordinated `3.10.0` minor release line.
+- The workspace is prepared locally on the coordinated `3.10.1` patch release line.
 - Package metadata, fallback dependency versions, live release docs, and PlantUML markers are aligned across `OsLib`, `RaiUtils`, `RaiImage`, `JsonPit`, `ImgSeeder/iorg`, and `PitSeeder`.
 - The carried-forward payload is RaiImage filename normalization plus the integrated `iorg` packaging/test/release-chain flow.
-- Umbrella validation passed with 271 tests passed and 1 skipped.
-- No `3.10.0` publish workflows or NuGet releases were triggered in this prep run.
+- Fresh local `dotnet test` reruns are blocked in this sandbox because MSBuild/VSTest cannot open the required named-pipe/socket endpoints.
+- No `3.10.1` child commits, parent submodule-pointer updates, or publish workflows have been pushed from this environment yet.
 
-This file records the current RAIkeep workspace state after the `3.10.0` release-prep pass.
+This file records the current RAIkeep workspace state after the local `3.10.1` release-prep pass.
 
 ## Current focus
 
-The active line is a coordinated `3.10.0` workspace release across:
+The active line is a coordinated `3.10.1` workspace release across:
 
 - `OsLib`
 - `RaiUtils`
@@ -23,17 +23,17 @@ The active line is a coordinated `3.10.0` workspace release across:
 
 ## Implementation
 
-- `OsLib`, `RaiUtils`, `RaiImage`, `JsonPit`, `ImgSeeder/iorg`, and `PitSeeder` package versions were aligned to `3.10.0`.
+- `OsLib`, `RaiUtils`, `RaiImage`, `JsonPit`, `ImgSeeder/iorg`, and `PitSeeder` package versions were aligned to `3.10.1`.
 - The coordinated release order remains `OsLibCore -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder`.
-- Downstream fallback package references were advanced to the same `3.10.0` line.
-- Live README, API, release-note, workflow, and root status documents were refreshed to point at the `3.10.0` baseline.
-- PlantUML release markers were updated and the changed SVGs were regenerated locally.
+- Downstream fallback package references were advanced to the same `3.10.1` line.
+- Live README, API, release-note, workflow, and root status documents were refreshed to point at the `3.10.1` baseline.
+- PlantUML release markers were updated and the changed SVGs were regenerated locally where those SVGs are tracked.
 - `RAIkeep.slnx` includes `PitSeeder/pits/pits.csproj`, `PitSeeder/pits.Tests/pits.Tests.csproj`, `iorg/iorg.csproj`, and `iorg/iorg.Tests/iorg.Tests.csproj`.
 - The parent sequential release chain now packs and publishes `ImgSeeder` between `JsonPit` and `PitSeeder`, with the existing 300-second waits preserved.
 
 ## Test coverage
 
-The focused validation set for this prep run covered:
+The intended focused validation set for this prep run is:
 
 - `OsLib/OsLib.slnx`
 - `RaiUtils/RaiUtils.slnx`
@@ -45,7 +45,7 @@ The focused validation set for this prep run covered:
 
 ## Validation
 
-Focused package results:
+Most recent previously verified package results in this workspace:
 
 - `OsLib.Tests`: 64 passed
 - `RaiUtils.Tests`: 21 passed
@@ -54,7 +54,7 @@ Focused package results:
 - `iorg.Tests`: 4 passed
 - `pits.Tests`: 3 passed
 
-Umbrella validation:
+Most recent previously verified umbrella validation:
 
 ```text
 dotnet test RAIkeep.slnx --nologo -v minimal
@@ -63,13 +63,14 @@ Passed: 271, Failed: 0, Skipped: 1
 
 ## Publishing state
 
-- No `3.10.0` tags or publish workflows were triggered in this prep run.
-- The later publish path remains the parent `RAIkeep` workflow `.github/workflows/sequential-nuget-release-chain.yml`.
+- No `3.10.1` tags or publish workflows were triggered in this prep run.
+- The intended publish path remains the parent `RAIkeep` workflow `.github/workflows/sequential-nuget-release-chain.yml`.
 - The expected order is `OsLibCore -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder`.
-- The `iorg` child repo still lacks a usable `NUGET_API_KEY` secret, so `ImgSeeder` should continue to publish through the parent chain when publication is intentionally requested.
+- The workflow now preserves the 300-second waits and adds NuGet flat-container `.nupkg` verification steps for every published package, including `imgseeder`.
+- This environment cannot push the prepared child commits because shell GitHub access is DNS-blocked and no workflow-dispatch tool is available in-session.
 
 ## Suggested resume prompt
 
 ```text
-Please read CURRENT_STATUS.md first. The `3.10.0` release-prep baseline is validated; tag and publish only when explicitly requested.
+Please read CURRENT_STATUS.md first. The `3.10.1` release-prep baseline is ready locally, but push and publish still require an environment with GitHub network access.
 ```

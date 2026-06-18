@@ -2,14 +2,14 @@
 
 This file captures the current working state of the `RAIkeep` umbrella workspace so a future session can resume quickly.
 
-Current note for `3.10.0`:
+Current note for `3.10.1`:
 
 - the active OsLib config contract is `RAIkeep.json5`
 - `Os.Config` is lazy and dynamic
 - `CloudPathWiring` plus `RaiPath.CloudEvaluator` drive buffered cloud state
 - directory waits live in `RaiPath`, file waits live in `RaiFile`
 - `RaiFile.BackdateCreationTime(...)` now supports deterministic `FileAge` manipulation with configurable sync propagation delay
-- live markdown and PlantUML release markers were refreshed for the `3.10.0` package line
+- live markdown and PlantUML release markers were refreshed for the `3.10.1` package line
 - RaiImage now preserves separated and compact trailing image numbers during filename normalization and keeps acronym tokens stable in PascalCase output
 - `ImgSeeder/iorg` is part of the coordinated package line and the parent release chain
 - older remote-observer and `osconfig.json` references in historical notes should not be treated as the current OsLib public surface
@@ -70,7 +70,7 @@ Focused result at the time of this note:
 
 ## Current aligned package version
 
-The workspace is aligned on version `3.10.0` for:
+The workspace is aligned on version `3.10.1` for:
 
 - `OsLib`
 - `RaiUtils`
@@ -79,11 +79,11 @@ The workspace is aligned on version `3.10.0` for:
 - `ImgSeeder/iorg`
 - `PitSeeder`
 
-## 3.10.0 documentation decisions
+## 3.10.1 documentation decisions
 
 - Current docs are being aligned to the post-purge OsLib architecture.
 - Historical release/design notes remain useful context but no longer define the live OsLib API surface.
-- Active package diagrams now carry the `3.10.0` release marker so current diagrams are easy to distinguish from historical design artifacts.
+- Active package diagrams now carry the `3.10.1` release marker so current diagrams are easy to distinguish from historical design artifacts.
 - RaiImage live API docs and diagrams now call out the trailing-image-number normalization flow used by `ImgSeeder`.
 
 ## Solution structure
@@ -183,11 +183,11 @@ This means the naming is now much closer to reality than before: sandboxed tests
 
 ## Current release state
 
-The `3.10.0` release-alignment work is the current umbrella baseline.
+The `3.10.1` release-alignment work is the current umbrella baseline.
 
 Key current facts:
 
-- package versions are aligned to `3.10.0`
+- package versions are aligned to `3.10.1`
 - OsLib path/config/logging semantics remain aligned and documented
 - RaiImage adds smarter trailing-number normalization for route short names and derivative file names
 - OsLib now exposes `RaiFile.BackdateCreationTime(...)` and `SyncPropagationDelayMs` configuration for remote-sync timing control
@@ -195,7 +195,7 @@ Key current facts:
 - active PlantUML headers were refreshed across the umbrella and child-package diagrams
 - the remote `mzansi` test setup is now valid enough for the remote SSH and cloud-sync tests to execute successfully
 - the latest umbrella solution validation is green with 271 passed and 1 skipped
-- no `3.10.0` publish workflows were triggered during this prep pass
+- no `3.10.1` publish workflows were triggered during this prep pass
 - the parent sequential NuGet release chain remains ready for later publication, preserving the order `OsLibCore -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder` and the 300-second waits
 - the `iorg` child repo still lacks a usable `NUGET_API_KEY` secret, so later publication should continue to route `ImgSeeder` through the parent chain
 
