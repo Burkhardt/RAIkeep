@@ -46,7 +46,7 @@ Latest directly verified results in this workspace state:
 - `dotnet test RaiUtils/RaiUtils.slnx --nologo -v minimal`
 - `dotnet test RaiImage/RaiImage.slnx --nologo -v minimal`
 - `dotnet test JsonPit/JsonPit.slnx --nologo -v minimal`
-- `dotnet test iorg/iorg.slnx --nologo -v minimal`
+- `dotnet test ImgSeeder/ImgSeeder.slnx --nologo -v minimal`
 - `dotnet test PitSeeder/PitSeeder.slnx --nologo -v minimal`
 - PlantUML SVG regeneration completed with the local `plantuml` binary
 
@@ -58,14 +58,14 @@ The workspace is aligned to version `3.10.2` across:
 - `RaiUtils`
 - `RaiImage`
 - `JsonPit`
-- `ImgSeeder/iorg`
+- `ImgSeeder`
 - `PitSeeder`
 - the umbrella `RAIkeep` workspace documentation and submodule references
 
 ## Current operational note
 
 - No `3.10.2` publication was triggered in this prep pass.
-- The existing release automation remains wired in the order `OsLibCore -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder`, with `ImgSeeder/iorg` immediately before `PitSeeder`.
+- The existing release automation remains wired in the order `OsLibCore -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder`, with `ImgSeeder` immediately before `PitSeeder`.
 - The parent sequential chain now includes flat-container `.nupkg` verification after each 300-second wait, using lower-case `imgseeder` for the ImgSeeder package id.
 - This environment could not push the prepared child commits or dispatch the parent workflow because shell GitHub access is DNS-blocked and no workflow-dispatch tool is available in-session.
 

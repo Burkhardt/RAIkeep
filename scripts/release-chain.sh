@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Sequential release orchestrator for RAIkeep submodules and PitSeeder publish.
+# Sequential release orchestrator for RAIkeep submodules.
 # This script assumes each repo's release changes are already prepared locally.
 # It enforces order, workflow success waits, 5-minute hold windows, and NuGet
 # flat-container visibility checks.
@@ -190,52 +190,19 @@ release_submodule() {
   hold_and_check_flatcontainer "$package_id" "$VER"
 }
 
-release_pitseeder_via_parent_tag() {
-  local pit_dir="$ROOT_DIR/PitSeeder"
-  local parent_dir="$ROOT_DIR"
-
-  log "===== PitSeeder ($TAG) ====="
-
-  assert_clean "$pit_dir" "PitSeeder"
-  checkout_sync_main "$pit_dir" "PitSeeder"
-
-  local current_ver
-  current_ver="$(csproj_version "$pit_dir" "pits/pits.csproj")"
-  [[ "$current_ver" == "$VER" ]] || die "PitSeeder version mismatch in pits/pits.csproj (found $current_ver, expected $VER)"
-
-  push_main_if_needed "$pit_dir" "PitSeeder"
-
-  checkout_sync_main "$parent_dir" "RAIkeep"
-
-  # Stage and commit only PitSeeder pointer if changed.
-  if [[ -n "$(git -C "$parent_dir" status --porcelain -- PitSeeder)" ]]; then
-    log "RAIkeep: committing PitSeeder pointer update"
-    git -C "$parent_dir" add PitSeeder
-    git -C "$parent_dir" commit -m "release: PitSeeder $VER"
-  else
-    log "RAIkeep: PitSeeder pointer already up to date"
-  fi
-
-  push_main_if_needed "$parent_dir" "RAIkeep"
-
-  ensure_tag_on_head "$parent_dir" "RAIkeep" "$TAG"
-  wait_workflow_success "$parent_dir" "publish-pitseeder-nuget.yml" "$TAG"
-  hold_and_check_flatcontainer "pitseeder" "$VER"
-}
-
 finalize_parent_pointers() {
   local parent_dir="$ROOT_DIR"
   local changed
 
-  changed="$(git -C "$parent_dir" status --porcelain -- OsLib RaiUtils RaiImage JsonPit iorg || true)"
+  changed="$(git -C "$parent_dir" status --porcelain -- OsLib RaiUtils RaiImage JsonPit ImgSeeder PitSeeder || true)"
 
   if [[ -z "$changed" ]]; then
-    log "RAIkeep: no OsLib/RaiUtils/RaiImage/JsonPit/iorg pointer changes to commit"
+    log "RAIkeep: no OsLib/RaiUtils/RaiImage/JsonPit/ImgSeeder/PitSeeder pointer changes to commit"
     return
   fi
 
   log "RAIkeep: committing final released submodule pointers"
-  git -C "$parent_dir" add OsLib RaiUtils RaiImage JsonPit iorg
+  git -C "$parent_dir" add OsLib RaiUtils RaiImage JsonPit ImgSeeder PitSeeder
   git -C "$parent_dir" commit -m "chore: sync released submodule pointers to $VER"
   git -C "$parent_dir" push origin main
 }
@@ -265,7 +232,7 @@ main() {
   require_cmd perl
 
   log "Release chain start for $VER"
-  log "Order: OsLib -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder/iorg -> PitSeeder"
+  log "Order: OsLib -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder"
 
   if ! confirm "Proceed with release chain for $VER?"; then
     echo "Aborted."
@@ -276,9 +243,8 @@ main() {
   release_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj" "raiutils" "publish-nuget.yml"
   release_submodule "RaiImage" "RaiImage" "RaiImage.csproj" "raiimage" "publish-nuget.yml"
   release_submodule "JsonPit" "JsonPit" "JsonPit.csproj" "jsonpit" "publish-nuget.yml"
-  release_submodule "ImgSeeder/iorg" "iorg" "iorg.csproj" "imgseeder" "publish-nuget.yml"
-
-  release_pitseeder_via_parent_tag
+  release_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj" "imgseeder" "publish-nuget.yml"
+  release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "pitseeder" "publish-nuget.yml"
 
   finalize_parent_pointers
   final_visibility_summary

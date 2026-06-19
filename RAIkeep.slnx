@@ -19,8 +19,7 @@
 		<Project Path="RaiUtils/tests/RaiUtils.Tests/RaiUtils.Tests.csproj" />
 	</Folder>
 	<Project Path="RaiUtils/RaiUtils.csproj" />
-	<Folder Name="/iorg/">
-		<Project Path="iorg/iorg.csproj" />
-		<Project Path="iorg/iorg.Tests/iorg.Tests.csproj" />
+	<Folder Name="/ImgSeeder/">
+		<Project Path="ImgSeeder/ImgSeeder.Tests/ImgSeeder.Tests.csproj" />
 	</Folder>
 </Solution>

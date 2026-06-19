@@ -159,15 +159,15 @@ jobs:
       - name: Pack ImgSeeder tool
         shell: bash
         run: |
-          dotnet restore iorg/iorg.slnx /p:UseLocalRAIkeepSources=false
-          dotnet build iorg/iorg.slnx --configuration Release --no-restore /p:UseLocalRAIkeepSources=false
-          dotnet pack iorg/iorg.csproj --configuration Release --no-build /p:UseLocalRAIkeepSources=false
+          dotnet restore ImgSeeder/ImgSeeder.slnx /p:UseLocalRAIkeepSources=false
+          dotnet build ImgSeeder/ImgSeeder.slnx --configuration Release --no-restore /p:UseLocalRAIkeepSources=false
+          dotnet pack ImgSeeder/ImgSeeder.csproj --configuration Release --no-build /p:UseLocalRAIkeepSources=false
 
       - name: Publish ImgSeeder tool
         if: inputs.publish_to_nuget
         shell: bash
         run: |
-          dotnet nuget push "iorg/artifacts/nuget/ImgSeeder.*.nupkg" \
+          dotnet nuget push "ImgSeeder/artifacts/nuget/ImgSeeder.*.nupkg" \
             --api-key "${{ secrets.NUGET_API_KEY }}" \
             --source "https://api.nuget.org/v3/index.json" \
             --skip-duplicate
@@ -181,7 +181,7 @@ jobs:
         if: inputs.publish_to_nuget
         shell: bash
         run: |
-          VERSION="$(grep -oPm1 '(?<=<Version>)[^<]+' iorg/iorg.csproj)"
+          VERSION="$(grep -oPm1 '(?<=<Version>)[^<]+' ImgSeeder/ImgSeeder.csproj)"
           PACKAGE_ID="imgseeder"
           until [[ "$(curl -s -o /dev/null -w "%{http_code}" "https://api.nuget.org/v3-flatcontainer/${PACKAGE_ID}/${VERSION}/${PACKAGE_ID}.${VERSION}.nupkg")" == "200" ]]; do
             sleep 10
@@ -224,4 +224,4 @@ jobs:
           name: sequential-nuget-release-chain
           path: |
             artifacts/nuget/*.nupkg
-            iorg/artifacts/nuget/*.nupkg
+            ImgSeeder/artifacts/nuget/*.nupkg

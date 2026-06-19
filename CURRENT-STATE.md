@@ -11,7 +11,7 @@ Current note for `3.10.2`:
 - `RaiFile.BackdateCreationTime(...)` now supports deterministic `FileAge` manipulation with configurable sync propagation delay
 - live markdown and PlantUML release markers were refreshed for the `3.10.2` package line
 - RaiImage now preserves separated and compact trailing image numbers during filename normalization and keeps acronym tokens stable in PascalCase output
-- `ImgSeeder/iorg` is part of the coordinated package line and the parent release chain
+- `ImgSeeder` is part of the coordinated package line and the parent release chain
 - older remote-observer and `osconfig.json` references in historical notes should not be treated as the current OsLib public surface
 
 ## Role of this repo
@@ -22,7 +22,7 @@ Current note for `3.10.2`:
 - `RaiUtils`
 - `RaiImage`
 - `JsonPit`
-- `ImgSeeder/iorg`
+- `ImgSeeder`
 - `PitSeeder`
 
 The intent is to keep package repos independent while using `RAIkeep` as the cross-library integration workspace.
@@ -76,7 +76,7 @@ The workspace is aligned on version `3.10.2` for:
 - `RaiUtils`
 - `RaiImage`
 - `JsonPit`
-- `ImgSeeder/iorg`
+- `ImgSeeder`
 - `PitSeeder`
 
 ## 3.10.2 documentation decisions
@@ -98,8 +98,8 @@ The workspace is aligned on version `3.10.2` for:
 - `RaiImage/RaiImage.Tests/RaiImage.Tests.csproj`
 - `JsonPit/JsonPit.csproj`
 - `JsonPit/JsonPit.Tests/JsonPit.Tests.csproj`
-- `iorg/iorg.csproj`
-- `iorg/iorg.Tests/iorg.Tests.csproj`
+- `ImgSeeder/ImgSeeder.csproj`
+- `ImgSeeder/ImgSeeder.Tests/ImgSeeder.Tests.csproj`
 - `PitSeeder/pits/pits.csproj`
 - `PitSeeder/pits.Tests/pits.Tests.csproj`
 
@@ -197,7 +197,7 @@ Key current facts:
 - the latest umbrella solution validation is green with 271 passed and 1 skipped
 - no `3.10.2` publish workflows were triggered during this prep pass
 - the parent sequential NuGet release chain remains ready for later publication, preserving the order `OsLibCore -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder` and the 300-second waits
-- the `iorg` child repo still lacks a usable `NUGET_API_KEY` secret, so later publication should continue to route `ImgSeeder` through the parent chain
+- the `ImgSeeder` child repo now carries its own trusted-publishing workflow and no longer depends on a parent-managed NuGet API key
 
 Later publication, if explicitly requested, should use the parent GitHub Sequential NuGet Release Chain.
 

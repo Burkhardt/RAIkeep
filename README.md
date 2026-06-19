@@ -12,7 +12,7 @@ The current aligned workspace release line is `3.10.2` for:
 - `RaiUtils`
 - `RaiImage`
 - `JsonPit`
-- `ImgSeeder/iorg`
+- `ImgSeeder`
 - `PitSeeder`
 
 ## 3.10.2 Decisions
@@ -28,7 +28,7 @@ The current aligned workspace release line is `3.10.2` for:
 - `RaiUtils`
 - `RaiImage`
 - `JsonPit`
-- `ImgSeeder/iorg`
+- `ImgSeeder`
 - `PitSeeder`
 
 `PitSeeder` and `iorg` are included in the umbrella workspace so each CLI can build against the local package sources and ship from the same release baseline.
