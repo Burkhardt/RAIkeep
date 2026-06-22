@@ -1,61 +1,67 @@
 # CURRENT-STATUS
 
-This file captures the current release-ready status of the `RAIkeep` workspace for the coordinated `3.11.0` line.
+This file captures the current release-ready status of the `RAIkeep` workspace for the coordinated `3.11.1` patch line.
 
 ## Current focus
 
-- Advance the umbrella package line from `3.10.x` to `3.11.0`.
+- Carry the already-prepared `3.11.0` workspace line forward to the next patch, `3.11.1`.
 - Keep the release order unchanged: `OsLibCore -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder`.
 - Keep `ImgSeeder`/`iorg` immediately before `PitSeeder` everywhere in docs, release notes, and release-prep notes.
-- Do not publish to NuGet and do not trigger the GitHub Sequential NuGet Release Chain.
 
 ## Completed in this run
 
-- Updated package versions to `3.11.0` in `OsLib`, `RaiUtils`, `RaiImage`, `JsonPit`, `ImgSeeder`, and `PitSeeder`.
-- Updated downstream fallback dependency versions, including `JsonPit`, `ImgSeeder`, `ImgSeeder.Tests`, and `PitSeeder`.
-- Added `RELEASE_NOTES_3.11.0.md` to every child repo.
-- Refreshed current README/API/requirements/testing notes and the root release-prep docs.
-- Updated live PlantUML release/version markers and regenerated tracked SVG outputs with local `plantuml`.
+- Local child repo heads are now:
+  - `OsLib`: `c768c4b`
+  - `RaiUtils`: `4f734d4`
+  - `RaiImage`: `1d3a13e`
+  - `JsonPit`: `104284b`
+  - `ImgSeeder`: `b86da4f`
+  - `PitSeeder`: `50a41ae`
+- Added `RELEASE_NOTES_3.11.1.md` to every child repo/package.
+- Refreshed `3.11.1` release wording in current package docs where this run still had control.
+- Regenerated the tracked PlantUML SVGs that changed in this run.
 
 ## Validation
 
-Sequential validation results from this workspace state:
+Previous `3.11.0` workspace notes recorded successful sequential validation and partial GitHub pushes, but this `3.11.1` run could not repeat those checks in the current sandbox.
 
+Attempts blocked in this run:
+
+- `dotnet test OsLib/OsLib.slnx --nologo -v minimal`
+- `dotnet test RaiUtils/RaiUtils.slnx --nologo -v minimal`
 - `dotnet test RaiImage/RaiImage.slnx --nologo -v minimal`
-  Result: 91 passed
+- `dotnet test JsonPit/JsonPit.slnx --nologo -v minimal`
 - `dotnet test ImgSeeder/ImgSeeder.slnx --nologo -v minimal`
-  Result: 8 passed
 - `dotnet test PitSeeder/PitSeeder.slnx --nologo -v minimal`
-  Result: 3 passed
 - `dotnet test RAIkeep.slnx --nologo -v minimal`
-  Result: 280 passed, 0 failed, 1 skipped
+- `dotnet vstest <existing test dll>`
 
-One earlier parallel validation attempt produced transient file-lock and temp-tool failures; those did not reproduce once the same solutions were rerun sequentially.
+Observed failure mode:
 
-## Git state
+```text
+System.Net.Sockets.SocketException (13): Permission denied
+```
 
-Child release-prep commits created in this run:
+Additional note:
 
-- `OsLib`: `3268fbf` pushed to `origin/main`
-- `RaiUtils`: `69d2c32` pushed to `origin/main`
-- `RaiImage`: `c7e9e64` local only
-- `JsonPit`: `cbf0b6d` local only
-- `ImgSeeder`: `54a3bd2` local only
-- `PitSeeder`: `df2dc3a` local only
+- Existing prebuilt `iorg` and `pits` binaries still report `3.9.1`, so they are stale artifacts and not valid `3.11.1` verification.
 
-The last four pushes failed repeatedly with:
+## Git and publishing state
+
+- No `3.11.1` child repo commits were pushed from this run.
+- No parent `RAIkeep` push was possible from this run.
+- No `3.11.1` Sequential NuGet Release Chain run was dispatched.
+- Shell GitHub access fails with:
 
 ```text
 fatal: unable to access 'https://github.com/Burkhardt/<repo>.git/': Could not resolve host: github.com
 ```
 
-## Parent repo handling
-
-- The parent repo should track the new `3.11.0` submodule pointers and updated root docs.
-- The parent remote push must wait until `RaiImage`, `JsonPit`, `ImgSeeder`, and `PitSeeder` are pushed successfully, otherwise the parent would reference unreachable submodule SHAs.
+- `gh auth status` also reports an invalid token in this session.
+- The GitHub app is authenticated for inspection, but this session has no workflow-dispatch tool for the parent sequential release chain.
 
 ## Suggested resume prompt
 
 ```text
-Please read CURRENT-STATUS.md first, then continue from the prepared 3.11.0 umbrella baseline. Validation is green, but only OsLib and RaiUtils were pushed before GitHub DNS resolution started failing for the remaining child repos.
+Please read CURRENT-STATUS.md first, then continue the prepared 3.11.1 umbrella patch release in an environment with working GitHub DNS/network access and .NET test socket support. Push the child repos in order, update the parent submodule pointers, and dispatch the parent Sequential NuGet Release Chain with publish_to_nuget=true.
 ```

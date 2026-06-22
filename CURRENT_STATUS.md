@@ -1,27 +1,22 @@
 # CURRENT_STATUS
 
-Current coordinated release-prep line: `3.11.0`.
+Current coordinated patch line: `3.11.1`
 
-- `OsLib`, `RaiUtils`, `RaiImage`, `JsonPit`, `ImgSeeder`/`iorg`, and `PitSeeder` were updated to `3.11.0`.
-- Live package metadata, fallback dependency defaults, current README/API notes, `RELEASE_NOTES_3.11.0.md` files, and PlantUML release markers were aligned across the workspace.
-- The carried-forward behavior includes the current RaiImage filename-normalization and `WordCase` guidance plus the `iorg` `-rmc` cache-delete alias.
-
-Validation completed sequentially in this workspace:
-
-- `dotnet test RaiImage/RaiImage.slnx --nologo -v minimal`: 91 passed
-- `dotnet test ImgSeeder/ImgSeeder.slnx --nologo -v minimal`: 8 passed
-- `dotnet test PitSeeder/PitSeeder.slnx --nologo -v minimal`: 3 passed
-- `dotnet test RAIkeep.slnx --nologo -v minimal`: 280 passed, 1 skipped
-
-Git push state from this environment:
-
-- pushed: `OsLib` `3268fbf`, `RaiUtils` `69d2c32`
-- local-only due DNS failure: `RaiImage` `c7e9e64`, `JsonPit` `cbf0b6d`, `ImgSeeder` `54a3bd2`, `PitSeeder` `df2dc3a`
-
-The parent `RAIkeep` repo can carry the new submodule pointers locally, but its remote push must wait until those four child commits are reachable on GitHub.
+- The workspace had already been prepared on `3.11.0`; this run carries it forward to `3.11.1`.
+- Local child repo heads for the `3.11.1` release-note additions are:
+  - `OsLib` `c768c4b`
+  - `RaiUtils` `4f734d4`
+  - `RaiImage` `1d3a13e`
+  - `JsonPit` `104284b`
+  - `ImgSeeder` `b86da4f`
+  - `PitSeeder` `50a41ae`
+- Root dependency diagrams now reference `WordCase` instead of the retired `CamelCase` type.
+- Fresh .NET validation is blocked here because both MSBuild and VSTest fail on local socket/named-pipe creation with `SocketException (13): Permission denied`.
+- Existing `iorg` and `pits` binaries still report `3.9.1`, so they are stale and not valid `3.11.1` verification.
+- GitHub shell access is DNS-blocked, `gh` auth is invalid, and no workflow-dispatch tool is available here, so no `3.11.1` pushes or publish workflows were executed from this run.
 
 Suggested resume prompt:
 
 ```text
-Please read CURRENT_STATUS.md first. The coordinated 3.11.0 release-prep line is validated locally, two child repos are pushed, and the remaining child pushes plus the parent push are blocked by intermittent DNS resolution to github.com.
+Please read CURRENT_STATUS.md first. Continue the prepared 3.11.1 release in an environment with working GitHub DNS/network access and .NET test socket support so the child repos can be pushed in order and the parent Sequential NuGet Release Chain can be dispatched.
 ```
