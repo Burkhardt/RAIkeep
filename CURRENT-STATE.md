@@ -1,22 +1,10 @@
 # CURRENT-STATE
 
-This file captures the current working state of the `RAIkeep` umbrella workspace so a future session can resume quickly.
+This file captures the current working state of the `RAIkeep` umbrella workspace after the coordinated `3.11.0` release-prep pass.
 
-Current note for `3.10.2`:
+## Active line
 
-- the active OsLib config contract is `RAIkeep.json5`
-- `Os.Config` is lazy and dynamic
-- `CloudPathWiring` plus `RaiPath.CloudEvaluator` drive buffered cloud state
-- directory waits live in `RaiPath`, file waits live in `RaiFile`
-- `RaiFile.BackdateCreationTime(...)` now supports deterministic `FileAge` manipulation with configurable sync propagation delay
-- live markdown and PlantUML release markers were refreshed for the `3.10.2` package line
-- RaiImage now preserves separated and compact trailing image numbers during filename normalization and keeps acronym tokens stable in PascalCase output
-- `ImgSeeder` is part of the coordinated package line and the parent release chain
-- older remote-observer and `osconfig.json` references in historical notes should not be treated as the current OsLib public surface
-
-## Role of this repo
-
-`RAIkeep` is the umbrella workspace for the related C# libraries and CLIs:
+The active coordinated line is `3.11.0` for:
 
 - `OsLib`
 - `RaiUtils`
@@ -25,218 +13,55 @@ Current note for `3.10.2`:
 - `ImgSeeder`
 - `PitSeeder`
 
-The intent is to keep package repos independent while using `RAIkeep` as the cross-library integration workspace.
+## What changed
 
-## Latest umbrella validation
+- Every child repo now has a `3.11.0` package version and a matching `RELEASE_NOTES_3.11.0.md`.
+- Downstream fallback dependency defaults now point at `3.11.0`, including the `iorg` and `pits` tool projects.
+- The current root docs and child live docs were refreshed to reflect the `3.11.0` line.
+- PlantUML release markers were updated and the tracked SVG renders were regenerated locally.
+- The `3.10.4` standalone RaiImage/ImgSeeder patch work is now folded into the coordinated `3.11.0` umbrella line.
 
-Most recent command:
+## Behavioral payload carried forward
 
-```bash
-dotnet test RAIkeep.slnx --nologo -v minimal
-```
+- RaiImage keeps the current filename-normalization flow for separated and compact trailing image numbers.
+- `WordCase` remains the supported replacement for the retired `CamelCase` helper.
+- `ImgSeeder`/`iorg` keeps `-rmc` alongside `--rm-cache` and remains immediately before `PitSeeder` in every release-order reference.
 
-Most recent result:
+## Validation baseline
 
-- total: 272
+Commands verified successfully in this workspace state:
+
+- `dotnet test RaiImage/RaiImage.slnx --nologo -v minimal`
+- `dotnet test ImgSeeder/ImgSeeder.slnx --nologo -v minimal`
+- `dotnet test PitSeeder/PitSeeder.slnx --nologo -v minimal`
+- `dotnet test RAIkeep.slnx --nologo -v minimal`
+
+Latest umbrella result:
+
+- passed: 280
 - failed: 0
-- succeeded: 271
 - skipped: 1
 
-Earlier remote SSH and remote cloud-sync notes in this file refer to an older harness setup and should be treated as historical unless revalidated.
+## Git status baseline
 
-## Earlier verified baseline
+Successful remote pushes from this run:
 
-The umbrella solution baseline was verified successfully.
+- `OsLib` -> `3268fbf`
+- `RaiUtils` -> `69d2c32`
 
-Command:
+Prepared locally but not pushed because GitHub DNS resolution failed:
 
-```bash
-dotnet test RAIkeep.slnx
-```
+- `RaiImage` -> `c7e9e64`
+- `JsonPit` -> `cbf0b6d`
+- `ImgSeeder` -> `54a3bd2`
+- `PitSeeder` -> `df2dc3a`
 
-Verified result at the time of this note:
+## Parent repo note
 
-- total: 149
-- failed: 0
-- succeeded: 144
-- skipped: 5
+Update the parent repo submodule pointers and root docs together, but only push the parent after the remaining four child repos are reachable remotely. Until then, a parent push would publish broken submodule pointers.
 
-In addition, later focused validation around the recent cloud-test restructuring passed for the affected OsLib cloud test set.
-
-Focused result at the time of this note:
-
-- targeted cloud test batch: 27 passed
-- failed: 0
-
-## Current aligned package version
-
-The workspace is aligned on version `3.10.2` for:
-
-- `OsLib`
-- `RaiUtils`
-- `RaiImage`
-- `JsonPit`
-- `ImgSeeder`
-- `PitSeeder`
-
-## 3.10.2 documentation decisions
-
-- Current docs are being aligned to the post-purge OsLib architecture.
-- Historical release/design notes remain useful context but no longer define the live OsLib API surface.
-- Active package diagrams now carry the `3.10.2` release marker so current diagrams are easy to distinguish from historical design artifacts.
-- RaiImage live API docs and diagrams now call out the trailing-image-number normalization flow used by `ImgSeeder`.
-
-## Solution structure
-
-`RAIkeep.slnx` includes:
-
-- `OsLib/OsLib.csproj`
-- `OsLib/OsLib.Tests/OsLib.Tests.csproj`
-- `RaiUtils/RaiUtils.csproj`
-- `RaiUtils/tests/RaiUtils.Tests/RaiUtils.Tests.csproj`
-- `RaiImage/RaiImage.csproj`
-- `RaiImage/RaiImage.Tests/RaiImage.Tests.csproj`
-- `JsonPit/JsonPit.csproj`
-- `JsonPit/JsonPit.Tests/JsonPit.Tests.csproj`
-- `ImgSeeder/ImgSeeder.csproj`
-- `ImgSeeder/ImgSeeder.Tests/ImgSeeder.Tests.csproj`
-- `PitSeeder/pits/pits.csproj`
-- `PitSeeder/pits.Tests/pits.Tests.csproj`
-
-The umbrella solution now carries the package projects and tests needed for the coordinated release line, including `PitSeeder` and `iorg`.
-
-## JsonPit.Tests sunset
-
-Decision:
-
-- package-owned JsonPit tests now live in the `JsonPit` repo
-- the separate `JsonPit.Tests` repository is being sunset and archived
-
-Status:
-
-- the standalone `JsonPit.Tests` README was updated with an archival notice
-- the archival notice points to `JsonPit` for package tests and `RAIkeep` for integration work
-
-Recommended GitHub sequence:
-
-1. Commit and push the archival README change in `JsonPit.Tests`
-2. Archive the `JsonPit.Tests` GitHub repository
-3. Keep it archived for historical reference instead of deleting it immediately
-
-## Rename direction
-
-Decision:
-
-- the parent umbrella repo is intended to be `RAIkeep`
-- renaming from `JsonPitSolution` to `RAIkeep` makes architectural sense now that the repo truly acts as the umbrella workspace
-
-Recommended sequence:
-
-1. Push child repo changes first if submodule SHAs changed
-2. Push the umbrella repo changes last
-3. Rename the GitHub repo from `JsonPitSolution` to `RAIkeep`
-4. Update local `origin` URL after the rename
-
-## PlantUML artifacts added or updated
-
-At the `RAIkeep` root:
-
-- `RAIkeep-Package-Dependencies.puml`
-- `RAIkeep-Library-Dependencies.puml`
-
-Under `OsLib`:
-
-- `Os-ClassDiagram.puml`
-
-At the `RAIkeep` root:
-
-- `MANIFESTO.md`
-
-## Current cloud-test state
-
-The OsLib cloud-related tests were recently split into two honest layers.
-
-Real cloud tests now target actual provider-backed roots on the machine that runs the tests:
-
-- `OsLib/OsLib.Tests/CloudStorageDiscoveryTests.cs`
-- `OsLib/OsLib.Tests/CloudStorageAgreementTests.cs`
-- `OsLib/OsLib.Tests/CloudStorageProviderPathTests.cs`
-- `OsLib/OsLib.Tests/CloudStorageRealWorldIntegrationTests.cs`
-
-Mechanics-oriented tests now hold the sandboxed/config/probe logic:
-
-- `OsLib/OsLib.Tests/CloudStorageConfigMechanicsTests.cs`
-- `OsLib/OsLib.Tests/CloudStorageAgreementMechanicsTests.cs`
-- `OsLib/OsLib.Tests/CloudStoragePathMechanicsTests.cs`
-
-Supporting helper:
-
-- `OsLib/OsLib.Tests/CloudStorageRealTestEnvironment.cs`
-
-Remote environment-backed tests that are now active and passing:
-
-- `OsLib/OsLib.Tests/CloudRemoteSyncTests.cs`
-- `JsonPit/JsonPit.Tests/CloudRemoteSyncTests.cs`
-- `OsLib/OsLib.Tests/RemoteSshTests.cs`
-
-This means the naming is now much closer to reality than before: sandboxed tests no longer present themselves as real cloud-provider tests.
-
-## Current release state
-
-The `3.10.2` release-alignment work is the current umbrella baseline.
-
-Key current facts:
-
-- package versions are aligned to `3.10.2`
-- OsLib path/config/logging semantics remain aligned and documented
-- RaiImage adds smarter trailing-number normalization for route short names and derivative file names
-- OsLib now exposes `RaiFile.BackdateCreationTime(...)` and `SyncPropagationDelayMs` configuration for remote-sync timing control
-- release-note files were added or updated across the package repos
-- active PlantUML headers were refreshed across the umbrella and child-package diagrams
-- the remote `mzansi` test setup is now valid enough for the remote SSH and cloud-sync tests to execute successfully
-- the latest umbrella solution validation is green with 271 passed and 1 skipped
-- no `3.10.2` publish workflows were triggered during this prep pass
-- the parent sequential NuGet release chain remains ready for later publication, preserving the order `OsLibCore -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder` and the 300-second waits
-- the `ImgSeeder` child repo now carries its own trusted-publishing workflow and no longer depends on a parent-managed NuGet API key
-
-Later publication, if explicitly requested, should use the parent GitHub Sequential NuGet Release Chain.
-
-## PlantUML conventions established in this session
-
-For package layout:
-
-- hidden `right` links are useful for defining columns
-- hidden `down` links are useful for defining rows
-- `..[norank]>` helps keep visible dependency arrows from dominating layout
-
-For built-in UML icons:
-
-- `show circle` restores class and enum header icons
-- `hide circle` removes those header icons
-- `classAttributeIconSize` controls the visibility size of member glyphs
-
-For static members:
-
-- explicit `Ⓢ` markers work well in class diagrams
-
-For package/member text diagrams:
-
-- `Ⓒ` was used for production-class markers
-- `Ⓣ` was used for test-class markers
-
-## Important files
-
-- `RAIkeep.slnx`
-- `README.md`
-- `MANIFESTO.md`
-- `.gitmodules`
-- `RAIkeep-Package-Dependencies.puml`
-- `RAIkeep-Library-Dependencies.puml`
-- `OsLib/Os-ClassDiagram.puml`
-- `CURRENT-STATE.md`
-
-## Suggested prompt for a future session
+## Suggested resume prompt
 
 ```text
-Please read CURRENT-STATE.md in the RAIkeep repo root first, then continue from there.
+Please read CURRENT-STATE.md first. The local 3.11.0 release-prep pass is complete and validated, but RaiImage, JsonPit, ImgSeeder, PitSeeder, and the parent RAIkeep push still need a working github.com DNS path.
 ```

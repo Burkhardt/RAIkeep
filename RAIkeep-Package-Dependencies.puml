@@ -1,5 +1,5 @@
 @startuml RAIkeep-Package-Dependencies
-' Release: 3.10.2
+' Release: 3.11.1
 title RAIkeep Package Dependencies
 
 top to bottom direction
@@ -63,7 +63,7 @@ package "JsonPit.Tests" <<tests>> as T_JsonPit {
 }
 
 package "RaiImage" as P_RaiImage {
-	rectangle "Ⓒ CamelCase\nⒸ ColorInfo\nⒸ Dye\nⒸ ImageFile\nⒸ ImageTreeFile\nⒸ ImageMagick\nⒸ ImageMagickCommand\nⒸ ImageUrl\nⒸ Src\nⒸ Tmp\nⒸ TwoSizes" as M_RaiImage
+	rectangle "Ⓒ WordCase\nⒸ ColorInfo\nⒸ Dye\nⒸ ImageFile\nⒸ ImageTreeFile\nⒸ ImageMagick\nⒸ ImageMagickCommand\nⒸ ImageUrl\nⒸ Src\nⒸ Tmp\nⒸ TwoSizes" as M_RaiImage
 }
 
 package "RaiImage.Tests" <<tests>> as T_RaiImage {

@@ -1,76 +1,27 @@
 # CURRENT_STATUS
 
-Current note for `3.10.2`:
+Current coordinated release-prep line: `3.11.0`.
 
-- The workspace is prepared locally on the coordinated `3.10.2` patch release line.
-- Package metadata, fallback dependency versions, live release docs, and PlantUML markers are aligned across `OsLib`, `RaiUtils`, `RaiImage`, `JsonPit`, `ImgSeeder`, and `PitSeeder`.
-- The carried-forward payload is RaiImage filename normalization plus the integrated `iorg` packaging/test/release-chain flow.
-- Fresh local `dotnet test` reruns are blocked in this sandbox because MSBuild/VSTest cannot open the required named-pipe/socket endpoints.
-- No `3.10.2` child commits, parent submodule-pointer updates, or publish workflows have been pushed from this environment yet.
+- `OsLib`, `RaiUtils`, `RaiImage`, `JsonPit`, `ImgSeeder`/`iorg`, and `PitSeeder` were updated to `3.11.0`.
+- Live package metadata, fallback dependency defaults, current README/API notes, `RELEASE_NOTES_3.11.0.md` files, and PlantUML release markers were aligned across the workspace.
+- The carried-forward behavior includes the current RaiImage filename-normalization and `WordCase` guidance plus the `iorg` `-rmc` cache-delete alias.
 
-This file records the current RAIkeep workspace state after the local `3.10.2` release-prep pass.
+Validation completed sequentially in this workspace:
 
-## Current focus
+- `dotnet test RaiImage/RaiImage.slnx --nologo -v minimal`: 91 passed
+- `dotnet test ImgSeeder/ImgSeeder.slnx --nologo -v minimal`: 8 passed
+- `dotnet test PitSeeder/PitSeeder.slnx --nologo -v minimal`: 3 passed
+- `dotnet test RAIkeep.slnx --nologo -v minimal`: 280 passed, 1 skipped
 
-The active line is a coordinated `3.10.2` workspace release across:
+Git push state from this environment:
 
-- `OsLib`
-- `RaiUtils`
-- `RaiImage`
-- `JsonPit`
-- `ImgSeeder`
-- `PitSeeder`
+- pushed: `OsLib` `3268fbf`, `RaiUtils` `69d2c32`
+- local-only due DNS failure: `RaiImage` `c7e9e64`, `JsonPit` `cbf0b6d`, `ImgSeeder` `54a3bd2`, `PitSeeder` `df2dc3a`
 
-## Implementation
+The parent `RAIkeep` repo can carry the new submodule pointers locally, but its remote push must wait until those four child commits are reachable on GitHub.
 
-- `OsLib`, `RaiUtils`, `RaiImage`, `JsonPit`, `ImgSeeder`, and `PitSeeder` package versions were aligned to `3.10.2`.
-- The coordinated release order remains `OsLibCore -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder`.
-- Downstream fallback package references were advanced to the same `3.10.2` line.
-- Live README, API, release-note, workflow, and root status documents were refreshed to point at the `3.10.2` baseline.
-- PlantUML release markers were updated and the changed SVGs were regenerated locally where those SVGs are tracked.
-- `RAIkeep.slnx` includes `PitSeeder/pits/pits.csproj`, `PitSeeder/pits.Tests/pits.Tests.csproj`, `ImgSeeder/ImgSeeder.csproj`, and `ImgSeeder/ImgSeeder.Tests/ImgSeeder.Tests.csproj`.
-- The parent sequential release chain now packs and publishes `ImgSeeder` between `JsonPit` and `PitSeeder`, with the existing 300-second waits preserved.
-
-## Test coverage
-
-The intended focused validation set for this prep run is:
-
-- `OsLib/OsLib.slnx`
-- `RaiUtils/RaiUtils.slnx`
-- `RaiImage/RaiImage.slnx`
-- `JsonPit/JsonPit.slnx`
-- `ImgSeeder/ImgSeeder.slnx`
-- `PitSeeder/PitSeeder.slnx`
-- `RAIkeep.slnx`
-
-## Validation
-
-Most recent previously verified package results in this workspace:
-
-- `OsLib.Tests`: 64 passed
-- `RaiUtils.Tests`: 21 passed
-- `RaiImage.Tests`: 91 passed
-- `JsonPit.Tests`: 88 passed, 1 skipped
-- `ImgSeeder.Tests`: 4 passed
-- `pits.Tests`: 3 passed
-
-Most recent previously verified umbrella validation:
+Suggested resume prompt:
 
 ```text
-dotnet test RAIkeep.slnx --nologo -v minimal
-Passed: 271, Failed: 0, Skipped: 1
-```
-
-## Publishing state
-
-- No `3.10.2` tags or publish workflows were triggered in this prep run.
-- The intended publish path remains the parent `RAIkeep` workflow `.github/workflows/sequential-nuget-release-chain.yml`.
-- The expected order is `OsLibCore -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder`.
-- The workflow now preserves the 300-second waits and adds NuGet flat-container `.nupkg` verification steps for every published package, including `imgseeder`.
-- This environment cannot push the prepared child commits because shell GitHub access is DNS-blocked and no workflow-dispatch tool is available in-session.
-
-## Suggested resume prompt
-
-```text
-Please read CURRENT_STATUS.md first. The `3.10.2` release-prep baseline is ready locally, but push and publish still require an environment with GitHub network access.
+Please read CURRENT_STATUS.md first. The coordinated 3.11.0 release-prep line is validated locally, two child repos are pushed, and the remaining child pushes plus the parent push are blocked by intermittent DNS resolution to github.com.
 ```

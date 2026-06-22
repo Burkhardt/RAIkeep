@@ -1,5 +1,5 @@
 @startuml RAIkeep-Library-Dependencies
-' Release: 3.10.2
+' Release: 3.11.1
 title RAIkeep Library Dependencies
 
 top to bottom direction
@@ -73,7 +73,7 @@ package "JsonPit" as P_JsonPit {
 }
 
 package "RaiImage" as P_RaiImage {
-	class CamelCase
+	class WordCase
 	class ColorInfo
 	class Dye
 	class ImageFile
