@@ -16,7 +16,7 @@ if [[ -z "$VER" ]]; then
 fi
 
 TAG="v${VER}"
-MIN_HOLD_SECONDS=300
+MIN_HOLD_SECONDS=330
 
 require_cmd() {
   command -v "$1" >/dev/null 2>&1 || {
