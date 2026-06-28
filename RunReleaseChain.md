@@ -2,13 +2,13 @@
 
 As preprocessing, 
 first commit all changes in all subprojects with meaningful messages.
-Then, find the next release number available across all 6 projects and change the csproj file's version number accordingly - all with one number (i.e. v3.11.1).
+Then, find the next release number available across all 6 projects and change the csproj file's version number accordingly - all with one number (i.e. v3.11.2).
 Then check all md files that need update and also all puml files that need updates so that both forms of documentation reflect the current code.
 
 # How to run next time:
 
 <code>cd /Users/rsb/Project2026/GitHub/RAIkeep
-scripts/release-chain.sh 3.11.1</code>
+scripts/release-chain.sh 3.11.2</code>
 
 The enforced package order is:
 

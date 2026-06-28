@@ -1,10 +1,10 @@
 # CURRENT-STATUS
 
-This file captures the current release-ready status of the `RAIkeep` workspace for the coordinated `3.11.1` patch line.
+This file captures the current release-ready status of the `RAIkeep` workspace for the coordinated `3.11.2` patch line.
 
 ## Current focus
 
-- Carry the already-prepared `3.11.0` workspace line forward to the next patch, `3.11.1`.
+- Carry the already-prepared `3.11.0` workspace line forward to the next patch, `3.11.2`.
 - Keep the release order unchanged: `OsLibCore -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder`.
 - Keep `ImgSeeder`/`iorg` immediately before `PitSeeder` everywhere in docs, release notes, and release-prep notes.
 
@@ -17,13 +17,13 @@ This file captures the current release-ready status of the `RAIkeep` workspace f
   - `JsonPit`: `104284b`
   - `ImgSeeder`: `b86da4f`
   - `PitSeeder`: `50a41ae`
-- Added `RELEASE_NOTES_3.11.1.md` to every child repo/package.
-- Refreshed `3.11.1` release wording in current package docs where this run still had control.
+- Added `RELEASE_NOTES_3.11.2.md` to every child repo/package.
+- Refreshed `3.11.2` release wording in current package docs where this run still had control.
 - Regenerated the tracked PlantUML SVGs that changed in this run.
 
 ## Validation
 
-Previous `3.11.0` workspace notes recorded successful sequential validation and partial GitHub pushes, but this `3.11.1` run could not repeat those checks in the current sandbox.
+Previous `3.11.0` workspace notes recorded successful sequential validation and partial GitHub pushes, but this `3.11.2` run could not repeat those checks in the current sandbox.
 
 Attempts blocked in this run:
 
@@ -44,13 +44,13 @@ System.Net.Sockets.SocketException (13): Permission denied
 
 Additional note:
 
-- Existing prebuilt `iorg` and `pits` binaries still report `3.9.1`, so they are stale artifacts and not valid `3.11.1` verification.
+- Existing prebuilt `iorg` and `pits` binaries still report `3.9.1`, so they are stale artifacts and not valid `3.11.2` verification.
 
 ## Git and publishing state
 
-- No `3.11.1` child repo commits were pushed from this run.
+- No `3.11.2` child repo commits were pushed from this run.
 - No parent `RAIkeep` push was possible from this run.
-- No `3.11.1` Sequential NuGet Release Chain run was dispatched.
+- No `3.11.2` Sequential NuGet Release Chain run was dispatched.
 - Shell GitHub access fails with:
 
 ```text
@@ -63,5 +63,5 @@ fatal: unable to access 'https://github.com/Burkhardt/<repo>.git/': Could not re
 ## Suggested resume prompt
 
 ```text
-Please read CURRENT-STATUS.md first, then continue the prepared 3.11.1 umbrella patch release in an environment with working GitHub DNS/network access and .NET test socket support. Push the child repos in order, update the parent submodule pointers, and dispatch the parent Sequential NuGet Release Chain with publish_to_nuget=true.
+Please read CURRENT-STATUS.md first, then continue the prepared 3.11.2 umbrella patch release in an environment with working GitHub DNS/network access and .NET test socket support. Push the child repos in order, update the parent submodule pointers, and dispatch the parent Sequential NuGet Release Chain with publish_to_nuget=true.
 ```

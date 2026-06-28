@@ -1,10 +1,10 @@
 # CURRENT-STATE
 
-This file captures the current working state of the `RAIkeep` umbrella workspace after the coordinated `3.11.1` patch-release prep pass.
+This file captures the current working state of the `RAIkeep` umbrella workspace after the coordinated `3.11.2` patch-release prep pass.
 
 ## Active line
 
-The active coordinated line is `3.11.1` for:
+The active coordinated line is `3.11.2` for:
 
 - `OsLib`
 - `RaiUtils`
@@ -15,11 +15,11 @@ The active coordinated line is `3.11.1` for:
 
 ## What changed in this run
 
-- Added `RELEASE_NOTES_3.11.1.md` to all six child repos/packages.
+- Added `RELEASE_NOTES_3.11.2.md` to all six child repos/packages.
 - Preserved the coordinated package order `OsLibCore -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder`.
 - Regenerated the tracked SVG renders for the PlantUML files changed in this run.
 - Updated the root dependency diagrams so current package overviews show `WordCase` instead of the retired `CamelCase` type.
-- Carried forward the already-prepared `3.11.0` workspace state to the next patch line `3.11.1`.
+- Carried forward the already-prepared `3.11.0` workspace state to the next patch line `3.11.2`.
 
 ## Local child heads
 
@@ -46,5 +46,5 @@ These heads are local-only from the perspective of this run; push status could n
 ## Suggested resume prompt
 
 ```text
-Please read CURRENT-STATE.md first. Continue the local 3.11.1 release-prep pass in an environment that allows GitHub network access and .NET test socket creation, then push the child repos in order, update the parent submodule pointers, and dispatch the parent Sequential NuGet Release Chain with publish_to_nuget=true.
+Please read CURRENT-STATE.md first. Continue the local 3.11.2 release-prep pass in an environment that allows GitHub network access and .NET test socket creation, then push the child repos in order, update the parent submodule pointers, and dispatch the parent Sequential NuGet Release Chain with publish_to_nuget=true.
 ```
