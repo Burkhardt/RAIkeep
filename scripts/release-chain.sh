@@ -232,7 +232,7 @@ main() {
   require_cmd perl
 
   log "Release chain start for $VER"
-  log "Order: OsLib -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder"
+  log "Order: OsLib -> RaiUtils -> RaiImage -> JsonPit -> PitSeeder -> ImgSeeder"
 
   if ! confirm "Proceed with release chain for $VER?"; then
     echo "Aborted."
@@ -243,8 +243,8 @@ main() {
   release_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj" "raiutils" "publish-nuget.yml"
   release_submodule "RaiImage" "RaiImage" "RaiImage.csproj" "raiimage" "publish-nuget.yml"
   release_submodule "JsonPit" "JsonPit" "JsonPit.csproj" "jsonpit" "publish-nuget.yml"
+  release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "pitseeder" "publish-nuget.yaml"
   release_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj" "imgseeder" "publish-nuget.yml"
-  release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "pitseeder" "publish-nuget.yml"
 
   finalize_parent_pointers
   final_visibility_summary
