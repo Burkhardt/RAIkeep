@@ -18,7 +18,10 @@ Current coordinated minor line: `3.13.0`
 - `JsonPit` emitted one existing documentation warning during the `ImgSeeder` solution build path:
   - `JsonPit.cs(95,32): warning CS1574: XML comment has cref attribute 'AddPreservingModified' that could not be resolved`
 - Existing `iorg` and `pits` binaries still report `3.9.1`, so they are stale and not valid `3.13.0` verification.
-- Child pushes and the later parent push are blocked here by shell DNS failure to `github.com`.
+- Child pushes are blocked here by shell DNS failure to `github.com`.
+- The parent `RAIkeep` push currently fails later with:
+  - `fatal: could not read Username for 'https://github.com': Device not configured`
+- `gh auth status` reports the active `github.com` token for `Burkhardt` is invalid.
 - No NuGet publish and no Sequential NuGet Release Chain run were triggered, by request.
 
 Suggested resume prompt:
