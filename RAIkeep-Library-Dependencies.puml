@@ -1,5 +1,5 @@
 @startuml RAIkeep-Library-Dependencies
-' Release: 3.11.2
+' Release: 3.13.0
 title RAIkeep Library Dependencies
 
 top to bottom direction

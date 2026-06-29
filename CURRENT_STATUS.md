@@ -1,22 +1,28 @@
 # CURRENT_STATUS
 
-Current coordinated patch line: `3.11.2`
+Current coordinated minor line: `3.13.0`
 
-- The workspace had already been prepared on `3.11.0`; this run carries it forward to `3.11.2`.
-- Local child repo heads for the `3.11.2` release-note additions are:
-  - `OsLib` `c768c4b`
-  - `RaiUtils` `4f734d4`
-  - `RaiImage` `1d3a13e`
-  - `JsonPit` `104284b`
-  - `ImgSeeder` `b86da4f`
-  - `PitSeeder` `50a41ae`
-- Root dependency diagrams now reference `WordCase` instead of the retired `CamelCase` type.
-- Fresh .NET validation is blocked here because both MSBuild and VSTest fail on local socket/named-pipe creation with `SocketException (13): Permission denied`.
-- Existing `iorg` and `pits` binaries still report `3.9.1`, so they are stale and not valid `3.11.2` verification.
-- GitHub shell access is DNS-blocked, `gh` auth is invalid, and no workflow-dispatch tool is available here, so no `3.11.2` pushes or publish workflows were executed from this run.
+- Starting baseline was the live `3.12.1` line across all six child repos/packages.
+- Local child repo prep commits for `3.13.0` are:
+  - `OsLib` `de3807c`
+  - `RaiUtils` `e163c67`
+  - `RaiImage` `7c7e98b`
+  - `JsonPit` `e9d9b9f`
+  - `ImgSeeder` `b43185a`
+  - `PitSeeder` `af5eae6`
+- Sequential validation passed:
+  - `dotnet test RaiImage/RaiImage.slnx --nologo -v minimal` -> `94 passed`
+  - `dotnet test ImgSeeder/ImgSeeder.slnx --nologo -v minimal` -> `8 passed`
+  - `dotnet test PitSeeder/PitSeeder.slnx --nologo -v minimal` -> `4 passed`
+  - `dotnet test RAIkeep.slnx --nologo -v minimal` -> `285 passed`, `1 skipped`
+- `JsonPit` emitted one existing documentation warning during the `ImgSeeder` solution build path:
+  - `JsonPit.cs(95,32): warning CS1574: XML comment has cref attribute 'AddPreservingModified' that could not be resolved`
+- Existing `iorg` and `pits` binaries still report `3.9.1`, so they are stale and not valid `3.13.0` verification.
+- Child pushes and the later parent push are blocked here by shell DNS failure to `github.com`.
+- No NuGet publish and no Sequential NuGet Release Chain run were triggered, by request.
 
 Suggested resume prompt:
 
 ```text
-Please read CURRENT_STATUS.md first. Continue the prepared 3.11.2 release in an environment with working GitHub DNS/network access and .NET test socket support so the child repos can be pushed in order and the parent Sequential NuGet Release Chain can be dispatched.
+Please read CURRENT_STATUS.md first. Continue the prepared 3.13.0 release in an environment with working GitHub DNS/network access, push the child repos in order, then push the parent repo with the updated submodule pointers. Do not publish to NuGet or dispatch the Sequential NuGet Release Chain unless explicitly requested.
 ```
