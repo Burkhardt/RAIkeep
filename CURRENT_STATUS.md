@@ -1,22 +1,61 @@
 # CURRENT_STATUS
 
-Current coordinated patch line: `3.11.2`
+Last updated: 2026-06-30
 
-- The workspace had already been prepared on `3.11.0`; this run carries it forward to `3.11.2`.
-- Local child repo heads for the `3.11.2` release-note additions are:
-  - `OsLib` `c768c4b`
-  - `RaiUtils` `4f734d4`
-  - `RaiImage` `1d3a13e`
-  - `JsonPit` `104284b`
-  - `ImgSeeder` `b86da4f`
-  - `PitSeeder` `50a41ae`
-- Root dependency diagrams now reference `WordCase` instead of the retired `CamelCase` type.
-- Fresh .NET validation is blocked here because both MSBuild and VSTest fail on local socket/named-pipe creation with `SocketException (13): Permission denied`.
-- Existing `iorg` and `pits` binaries still report `3.9.1`, so they are stale and not valid `3.11.2` verification.
-- GitHub shell access is DNS-blocked, `gh` auth is invalid, and no workflow-dispatch tool is available here, so no `3.11.2` pushes or publish workflows were executed from this run.
+Current coordinated release line: `3.11.3`
 
-Suggested resume prompt:
+## Release Truth (GitHub + NuGet)
+
+- Latest NuGet-published version for all six packages is `3.11.3`.
+- Latest release tag in all six child repos is `v3.11.3`.
+- `3.12.0`, `3.12.1`, and `3.13.0` were prepared on child `main` branches earlier, then safely rolled back using non-destructive revert commits.
+
+## Rollback Completed (Safe, Non-Destructive)
+
+Rollback executed on 2026-06-30 with these guarantees:
+
+- No force-push used.
+- Full audit trail preserved via `git revert` commits.
+- Safety tags created before rollback:
+  - `rollback-pre-20260630-121626` in `RAIkeep` and each child repo.
+
+Child repos reverted from `v3.11.3..HEAD` and pushed:
+
+- `OsLib`
+- `RaiUtils`
+- `RaiImage`
+- `JsonPit`
+- `PitSeeder`
+- `ImgSeeder`
+
+Umbrella repo actions:
+
+- Reverted 3.13 prep commits:
+  - `c5abe78` (`docs: refresh 3.13.0 push blockers`)
+  - `6d264fc` (`chore: prepare 3.13.0 umbrella release`)
+- Synced submodule pointers to the child rollback heads.
+- Pushed updated `main`.
+
+## Current Verification Snapshot
+
+- All repos are clean (`git status` clean).
+- All repos are synced with remote (`origin/main...HEAD` => `0 0`).
+- Live version markers (`*.csproj` and top release README sections) are back on `3.11.3`.
+
+## Operating Rule (From Now On)
+
+Use this file as the umbrella release ledger and update it for every release-related action, including:
+
+- latest intended release version
+- latest actually tagged version
+- latest actually published NuGet version
+- any rollback/revert operations
+- blockers and next required action
+
+If any mismatch appears between intended/tagged/published versions, record it here immediately before further release actions.
+
+## Suggested Resume Prompt
 
 ```text
-Please read CURRENT_STATUS.md first. Continue the prepared 3.11.2 release in an environment with working GitHub DNS/network access and .NET test socket support so the child repos can be pushed in order and the parent Sequential NuGet Release Chain can be dispatched.
+Please read CURRENT_STATUS.md first and treat it as the single source of truth for umbrella release state. Confirm intended/tagged/published versions match before any new version prep, tagging, or release-chain execution.
 ```
