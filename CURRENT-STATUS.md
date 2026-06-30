@@ -48,13 +48,7 @@ Additional note:
 fatal: unable to access 'https://github.com/Burkhardt/<repo>.git/': Could not resolve host: github.com
 ```
 
-- The parent repo now carries the corresponding submodule-pointer update and release-doc refresh locally, but `git push` there fails with:
-
-```text
-fatal: could not read Username for 'https://github.com': Device not configured
-```
-
-- `gh auth status` reports the active `github.com` token for `Burkhardt` is invalid.
+- The parent repo now carries the corresponding submodule-pointer update and release-doc refresh locally.
 - No `3.13.0` Sequential NuGet Release Chain run was dispatched.
 - No NuGet publish was attempted, by request.
 

@@ -30,7 +30,7 @@ The active coordinated line is `3.13.0` for:
 - `ImgSeeder` -> `b43185a`
 - `PitSeeder` -> `af5eae6`
 
-These heads are local-only from the perspective of this run. Child pushes failed because `github.com` DNS resolution failed in the shell, and the later parent `git push` failed with `fatal: could not read Username for 'https://github.com': Device not configured`.
+These heads are local-only from the perspective of this run; push status could not be advanced because `github.com` DNS resolution failed in the shell.
 
 ## Validation note
 
@@ -43,7 +43,7 @@ These heads are local-only from the perspective of this run. Child pushes failed
 ## Parent repo note
 
 - The parent repo can carry the updated submodule pointers and refreshed release docs locally.
-- The parent remote push still requires working GitHub credentials; `gh auth status` reports the active `github.com` token for `Burkhardt` is invalid in this session.
+- The parent remote push still requires a working GitHub network path.
 - No NuGet publish and no Sequential NuGet Release Chain run were triggered in this prep pass.
 
 ## Suggested resume prompt
