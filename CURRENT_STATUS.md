@@ -36,6 +36,15 @@ Umbrella repo actions:
 - Synced submodule pointers to the child rollback heads.
 - Pushed updated `main`.
 
+## Consolidated Legacy Status Notes
+
+The former umbrella files `CURRENT-STATE.md` and `CURRENT-STATUS.md` were obsolete `3.11.2` release-prep notes. Their useful historical context is consolidated here:
+
+- Earlier sandbox runs could not validate with `dotnet test` or `dotnet vstest` because test execution failed before running tests with `System.Net.Sockets.SocketException (13): Permission denied`.
+- Earlier sandbox runs also reported stale prebuilt `iorg` and `pits` binaries showing `3.9.1`; those binaries are not valid evidence for the current package line.
+- Earlier 3.11.2 prep notes mentioned blocked GitHub DNS/auth/workflow-dispatch access. That blocker is historical; subsequent 3.11.3 release and rollback operations were pushed successfully.
+- The old notes referenced a release order that conflicted with later corrected release-chain practice. For the current state, no release is pending; any future release must first confirm intended/tagged/published versions here.
+
 ## Current Verification Snapshot
 
 - All repos are clean (`git status` clean).
@@ -53,6 +62,8 @@ Use this file as the umbrella release ledger and update it for every release-rel
 - blockers and next required action
 
 If any mismatch appears between intended/tagged/published versions, record it here immediately before further release actions.
+
+There must be only one current-state/status file at the umbrella level: `CURRENT_STATUS.md`. Do not recreate `CURRENT-STATE.md` or `CURRENT-STATUS.md`.
 
 ## Suggested Resume Prompt
 
