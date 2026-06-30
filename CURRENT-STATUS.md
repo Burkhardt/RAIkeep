@@ -1,59 +1,67 @@
 # CURRENT-STATUS
 
-This file captures the current release-ready status of the `RAIkeep` workspace for the coordinated `3.13.0` minor line.
+This file captures the current release-ready status of the `RAIkeep` workspace for the coordinated `3.11.2` patch line.
 
 ## Current focus
 
-- Move the live child/package line from `3.12.1` to the next coordinated minor, `3.13.0`.
+- Carry the already-prepared `3.11.0` workspace line forward to the next patch, `3.11.2`.
 - Keep the release order unchanged: `OsLibCore -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder`.
 - Keep `ImgSeeder`/`iorg` immediately before `PitSeeder` everywhere in docs, release notes, and release-prep notes.
 
 ## Completed in this run
 
-- Added `RELEASE_NOTES_3.13.0.md` to every child repo/package.
-- Refreshed live package docs, current package metadata, and fallback dependency versions to `3.13.0`.
-- Updated the active PlantUML release markers and regenerated the tracked SVG renders that changed in this run.
 - Local child repo heads are now:
-  - `OsLib`: `de3807c`
-  - `RaiUtils`: `e163c67`
-  - `RaiImage`: `7c7e98b`
-  - `JsonPit`: `e9d9b9f`
-  - `ImgSeeder`: `b43185a`
-  - `PitSeeder`: `af5eae6`
+  - `OsLib`: `c768c4b`
+  - `RaiUtils`: `4f734d4`
+  - `RaiImage`: `1d3a13e`
+  - `JsonPit`: `104284b`
+  - `ImgSeeder`: `b86da4f`
+  - `PitSeeder`: `50a41ae`
+- Added `RELEASE_NOTES_3.11.2.md` to every child repo/package.
+- Refreshed `3.11.2` release wording in current package docs where this run still had control.
+- Regenerated the tracked PlantUML SVGs that changed in this run.
 
 ## Validation
 
-Sequential validation passed in this workspace:
+Previous `3.11.0` workspace notes recorded successful sequential validation and partial GitHub pushes, but this `3.11.2` run could not repeat those checks in the current sandbox.
 
-- `dotnet test RaiImage/RaiImage.slnx --nologo -v minimal` -> `94 passed`
-- `dotnet test ImgSeeder/ImgSeeder.slnx --nologo -v minimal` -> `8 passed`
-- `dotnet test PitSeeder/PitSeeder.slnx --nologo -v minimal` -> `4 passed`
-- `dotnet test RAIkeep.slnx --nologo -v minimal` -> `285 passed`, `1 skipped`
+Attempts blocked in this run:
 
-Observed non-blocking warning:
+- `dotnet test OsLib/OsLib.slnx --nologo -v minimal`
+- `dotnet test RaiUtils/RaiUtils.slnx --nologo -v minimal`
+- `dotnet test RaiImage/RaiImage.slnx --nologo -v minimal`
+- `dotnet test JsonPit/JsonPit.slnx --nologo -v minimal`
+- `dotnet test ImgSeeder/ImgSeeder.slnx --nologo -v minimal`
+- `dotnet test PitSeeder/PitSeeder.slnx --nologo -v minimal`
+- `dotnet test RAIkeep.slnx --nologo -v minimal`
+- `dotnet vstest <existing test dll>`
+
+Observed failure mode:
 
 ```text
-/Users/rsb/Project2026/GitHub/RAIkeep/JsonPit/JsonPit.cs(95,32): warning CS1574: XML comment has cref attribute 'AddPreservingModified' that could not be resolved
+System.Net.Sockets.SocketException (13): Permission denied
 ```
 
 Additional note:
 
-- Existing prebuilt `iorg` and `pits` binaries still report `3.9.1`, so they are stale artifacts and not valid `3.13.0` verification.
+- Existing prebuilt `iorg` and `pits` binaries still report `3.9.1`, so they are stale artifacts and not valid `3.11.2` verification.
 
 ## Git and publishing state
 
-- Child repo commits were created locally in release order, but every push failed with:
+- No `3.11.2` child repo commits were pushed from this run.
+- No parent `RAIkeep` push was possible from this run.
+- No `3.11.2` Sequential NuGet Release Chain run was dispatched.
+- Shell GitHub access fails with:
 
 ```text
 fatal: unable to access 'https://github.com/Burkhardt/<repo>.git/': Could not resolve host: github.com
 ```
 
-- The parent repo now carries the corresponding submodule-pointer update and release-doc refresh locally.
-- No `3.13.0` Sequential NuGet Release Chain run was dispatched.
-- No NuGet publish was attempted, by request.
+- `gh auth status` also reports an invalid token in this session.
+- The GitHub app is authenticated for inspection, but this session has no workflow-dispatch tool for the parent sequential release chain.
 
 ## Suggested resume prompt
 
 ```text
-Please read CURRENT-STATUS.md first, then continue the prepared 3.13.0 umbrella minor release in an environment with working GitHub DNS/network access. Push the child repos in order, push the parent repo with the updated submodule pointers, and do not publish to NuGet or dispatch the Sequential NuGet Release Chain unless explicitly requested.
+Please read CURRENT-STATUS.md first, then continue the prepared 3.11.2 umbrella patch release in an environment with working GitHub DNS/network access and .NET test socket support. Push the child repos in order, update the parent submodule pointers, and dispatch the parent Sequential NuGet Release Chain with publish_to_nuget=true.
 ```
