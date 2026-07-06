@@ -87,6 +87,7 @@ The former umbrella files `CURRENT-STATE.md` and `CURRENT-STATUS.md` were obsole
 ## Current Verification Snapshot
 
 - Child repos are locally committed for `3.11.4` but remain ahead of `origin/main` until GitHub auth is restored.
+- Known local noise to ignore during resume unless intentionally handled: each child repo currently has an untracked `RELEASE_NOTES_3.12.0.md`.
 - The umbrella repo is locally committed for `3.11.4` and remains ahead of `origin/main` until GitHub auth is restored.
 - Live version markers (`*.csproj` and top release README sections) now advertise `3.11.4`.
 
