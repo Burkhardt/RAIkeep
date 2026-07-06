@@ -12,6 +12,7 @@ Current coordinated release line: `3.11.4` (prepared locally, not yet pushed or 
 
 Local 2026-07-06 release-prep commits created for the `3.11.4` line:
 
+- `RAIkeep` `cd10636`
 - `OsLib` `84ff67a`
 - `RaiUtils` `8feda38`
 - `RaiImage` `c47f9ff`
@@ -87,7 +88,7 @@ The former umbrella files `CURRENT-STATE.md` and `CURRENT-STATUS.md` were obsole
 ## Current Verification Snapshot
 
 - Child repos are locally committed for `3.11.4` but remain ahead of `origin/main` until GitHub auth is restored.
-- The umbrella repo has local `3.11.4` docs/script/submodule-pointer updates that still need the final parent commit and push.
+- The umbrella repo is locally committed at `cd10636` and remains ahead of `origin/main` until GitHub auth is restored.
 - Live version markers (`*.csproj` and top release README sections) now advertise `3.11.4`.
 
 ## Operating Rule (From Now On)
