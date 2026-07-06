@@ -1,5 +1,5 @@
 @startuml RAIkeep-Package-Dependencies
-' Release: 3.11.2
+' Release: 3.12.0
 title RAIkeep Package Dependencies
 
 top to bottom direction

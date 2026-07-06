@@ -1,14 +1,23 @@
 # CURRENT_STATUS
 
-Last updated: 2026-06-30
+Last updated: 2026-07-06
 
-Current coordinated release line: `3.11.3`
+Current coordinated release line: `3.11.4` (prepared locally, not yet pushed or published)
 
 ## Release Truth (GitHub + NuGet)
 
+- Intended next coordinated release version is `3.11.4`.
 - Latest NuGet-published version for all six packages is `3.11.3`.
 - Latest release tag in all six child repos is `v3.11.3`.
-- `3.12.0`, `3.12.1`, and `3.13.0` were prepared on child `main` branches earlier, then safely rolled back using non-destructive revert commits.
+
+Local 2026-07-06 release-prep commits created for the `3.11.4` line:
+
+- `OsLib` `84ff67a`
+- `RaiUtils` `8feda38`
+- `RaiImage` `c47f9ff`
+- `JsonPit` `e7cf593`
+- `ImgSeeder` `36b051e`
+- `PitSeeder` `49f922e`
 
 ## Rollback Completed (Safe, Non-Destructive)
 
@@ -36,6 +45,36 @@ Umbrella repo actions:
 - Synced submodule pointers to the child rollback heads.
 - Pushed updated `main`.
 
+## 3.11.4 Prep Status
+
+Prepared locally on 2026-07-06:
+
+- Updated package and tool versions to `3.11.4` across `OsLib`, `RaiUtils`, `RaiImage`, `JsonPit`, `ImgSeeder`/`iorg`, and `PitSeeder`.
+- Updated current README/API/testing/status docs and renamed active child release notes to `RELEASE_NOTES_3.11.4.md`.
+- Refreshed touched PlantUML release markers and regenerated the tracked SVG artifacts where local tooling was available.
+- Corrected the local `scripts/release-chain.sh` order so it now matches the authoritative GitHub chain: `OsLibCore -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder`.
+
+## Validation Snapshot
+
+Sequential local validation passed:
+
+- `dotnet test RaiImage/RaiImage.slnx --nologo -v minimal` -> `94` passed, `0` failed, `0` skipped
+- `dotnet test ImgSeeder/ImgSeeder.slnx --nologo -v minimal` -> `8` passed, `0` failed, `0` skipped
+- `dotnet test PitSeeder/PitSeeder.slnx --nologo -v minimal` -> `4` passed, `0` failed, `0` skipped
+- `dotnet test RAIkeep.slnx --nologo -v minimal` -> `285` passed, `0` failed, `1` skipped across the umbrella test projects
+
+Observed warning during the `ImgSeeder` validation run:
+
+- `JsonPit/JsonPit.cs(95,32): warning CS1574: XML comment has cref attribute 'AddPreservingModified' that could not be resolved`
+
+## Current Blocker
+
+Remote release steps are blocked in this environment:
+
+- `git push origin main` prompts `Username for 'https://github.com':`
+- `gh auth status` reports `The token in default is invalid.`
+- Because no working noninteractive GitHub auth is configured here, child pushes, parent push, workflow dispatch, and NuGet publication could not continue safely.
+
 ## Consolidated Legacy Status Notes
 
 The former umbrella files `CURRENT-STATE.md` and `CURRENT-STATUS.md` were obsolete `3.11.2` release-prep notes. Their useful historical context is consolidated here:
@@ -47,9 +86,9 @@ The former umbrella files `CURRENT-STATE.md` and `CURRENT-STATUS.md` were obsole
 
 ## Current Verification Snapshot
 
-- All repos are clean (`git status` clean).
-- All repos are synced with remote (`origin/main...HEAD` => `0 0`).
-- Live version markers (`*.csproj` and top release README sections) are back on `3.11.3`.
+- Child repos are locally committed for `3.11.4` but remain ahead of `origin/main` until GitHub auth is restored.
+- The umbrella repo has local `3.11.4` docs/script/submodule-pointer updates that still need the final parent commit and push.
+- Live version markers (`*.csproj` and top release README sections) now advertise `3.11.4`.
 
 ## Operating Rule (From Now On)
 
@@ -68,5 +107,5 @@ There must be only one current-state/status file at the umbrella level: `CURRENT
 ## Suggested Resume Prompt
 
 ```text
-Please read CURRENT_STATUS.md first and treat it as the single source of truth for umbrella release state. Confirm intended/tagged/published versions match before any new version prep, tagging, or release-chain execution.
+Please read CURRENT_STATUS.md first and treat it as the single source of truth for umbrella release state. Resume by restoring GitHub auth, pushing the local 3.11.4 child commits in release order, then pushing the parent and dispatching the sequential-nuget-release-chain workflow with publish_to_nuget=true.
 ```

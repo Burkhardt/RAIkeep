@@ -11,7 +11,7 @@ VER="${1:-}"
 
 if [[ -z "$VER" ]]; then
   echo "Usage: $(basename "$0") <version>"
-  echo "Example: $(basename "$0") 3.8.15"
+  echo "Example: $(basename "$0") 3.12.0"
   exit 1
 fi
 
@@ -38,6 +38,10 @@ confirm() {
   local prompt="$1"
   read -r -p "$prompt [y/N]: " ans
   [[ "$ans" == "y" || "$ans" == "Y" ]]
+}
+
+should_confirm() {
+  [[ "${RAIKEEP_RELEASE_YES:-0}" != "1" ]] && [[ -t 0 ]]
 }
 
 csproj_version() {
@@ -232,9 +236,9 @@ main() {
   require_cmd perl
 
   log "Release chain start for $VER"
-  log "Order: OsLib -> RaiUtils -> RaiImage -> JsonPit -> PitSeeder -> ImgSeeder"
+  log "Order: OsLib -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder"
 
-  if ! confirm "Proceed with release chain for $VER?"; then
+  if should_confirm && ! confirm "Proceed with release chain for $VER?"; then
     echo "Aborted."
     exit 0
   fi
@@ -243,8 +247,8 @@ main() {
   release_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj" "raiutils" "publish-nuget.yml"
   release_submodule "RaiImage" "RaiImage" "RaiImage.csproj" "raiimage" "publish-nuget.yml"
   release_submodule "JsonPit" "JsonPit" "JsonPit.csproj" "jsonpit" "publish-nuget.yml"
-  release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "pitseeder" "publish-nuget.yaml"
   release_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj" "imgseeder" "publish-nuget.yml"
+  release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "pitseeder" "publish-nuget.yaml"
 
   finalize_parent_pointers
   final_visibility_summary
