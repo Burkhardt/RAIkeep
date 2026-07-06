@@ -11,7 +11,7 @@ VER="${1:-}"
 
 if [[ -z "$VER" ]]; then
   echo "Usage: $(basename "$0") <version>"
-  echo "Example: $(basename "$0") 3.12.0"
+  echo "Example: $(basename "$0") 3.13.0"
   exit 1
 fi
 
