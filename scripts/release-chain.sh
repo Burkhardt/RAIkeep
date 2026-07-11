@@ -3,20 +3,15 @@ set -euo pipefail
 
 # Sequential release orchestrator for RAIkeep submodules.
 # This script assumes each repo's release changes are already prepared locally.
-# It enforces order, workflow success waits, 5-minute hold windows, and NuGet
-# flat-container visibility checks.
+# It enforces strict package-by-package order, workflow success waits, 330-second
+# NuGet indexing hold windows, and flat-container visibility checks before the
+# next package begins.
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VER="${1:-}"
-
-if [[ -z "$VER" ]]; then
-  echo "Usage: $(basename "$0") <version>"
-  echo "Example: $(basename "$0") 3.13.0"
-  exit 1
-fi
-
-TAG="v${VER}"
 MIN_HOLD_SECONDS=330
+
+PACKAGE_REPOS=(OsLib RaiUtils RaiImage JsonPit ImgSeeder PitSeeder)
 
 require_cmd() {
   command -v "$1" >/dev/null 2>&1 || {
@@ -34,20 +29,38 @@ die() {
   exit 1
 }
 
-confirm() {
-  local prompt="$1"
-  read -r -p "$prompt [y/N]: " ans
-  [[ "$ans" == "y" || "$ans" == "Y" ]]
-}
-
-should_confirm() {
-  [[ "${RAIKEEP_RELEASE_YES:-0}" != "1" ]] && [[ -t 0 ]]
-}
-
 csproj_version() {
   local repo_dir="$1"
   local csproj_rel="$2"
   perl -ne 'if (/<Version>([^<]+)<\/Version>/) { print "$1\n"; exit }' "$repo_dir/$csproj_rel"
+}
+
+latest_remote_tag() {
+  local repo_dir="$1"
+  git -C "$repo_dir" ls-remote --tags origin 'v[0-9]*.[0-9]*.[0-9]*' \
+    | awk -F'/' '{print $NF}' \
+    | sed 's/\^{}//' \
+    | sort -Vu \
+    | tail -1
+}
+
+derive_next_patch_version() {
+  local common latest version major minor patch
+  for repo in "${PACKAGE_REPOS[@]}"; do
+    latest="$(latest_remote_tag "$ROOT_DIR/$repo")"
+    [[ -n "$latest" ]] || die "$repo has no remote vX.Y.Z tag"
+    if [[ -z "${common:-}" ]]; then
+      common="$latest"
+    elif [[ "$latest" != "$common" ]]; then
+      die "Remote tag mismatch: $repo latest is $latest, expected $common"
+    fi
+  done
+
+  version="${common#v}"
+  IFS=. read -r major minor patch <<<"$version"
+  [[ "$major" =~ ^[0-9]+$ && "$minor" =~ ^[0-9]+$ && "$patch" =~ ^[0-9]+$ ]] \
+    || die "Cannot parse latest remote tag: $common"
+  echo "$major.$minor.$((patch + 1))"
 }
 
 assert_clean() {
@@ -235,13 +248,13 @@ main() {
   require_cmd curl
   require_cmd perl
 
+  if [[ -z "$VER" ]]; then
+    VER="$(derive_next_patch_version)"
+  fi
+  TAG="v${VER}"
+
   log "Release chain start for $VER"
   log "Order: OsLib -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder"
-
-  if should_confirm && ! confirm "Proceed with release chain for $VER?"; then
-    echo "Aborted."
-    exit 0
-  fi
 
   release_submodule "OsLib" "OsLib" "OsLib.csproj" "oslibcore" "publish-nuget.yml"
   release_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj" "raiutils" "publish-nuget.yml"
