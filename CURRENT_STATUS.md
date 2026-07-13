@@ -44,6 +44,8 @@ Existing non-blocking warning observed on JsonPit-targeted build:
 
 - `git -C OsLib ls-remote origin HEAD` fails with `Could not resolve host: github.com`.
 - `gh auth status` reports the active `Burkhardt` token as invalid.
+- After the child `3.11.5` prep commits landed, the `OsLib`, `RaiUtils`, and `RaiImage` working trees drifted to uncommitted `3.12.0` doc/version edits even though no repo-local Git hooks are configured.
+- That unexpected drift does not change the committed `3.11.5` heads listed above, but it should be cleaned or investigated before further local release-line editing.
 - Because remote GitHub access is blocked here, no child pushes, tags, or `sequential-nuget-release-chain` workflow dispatch were attempted from this environment.
 
 ## Local Noise To Ignore
