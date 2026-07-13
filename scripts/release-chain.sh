@@ -3,13 +3,13 @@ set -euo pipefail
 
 # Sequential release orchestrator for RAIkeep submodules.
 # This script assumes each repo's release changes are already prepared locally.
-# It enforces strict package-by-package order, workflow success waits, 330-second
+# It enforces strict package-by-package order, workflow success waits, 300-second
 # NuGet indexing hold windows, and flat-container visibility checks before the
 # next package begins.
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VER="${1:-}"
-MIN_HOLD_SECONDS=330
+MIN_HOLD_SECONDS=300
 
 PACKAGE_REPOS=(OsLib RaiUtils RaiImage JsonPit ImgSeeder PitSeeder)
 

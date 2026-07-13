@@ -6,7 +6,7 @@ It keeps the child repositories available together for local integration work wh
 
 ## Current Aligned Version
 
-The current aligned workspace release line is `3.11.4` for:
+The prepared next workspace release line is `3.12.0` for:
 
 - `OsLib`
 - `RaiUtils`
@@ -15,12 +15,12 @@ The current aligned workspace release line is `3.11.4` for:
 - `ImgSeeder`
 - `PitSeeder`
 
-## 3.11.4 Decisions
+## 3.12.0 Decisions
 
-- Patch release update: aligns the package line on `3.11.4` across the four NuGet-published libraries plus the `ImgSeeder`/`iorg` and `PitSeeder` CLIs.
-- The release baseline was the latest remote tag common to all six child repos, `v3.11.3`; local unreleased `3.13.0` prep was not used as the release source of truth.
-- The concrete source-level behavior carried into this patch line includes RaiImage's current `WordCase` guidance, JsonPit's fixed `DeleteProperty(...)` top-level tombstone projection, and the integrated `iorg`/`pits` tool packaging flow.
-- Current markdown and PlantUML surfaces were refreshed so the live release docs match the current `3.11.4` package state.
+- Minor release prep: aligns the package line on `3.12.0` across the four NuGet-published libraries plus the `ImgSeeder`/`iorg` and `PitSeeder` CLIs.
+- The live child `HEAD` baseline for this prep is `3.11.5` across all six child repositories; the latest published coordinated line remains `v3.11.4` until tags and publish steps happen elsewhere.
+- The concrete source-level behavior carried into this minor line includes RaiImage's current `WordCase` guidance, JsonPit's `DeleteProperty(...)` top-level tombstone projection, and the integrated `iorg`/`pits` tool packaging flow.
+- Current markdown and PlantUML surfaces were refreshed so the prepared release docs match the `3.12.0` package state.
 - The strict package order is `OsLibCore -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder`; each package must complete publish workflow success, NuGet flat-container visibility, and the 330-second indexing hold before the next package starts.
 
 ## Included repositories
