@@ -2,29 +2,31 @@
 
 Last updated: 2026-07-13
 
-Current coordinated package line: `3.11.5`
+Current coordinated package line: `3.12.0`
 
 ## Release Truth
 
 - The published/common remote baseline remains the completed `v3.11.4` line.
-- This run prepares the next coordinated patch line `v3.11.5` locally across `OsLibCore`, `RaiUtils`, `RaiImage`, `JsonPit`, `ImgSeeder`/`iorg`, and `PitSeeder`/`pits`.
+- The live child version metadata at the start of this run was `3.11.5` across `OsLibCore`, `RaiUtils`, `RaiImage`, `JsonPit`, `ImgSeeder`/`iorg`, and `PitSeeder`/`pits`, so the next coordinated minor line is `v3.12.0`.
 - The release order remains `OsLib -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder`.
-- The GitHub workflow and local helper now both preserve the required `300`-second wait between published packages and verify flat-container `.nupkg` visibility, including lowercase `imgseeder`.
+- The GitHub workflow and local helper preserve the required `330`-second wait between published packages and verify flat-container `.nupkg` visibility, including lowercase `imgseeder`, but no publish steps were run in this task.
 
 ## Local Prep Commits
 
-- `OsLib` `e155406` (`chore: prepare 3.11.5 release`)
-- `RaiUtils` `d462c1d` (`chore: prepare 3.11.5 release`)
-- `RaiImage` `65ac2dd` (`chore: prepare 3.11.5 release`)
-- `JsonPit` `b712cb8` (`chore: prepare 3.11.5 release`)
-- `ImgSeeder` `df159b3` (`chore: prepare 3.11.5 release`)
-- `PitSeeder` `e693c6c` (`chore: prepare 3.11.5 release`)
+- `OsLib` `4eb07dd` (`release: prep 3.12.0`)
+- `RaiUtils` `d83821e` (`release: prep 3.12.0`)
+- `RaiImage` `f4bec86` (`release: prep 3.12.0`)
+- `JsonPit` `1487f6f` (`release: prep 3.12.0`)
+- `ImgSeeder` `e69772b` (`release: prep 3.12.0`)
+- `PitSeeder` `8ed2698` (`release: prep 3.12.0`)
 
 ## Validation
 
+- `dotnet test OsLib/OsLib.Tests/OsLib.Tests.csproj --nologo -v minimal` -> `64 passed`
 - `dotnet test RaiUtils/RaiUtils.slnx --nologo -v minimal` -> `21 passed`
-- `dotnet test JsonPit/JsonPit.Tests/JsonPit.Tests.csproj --filter FullyQualifiedName~DeletePropertyProjectionTests --nologo -v minimal` -> `7 passed`
-- `dotnet test JsonPit/JsonPit.Tests/JsonPit.Tests.csproj --nologo -v minimal` -> `101 passed`, `1 skipped`
+- `dotnet test JsonPit/JsonPit.Tests/JsonPit.Tests.csproj --nologo -v minimal` first surfaced one transient `RAIkeepConcurrencyRegressionTests.SaveInterleavedWithAdds_SubsequentSavePersistsEveryAcceptedItem` failure with `IndexOutOfRangeException` from `Pit.GetRawPersistenceModel()`
+- `dotnet test JsonPit/JsonPit.Tests/JsonPit.Tests.csproj --filter FullyQualifiedName~SaveInterleavedWithAdds_SubsequentSavePersistsEveryAcceptedItem --nologo -v minimal` -> `1 passed`
+- `dotnet test JsonPit/JsonPit.Tests/JsonPit.Tests.csproj --nologo -v minimal` immediate rerun -> `101 passed`, `1 skipped`
 - `dotnet test RaiImage/RaiImage.slnx --nologo -v minimal` -> `94 passed`
 - `dotnet test ImgSeeder/ImgSeeder.slnx --nologo -v minimal` -> `8 passed`
 - `dotnet test PitSeeder/PitSeeder.slnx --nologo -v minimal` -> `4 passed`
@@ -36,17 +38,16 @@ Existing non-blocking warning observed on JsonPit-targeted build:
 
 ## Docs And Diagrams
 
-- Package metadata, fallback package pins, README/API/status docs, and `RELEASE_NOTES_3.11.5.md` files are aligned across all six child repositories.
-- PlantUML release markers were refreshed and tracked SVG renders regenerated for `OsLib`, `RaiUtils`, `RaiImage`, and `JsonPit`.
-- `RunReleaseChain.md` and `scripts/release-chain.sh` now match the required `300`-second hold window and flat-container verification guidance.
+- Package metadata, fallback package pins, README/API/status docs, and `RELEASE_NOTES_3.12.0.md` files are aligned across all six child repositories.
+- PlantUML release markers were refreshed and tracked SVG renders regenerated for `OsLib`, `RaiUtils`, `RaiImage`, `JsonPit`, and the root dependency diagrams.
+- `RunReleaseChain.md` now shows the `3.12.0` explicit version example and the required `330`-second hold window guidance.
 
 ## Blockers
 
-- `git -C OsLib ls-remote origin HEAD` fails with `Could not resolve host: github.com`.
+- `git ls-remote origin HEAD` fails with `Could not resolve host: github.com`.
 - `gh auth status` reports the active `Burkhardt` token as invalid.
-- After the child `3.11.5` prep commits landed, the `OsLib`, `RaiUtils`, and `RaiImage` working trees drifted to uncommitted `3.12.0` doc/version edits even though no repo-local Git hooks are configured.
-- That unexpected drift does not change the committed `3.11.5` heads listed above, but it should be cleaned or investigated before further local release-line editing.
-- Because remote GitHub access is blocked here, no child pushes, tags, or `sequential-nuget-release-chain` workflow dispatch were attempted from this environment.
+- `git push origin main` failed with `Could not resolve host: github.com` for `OsLib`, `RaiUtils`, `RaiImage`, `JsonPit`, `ImgSeeder`, and `PitSeeder`.
+- Because remote GitHub access is blocked here, child pushes could not complete and no tags, publish actions, or `sequential-nuget-release-chain` workflow dispatch were attempted.
 
 ## Local Noise To Ignore
 
@@ -56,7 +57,6 @@ Existing non-blocking warning observed on JsonPit-targeted build:
 
 - Restore GitHub DNS reachability and valid `gh` auth.
 - Push child `main` branches in order: `OsLib`, `RaiUtils`, `RaiImage`, `JsonPit`, `ImgSeeder`, `PitSeeder`.
-- Tag each child `v3.11.5` only after the pushed `main` commit is confirmed.
-- Commit and push the parent `RAIkeep` repo with the updated submodule pointers and release ledger.
-- From `RAIkeep main`, start `.github/workflows/sequential-nuget-release-chain.yml` with `publish_to_nuget=true`.
-- Keep the strict order, the `300`-second waits, and flat-container verification for `oslibcore`, `raiutils`, `raiimage`, `jsonpit`, `imgseeder`, and `pitseeder`.
+- Push the parent `RAIkeep` repo with the updated submodule pointers, root dependency diagrams, and this release ledger.
+- Do not publish to NuGet and do not trigger `.github/workflows/sequential-nuget-release-chain.yml` as part of this prep task.
+- Keep the strict order and the `330`-second guidance for any later publish run.
