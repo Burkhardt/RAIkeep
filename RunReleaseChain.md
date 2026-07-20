@@ -11,7 +11,7 @@ scripts/release-chain.sh</code>
 
 Passing an explicit version is still supported when needed:
 
-<code>scripts/release-chain.sh 3.12.1</code>
+<code>scripts/release-chain.sh 3.13.0</code>
 
 The enforced package order is:
 
@@ -22,7 +22,7 @@ The enforced package order is:
 - `ImgSeeder`
 - `PitSeeder`
 
-The chain keeps the 300-second wait between published packages and verifies package visibility through the NuGet flat-container `.nupkg` URL. Each package must finish its own publish workflow, NuGet visibility check, and hold window before the next package starts.
+The chain keeps the 330-second wait between published packages and verifies package visibility through the NuGet flat-container `.nupkg` URL. Each package must finish its own publish workflow, NuGet visibility check, and hold window before the next package starts.
 
 Do not run this as part of version-prep work unless publication is explicitly requested.
 
