@@ -46,7 +46,8 @@ Existing non-blocking warning observed on JsonPit-targeted build:
 - `git ls-remote origin HEAD` fails with `Could not resolve host: github.com`.
 - `gh auth status` reports the active `Burkhardt` token as invalid.
 - `git push origin main` failed with `Could not resolve host: github.com` for `OsLib` (`5b26149`), `RaiUtils` (`8e8b730`), `RaiImage` (`1667f53`), `JsonPit` (`6c172c1`), `ImgSeeder` (`a730699`), and `PitSeeder` (`1ba1cf4`).
-- Because remote GitHub access is blocked here, child pushes could not complete and no tags, publish actions, or `sequential-nuget-release-chain` workflow dispatch were attempted.
+- `RAIkeep` `main` did push successfully at `4db644f`, so the remote parent repo now references child submodule commits that are still local-only until the six child `main` pushes succeed.
+- No tags, publish actions, or `sequential-nuget-release-chain` workflow dispatch were attempted.
 
 ## Local Noise To Ignore
 
@@ -56,6 +57,6 @@ Existing non-blocking warning observed on JsonPit-targeted build:
 
 - Restore GitHub DNS reachability and valid `gh` auth.
 - Push child `main` branches in order: `OsLib`, `RaiUtils`, `RaiImage`, `JsonPit`, `ImgSeeder`, `PitSeeder`.
-- Push the parent `RAIkeep` repo with the updated submodule pointers, root dependency diagrams, and this release ledger.
+- Verify that `RAIkeep` commit `4db644f` can resolve all six child submodule SHAs on GitHub after the child pushes complete; if not, push the parent repo again.
 - Do not publish to NuGet and do not trigger `.github/workflows/sequential-nuget-release-chain.yml` as part of this prep task.
 - Keep the strict order and the `330`-second guidance available for a later publish run, including flat-container `.nupkg` verification with lowercase `imgseeder`.
