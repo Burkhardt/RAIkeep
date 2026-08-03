@@ -1,17 +1,23 @@
 # CURRENT_STATUS
 
-Last updated: 2026-07-20
+Last updated: 2026-08-03
 
-Current coordinated package line: `3.13.0`
+Current coordinated package line: `3.13.1`
 
 ## Release Truth
 
-- The live child version metadata at the start of this run was `3.12.0` across `OsLibCore`, `RaiUtils`, `RaiImage`, `JsonPit`, `ImgSeeder`/`iorg`, and `PitSeeder`/`pits`, so the next coordinated minor line is `v3.13.0`.
+- The coordinated next-release line is `v3.13.1` across `OsLibCore`, `RaiUtils`, `RaiImage`, `JsonPit`, `ImgSeeder`/`iorg`, and `PitSeeder`/`pits`.
 - The release order remains `OsLib -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder`.
 - The GitHub workflow and local helper preserve the required `330`-second wait between published packages and verify flat-container `.nupkg` visibility, including lowercase `imgseeder`, but no publish steps were run in this task.
 - Remote GitHub tag and publication state could not be re-verified from this environment because `github.com` DNS resolution failed and `gh auth status` reported an invalid token.
 
-## Local Prep Commits
+## Current Working Release Metadata
+
+- All six child working trees now target `3.13.1`.
+- The centralized current release notes are `doc/<Project>_RELEASE_NOTES_3.13.1.md`.
+- These maintenance changes are not committed yet.
+
+## Previous 3.13.0 Prep Baseline
 
 - `OsLib` `5b26149` (`release: prep 3.13.0`)
 - `RaiUtils` `8e8b730` (`release: prep 3.13.0`)
@@ -22,14 +28,13 @@ Current coordinated package line: `3.13.0`
 
 ## Validation
 
-- The direct per-command test invocations needed `--disable-build-servers -maxcpucount:1 -nodeReuse:false -p:UseSharedCompilation=false -p:BuildInParallel=false` in this sandbox to avoid local `vstest` socket and MSBuild named-pipe permission failures.
-- `dotnet test OsLib/OsLib.Tests/OsLib.Tests.csproj --nologo -v minimal --disable-build-servers -maxcpucount:1 -nodeReuse:false -p:UseSharedCompilation=false -p:BuildInParallel=false` -> `64 passed`
-- `dotnet test RaiUtils/RaiUtils.slnx --nologo -v minimal --disable-build-servers -maxcpucount:1 -nodeReuse:false -p:UseSharedCompilation=false -p:BuildInParallel=false` -> `21 passed`
-- `dotnet test JsonPit/JsonPit.Tests/JsonPit.Tests.csproj --nologo -v minimal --disable-build-servers -maxcpucount:1 -nodeReuse:false -p:UseSharedCompilation=false -p:BuildInParallel=false` -> `101 passed`, `1 skipped`
-- `dotnet test RaiImage/RaiImage.slnx --nologo -v minimal --disable-build-servers -maxcpucount:1 -nodeReuse:false -p:UseSharedCompilation=false -p:BuildInParallel=false` -> `94 passed`
-- `dotnet test ImgSeeder/ImgSeeder.slnx --nologo -v minimal --disable-build-servers -maxcpucount:1 -nodeReuse:false -p:UseSharedCompilation=false -p:BuildInParallel=false` -> `8 passed`
-- `dotnet test PitSeeder/PitSeeder.slnx --nologo -v minimal --disable-build-servers -maxcpucount:1 -nodeReuse:false -p:UseSharedCompilation=false -p:BuildInParallel=false` -> `4 passed`
-- `dotnet test RAIkeep.slnx --nologo -v minimal --disable-build-servers -maxcpucount:1 -nodeReuse:false -p:UseSharedCompilation=false -p:BuildInParallel=false` -> passed with `RaiUtils 21`, `OsLib 64`, `RaiImage 94`, `JsonPit 101 + 1 skipped`, `PitSeeder 4`, `ImgSeeder 8`
+- The 2026-08-03 umbrella run built all six projects successfully.
+- After the PitSeeder process-window implementation, `OsLib` passes `65` tests and `PitSeeder` passes `7`. In JsonPit, `103` tests passed in the run excluding the separate concurrency CR; its OneDrive remote-sync test observed a transient materialization race and then passed on an immediate isolated rerun.
+- Two immediate consecutive read-only WWWA exports against the configured OneDrive `AIA` pit succeeded. Both runs left distinct per-PID epoch tombstones, confirming ownership-verified release without a delete/recreate cycle.
+- The full umbrella run still has one known failure: `SaveInterleavedWithAdds_SubsequentSavePersistsEveryAcceptedItem` throws during concurrent persistence snapshot materialization.
+- An immediate isolated rerun failed again in `ConcurrentDictionary.ICollection.CopyTo(...)`, confirming the open race documented in [`doc/JsonPit_CR_concurrency-for-next-release-RAI-commented.md`](doc/JsonPit_CR_concurrency-for-next-release-RAI-commented.md).
+
+The PitSeeder lifecycle request is resolved in [`doc/PitSeeder_CR_release_for_cli-resolved-in-v3.13.1.md`](doc/PitSeeder_CR_release_for_cli-resolved-in-v3.13.1.md). The separate JsonPit concurrency request remains open and was not implemented in this slice.
 
 Existing non-blocking warning observed on JsonPit-targeted build:
 
@@ -37,11 +42,13 @@ Existing non-blocking warning observed on JsonPit-targeted build:
 
 ## Docs And Diagrams
 
-- Package metadata, fallback package pins, README/API/status docs, and `RELEASE_NOTES_3.13.0.md` files are aligned across all six child repositories.
+- Package metadata, fallback package pins, README/API/status docs, and the project-prefixed `doc/*_RELEASE_NOTES_3.13.1.md` files are aligned across all six child repositories.
 - PlantUML release markers were refreshed and tracked SVG renders regenerated for `OsLib`, `RaiUtils`, `RaiImage`, `JsonPit`, and the root dependency diagrams.
-- `RunReleaseChain.md` now shows the `3.13.0` explicit version example and the required `330`-second hold window guidance.
+- `RunReleaseChain.md` now shows the `3.13.1` explicit version example and the required `330`-second hold window guidance.
 
-## Blockers
+## Previously Recorded Release Blockers
+
+The following conditions were recorded during the 2026-07-20 `3.13.0` preparation and have not been re-verified in this maintenance pass:
 
 - `git ls-remote origin HEAD` fails with `Could not resolve host: github.com`.
 - `gh auth status` reports the active `Burkhardt` token as invalid.
@@ -53,10 +60,8 @@ Existing non-blocking warning observed on JsonPit-targeted build:
 
 - Untracked root artifacts unrelated to this release prep remain present: `.tmp_africa_svg/` and `AfricaStage-multicolor-clean.svg`.
 
-## Resume Prompt
+## Next Maintenance Step
 
-- Restore GitHub DNS reachability and valid `gh` auth.
-- Push child `main` branches in order: `OsLib`, `RaiUtils`, `RaiImage`, `JsonPit`, `ImgSeeder`, `PitSeeder`.
-- Verify that `RAIkeep` commit `4db644f` can resolve all six child submodule SHAs on GitHub after the child pushes complete; if not, push the parent repo again.
-- Do not publish to NuGet and do not trigger `.github/workflows/sequential-nuget-release-chain.yml` as part of this prep task.
-- Keep the strict order and the `330`-second guidance available for a later publish run, including flat-container `.nupkg` verification with lowercase `imgseeder`.
+- Keep the separate JsonPit concurrency CR open until it is explicitly selected for implementation.
+- Commit child changes in dependency order, then commit the updated parent submodule pointers and centralized `doc/` files.
+- Do not publish to NuGet or trigger the sequential release chain unless explicitly requested.

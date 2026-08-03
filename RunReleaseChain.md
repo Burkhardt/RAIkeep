@@ -11,7 +11,7 @@ scripts/release-chain.sh</code>
 
 Passing an explicit version is still supported when needed:
 
-<code>scripts/release-chain.sh 3.13.0</code>
+<code>scripts/release-chain.sh 3.13.1</code>
 
 The enforced package order is:
 

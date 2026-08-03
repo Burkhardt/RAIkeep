@@ -1,0 +1,12 @@
+# RaiUtils 3.8.14 Release Notes
+
+## Summary
+
+- Releases `RaiUtils` version `3.8.14`.
+- Aligns package metadata, docs, and class diagram release markers with the coordinated `RAIkeep` release line.
+- No public API changes from `3.8.12`.
+
+## Validation
+
+- `dotnet build RaiUtils.csproj --nologo -v minimal`
+- NuGet publishing is handled by the tag-triggered `publish-nuget.yml` workflow.
