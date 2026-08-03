@@ -32,7 +32,7 @@ die() {
 csproj_version() {
   local repo_dir="$1"
   local csproj_rel="$2"
-  perl -ne 'if (/<Version>([^<]+)<\/Version>/) { print "$1\n"; exit }' "$repo_dir/$csproj_rel"
+  sed -n 's:.*<Version>\([^<]*\)</Version>.*:\1:p' "$repo_dir/$csproj_rel" | head -n 1
 }
 
 latest_remote_tag() {
@@ -177,7 +177,7 @@ wait_workflow_success() {
     if [[ -n "$run_id" && "$run_id" != "null" ]]; then
       break
     fi
-    perl -e 'select undef,undef,undef,5;'
+    sleep 5
   done
 
   [[ -n "$run_id" && "$run_id" != "null" ]] || die "No workflow run found for $workflow_file @ $tag"
@@ -198,7 +198,7 @@ wait_workflow_success() {
       die "Workflow failed: $workflow_file run $run_id"
     fi
 
-    perl -e 'select undef,undef,undef,5;'
+    sleep 5
   done
 
   die "Timed out waiting for workflow: $workflow_file @ $tag"
@@ -223,7 +223,7 @@ hold_and_check_flatcontainer() {
       return
     fi
 
-    perl -e 'select undef,undef,undef,10;'
+    sleep 10
   done
 }
 
@@ -289,7 +289,8 @@ main() {
   require_cmd git
   require_cmd gh
   require_cmd curl
-  require_cmd perl
+  require_cmd sed
+  require_cmd sleep
 
   if [[ -z "$VER" ]]; then
     VER="$(derive_next_patch_version)"
