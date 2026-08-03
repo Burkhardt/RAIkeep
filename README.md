@@ -1,49 +1,99 @@
 # RAIkeep
 
-`RAIkeep` is the umbrella workspace for the related `OsLib`, `RaiUtils`, `RaiImage`, and `JsonPit` libraries plus the `ImgSeeder`/`iorg` and `PitSeeder` CLIs.
+`RAIkeep` is the umbrella workspace for four related .NET libraries and two command-line packages:
 
-It keeps the child repositories available together for local integration work while preserving each package's own identity, solution files, and release flow.
+| Order | Repository | Package / command | `3.13.1` role |
+|---:|---|---|---|
+| 1 | `OsLib` | `OsLibCore` | Adds in-place coordination-file writes and read-only physical last-write time |
+| 2 | `RaiUtils` | `RaiUtils` | Aligns with OsLibCore `3.13.1` |
+| 3 | `RaiImage` | `RaiImage` | Aligns dependencies and carries forward the current image/PlantUML APIs |
+| 4 | `JsonPit` | `JsonPit` | Adds per-PID activity flags and ownership-verified process-window release |
+| 5 | `ImgSeeder` | `ImgSeeder` / `iorg` | Aligns the image CLI with the `3.13.1` library chain |
+| 6 | `PitSeeder` | `PitSeeder` / `pits` | Releases finite CLI activity windows by default and adds `--retain-window` |
 
-All RAIkeep change requests and release notes are centralized in [`doc/`](doc/README.md). Files use a source-project prefix, such as `RaiImage_CR_...` and `JsonPit_RELEASE_NOTES_...`, to prevent collisions; child repositories should not keep separate `CR_*.md` or `RELEASE_NOTES*.md` files.
+Each child remains its own Git repository, package, solution, and release workflow. The umbrella workspace supplies local project wiring, coordinated validation, dependency-order documentation, and sequential release automation.
 
-## Current Aligned Version
+## Current release line
 
-The prepared next workspace release line is `3.13.1` for:
+The prepared coordinated release is `3.13.1` across all six repositories.
 
-- `OsLib`
-- `RaiUtils`
-- `RaiImage`
-- `JsonPit`
-- `ImgSeeder`
-- `PitSeeder`
+The principal functional changes are:
 
-## 3.13.1 Decisions
+- `OsLibCore`: `TextFile.SaveInPlace()` updates small cloud-backed coordination files without a preceding delete or rename.
+- `OsLibCore`: `RaiFile.LastWriteTimeUtc` exposes physical modification time without direct `System.IO.FileInfo` use in consumers.
+- `JsonPit`: process activity flags use `{Machine}-{Subscriber}-{PID}.flag` and can be released only by their owning process.
+- `JsonPit`: `Master.flag` remains a separate stable participant lease and is not released by process-window cleanup.
+- `PitSeeder`: finite commands release their process activity windows after completion or exception; Ctrl+C and process exit provide best-effort cleanup.
+- `PitSeeder`: `--retain-window` explicitly preserves timeout-based process activity.
+- The original OneDrive-sensitive shared-filename and delete/recreate process-flag pattern is no longer used.
 
-- Patch release prep: aligns the package line on `3.13.1` across the four NuGet-published libraries plus the `ImgSeeder`/`iorg` and `PitSeeder` CLIs.
-- The coordinated next-release version is `3.13.1` across all six child repositories.
-- Remote GitHub tag and publication state could not be re-verified from this environment because `github.com` DNS resolution failed during this run.
-- The concrete source-level behavior carried into this minor line includes RaiImage's current `WordCase` guidance, JsonPit's `DeleteProperty(...)` top-level tombstone projection, and the integrated `iorg`/`pits` tool packaging flow.
-- PitSeeder finite commands now release their ownership-verified, per-process JsonPit activity windows by default; `--retain-window` explicitly keeps the timeout behavior, while master writer tickets remain separate.
-- Current markdown and PlantUML surfaces were refreshed so the prepared release docs match the `3.13.1` package state.
-- The strict package order is `OsLibCore -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder`; each package must complete publish workflow success, NuGet flat-container visibility, and the 330-second indexing hold before the next package starts.
+RaiUtils, RaiImage, and ImgSeeder participate in the same patch line so fallback package dependencies remain aligned throughout the release order.
 
-## Included repositories
+## Documentation
 
-- `OsLib`
-- `RaiUtils`
-- `RaiImage`
-- `JsonPit`
-- `ImgSeeder`
-- `PitSeeder`
+All change requests and release notes are centralized in [`doc/`](doc/README.md). Child repositories should not contain independent `CR_*.md` or `RELEASE_NOTES*.md` files.
 
-`PitSeeder` and `iorg` are included in the umbrella workspace so each CLI can build against the local package sources and ship from the same release baseline.
+Current release notes:
+
+- [OsLibCore 3.13.1](doc/OsLib_RELEASE_NOTES_3.13.1.md)
+- [RaiUtils 3.13.1](doc/RaiUtils_RELEASE_NOTES_3.13.1.md)
+- [RaiImage 3.13.1](doc/RaiImage_RELEASE_NOTES_3.13.1.md)
+- [JsonPit 3.13.1](doc/JsonPit_RELEASE_NOTES_3.13.1.md)
+- [ImgSeeder 3.13.1](doc/ImgSeeder_RELEASE_NOTES_3.13.1.md)
+- [PitSeeder 3.13.1](doc/PitSeeder_RELEASE_NOTES_3.13.1.md)
+
+Flag and coordination behavior is documented in [JsonPit flag files and concurrency](doc/JsonPit-FlagFiles-And-Concurrency.md). It explains the distinction between per-process activity windows and the stable master-writer lease without replacing the separate open concurrency CR.
 
 ## Local validation
 
-From the repository root:
+From the workspace root:
 
-- `dotnet build RAIkeep.slnx`
-- `dotnet test RaiImage/RaiImage.slnx`
-- `dotnet test ImgSeeder/ImgSeeder.slnx`
-- `dotnet test PitSeeder/PitSeeder.slnx`
-- `dotnet test RAIkeep.slnx`
+```bash
+dotnet build RAIkeep.slnx
+dotnet test OsLib/OsLib.Tests/OsLib.Tests.csproj
+dotnet test RaiUtils/RaiUtils.slnx
+dotnet test RaiImage/RaiImage.slnx
+dotnet test ImgSeeder/ImgSeeder.slnx
+dotnet test PitSeeder/PitSeeder.slnx
+```
+
+The JsonPit suite includes real cloud/remote scenarios and a separately documented open concurrency regression. Use the validation scope stated in the JsonPit release notes rather than hiding those distinctions behind incidental test-runner parallelism or local configuration substitution.
+
+## Strict release gate
+
+Publication requires explicit approval. Preparing versions, documentation, commits, or packages does not authorize a push, tag, workflow dispatch, or NuGet publication.
+
+After approval, use one release mechanism for the chain. The established local orchestrator is:
+
+```bash
+cd /Users/RSB/Projects/GitHub/RAIkeep
+scripts/release-chain.sh 3.13.1
+```
+
+Before publication begins, all six child release commits and their exact submodule pointers must already be committed on the umbrella `main`. The script preflights that state, pushes the prepared umbrella `main`, and applies the passed version as its tag first. The umbrella tag does not publish a package; its workflow is manual-only.
+
+It then processes packages in this exact order:
+
+```text
+OsLibCore → RaiUtils → RaiImage → JsonPit → ImgSeeder → PitSeeder
+```
+
+For every package before the next repository is pushed/tagged:
+
+1. Push the prepared repository `main` only if it is ahead.
+2. Push that repository's `v3.13.1` tag to trigger its publish workflow.
+3. Wait for the matching GitHub workflow to finish successfully.
+4. Verify the exact `.nupkg` is visible through the NuGet flat-container URL with HTTP `200`.
+5. Enforce the full `330`-second hold.
+6. Only then continue to the next repository.
+
+The local script and the umbrella sequential workflow both enforce `330` seconds. Do not run both release mechanisms for the same version. The local script refuses to move an existing conflicting version tag and verifies at the end that the umbrella still records the exact released child commits.
+
+Detailed operational guidance is in [RunReleaseChain.md](RunReleaseChain.md).
+
+## Working conventions
+
+- Preserve the real machine configuration file as the source of truth; do not substitute environment variables or rewrite configuration for test isolation.
+- Use OsLib path/file abstractions in JsonPit and the CLIs instead of introducing direct filesystem operations where an OsLib API applies.
+- Do not use temporary-file rename replacement for canonical pits or cloud-backed coordination flags.
+- Keep one in-memory `Pit` instance per distinct pit path in a long-running process and share it through the application container/singleton mechanism.

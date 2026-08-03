@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Sequential release orchestrator for RAIkeep submodules.
+# Sequential release orchestrator for the RAIkeep umbrella and submodules.
 # This script assumes each repo's release changes are already prepared locally.
-# It enforces strict package-by-package order, workflow success waits, 300-second
+# It enforces strict package-by-package order, workflow success waits, 330-second
 # NuGet indexing hold windows, and flat-container visibility checks before the
 # next package begins.
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VER="${1:-}"
-MIN_HOLD_SECONDS=300
+MIN_HOLD_SECONDS=330
 
 PACKAGE_REPOS=(OsLib RaiUtils RaiImage JsonPit ImgSeeder PitSeeder)
 
@@ -71,17 +71,12 @@ assert_clean() {
   fi
 }
 
-checkout_sync_main() {
+assert_tracked_clean() {
   local repo_dir="$1"
   local name="$2"
-
-  git -C "$repo_dir" fetch origin --prune
-
-  if [[ "$(git -C "$repo_dir" branch --show-current)" != "main" ]]; then
-    git -C "$repo_dir" checkout main
+  if [[ -n "$(git -C "$repo_dir" status --porcelain --untracked-files=no)" ]]; then
+    die "$name has uncommitted tracked changes. Commit them before starting the release chain."
   fi
-
-  git -C "$repo_dir" pull --ff-only origin main
 }
 
 push_main_if_needed() {
@@ -100,13 +95,19 @@ ensure_tag_on_head() {
   local name="$2"
   local tag="$3"
 
-  local head_sha remote_tag_sha
+  local head_sha remote_tag_sha local_tag_sha
   head_sha="$(git -C "$repo_dir" rev-parse HEAD)"
   remote_tag_sha="$(git -C "$repo_dir" ls-remote --tags origin "refs/tags/$tag" | awk '{print $1}')"
+  local_tag_sha="$(git -C "$repo_dir" rev-parse -q --verify "refs/tags/$tag" 2>/dev/null || true)"
 
   if [[ -z "$remote_tag_sha" ]]; then
+    if [[ -n "$local_tag_sha" && "$local_tag_sha" != "$head_sha" ]]; then
+      die "$name: local tag $tag exists at $local_tag_sha, but HEAD is $head_sha. Refusing to retag."
+    fi
     log "$name: creating and pushing tag $tag"
-    git -C "$repo_dir" tag "$tag"
+    if [[ -z "$local_tag_sha" ]]; then
+      git -C "$repo_dir" tag "$tag"
+    fi
     git -C "$repo_dir" push origin "refs/tags/$tag"
     return
   fi
@@ -117,6 +118,48 @@ ensure_tag_on_head() {
   fi
 
   die "$name: remote tag $tag exists at $remote_tag_sha, but HEAD is $head_sha. Refusing to retag."
+}
+
+preflight_submodule() {
+  local name="$1"
+  local repo_rel="$2"
+  local csproj_rel="$3"
+  local repo_dir="$ROOT_DIR/$repo_rel"
+  local branch current_ver recorded_sha head_sha behind ahead
+
+  assert_clean "$repo_dir" "$name"
+  branch="$(git -C "$repo_dir" branch --show-current)"
+  [[ "$branch" == "main" ]] || die "$name must be on main, but is on '$branch'."
+
+  git -C "$repo_dir" fetch origin --prune
+  read -r behind ahead <<<"$(git -C "$repo_dir" rev-list --left-right --count origin/main...HEAD)"
+  [[ "$behind" == "0" ]] || die "$name main is behind or diverged from origin/main. Synchronize it before release."
+
+  current_ver="$(csproj_version "$repo_dir" "$csproj_rel")"
+  [[ "$current_ver" == "$VER" ]] || die "$name version mismatch in $csproj_rel (found $current_ver, expected $VER)"
+
+  recorded_sha="$(git -C "$ROOT_DIR" rev-parse "HEAD:$repo_rel")"
+  head_sha="$(git -C "$repo_dir" rev-parse HEAD)"
+  [[ "$recorded_sha" == "$head_sha" ]] || die "RAIkeep HEAD records $name at $recorded_sha, but its prepared HEAD is $head_sha. Commit the updated submodule pointer in RAIkeep first."
+
+  log "$name: preflight passed at $head_sha ($ahead commit(s) ahead of origin/main)"
+}
+
+release_umbrella() {
+  local branch behind ahead
+
+  log "===== RAIkeep umbrella ($TAG) ====="
+  assert_tracked_clean "$ROOT_DIR" "RAIkeep"
+  branch="$(git -C "$ROOT_DIR" branch --show-current)"
+  [[ "$branch" == "main" ]] || die "RAIkeep must be on main, but is on '$branch'."
+
+  git -C "$ROOT_DIR" fetch origin --prune
+  read -r behind ahead <<<"$(git -C "$ROOT_DIR" rev-list --left-right --count origin/main...HEAD)"
+  [[ "$behind" == "0" ]] || die "RAIkeep main is behind or diverged from origin/main. Synchronize it before release."
+
+  push_main_if_needed "$ROOT_DIR" "RAIkeep"
+  ensure_tag_on_head "$ROOT_DIR" "RAIkeep" "$TAG"
+  log "RAIkeep: umbrella label $TAG applied first; its workflow is manual-only and publishes no NuGet package"
 }
 
 wait_workflow_success() {
@@ -192,10 +235,18 @@ release_submodule() {
   local workflow_file="$5"
 
   local repo_dir="$ROOT_DIR/$repo_rel"
+  local branch recorded_sha head_sha behind ahead
   log "===== $name ($TAG) ====="
 
   assert_clean "$repo_dir" "$name"
-  checkout_sync_main "$repo_dir" "$name"
+  branch="$(git -C "$repo_dir" branch --show-current)"
+  [[ "$branch" == "main" ]] || die "$name moved off main after preflight."
+  git -C "$repo_dir" fetch origin --prune
+  read -r behind ahead <<<"$(git -C "$repo_dir" rev-list --left-right --count origin/main...HEAD)"
+  [[ "$behind" == "0" ]] || die "$name origin/main advanced after preflight. Stop before tagging an unexpected state."
+  recorded_sha="$(git -C "$ROOT_DIR" rev-parse "HEAD:$repo_rel")"
+  head_sha="$(git -C "$repo_dir" rev-parse HEAD)"
+  [[ "$recorded_sha" == "$head_sha" ]] || die "$name HEAD changed after the umbrella label was created."
 
   local current_ver
   current_ver="$(csproj_version "$repo_dir" "$csproj_rel")"
@@ -207,21 +258,13 @@ release_submodule() {
   hold_and_check_flatcontainer "$package_id" "$VER"
 }
 
-finalize_parent_pointers() {
+verify_parent_pointers_unchanged() {
   local parent_dir="$ROOT_DIR"
   local changed
 
-  changed="$(git -C "$parent_dir" status --porcelain -- OsLib RaiUtils RaiImage JsonPit ImgSeeder PitSeeder || true)"
-
-  if [[ -z "$changed" ]]; then
-    log "RAIkeep: no OsLib/RaiUtils/RaiImage/JsonPit/ImgSeeder/PitSeeder pointer changes to commit"
-    return
-  fi
-
-  log "RAIkeep: committing final released submodule pointers"
-  git -C "$parent_dir" add OsLib RaiUtils RaiImage JsonPit ImgSeeder PitSeeder
-  git -C "$parent_dir" commit -m "chore: sync released submodule pointers to $VER"
-  git -C "$parent_dir" push origin main
+  changed="$(git -C "$parent_dir" status --porcelain --untracked-files=no -- OsLib RaiUtils RaiImage JsonPit ImgSeeder PitSeeder || true)"
+  [[ -z "$changed" ]] || die "RAIkeep submodule pointers changed after umbrella label $TAG was created. Stop and investigate; the label must describe the exact released commits."
+  log "RAIkeep: submodule pointers still match umbrella label $TAG"
 }
 
 final_visibility_summary() {
@@ -254,7 +297,17 @@ main() {
   TAG="v${VER}"
 
   log "Release chain start for $VER"
-  log "Order: OsLib -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder"
+  log "Order: RAIkeep umbrella label -> OsLib -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder"
+
+  log "Preflighting all six packages before labeling RAIkeep"
+  preflight_submodule "OsLib" "OsLib" "OsLib.csproj"
+  preflight_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj"
+  preflight_submodule "RaiImage" "RaiImage" "RaiImage.csproj"
+  preflight_submodule "JsonPit" "JsonPit" "JsonPit.csproj"
+  preflight_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj"
+  preflight_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj"
+
+  release_umbrella
 
   release_submodule "OsLib" "OsLib" "OsLib.csproj" "oslibcore" "publish-nuget.yml"
   release_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj" "raiutils" "publish-nuget.yml"
@@ -263,7 +316,7 @@ main() {
   release_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj" "imgseeder" "publish-nuget.yml"
   release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "pitseeder" "publish-nuget.yaml"
 
-  finalize_parent_pointers
+  verify_parent_pointers_unchanged
   final_visibility_summary
 
   log "Release chain completed for $VER"

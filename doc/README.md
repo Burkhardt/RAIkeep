@@ -9,6 +9,10 @@ Files are flattened into this directory and prefixed with their source project t
 
 Do not add `RELEASE_NOTES*.md` or `CR_*.md` files to child-project directories. Move them here and retain the project prefix.
 
+## Technical guides
+
+- [`JsonPit-FlagFiles-And-Concurrency.md`](JsonPit-FlagFiles-And-Concurrency.md) explains the separate per-process activity flags, stable `Master.flag` lease, canonical-write decision, CLI cleanup, and current coordination boundary.
+
 ## Change requests
 
 Open:
