@@ -12,7 +12,7 @@ For the live model, use `Os.Config`, `osconfig.json5`, explicit `Cloud.*` entrie
 
 ## 3.5.0 scope note
 
-As of `RAIkeep 3.5.0`, `OneDrive` is one of the three supported cloud providers in the packaged stack alongside `GoogleDrive` and `Dropbox`.
+In the `3.5.0` line, `OneDrive` was one of three named providers alongside `GoogleDrive` and `Dropbox`. The current configured-root contract additionally recognizes `ICloudDrive`.
 
 For `JsonPit`, `PitItem.Id` is now the canonical identifier. Legacy persisted payloads that still use `Name` are normalized internally to `Id`, and the framework-managed `Name` field is dropped during normalization.
 

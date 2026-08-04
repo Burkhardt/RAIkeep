@@ -25,7 +25,7 @@ The enforced package order after that umbrella label is:
 - `ImgSeeder`
 - `PitSeeder`
 
-The chain enforces a 330-second hold after each successful publish workflow and verifies package visibility through the NuGet flat-container `.nupkg` URL. Each package must finish its own publish workflow, NuGet visibility check, and full hold window before the next repository push/tag begins.
+The chain enforces a 380-second hold after each successful publish workflow and verifies package visibility through the NuGet flat-container `.nupkg` URL. The longer window accommodates observed RaiUtils indexing latency. Each package must finish its own publish workflow, NuGet visibility check, and full hold window before the next repository push/tag begins.
 
 The preflight refuses to start unless every child is clean, on `main`, not behind its remote, set to the requested version, and recorded at that exact commit by the umbrella. Existing version tags are accepted only when they already point to the expected commit; the script refuses to move a conflicting local or remote tag.
 

@@ -10,7 +10,7 @@ It is still useful as setup history, but it does not describe the current OsLib 
 
 ## 3.5.0 scope note
 
-As of `RAIkeep 3.5.0`, the supported cloud-provider claim for the package stack is `OneDrive`, `GoogleDrive`, and `Dropbox`.
+The `3.5.0` package line named `OneDrive`, `GoogleDrive`, and `Dropbox`. The current configured-root contract also recognizes `ICloudDrive`.
 
 For `JsonPit`, the canonical item identifier is now `Id`. Legacy files that still contain `Name` without `Id` are normalized internally to `Id`, and the framework drops the legacy `Name` field while still allowing `Name` as an application-defined custom field.
 

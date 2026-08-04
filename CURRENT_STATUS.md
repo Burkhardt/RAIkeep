@@ -4,18 +4,20 @@ Last updated: 2026-08-03
 
 Current coordinated package line: `3.13.1`
 
+Post-release maintenance is preparing a `380`-second future release hold, four-provider configured cloud-root support (`Dropbox`, `OneDrive`, `GoogleDrive`, `ICloudDrive`), and the missing ImgSeeder NuGet package icon. These changes are not part of the already-tagged `3.13.1` artifacts and require a later package version to reach NuGet.
+
 ## Release Truth
 
-- The coordinated next-release line is `v3.13.1` across `OsLibCore`, `RaiUtils`, `RaiImage`, `JsonPit`, `ImgSeeder`/`iorg`, and `PitSeeder`/`pits`.
+- The coordinated `v3.13.1` line is released across `OsLibCore`, `RaiUtils`, `RaiImage`, `JsonPit`, `ImgSeeder`/`iorg`, and `PitSeeder`/`pits`.
 - The local release order is now `RAIkeep umbrella label -> OsLib -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder`.
-- The GitHub workflow and local helper now both enforce the required `330`-second wait between published packages and verify flat-container `.nupkg` visibility, including lowercase `imgseeder`, but no publish steps were run in this task.
-- GitHub authentication and all six remotes were re-verified successfully on 2026-08-03. No `v3.13.1` tag exists in any child repository.
+- Future release-chain runs enforce a `380`-second wait between published packages and verify flat-container `.nupkg` visibility, including lowercase `imgseeder`; the window was raised after observed RaiUtils indexing latency.
+- All seven repositories carry `v3.13.1`. All six package workflows completed successfully, and all six exact packages returned HTTP `200` from the NuGet flat container on 2026-08-03.
 
 ## Current Working Release Metadata
 
 - All six child working trees now target `3.13.1`.
 - The centralized current release notes are `doc/<Project>_RELEASE_NOTES_3.13.1.md`.
-- The earlier documentation-centralization commits exist locally; the functional `3.13.1` changes and latest release-document refinements are not committed yet.
+- The tagged `3.13.1` release commits are published. The post-release 380-second, iCloud-provider, ImgSeeder-icon, and handover maintenance described above is currently uncommitted.
 
 ## Previous 3.13.0 Prep Baseline
 
@@ -43,17 +45,17 @@ The stale `AddPreservingModified` XML documentation reference was corrected to `
 - Package metadata, fallback package pins, README/API/status docs, and the project-prefixed `doc/*_RELEASE_NOTES_3.13.1.md` files are aligned across all six child repositories.
 - `doc/JsonPit-FlagFiles-And-Concurrency.md` documents the ProcessFlagFile activity window, stable `Master.flag` lease, canonical-write decision, and current coordination boundary.
 - PlantUML release markers were refreshed and tracked SVG renders regenerated for `OsLib`, `RaiUtils`, `RaiImage`, `JsonPit`, and the root dependency diagrams.
-- `RunReleaseChain.md`, `scripts/release-chain.sh`, and the umbrella sequential workflow now agree on the required `330`-second hold. The local script additionally applies the passed version to the prepared RAIkeep umbrella first, after verifying that it records the exact six child release commits.
+- `RunReleaseChain.md`, `scripts/release-chain.sh`, and the umbrella sequential workflow now agree on the required `380`-second hold. The local script additionally applies the passed version to the prepared RAIkeep umbrella first, after verifying that it records the exact six child release commits.
 
-## Remote Release Readiness
+## Published Release State
 
 - `gh auth status` succeeds for the active `Burkhardt` account with repository and workflow scopes.
-- Remote child `HEAD` values remain at the recorded `3.13.0` preparation commits: OsLib `5b26149`, RaiUtils `8e8b730`, RaiImage `1667f53`, JsonPit `6c172c1`, ImgSeeder `a730699`, and PitSeeder `1ba1cf4`.
-- `v3.13.1` is absent from all six child remotes, so no repository has started this release line.
-- No push, tag creation, workflow dispatch, or NuGet publication was performed during this preparation.
+- The released child commits are OsLib `9be7c92`, RaiUtils `86faaa2`, RaiImage `12079cd`, JsonPit `e59f4a8`, ImgSeeder `330831c`, and PitSeeder `64a6673`.
+- The released umbrella tag points to `3b7919f`.
+- The successful package workflow run IDs are OsLib `30855844030`, RaiUtils `30856264199`, RaiImage `30856677476`, JsonPit `30857083981`, ImgSeeder `30857500291`, and PitSeeder `30857935094`.
 
 ## Next Maintenance Step
 
 - Keep the separate JsonPit concurrency CR open until it is explicitly selected for implementation.
-- After explicit approval, commit the remaining child changes in dependency order, then commit the updated parent submodule pointers and centralized `doc/` refinements.
-- Do not publish to NuGet or trigger the sequential release chain unless explicitly requested.
+- Assign a new package version before publishing the post-3.13.1 cloud-provider and ImgSeeder-icon changes; NuGet packages are immutable.
+- Commit the post-release child changes and then the updated umbrella pointers only after review.

@@ -51,7 +51,7 @@ jobs:
       - name: Wait for OsLibCore NuGet indexing
         if: inputs.publish_to_nuget
         shell: bash
-        run: sleep 330
+        run: sleep 380
 
       - name: Verify OsLibCore flat-container package
         if: inputs.publish_to_nuget
@@ -82,7 +82,7 @@ jobs:
       - name: Wait for RaiUtils NuGet indexing
         if: inputs.publish_to_nuget
         shell: bash
-        run: sleep 330
+        run: sleep 380
 
       - name: Verify RaiUtils flat-container package
         if: inputs.publish_to_nuget
@@ -113,7 +113,7 @@ jobs:
       - name: Wait for RaiImage NuGet indexing
         if: inputs.publish_to_nuget
         shell: bash
-        run: sleep 330
+        run: sleep 380
 
       - name: Verify RaiImage flat-container package
         if: inputs.publish_to_nuget
@@ -144,7 +144,7 @@ jobs:
       - name: Wait for JsonPit NuGet indexing
         if: inputs.publish_to_nuget
         shell: bash
-        run: sleep 330
+        run: sleep 380
 
       - name: Verify JsonPit flat-container package
         if: inputs.publish_to_nuget
@@ -175,7 +175,7 @@ jobs:
       - name: Wait for ImgSeeder NuGet indexing
         if: inputs.publish_to_nuget
         shell: bash
-        run: sleep 330
+        run: sleep 380
 
       - name: Verify ImgSeeder flat-container package
         if: inputs.publish_to_nuget
@@ -206,7 +206,7 @@ jobs:
       - name: Wait for PitSeeder NuGet indexing
         if: inputs.publish_to_nuget
         shell: bash
-        run: sleep 330
+        run: sleep 380
 
       - name: Verify PitSeeder flat-container package
         if: inputs.publish_to_nuget

@@ -84,16 +84,17 @@ For every package before the next repository is pushed/tagged:
 2. Push that repository's `v3.13.1` tag to trigger its publish workflow.
 3. Wait for the matching GitHub workflow to finish successfully.
 4. Verify the exact `.nupkg` is visible through the NuGet flat-container URL with HTTP `200`.
-5. Enforce the full `330`-second hold.
+5. Enforce the full `380`-second hold.
 6. Only then continue to the next repository.
 
-The local script and the umbrella sequential workflow both enforce `330` seconds. Do not run both release mechanisms for the same version. The local script refuses to move an existing conflicting version tag and verifies at the end that the umbrella still records the exact released child commits.
+The local script and the umbrella sequential workflow both enforce `380` seconds. This longer window reflects observed RaiUtils indexing latency. Do not run both release mechanisms for the same version. The local script refuses to move an existing conflicting version tag and verifies at the end that the umbrella still records the exact released child commits.
 
 Detailed operational guidance is in [RunReleaseChain.md](RunReleaseChain.md).
 
 ## Working conventions
 
 - Preserve the real machine configuration file as the source of truth; do not substitute environment variables or rewrite configuration for test isolation.
+- Keep the shared configured cloud-root contract aligned on `Dropbox`, `OneDrive`, `GoogleDrive`, and `ICloudDrive`.
 - Use OsLib path/file abstractions in JsonPit and the CLIs instead of introducing direct filesystem operations where an OsLib API applies.
 - Do not use temporary-file rename replacement for canonical pits or cloud-backed coordination flags.
 - Keep one in-memory `Pit` instance per distinct pit path in a long-running process and share it through the application container/singleton mechanism.
