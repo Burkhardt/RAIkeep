@@ -55,4 +55,4 @@ The activity timeout remains 60 seconds by default through `MasterFlagFile.Ticke
 - Automated coverage verifies immediate consecutive CLI success, the `--retain-window` behavior, exception cleanup, foreign-process ownership rejection, and master-ticket preservation.
 - The PitSeeder suite passes all 7 tests and the OsLib suite passes all 65 tests. In JsonPit, 103 tests passed with the separately documented concurrency CR excluded; the external OneDrive remote-sync test then passed on its immediate isolated rerun.
 
-The separate `JsonPit_CR_concurrency-for-next-release-RAI-commented.md` request was not implemented as part of this change.
+The separate `CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md` request was not implemented as part of this change.

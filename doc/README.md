@@ -12,12 +12,14 @@ Do not add `RELEASE_NOTES*.md` or `CR_*.md` files to child-project directories. 
 ## Technical guides
 
 - [`JsonPit-FlagFiles-And-Concurrency.md`](JsonPit-FlagFiles-And-Concurrency.md) explains the separate per-process activity flags, stable `Master.flag` lease, canonical-write decision, CLI cleanup, and current coordination boundary.
+- [`JsonPit-CONCEPT-Live-Split-Master-Recovery.md`](JsonPit-CONCEPT-Live-Split-Master-Recovery.md) is the accepted v3.13.2 live-process recovery design after a cloud provider exposes a conflicting `Master*.flag` copy.
+- [`Details of CR003.md`](<Details of CR003.md>) is the implementation companion for CR003, including current code seams, sequencing guidance, rejected shortcuts, and a test approach for every substantial agreement.
 
 ## Change requests
 
 Open:
 
-- [`JsonPit_CR_concurrency-for-next-release-RAI-commented.md`](JsonPit_CR_concurrency-for-next-release-RAI-commented.md)
+- [`CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md`](CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md) — accepted and finalized for coordinated v3.13.2 implementation
 
 Resolved:
 
