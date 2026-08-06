@@ -2,7 +2,7 @@
 
 Last updated: 2026-08-05
 
-Current coordinated package line: `3.13.1` released; `3.13.2` (CR003) implemented locally, publication pending release authorization
+Current coordinated package line: `4.0.0` prep in progress; no publication/tagging executed for this major line yet
 
 ## CR003 implementation state (coordinated 3.13.2)
 

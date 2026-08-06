@@ -188,6 +188,8 @@ wait_workflow_success() {
     status="$(gh -R "$(git -C "$repo_dir" remote get-url origin)" run view "$run_id" --json status --jq '.status')"
     conclusion="$(gh -R "$(git -C "$repo_dir" remote get-url origin)" run view "$run_id" --json conclusion --jq '.conclusion')"
 
+    log "$workflow_file run $run_id status=${status:-unknown} conclusion=${conclusion:-unknown}"
+
     if [[ "$status" == "completed" ]]; then
       if [[ "$conclusion" == "success" ]]; then
         gh -R "$(git -C "$repo_dir" remote get-url origin)" run view "$run_id" \

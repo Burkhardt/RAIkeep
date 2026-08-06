@@ -2,20 +2,20 @@
 
 `RAIkeep` is the umbrella workspace for four related .NET libraries and two command-line packages:
 
-| Order | Repository | Package / command | `3.13.2` role |
+| Order | Repository | Package / command | `4.0.0` role |
 |---:|---|---|---|
 | 1 | `OsLib` | `OsLibCore` | Adds in-place coordination-file writes and read-only physical last-write time |
-| 2 | `RaiUtils` | `RaiUtils` | Aligns with OsLibCore `3.13.2` |
+| 2 | `RaiUtils` | `RaiUtils` | Aligns with OsLibCore `4.0.0` |
 | 3 | `RaiImage` | `RaiImage` | Aligns dependencies and carries forward the current image/PlantUML APIs |
 | 4 | `JsonPit` | `JsonPit` | Adds per-PID activity flags and ownership-verified process-window release |
-| 5 | `ImgSeeder` | `ImgSeeder` / `iorg` | Aligns the image CLI with the `3.13.2` library chain |
+| 5 | `ImgSeeder` | `ImgSeeder` / `iorg` | Aligns the image CLI with the `4.0.0` library chain |
 | 6 | `PitSeeder` | `PitSeeder` / `pits` | Releases finite CLI activity windows by default and adds `--retain-window` |
 
 Each child remains its own Git repository, package, solution, and release workflow. The umbrella workspace supplies local project wiring, coordinated validation, dependency-order documentation, and sequential release automation.
 
 ## Current release line
 
-The prepared coordinated release is `3.13.2` across all six repositories.
+The prepared coordinated release is `4.0.0` across all six repositories.
 
 The principal functional changes are:
 
@@ -27,7 +27,7 @@ The principal functional changes are:
 - `PitSeeder`: `--retain-window` explicitly preserves timeout-based process activity.
 - The original OneDrive-sensitive shared-filename and delete/recreate process-flag pattern is no longer used.
 
-RaiUtils, RaiImage, and ImgSeeder participate in the same patch line so fallback package dependencies remain aligned throughout the release order.
+RaiUtils, RaiImage, and ImgSeeder participate in the same major line so fallback package dependencies remain aligned throughout the release order.
 
 ## Documentation
 
@@ -35,12 +35,12 @@ All change requests and release notes are centralized in [`doc/`](doc/README.md)
 
 Current release notes:
 
-- [OsLibCore 3.13.2](doc/OsLib_RELEASE_NOTES_3.13.2.md)
-- [RaiUtils 3.13.2](doc/RaiUtils_RELEASE_NOTES_3.13.2.md)
-- [RaiImage 3.13.2](doc/RaiImage_RELEASE_NOTES_3.13.2.md)
-- [JsonPit 3.13.2](doc/JsonPit_RELEASE_NOTES_3.13.2.md)
-- [ImgSeeder 3.13.2](doc/ImgSeeder_RELEASE_NOTES_3.13.2.md)
-- [PitSeeder 3.13.2](doc/PitSeeder_RELEASE_NOTES_3.13.2.md)
+- [OsLibCore 4.0.0](doc/OsLib_RELEASE_NOTES_4.0.0.md)
+- [RaiUtils 4.0.0](doc/RaiUtils_RELEASE_NOTES_4.0.0.md)
+- [RaiImage 4.0.0](doc/RaiImage_RELEASE_NOTES_4.0.0.md)
+- [JsonPit 4.0.0](doc/JsonPit_RELEASE_NOTES_4.0.0.md)
+- [ImgSeeder 4.0.0](doc/ImgSeeder_RELEASE_NOTES_4.0.0.md)
+- [PitSeeder 4.0.0](doc/PitSeeder_RELEASE_NOTES_4.0.0.md)
 
 Flag and coordination behavior is documented in [JsonPit flag files and concurrency](doc/JsonPit-FlagFiles-And-Concurrency.md). It explains the distinction between per-process activity windows and the stable master-writer lease without replacing the separate open concurrency CR.
 
@@ -67,7 +67,7 @@ After approval, use one release mechanism for the chain. The established local o
 
 ```bash
 cd /Users/RSB/Projects/GitHub/RAIkeep
-scripts/release-chain.sh 3.13.2
+scripts/release-chain.sh 4.0.0
 ```
 
 Before publication begins, all six child release commits and their exact submodule pointers must already be committed on the umbrella `main`. The script preflights that state, pushes the prepared umbrella `main`, and applies the passed version as its tag first. The umbrella tag does not publish a package; its workflow is manual-only.
@@ -81,7 +81,7 @@ OsLibCore → RaiUtils → RaiImage → JsonPit → ImgSeeder → PitSeeder
 For every package before the next repository is pushed/tagged:
 
 1. Push the prepared repository `main` only if it is ahead.
-2. Push that repository's `v3.13.2` tag to trigger its publish workflow.
+2. Push that repository's `v4.0.0` tag to trigger its publish workflow.
 3. Wait for the matching GitHub workflow to finish successfully.
 4. Verify the exact `.nupkg` is visible through the NuGet flat-container URL with HTTP `200`.
 5. Enforce the full `380`-second hold.

@@ -12,9 +12,9 @@ scripts/release-chain.sh</code>
 
 Passing an explicit version is still supported when needed:
 
-<code>scripts/release-chain.sh 3.13.1</code>
+<code>scripts/release-chain.sh 4.0.0</code>
 
-The script first preflights all seven repositories. It then pushes the prepared RAIkeep umbrella `main` if needed and applies the passed version as the umbrella tag (for example `v3.13.1`). The umbrella tag is applied before any child repository is pushed or tagged. It does not publish a NuGet package because the umbrella workflow is manual-only.
+The script first preflights all seven repositories. It then pushes the prepared RAIkeep umbrella `main` if needed and applies the passed version as the umbrella tag (for example `v4.0.0`). The umbrella tag is applied before any child repository is pushed or tagged. It does not publish a NuGet package because the umbrella workflow is manual-only.
 
 The enforced package order after that umbrella label is:
 
