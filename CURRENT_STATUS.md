@@ -1,8 +1,22 @@
 # CURRENT_STATUS
 
-Last updated: 2026-08-05
+Last updated: 2026-08-10
 
-Current coordinated package line: `4.0.0` prep in progress; no publication/tagging executed for this major line yet
+Current coordinated package line: `4.0.1` CR006 implementation and validation in progress; no publication/tagging executed for this patch line
+
+## CR006 implementation state
+
+- `pits` now provides command-first `seed`, `export`, and `audit` syntax; established flat seed/export input remains supported through `4.x`.
+- The recent `--events`, `--event-machine`, and `--event-level` forms move directly to `audit`, `--machine`, and `--level` and receive migration errors in legacy form.
+- `iorg` now provides command-first `organize` and safe, bounded `clean <ShortName>` syntax; established flat organization/deletion input remains supported through `4.x`.
+- Both CLIs provide contextual command help and decorative banner rules without repeated equals characters.
+- Focused evidence: PitSeeder.Tests 20 passed; ImgSeeder.Tests 15 passed.
+- Current coordinated Release revalidation: 375 passed, 1 failed, 0 skipped.
+  The sole failure is the pre-existing JsonPit finalizer/GC ownership test
+  `Finalizer_PerformsNoRecoveryPublicationOrFilesystemIO_AndPathBecomesReopenable`;
+  it reproduces in isolation even though JsonPit has no source change beyond
+  synchronized version/dependency metadata. The CLI suites remain fully green.
+- The legacy parsers are scheduled for removal in `5.x.x`; see `doc/CLI-PARSER-TRANSITION-4.x-TO-5.x.md`.
 
 ## CR003 implementation state (coordinated 3.13.2)
 
