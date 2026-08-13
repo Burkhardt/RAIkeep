@@ -233,8 +233,9 @@ release_submodule() {
   local name="$1"
   local repo_rel="$2"
   local csproj_rel="$3"
-  local package_id="$4"
-  local workflow_file="$5"
+  local solution_rel="$4"
+  local package_id="$5"
+  local workflow_file="$6"
 
   local repo_dir="$ROOT_DIR/$repo_rel"
   local branch recorded_sha head_sha behind ahead
@@ -253,6 +254,12 @@ release_submodule() {
   local current_ver
   current_ver="$(csproj_version "$repo_dir" "$csproj_rel")"
   [[ "$current_ver" == "$VER" ]] || die "$name version mismatch in $csproj_rel (found $current_ver, expected $VER)"
+
+  # Validate the same package-only dependency graph used by the publish
+  # workflow before creating the release tag. Local umbrella checkouts can
+  # otherwise substitute project references and conceal stale package pins.
+  log "$name: validating package-only restore"
+  dotnet restore "$repo_dir/$solution_rel" /p:UseLocalRAIkeepSources=false
 
   push_main_if_needed "$repo_dir" "$name"
   ensure_tag_on_head "$repo_dir" "$name" "$TAG"
@@ -291,6 +298,7 @@ main() {
   require_cmd git
   require_cmd gh
   require_cmd curl
+  require_cmd dotnet
   require_cmd sed
   require_cmd sleep
 
@@ -312,12 +320,12 @@ main() {
 
   release_umbrella
 
-  release_submodule "OsLib" "OsLib" "OsLib.csproj" "oslibcore" "publish-nuget.yml"
-  release_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj" "raiutils" "publish-nuget.yml"
-  release_submodule "RaiImage" "RaiImage" "RaiImage.csproj" "raiimage" "publish-nuget.yml"
-  release_submodule "JsonPit" "JsonPit" "JsonPit.csproj" "jsonpit" "publish-nuget.yml"
-  release_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj" "imgseeder" "publish-nuget.yml"
-  release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "pitseeder" "publish-nuget.yaml"
+  release_submodule "OsLib" "OsLib" "OsLib.csproj" "OsLib.slnx" "oslibcore" "publish-nuget.yml"
+  release_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj" "RaiUtils.slnx" "raiutils" "publish-nuget.yml"
+  release_submodule "RaiImage" "RaiImage" "RaiImage.csproj" "RaiImage.slnx" "raiimage" "publish-nuget.yml"
+  release_submodule "JsonPit" "JsonPit" "JsonPit.csproj" "JsonPit.slnx" "jsonpit" "publish-nuget.yml"
+  release_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj" "ImgSeeder.slnx" "imgseeder" "publish-nuget.yml"
+  release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "PitSeeder.slnx" "pitseeder" "publish-nuget.yaml"
 
   verify_parent_pointers_unchanged
   final_visibility_summary
