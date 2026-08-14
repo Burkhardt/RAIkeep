@@ -16,3 +16,6 @@
 [submodule "ImgSeeder"]
 	path = ImgSeeder
 	url = https://github.com/Burkhardt/ImgSeeder.git
+[submodule "RaiDiagram"]
+	path = RaiDiagram
+	url = https://github.com/Burkhardt/RaiDiagram.git

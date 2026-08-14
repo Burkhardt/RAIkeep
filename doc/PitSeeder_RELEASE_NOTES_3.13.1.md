@@ -24,7 +24,7 @@
 - Per-PID activity flags prevent consecutive CLI processes from targeting the same process-flag filename.
 - Release writes an expired Unix-epoch tombstone in place instead of deleting and recreating the OneDrive-backed path.
 - A successful writer retains its timed `Master.flag` lease. A participant that cannot acquire that lease continues to write mergeable change files rather than overwriting the canonical pit.
-- The resolved lifecycle CR is [`PitSeeder_CR_release_for_cli-resolved-in-v3.13.1.md`](PitSeeder_CR_release_for_cli-resolved-in-v3.13.1.md).
+- The resolved lifecycle CR is [`PitSeeder_CR_release_for_cli-resolved-in-v3.13.1.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_CR_release_for_cli-resolved-in-v3.13.1.md).
 
 ## Dependency alignment
 

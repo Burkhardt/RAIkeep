@@ -1,7 +1,7 @@
 # JsonPit concept — live split-master recovery
 
 **Status:** Accepted supporting design for v3.13.2  
-**Governing change request:** [`CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md`](CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md)  
+**Governing change request:** [`CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md)
 **Scope:** Automatic recovery when two still-running processes temporarily wrote as master before a cloud provider exposed the conflicting `Master.flag` write  
 
 ## 1. Purpose

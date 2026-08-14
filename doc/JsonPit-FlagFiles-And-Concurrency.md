@@ -147,9 +147,9 @@ CR003 retains the established configuration model: the machine's configuration f
 
 ## Related documentation
 
-- [`CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md`](CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md)
-- [`JsonPit-CONCEPT-Live-Split-Master-Recovery.md`](JsonPit-CONCEPT-Live-Split-Master-Recovery.md)
-- [`JsonPit_RELEASE_NOTES_3.13.2.md`](JsonPit_RELEASE_NOTES_3.13.2.md)
-- [`OsLib_RELEASE_NOTES_3.13.2.md`](OsLib_RELEASE_NOTES_3.13.2.md)
-- [`PitSeeder_RELEASE_NOTES_3.13.2.md`](PitSeeder_RELEASE_NOTES_3.13.2.md)
-- [`PitSeeder_CR_release_for_cli-resolved-in-v3.13.1.md`](PitSeeder_CR_release_for_cli-resolved-in-v3.13.1.md)
+- [`CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md)
+- [`JsonPit-CONCEPT-Live-Split-Master-Recovery.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit-CONCEPT-Live-Split-Master-Recovery.md)
+- [`JsonPit_RELEASE_NOTES_3.13.2.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_3.13.2.md)
+- [`OsLib_RELEASE_NOTES_3.13.2.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_3.13.2.md)
+- [`PitSeeder_RELEASE_NOTES_3.13.2.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_3.13.2.md)
+- [`PitSeeder_CR_release_for_cli-resolved-in-v3.13.1.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_CR_release_for_cli-resolved-in-v3.13.1.md)

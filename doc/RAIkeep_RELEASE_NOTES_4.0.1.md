@@ -33,7 +33,7 @@ directly to `pits audit`. The legacy parsers are scheduled for removal in
 - Coordinated package line: `4.0.1` across all six packages.
 - Functional CLI changes: ImgSeeder and PitSeeder only.
 - Library APIs and behavior: unchanged from `4.0.0`.
-- Transition policy: [`CLI-PARSER-TRANSITION-4.x-TO-5.x.md`](CLI-PARSER-TRANSITION-4.x-TO-5.x.md).
+- Transition policy: [`CLI-PARSER-TRANSITION-4.x-TO-5.x.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CLI-PARSER-TRANSITION-4.x-TO-5.x.md).
 
 ## 5. Validation & Acceptance Evidence
 

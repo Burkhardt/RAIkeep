@@ -16,7 +16,7 @@ finite CLI shutdown through JsonPit's full durability boundary.
 
 ## 2. Resolved Change Requests (CRs)
 
-- [`CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md`](CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md) — PitSeeder share of the coordinated v3.13.2 work (`pits --events` audit mode; CR003 disposal boundary for finite CLI runs).
+- [`CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md) — PitSeeder share of the coordinated v3.13.2 work (`pits --events` audit mode; CR003 disposal boundary for finite CLI runs).
 
 ## 3. Root Cause Analysis & Technical Resolution
 

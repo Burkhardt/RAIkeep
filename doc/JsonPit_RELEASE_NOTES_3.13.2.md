@@ -19,7 +19,7 @@ recovery with structured durable audit events.
 
 ## 2. Resolved Change Requests (CRs)
 
-- [`CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md`](CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md) — the governing concurrency contract, together with its accepted supporting design [`JsonPit-CONCEPT-Live-Split-Master-Recovery.md`](JsonPit-CONCEPT-Live-Split-Master-Recovery.md) and implementation companion `Details of CR003.md`.
+- [`CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md) — the governing concurrency contract, together with its accepted supporting design [`JsonPit-CONCEPT-Live-Split-Master-Recovery.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit-CONCEPT-Live-Split-Master-Recovery.md) and implementation companion `Details of CR003.md`.
 
 ## 3. Root Cause Analysis & Technical Resolution
 

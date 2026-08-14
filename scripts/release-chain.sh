@@ -3,15 +3,12 @@ set -euo pipefail
 
 # Sequential release orchestrator for the RAIkeep umbrella and submodules.
 # This script assumes each repo's release changes are already prepared locally.
-# It enforces strict package-by-package order, workflow success waits, 380-second
-# NuGet indexing hold windows, and flat-container visibility checks before the
-# next package begins.
+# It enforces strict dependency order and waits until NuGet exposes both the
+# exact package and registration document before the next package begins.
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VER="${1:-}"
-MIN_HOLD_SECONDS=380
-
-PACKAGE_REPOS=(OsLib RaiUtils RaiImage JsonPit ImgSeeder PitSeeder)
+PACKAGE_REPOS=(OsLib RaiUtils RaiImage RaiDiagram JsonPit ImgSeeder PitSeeder)
 
 require_cmd() {
   command -v "$1" >/dev/null 2>&1 || {
@@ -210,18 +207,23 @@ hold_and_check_flatcontainer() {
   local package_id="$1"
   local version="$2"
 
-  local start_e now_e elapsed code ts
+  local start_e now_e elapsed package_code registration_code ts
+  local package_url registration_url
+  package_url="https://api.nuget.org/v3-flatcontainer/${package_id}/${version}/${package_id}.${version}.nupkg"
+  registration_url="https://api.nuget.org/v3/registration5-gz-semver2/${package_id}/${version}.json"
   start_e="$(date -u +%s)"
 
   while true; do
     now_e="$(date -u +%s)"
     elapsed=$((now_e - start_e))
     ts="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-    code="$(curl -s -o /dev/null -w "%{http_code}\n" "https://api.nuget.org/v3-flatcontainer/${package_id}/${version}/${package_id}.${version}.nupkg")"
+    package_code="$(curl -sS -o /dev/null -w "%{http_code}\n" "$package_url")"
+    registration_code="$(curl -sS -o /dev/null -w "%{http_code}\n" "$registration_url")"
 
-    echo "$ts package=${package_id} elapsed=${elapsed}s code=${code}"
+    echo "$ts package=${package_id} elapsed=${elapsed}s nupkg=${package_code} registration=${registration_code}"
 
-    if [[ $elapsed -ge $MIN_HOLD_SECONDS && "$code" == "200" ]]; then
+    if [[ "$package_code" == "200" && "$registration_code" == "200" ]]; then
+      log "$package_id $version is available through NuGet package and registration endpoints"
       return
     fi
 
@@ -271,24 +273,28 @@ verify_parent_pointers_unchanged() {
   local parent_dir="$ROOT_DIR"
   local changed
 
-  changed="$(git -C "$parent_dir" status --porcelain --untracked-files=no -- OsLib RaiUtils RaiImage JsonPit ImgSeeder PitSeeder || true)"
+  changed="$(git -C "$parent_dir" status --porcelain --untracked-files=no -- OsLib RaiUtils RaiImage RaiDiagram JsonPit ImgSeeder PitSeeder || true)"
   [[ -z "$changed" ]] || die "RAIkeep submodule pointers changed after umbrella label $TAG was created. Stop and investigate; the label must describe the exact released commits."
   log "RAIkeep: submodule pointers still match umbrella label $TAG"
 }
 
 final_visibility_summary() {
-  log "===== Final flat-container checks ====="
+  log "===== Final NuGet visibility checks ====="
 
-  local check_url code
+  local check_url package_code registration_code
   check_url() {
     local pkg="$1"
-    code="$(curl -s -o /dev/null -w "%{http_code}\n" "https://api.nuget.org/v3-flatcontainer/${pkg}/${VER}/${pkg}.${VER}.nupkg")"
-    echo "$pkg $code"
+    package_code="$(curl -sS -o /dev/null -w "%{http_code}\n" "https://api.nuget.org/v3-flatcontainer/${pkg}/${VER}/${pkg}.${VER}.nupkg")"
+    registration_code="$(curl -sS -o /dev/null -w "%{http_code}\n" "https://api.nuget.org/v3/registration5-gz-semver2/${pkg}/${VER}.json")"
+    echo "$pkg nupkg=$package_code registration=$registration_code"
+    [[ "$package_code" == "200" && "$registration_code" == "200" ]] \
+      || die "$pkg $VER is not fully visible at the final release gate."
   }
 
   check_url oslibcore
   check_url raiutils
   check_url raiimage
+  check_url raidiagram
   check_url jsonpit
   check_url imgseeder
   check_url pitseeder
@@ -308,12 +314,13 @@ main() {
   TAG="v${VER}"
 
   log "Release chain start for $VER"
-  log "Order: RAIkeep umbrella label -> OsLib -> RaiUtils -> RaiImage -> JsonPit -> ImgSeeder -> PitSeeder"
+  log "Order: RAIkeep umbrella label -> OsLib -> RaiUtils -> RaiImage -> RaiDiagram -> JsonPit -> ImgSeeder -> PitSeeder"
 
-  log "Preflighting all six packages before labeling RAIkeep"
+  log "Preflighting all seven packages before labeling RAIkeep"
   preflight_submodule "OsLib" "OsLib" "OsLib.csproj"
   preflight_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj"
   preflight_submodule "RaiImage" "RaiImage" "RaiImage.csproj"
+  preflight_submodule "RaiDiagram" "RaiDiagram" "RaiDiagram.csproj"
   preflight_submodule "JsonPit" "JsonPit" "JsonPit.csproj"
   preflight_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj"
   preflight_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj"
@@ -323,6 +330,7 @@ main() {
   release_submodule "OsLib" "OsLib" "OsLib.csproj" "OsLib.slnx" "oslibcore" "publish-nuget.yml"
   release_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj" "RaiUtils.slnx" "raiutils" "publish-nuget.yml"
   release_submodule "RaiImage" "RaiImage" "RaiImage.csproj" "RaiImage.slnx" "raiimage" "publish-nuget.yml"
+  release_submodule "RaiDiagram" "RaiDiagram" "RaiDiagram.csproj" "RaiDiagram.slnx" "raidiagram" "publish-nuget.yml"
   release_submodule "JsonPit" "JsonPit" "JsonPit.csproj" "JsonPit.slnx" "jsonpit" "publish-nuget.yml"
   release_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj" "ImgSeeder.slnx" "imgseeder" "publish-nuget.yml"
   release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "PitSeeder.slnx" "pitseeder" "publish-nuget.yaml"

@@ -3,8 +3,8 @@
 **Status:** Detailed implementation companion to the accepted CR003 contract  
 **Date:** 2026-08-05  
 **Nature:** Specification and implementation guidance only; this document does not implement or modify product code  
-**Governing change request:** [`CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md`](CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md)  
-**Supporting recovery design:** [`JsonPit-CONCEPT-Live-Split-Master-Recovery.md`](JsonPit-CONCEPT-Live-Split-Master-Recovery.md)
+**Governing change request:** [`CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md)
+**Supporting recovery design:** [`JsonPit-CONCEPT-Live-Split-Master-Recovery.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit-CONCEPT-Live-Split-Master-Recovery.md)
 
 ## 1. Purpose And Reading Order
 

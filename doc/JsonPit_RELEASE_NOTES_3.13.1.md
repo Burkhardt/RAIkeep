@@ -31,7 +31,7 @@
 - Process flag filenames change from a stable subscriber filename to a per-PID filename. Monitoring or cleanup tools that inspect flag names must account for the PID suffix.
 - Expired process flag tombstones can accumulate; this is an accepted trade-off to avoid delete/recreate synchronization races.
 - `Master.flag` remains a timed participant lease, not a per-PID mutex. Releasing a process activity window does not return or release master ownership.
-- The existing flag mechanism and its current concurrency boundary are documented in [`JsonPit-FlagFiles-And-Concurrency.md`](JsonPit-FlagFiles-And-Concurrency.md).
+- The existing flag mechanism and its current concurrency boundary are documented in [`JsonPit-FlagFiles-And-Concurrency.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit-FlagFiles-And-Concurrency.md).
 - The separate annotated concurrency CR remains open and is not implemented by this release work.
 
 ## Validation

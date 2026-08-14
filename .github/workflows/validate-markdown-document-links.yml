@@ -1,0 +1,25 @@
+name: Validate Markdown Document Links
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  absolute-document-links:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repositories
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install ripgrep
+        run: sudo apt-get update && sudo apt-get install --yes ripgrep
+
+      - name: Reject relative Markdown document links
+        run: scripts/check-markdown-document-links.sh

@@ -20,8 +20,8 @@ Current coordinated package line: `4.0.1` CR006 implementation and validation in
 
 ## CR003 implementation state (coordinated 3.13.2)
 
-[`CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md`](doc/CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md) and the
-[live split-master recovery concept](doc/JsonPit-CONCEPT-Live-Split-Master-Recovery.md) are implemented across OsLib, JsonPit, and PitSeeder/`pits`:
+[`CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md) and the
+[live split-master recovery concept](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit-CONCEPT-Live-Split-Master-Recovery.md) are implemented across OsLib, JsonPit, and PitSeeder/`pits`:
 
 - OsLib 3.13.2: no-delete/no-rename `TextFile.Save` (copy-based backup), `CanonicalJson`, `EventFile`/`EventDirectory`; `AwaitMaterializing` freshness tolerance widened for coarse-granularity cloud mounts (Mzansi `/srv` stores whole-second mtimes).
 - JsonPit 3.13.2: state/snapshot gate for concurrent `Add`/`Save` (fixes the confirmed `SaveInterleavedWithAdds` race), exact-PID master ownership, one live public `Pit` per canonical path, validated candidate loads with `JsonPitPersistenceException`, hashed collision-safe change files, two-stage post-save cleanup grace, live split-master recovery (write set, watcher, loser/orphan protocols), durable audit events, disposal durability boundary.
@@ -58,9 +58,9 @@ Current coordinated package line: `4.0.1` CR006 implementation and validation in
 - After the PitSeeder process-window and RaiFile timestamp implementation, `OsLib` passes `66` tests and `PitSeeder` passes `7`. In JsonPit, `103` tests passed in the run excluding the separate concurrency CR and external remote-sync scenario; the OneDrive remote-sync test passed on its immediate isolated rerun.
 - Two immediate consecutive read-only WWWA exports against the configured OneDrive `AIA` pit succeeded. Both runs left distinct per-PID epoch tombstones, confirming ownership-verified release without a delete/recreate cycle.
 - The full umbrella run still has one known failure: `SaveInterleavedWithAdds_SubsequentSavePersistsEveryAcceptedItem` throws during concurrent persistence snapshot materialization.
-- An immediate isolated rerun failed again in `ConcurrentDictionary.ICollection.CopyTo(...)`, confirming the open race documented in [`doc/CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md`](doc/CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md).
+- An immediate isolated rerun failed again in `ConcurrentDictionary.ICollection.CopyTo(...)`, confirming the open race documented in [`doc/CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md).
 
-The PitSeeder lifecycle request is resolved in [`doc/PitSeeder_CR_release_for_cli-resolved-in-v3.13.1.md`](doc/PitSeeder_CR_release_for_cli-resolved-in-v3.13.1.md). [`CR003`](doc/CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md) and its [live split-master recovery concept](doc/JsonPit-CONCEPT-Live-Split-Master-Recovery.md) were accepted and finalized on 2026-08-05 for coordinated `3.13.2` implementation; implementation has not begun in this documentation step.
+The PitSeeder lifecycle request is resolved in [`doc/PitSeeder_CR_release_for_cli-resolved-in-v3.13.1.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_CR_release_for_cli-resolved-in-v3.13.1.md). [`CR003`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md) and its [live split-master recovery concept](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit-CONCEPT-Live-Split-Master-Recovery.md) were accepted and finalized on 2026-08-05 for coordinated `3.13.2` implementation; implementation has not begun in this documentation step.
 
 The stale `AddPreservingModified` XML documentation reference was corrected to `AddHistorical(PitItem)`; the current umbrella build succeeds with `0` warnings and `0` errors.
 

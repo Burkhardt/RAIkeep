@@ -56,7 +56,7 @@ iorg clean <ShortName> [--subscriber <name>] (-r|--root) <dir> [--cache] [--forc
 - Existing flat organization and short-name deletion syntax remains supported
   throughout `4.x`.
 - The legacy parser is scheduled for removal in `5.x.x`; see
-  [`CLI-PARSER-TRANSITION-4.x-TO-5.x.md`](CLI-PARSER-TRANSITION-4.x-TO-5.x.md).
+  [`CLI-PARSER-TRANSITION-4.x-TO-5.x.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CLI-PARSER-TRANSITION-4.x-TO-5.x.md).
 - Startup banner rules no longer use repeated equals characters.
 
 ## 5. Validation & Acceptance Evidence

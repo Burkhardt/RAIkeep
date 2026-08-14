@@ -5,7 +5,7 @@ This document captures the next-release concurrency work needed for RAIkeep and 
 Status: accepted and finalized for implementation in the coordinated `3.13.2` line.  
 Finalized: 2026-08-05
 
-Detailed implementation guidance, current code seams, sequencing pseudocode, traps, and per-agreement test designs are recorded in [`Details of CR003.md`](<Details of CR003.md>).
+Detailed implementation guidance, current code seams, sequencing pseudocode, traps, and per-agreement test designs are recorded in [`Details of CR003.md`](<https://github.com/Burkhardt/RAIkeep/blob/main/doc/Details%20of%20CR003.md>).
 
 ## Current Assessment
 
@@ -175,7 +175,7 @@ Required tests cover exact-owner renewal, refusal while another same-participant
 
 #### Agreed v3.13.2 live split-master recovery
 
-The exact recovery design is specified in [`JsonPit-CONCEPT-Live-Split-Master-Recovery.md`](JsonPit-CONCEPT-Live-Split-Master-Recovery.md).
+The exact recovery design is specified in [`JsonPit-CONCEPT-Live-Split-Master-Recovery.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit-CONCEPT-Live-Split-Master-Recovery.md).
 
 - The exact canonical `Master.flag` remains the authority record. A longer provider-created `Master*.flag` variant is a signal that the provider detected conflicting master writes; it is not a second authority record.
 - When both claimant processes remain alive, each uses its own live in-memory `Pit` state. JsonPit does not hold `Object.pit` open through the lease and does not add a persistent operating-system file handle.

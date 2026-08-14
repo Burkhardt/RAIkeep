@@ -25,7 +25,7 @@ Primary outcome:
 
 ## 2. Resolved Change Requests (CRs)
 
-- [`CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md`](CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md) — fully addressed in coordinated v4.0.0 implementation and release line.
+- [`CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md) — fully addressed in coordinated v4.0.0 implementation and release line.
 
 ---
 
@@ -51,12 +51,12 @@ window when newer live fragments were validated against older persisted snapshot
   rewrite cycles.
 
 Detailed technical implementation is documented in component release notes:
-- [`OsLib_RELEASE_NOTES_4.0.0.md`](OsLib_RELEASE_NOTES_4.0.0.md)
-- [`RaiUtils_RELEASE_NOTES_4.0.0.md`](RaiUtils_RELEASE_NOTES_4.0.0.md)
-- [`RaiImage_RELEASE_NOTES_4.0.0.md`](RaiImage_RELEASE_NOTES_4.0.0.md)
-- [`JsonPit_RELEASE_NOTES_4.0.0.md`](JsonPit_RELEASE_NOTES_4.0.0.md)
-- [`ImgSeeder_RELEASE_NOTES_4.0.0.md`](ImgSeeder_RELEASE_NOTES_4.0.0.md)
-- [`PitSeeder_RELEASE_NOTES_4.0.0.md`](PitSeeder_RELEASE_NOTES_4.0.0.md)
+- [`OsLib_RELEASE_NOTES_4.0.0.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.0.0.md)
+- [`RaiUtils_RELEASE_NOTES_4.0.0.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.0.0.md)
+- [`RaiImage_RELEASE_NOTES_4.0.0.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.0.0.md)
+- [`JsonPit_RELEASE_NOTES_4.0.0.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.0.0.md)
+- [`ImgSeeder_RELEASE_NOTES_4.0.0.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.0.0.md)
+- [`PitSeeder_RELEASE_NOTES_4.0.0.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.0.0.md)
 
 ---
 

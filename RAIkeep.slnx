@@ -15,6 +15,10 @@
 		<Project Path="RaiImage/RaiImage.Tests/RaiImage.Tests.csproj" />
 	</Folder>
 	<Project Path="RaiImage/RaiImage.csproj" />
+	<Folder Name="/RaiDiagram/">
+		<Project Path="RaiDiagram/RaiDiagram.Tests/RaiDiagram.Tests.csproj" />
+	</Folder>
+	<Project Path="RaiDiagram/RaiDiagram.csproj" />
 	<Folder Name="/RaiUtils/">
 		<Project Path="RaiUtils/tests/RaiUtils.Tests/RaiUtils.Tests.csproj" />
 	</Folder>

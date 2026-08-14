@@ -18,7 +18,7 @@ schema and never interprets JsonPit fields.
 
 ## 2. Resolved Change Requests (CRs)
 
-- [`CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md`](CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md) — OsLib share of the coordinated v3.13.2 concurrency work (agreed `TextFile.Save` contract, canonical JSON, `EventFile`/`EventDirectory`).
+- [`CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md) — OsLib share of the coordinated v3.13.2 concurrency work (agreed `TextFile.Save` contract, canonical JSON, `EventFile`/`EventDirectory`).
 
 ## 3. Root Cause Analysis & Technical Resolution
 

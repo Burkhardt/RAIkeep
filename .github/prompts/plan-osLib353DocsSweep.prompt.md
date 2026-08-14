@@ -13,21 +13,21 @@ Documentation-only update for OsLib: move the OsLib docs from 3.5.2 to 3.5.3, re
 
 1. Update the primary OsLib markdown docs from 3.5.2 to 3.5.3.
    Files:
-   [OsLib/README.md](OsLib/README.md)
-   [OsLib/API.md](OsLib/API.md)
-   [OsLib/ARCHITECTURE-ALIGNMENT.md](OsLib/ARCHITECTURE-ALIGNMENT.md)
+   [OsLib/README.md](https://github.com/Burkhardt/OsLib/blob/main/README.md)
+   [OsLib/API.md](https://github.com/Burkhardt/OsLib/blob/main/API.md)
+   [OsLib/ARCHITECTURE-ALIGNMENT.md](https://github.com/Burkhardt/OsLib/blob/main/ARCHITECTURE-ALIGNMENT.md)
 
 2. Add a new OsLib 3.5.3 release-notes document and repoint the OsLib docs to it.
    Reference template:
-   [OsLib/RELEASE_NOTES_3.5.2.md](OsLib/RELEASE_NOTES_3.5.2.md)
+   [OsLib/RELEASE_NOTES_3.5.2.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_3.5.2.md)
    Planned new file:
    OsLib/RELEASE_NOTES_3.5.3.md
 
 3. Update CanonicalPath documentation wording so it is clearly marked deprecated/legacy and readers are directed toward RaiPath-based usage.
    Affected docs:
-   [OsLib/README.md](OsLib/README.md#L79)
-   [OsLib/API.md](OsLib/API.md#L322)
-   [OsLib/API.md](OsLib/API.md#L345)
+   [OsLib/README.md](https://github.com/Burkhardt/OsLib/blob/main/README.md#L79)
+   [OsLib/API.md](https://github.com/Burkhardt/OsLib/blob/main/API.md#L322)
+   [OsLib/API.md](https://github.com/Burkhardt/OsLib/blob/main/API.md#L345)
 
 4. Update the OsLib file hierarchy diagram to show CanonicalPath as deprecated, while keeping it visible because it still exists in source.
    Files:
