@@ -26,5 +26,6 @@ RaiDiagram introduces domain-neutral, agent-readable diagrams to RAIkeep.
 
 Mermaid and full UML conformance are not claimed by this initial slice.
 
-No tag, package publication, or external RaiDiagram repository has been created
-by this implementation candidate.
+The public RaiDiagram repository and its tag-triggered NuGet workflow now exist
+at <https://github.com/Burkhardt/RaiDiagram>. No version tag or NuGet package has
+been published by this implementation candidate.

@@ -61,6 +61,7 @@ dotnet build RAIkeep.slnx
 dotnet test OsLib/OsLib.Tests/OsLib.Tests.csproj
 dotnet test RaiUtils/RaiUtils.slnx
 dotnet test RaiImage/RaiImage.slnx
+dotnet test RaiDiagram/RaiDiagram.slnx
 dotnet test ImgSeeder/ImgSeeder.slnx
 dotnet test PitSeeder/PitSeeder.slnx
 ```
