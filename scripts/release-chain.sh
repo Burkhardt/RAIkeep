@@ -330,7 +330,7 @@ main() {
   release_submodule "OsLib" "OsLib" "OsLib.csproj" "OsLib.slnx" "oslibcore" "publish-nuget.yml"
   release_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj" "RaiUtils.slnx" "raiutils" "publish-nuget.yml"
   release_submodule "RaiImage" "RaiImage" "RaiImage.csproj" "RaiImage.slnx" "raiimage" "publish-nuget.yml"
-  release_submodule "RaiDiagram" "RaiDiagram" "RaiDiagram.csproj" "RaiDiagram.slnx" "raidiagram" "publish-nuget.yml"
+  release_submodule "RaiDiagram" "RaiDiagram" "RaiDiagram.csproj" "RaiDiagram.slnx" "raidiagram" "publish-nuget.yaml"
   release_submodule "JsonPit" "JsonPit" "JsonPit.csproj" "JsonPit.slnx" "jsonpit" "publish-nuget.yml"
   release_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj" "ImgSeeder.slnx" "imgseeder" "publish-nuget.yml"
   release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "PitSeeder.slnx" "pitseeder" "publish-nuget.yaml"
