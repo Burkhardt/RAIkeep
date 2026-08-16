@@ -4,13 +4,13 @@
 
 | Order | Repository | Package / command | Current or upcoming role |
 |---:|---|---|---|
-| 1 | `OsLib` | `OsLibCore` | 4.1: validated configured TempDir, path exceptions, async chunk ingestion |
-| 2 | `RaiUtils` | `RaiUtils` | 4.1: shared RaiException and ToolNotFoundException |
-| 3 | `RaiImage` | `RaiImage` | 4.1: image/path/tool exception boundary and chunk ingestion |
+| 1 | `OsLib` | `OsLibCore` | 4.2: validated configured TempDir, path exceptions, async chunk ingestion |
+| 2 | `RaiUtils` | `RaiUtils` | 4.2: shared RaiException and ToolNotFoundException |
+| 3 | `RaiImage` | `RaiImage` | 4.2: image boundary and RaiDiagram rendering support |
 | 4 | `RaiDiagram` | `RaiDiagram` | 4.2: agent-readable `.raid` manifests, reconciliation, and PlantUML rendering |
-| 5 | `JsonPit` | `JsonPit` | 4.1: abandoned watcher ownership/finalizer regression fix |
-| 6 | `ImgSeeder` | `ImgSeeder` / `iorg` | 4.1 dependency alignment; established CLI behavior retained |
-| 7 | `PitSeeder` | `PitSeeder` / `pits` | 4.1 dependency alignment; established CLI behavior retained |
+| 5 | `JsonPit` | `JsonPit` | 4.2: finalizer fix carried forward with an explicit package-only boundary |
+| 6 | `ImgSeeder` | `ImgSeeder` / `iorg` | 4.2 dependency alignment; established CLI behavior retained |
+| 7 | `PitSeeder` | `PitSeeder` / `pits` | 4.2 dependency alignment; established CLI behavior retained |
 
 Each child remains its own Git repository, package, solution, and release
 workflow. The umbrella workspace supplies local project wiring, coordinated
@@ -18,12 +18,12 @@ validation, dependency-order documentation, and sequential release automation.
 
 ## Current release line
 
-The completed coordinated release is `4.1.0` across all six established child repositories. RaiDiagram joins the coordinated chain with `4.2.0`, after which all seven repositories share each release version.
+The completed coordinated release is `4.1.0` across the six established child repositories. The prepared next line is `4.2.0`, where RaiDiagram joins and all seven package repositories share one version.
 
-RAIkeep 4.1.0 implements the approved CR008 boundary enhancements and the
-JsonPit finalizer-ownership regression fix. Approved CR009 defines RaiDiagram as
-the subsequent 4.2.0 package and repository; it is not part of the 4.1.0 release
-chain. Source preparation alone does not publish or tag either release.
+RAIkeep 4.2.0 carries the approved CR008 boundary enhancements and JsonPit
+finalizer-ownership regression fix forward, and implements approved CR009 as the
+new RaiDiagram package and repository. Source preparation alone does not publish
+or tag this release.
 
 The principal functional changes are:
 
@@ -31,7 +31,10 @@ The principal functional changes are:
 - `ImgSeeder`: command-first `organize` and safe short-name `clean` syntax with isolated options.
 - Established flat seed/export/image-organizer invocations remain supported throughout `4.x`; the legacy parsers are scheduled for removal in `5.x.x`.
 - The recently added `pits` audit flags move directly to the new command syntax and are not retained as legacy aliases.
-- OsLibCore, RaiUtils, RaiImage, and JsonPit carry the coordinated `4.1.0` boundary and lifecycle changes; ImgSeeder and PitSeeder align their fallback dependencies without changing CLI behavior.
+- RaiDiagram adds JSON5 `.raid` manifests, semantic reconciliation, PlantUML compilation, and SVG provenance metadata through domain-neutral contracts.
+- OsLibCore, RaiUtils, RaiImage, and JsonPit retain the coordinated 4.1 boundary and lifecycle behavior on `4.2.0`.
+- RaiImage and JsonPit now honor the explicit package-only restore switch used by the release gate.
+- ImgSeeder and PitSeeder align their fallback dependencies without changing CLI behavior.
 
 RaiUtils, RaiImage, and ImgSeeder participate in the same major line so fallback package dependencies remain aligned throughout the release order.
 
@@ -41,14 +44,16 @@ All change requests and release notes are centralized in [`doc/`](https://github
 
 Current coordinated release notes:
 
-- [OsLibCore 4.1.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.1.0.md)
-- [RaiUtils 4.1.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.1.0.md)
-- [RaiImage 4.1.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.1.0.md)
-- [JsonPit 4.1.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.1.0.md)
-- [ImgSeeder 4.1.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.1.0.md)
-- [PitSeeder 4.1.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.1.0.md)
-- [RAIkeep 4.1.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.1.0.md)
-- [RaiDiagram 4.2.0 candidate](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.2.0.md)
+- [OsLibCore 4.2.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.2.0.md)
+- [RaiUtils 4.2.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.2.0.md)
+- [RaiImage 4.2.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.2.0.md)
+- [RaiDiagram 4.2.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.2.0.md)
+- [JsonPit 4.2.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.2.0.md)
+- [ImgSeeder 4.2.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.2.0.md)
+- [PitSeeder 4.2.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.2.0.md)
+- [RAIkeep 4.2.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.2.0.md)
+
+The prior coordinated line remains documented in [RAIkeep 4.1.0 release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.1.0.md).
 
 Flag and coordination behavior is documented in [JsonPit flag files and concurrency](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit-FlagFiles-And-Concurrency.md). It explains the distinction between per-process activity windows and the stable master-writer lease without replacing the separate open concurrency CR.
 

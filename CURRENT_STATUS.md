@@ -14,12 +14,14 @@ Upcoming coordinated package line: `4.2.0`
 - JsonPit's finalizer ownership regression is fixed while retaining the no-finalizer-I/O and no-finalizer-recovery-publication contract.
 - ImgSeeder's package-only test graph no longer duplicates stale OsLibCore and RaiImage dependency versions.
 
-## RaiDiagram 4.2.0 preparation
+## Coordinated 4.2.0 preparation
 
 - `RaiDiagram` is a public standalone repository and a RAIkeep submodule: <https://github.com/Burkhardt/RaiDiagram>.
 - The initial CR009 implementation provides JSON5 `.raid` manifests, semantic and presentation hashing, domain-neutral model-provider contracts, structured reconciliation, PlantUML compilation/rendering, and SVG provenance metadata.
 - The repository includes the RAI logo, Apache-2.0 license, foldable `API.md`, 20 passing tests, and a tag-triggered NuGet trusted-publishing workflow.
 - No RaiDiagram version tag or NuGet package has been published.
+- All seven package projects and fallback dependency properties are aligned on `4.2.0`.
+- RaiImage and JsonPit now honor `UseLocalRAIkeepSources=false`; JsonPit tests no longer directly reintroduce sibling project references.
 
 ## Coordinated release tooling
 
@@ -39,13 +41,14 @@ Upcoming coordinated package line: `4.2.0`
 ## Validation
 
 - The full umbrella Release build, including RaiDiagram, succeeds.
-- RaiDiagram tests: 20 passed, 0 failed.
+- Release suites pass: OsLibCore 81, RaiUtils 22, RaiImage 97, RaiDiagram 20, JsonPit 146, ImgSeeder 15, and PitSeeder 20 tests.
+- The focused JsonPit finalizer regression passes independently.
+- The real Nkosikazi-to-Mzansi synchronization test passes after its test harness renews and observes a fresh exact-owner lease following initial cloud sync.
+- A disposable local feed restores and packs all seven 4.2.0 packages with `UseLocalRAIkeepSources=false`; the resulting package metadata contains only the intended 4.2.0 package dependencies.
 - Markdown link and whitespace validation passes across the umbrella and all seven child repositories.
 - The umbrella build currently reports existing xUnit analyzer warnings in JsonPit concurrency tests; this release-tooling and documentation work adds no compiler errors.
 
 ## Remaining 4.2.0 release preparation
 
-- Align all seven package versions and fallback dependencies on `4.2.0`.
 - Configure RaiDiagram as a trusted publisher on NuGet.org before its first tag-triggered publication.
-- Run the full relevant release test suites and package-only restore gates.
 - Commit the exact seven child release pointers in the umbrella before RAI starts `scripts/release-chain.sh 4.2.0`.

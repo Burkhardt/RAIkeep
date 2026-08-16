@@ -1,6 +1,6 @@
 # RaiDiagram 4.2.0 Release Notes
 
-**Status:** Initial implementation candidate; not published  
+**Status:** Prepared source and verification candidate; not published
 **Change request:** `CR009_AIA_to_RAIkeep_RaiDiagram_Package.md`
 
 RaiDiagram introduces domain-neutral, agent-readable diagrams to RAIkeep.
@@ -29,3 +29,5 @@ Mermaid and full UML conformance are not claimed by this initial slice.
 The public RaiDiagram repository and its tag-triggered NuGet workflow now exist
 at <https://github.com/Burkhardt/RaiDiagram>. No version tag or NuGet package has
 been published by this implementation candidate.
+
+Release verification: 20 RaiDiagram Release tests passed.
