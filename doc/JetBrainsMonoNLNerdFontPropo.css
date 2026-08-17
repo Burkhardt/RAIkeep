@@ -1,0 +1,37 @@
+/*
+ * Blink stylesheet for JetBrainsMonoNL Nerd Font Propo.
+ * RAIkeep hosts only this stylesheet. Font binaries are loaded directly from
+ * the official ryanoasis/nerd-fonts GitHub repository at the immutable v3.4.0 tag.
+ */
+
+@font-face {
+  font-family: "JetBrainsMonoNL NFP";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://raw.githubusercontent.com/ryanoasis/nerd-fonts/v3.4.0/patched-fonts/JetBrainsMono/NoLigatures/Regular/JetBrainsMonoNLNerdFontPropo-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "JetBrainsMonoNL NFP";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://raw.githubusercontent.com/ryanoasis/nerd-fonts/v3.4.0/patched-fonts/JetBrainsMono/NoLigatures/Italic/JetBrainsMonoNLNerdFontPropo-Italic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "JetBrainsMonoNL NFP";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://raw.githubusercontent.com/ryanoasis/nerd-fonts/v3.4.0/patched-fonts/JetBrainsMono/NoLigatures/Bold/JetBrainsMonoNLNerdFontPropo-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "JetBrainsMonoNL NFP";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://raw.githubusercontent.com/ryanoasis/nerd-fonts/v3.4.0/patched-fonts/JetBrainsMono/NoLigatures/BoldItalic/JetBrainsMonoNLNerdFontPropo-BoldItalic.ttf") format("truetype");
+}

@@ -1,5 +1,9 @@
 # RAIkeep
 
+## Terminal font for RAIkeep CLIs
+
+ImgSeeder (`iorg`) and PitSeeder (`pits`) use embedded Nerd Font provider and numbered-option glyphs in their help output. Installation instructions for Blink on iPadOS, macOS, and Ubuntu—including the Blink CSS font-family stylesheet URL—are in [TERMINAL_FONTS.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/TERMINAL_FONTS.md).
+
 `RAIkeep` is the umbrella workspace for five related .NET libraries and two command-line packages:
 
 | Order | Repository | Package / command | Current or upcoming role |
