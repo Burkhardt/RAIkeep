@@ -13,8 +13,8 @@ ImgSeeder (`iorg`) and PitSeeder (`pits`) use embedded Nerd Font provider and nu
 | 3 | `RaiImage` | `RaiImage` | 4.2: image boundary and RaiDiagram rendering support |
 | 4 | `RaiDiagram` | `RaiDiagram` | 4.2: agent-readable `.raid` manifests, reconciliation, and PlantUML rendering |
 | 5 | `JsonPit` | `JsonPit` | 4.2: finalizer fix carried forward with an explicit package-only boundary |
-| 6 | `ImgSeeder` | `ImgSeeder` / `iorg` | 4.2 dependency alignment; established CLI behavior retained |
-| 7 | `PitSeeder` | `PitSeeder` / `pits` | 4.2 dependency alignment; established CLI behavior retained |
+| 6 | `ImgSeeder` | `ImgSeeder` / `iorg` | 4.2.1 CLI help rendering; 4.2.0 library dependencies retained |
+| 7 | `PitSeeder` | `PitSeeder` / `pits` | 4.2.1 CLI help rendering; 4.2.0 library dependencies retained |
 
 Each child remains its own Git repository, package, solution, and release
 workflow. The umbrella workspace supplies local project wiring, coordinated
@@ -22,12 +22,14 @@ validation, dependency-order documentation, and sequential release automation.
 
 ## Current release line
 
-The completed coordinated release is `4.1.0` across the six established child repositories. The prepared next line is `4.2.0`, where RaiDiagram joins and all seven package repositories share one version.
+The completed coordinated release is `4.2.0`, where RaiDiagram joined and all
+seven package repositories shared one version. ImgSeeder and PitSeeder have a
+CLI-only `4.2.1` maintenance release; all library packages and the umbrella
+remain on `4.2.0`. The next complete coordinated release will be `4.2.2`.
 
 RAIkeep 4.2.0 carries the approved CR008 boundary enhancements and JsonPit
 finalizer-ownership regression fix forward, and implements approved CR009 as the
-new RaiDiagram package and repository. Source preparation alone does not publish
-or tag this release.
+new RaiDiagram package and repository.
 
 The principal functional changes are:
 
@@ -46,7 +48,12 @@ RaiUtils, RaiImage, and ImgSeeder participate in the same major line so fallback
 
 All change requests and release notes are centralized in [`doc/`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/README.md). Child repositories should not contain independent `CR_*.md` or `RELEASE_NOTES*.md` files.
 
-Current coordinated release notes:
+Current release notes:
+
+- [ImgSeeder 4.2.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.2.1.md)
+- [PitSeeder 4.2.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.2.1.md)
+
+Coordinated 4.2.0 release notes:
 
 - [OsLibCore 4.2.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.2.0.md)
 - [RaiUtils 4.2.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.2.0.md)

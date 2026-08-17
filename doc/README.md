@@ -9,6 +9,14 @@ Files are flattened into this directory and prefixed with their source project t
 
 Do not add `RELEASE_NOTES*.md` or `CR_*.md` files to child-project directories. Move them here and retain the project prefix.
 
+## Current CLI patch release notes
+
+- [ImgSeeder 4.2.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.2.1.md)
+- [PitSeeder 4.2.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.2.1.md)
+
+These CLI-only packages continue to use the coordinated 4.2.0 library packages.
+The umbrella and library package versions are unchanged.
+
 ## Current coordinated release notes
 
 - [RAIkeep 4.2.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.2.0.md)
