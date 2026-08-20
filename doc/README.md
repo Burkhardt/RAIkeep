@@ -9,24 +9,16 @@ Files are flattened into this directory and prefixed with their source project t
 
 Do not add `RELEASE_NOTES*.md` or `CR_*.md` files to child-project directories. Move them here and retain the project prefix.
 
-## Current CLI patch release notes
-
-- [ImgSeeder 4.2.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.2.1.md)
-- [PitSeeder 4.2.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.2.1.md)
-
-These CLI-only packages continue to use the coordinated 4.2.0 library packages.
-The umbrella and library package versions are unchanged.
-
 ## Current coordinated release notes
 
-- [RAIkeep 4.2.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.2.0.md)
-- [OsLibCore 4.2.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.2.0.md)
-- [RaiUtils 4.2.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.2.0.md)
-- [RaiImage 4.2.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.2.0.md)
-- [RaiDiagram 4.2.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.2.0.md)
-- [JsonPit 4.2.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.2.0.md)
-- [ImgSeeder 4.2.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.2.0.md)
-- [PitSeeder 4.2.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.2.0.md)
+- [RAIkeep 4.2.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.2.2.md)
+- [OsLibCore 4.2.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.2.2.md)
+- [RaiUtils 4.2.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.2.2.md)
+- [RaiImage 4.2.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.2.2.md)
+- [RaiDiagram 4.2.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.2.2.md)
+- [JsonPit 4.2.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.2.2.md)
+- [ImgSeeder 4.2.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.2.2.md)
+- [PitSeeder 4.2.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.2.2.md)
 
 ## Technical guides
 
@@ -35,12 +27,16 @@ The umbrella and library package versions are unchanged.
 - [`JsonPit-CONCEPT-Live-Split-Master-Recovery.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit-CONCEPT-Live-Split-Master-Recovery.md) is the accepted v3.13.2 live-process recovery design after a cloud provider exposes a conflicting `Master*.flag` copy.
 - [`RaiDiagram-CONCEPT-UML26.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram-CONCEPT-UML26.md) proposes the RAIkeep UML26 semantic diagram dialect, separate RaiDiagram package, role-first use-case model, tenant themes, and PlantUML-first rendering architecture.
 - [`ADR001_RaiDiagram_Package_Boundary.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ADR001_RaiDiagram_Package_Boundary.md) records the accepted boundary between RaiDiagram's public diagram capabilities and AIA's WWWA modeling responsibilities.
+- [`ADR002_RaiDiagram_Subscriber_Scoped_Artifacts_and_Style_Lookup.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ADR002_RaiDiagram_Subscriber_Scoped_Artifacts_and_Style_Lookup.md) records that subscriber values remain ImageTree storage-routing segments rather than identities and that style fallbacks are explicit and local.
 - [`Details of CR003.md`](<https://github.com/Burkhardt/RAIkeep/blob/main/doc/Details%20of%20CR003.md>) is the implementation companion for CR003, including current code seams, sequencing guidance, rejected shortcuts, and a test approach for every substantial agreement.
 
 ## Change requests
 
 Open:
 
+- [`CR014_RAI_to_RAIkeep_Typed_CLI_Command_Wrappers.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR014_RAI_to_RAIkeep_Typed_CLI_Command_Wrappers.md) — accepted RAI request for typed `pits`/`iorg` server invocation and a complete wrapped-tool execution boundary, targeted at RAIkeep v4.2.2
+- [`CR014.1_test-concept.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR014.1_test-concept.md) — accepted layered verification guidance for the CR014 wrappers
+- [`CR010_AfricaStage_to_RAIkeep_RaiDiagram_Subscriber_Scoped_Artifacts_and_Styles.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR010_AfricaStage_to_RAIkeep_RaiDiagram_Subscriber_Scoped_Artifacts_and_Styles.md) — accepted AfricaStage request for subscriber-scoped ImageTree diagram artifacts and explicit local PlantUML style fallbacks, targeted at RAIkeep v4.2.2
 - [`CR009_AIA_to_RAIkeep_RaiDiagram_Package.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR009_AIA_to_RAIkeep_RaiDiagram_Package.md) — approved domain-neutral RaiDiagram package targeted at RAIkeep v4.2.0
 - [`CR008_AIA_to_RAIkeep_OsLib_RaiImage_Boundary_Enhancements.md`](https://github.com/Burkhardt/AIA/blob/main/doc/CR008_AIA_to_RAIkeep_OsLib_RaiImage_Boundary_Enhancements.md) — approved AIA boundary request targeted at RAIkeep v4.1.0
 - [`CR006_AfricaStage_to_RAIkeep_CliSubcommands.md`](https://github.com/Burkhardt/AIA/blob/main/doc/CR006_AfricaStage_to_RAIkeep_CliSubcommands.md) — approved for the coordinated v4.0.1 CLI transition implementation

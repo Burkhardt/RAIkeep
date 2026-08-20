@@ -1,5 +1,5 @@
 @startuml CliCommandHierarchy
-' Release: 3.8.15
+' Release: 4.2.2 / CR014
 skinparam backgroundColor white
 skinparam shadowing false
 skinparam linetype ortho
@@ -41,7 +41,12 @@ package "OsLib" {
 		+TryResolveExecutable(out executable : string) : bool
 		+ResolveExecutable() : string
 		+Run(arguments : string = "") : RaiSystemResult
+		+Run(arguments : IEnumerable<string>) : RaiSystemResult
+		+Run(arguments : IEnumerable<string>, timeoutMilliseconds : int) : RaiSystemResult
 		+RunAsync(arguments : string = "", cancellationToken : CancellationToken = default) : Task<RaiSystemResult>
+		+RunAsync(arguments : IEnumerable<string>, cancellationToken : CancellationToken = default) : Task<RaiSystemResult>
+		+RunAsync(arguments : IEnumerable<string>, timeoutMilliseconds : int, cancellationToken : CancellationToken = default) : Task<RaiSystemResult>
+		+BuildPosixShellCommand(arguments : IEnumerable<string>) : string
 		+GetInstallCommand() : string
 		+GetUpdateCommand() : string
 	}
@@ -54,19 +59,43 @@ package "OsLib" {
 	}
 	class ZipCommand
 	class SevenZipCommand
+	class PitsCommand {
+		+BuildSeedArguments(request : PitsSeedRequest) : IReadOnlyList<string>
+		+BuildExportArguments(request : PitsExportRequest) : IReadOnlyList<string>
+		+BuildAuditArguments(request : PitsAuditRequest) : IReadOnlyList<string>
+		+Seed(request : PitsSeedRequest) : RaiSystemResult
+		+Export(request : PitsExportRequest) : RaiSystemResult
+		+Audit(request : PitsAuditRequest) : RaiSystemResult
+	}
+	class IorgCommand {
+		+BuildOrganizeArguments(request : IorgOrganizeRequest) : IReadOnlyList<string>
+		+BuildCleanArguments(request : IorgCleanRequest) : IReadOnlyList<string>
+		+Organize(request : IorgOrganizeRequest) : RaiSystemResult
+		+Clean(request : IorgCleanRequest) : RaiSystemResult
+	}
+	class SshSystem {
+		+ExecuteRemoteCommand(target : string, remoteCommand : string, timeoutMilliseconds : int, options : IEnumerable<string>) : RaiSystemResult
+	}
 
 	class RaiSystem {
 		+Exec(out msg : string) : int
+		+ExecResult(timeoutMilliseconds : int = 120000) : RaiSystemResult
 		+ExecAsync(cancellationToken : CancellationToken = default) : Task<RaiSystemResult>
+		+ExecAsync(timeoutMilliseconds : int, cancellationToken : CancellationToken = default) : Task<RaiSystemResult>
 		+Start() : Task<ProcessResults>
 	}
 
 	class RaiSystemResult {
 		+Command : string
 		+Arguments : string
+		+ArgumentList : IReadOnlyList<string>
 		+CommandLine : string
+		+StandardOutput : string
+		+StandardError : string
 		+Output : string
 		+ExitCode : int
+		+TimedOut : bool
+		+Succeeded : bool
 		+WorkerThreadId : int
 	}
 }
@@ -76,6 +105,19 @@ package "RaiImage" {
 		+BuildArguments(subcommand : string, args : string = "") : string
 		+RunSubcommand(subcommand : string, args : string = "") : RaiSystemResult
 		+RunSubcommandAsync(subcommand : string, args : string = "", cancellationToken : CancellationToken = default) : Task<RaiSystemResult>
+	}
+	class PlantUmlCommand {
+		+BuildSvgArguments(pumlFileName : string, configFileName : string) : string
+		+RenderSvg(pumlFileName : string, configFileName : string) : RaiSystemResult
+		+RenderSvgAsync(pumlFileName : string, configFileName : string, cancellationToken : CancellationToken) : Task<RaiSystemResult>
+	}
+	class OptiPngCommand {
+		+BuildArguments(image : RaiFile) : IReadOnlyList<string>
+		+Optimize(image : RaiFile) : RaiSystemResult
+	}
+	class JpegTranCommand {
+		+BuildArguments(options : IEnumerable<string>, source : RaiFile, destination : RaiFile) : IReadOnlyList<string>
+		+Transform(options : IEnumerable<string>, source : RaiFile, destination : RaiFile) : RaiSystemResult
 	}
 
 	class ImageMagick {
@@ -93,30 +135,40 @@ CliCommand <|-- CurlCommand
 CliCommand <|-- RCloneCommand
 CliCommand <|-- ZipCommand
 CliCommand <|-- SevenZipCommand
+CliCommand <|-- PitsCommand
+CliCommand <|-- IorgCommand
 CliCommand <|-- ImageMagickCommand
+CliCommand <|-- PlantUmlCommand
+CliCommand <|-- OptiPngCommand
+CliCommand <|-- JpegTranCommand
+RaiSystem <|-- SshSystem
 
 CliCommand ..> RaiSystem : creates
 RaiSystem --> RaiSystemResult : returns
 ImageMagick --> ImageMagickCommand : delegates to
+ImageMagick --> OptiPngCommand : delegates to
+ImageMagick --> JpegTranCommand : delegates to
 ImageMagickCommand ..> RaiSystemResult
 
 note right of CliCommand
 	Base abstraction for local CLI tools.
 	Executable resolution, availability checks,
-	install/update command hints, and execution
+	install/update hints, tokenized arguments,
+	POSIX SSH serialization, and execution
 	are centralized here.
 end note
 
 note right of RaiSystem
-	ExecAsync dispatches external process work
-	on a worker thread so callers do not run the
-	OS process directly on the calling thread.
+	ExecAsync dispatches startup off the caller
+	thread and awaits process exit without blocking.
+	Timeout and caller cancellation both kill the
+	process tree, but remain distinct outcomes.
 end note
 
 note right of ImageMagick
 	Legacy wrapper preserved as the image API.
 	Process execution now flows through
-	ImageMagickCommand -> CliCommand -> RaiSystem.
+	typed RaiImage command -> CliCommand -> RaiSystem.
 end note
 
 @enduml

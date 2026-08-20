@@ -10,11 +10,13 @@ Finally, commit the umbrella documentation and all seven updated submodule point
 <code>cd /Users/RSB/Projects/GitHub/RAIkeep
 scripts/release-chain.sh</code>
 
-Passing an explicit version is still supported when needed:
+Passing the prepared coordinated version explicitly is recommended for this
+release because the two CLI repositories already have `4.2.1` tags while the
+library repositories do not:
 
-<code>scripts/release-chain.sh 4.2.0</code>
+<code>scripts/release-chain.sh 4.2.2</code>
 
-The script first preflights all eight repositories: the umbrella and seven package repositories. It then pushes the prepared RAIkeep umbrella `main` if needed and applies the passed version as the umbrella tag (for example `v4.2.0`). The umbrella tag is applied before any child repository is pushed or tagged. It does not publish a NuGet package because the umbrella workflow is manual-only.
+The script first preflights all eight repositories: the umbrella and seven package repositories. It then pushes the prepared RAIkeep umbrella `main` if needed and applies the passed version as the umbrella tag (for example `v4.2.2`). The umbrella tag is applied before any child repository is pushed or tagged. It does not publish a NuGet package because the umbrella workflow is manual-only.
 
 The enforced package order after that umbrella label is:
 

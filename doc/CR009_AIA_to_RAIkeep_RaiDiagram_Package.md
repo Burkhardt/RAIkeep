@@ -375,3 +375,12 @@ CR009 does not request:
 ## 17. Requester summary
 
 RaiDiagram should make diagramming reusable without becoming the modeling product. AIA remains responsible for knowing what its WWWA model means. RaiDiagram is responsible for a durable view manifest, generic source references, model-diff contracts, expressive diagram semantics, PlantUML compilation, theme-aware rendering, and verifiable provenance in the resulting SVG.
+
+## 18. Subsequent implementation decision
+
+Subscriber-scoped artifact placement, typed ImageTree text artifacts, local
+PlantUML style lookup, and `_config.puml` materialization for the v4.2.2 work
+are specified by
+`CR010_AfricaStage_to_RAIkeep_RaiDiagram_Subscriber_Scoped_Artifacts_and_Styles.md`
+and `ADR002_RaiDiagram_Subscriber_Scoped_Artifacts_and_Style_Lookup.md`. This
+follow-on decision does not change CR009's domain-neutral package boundary.
