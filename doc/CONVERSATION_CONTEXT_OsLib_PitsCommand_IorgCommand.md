@@ -80,7 +80,7 @@ was therefore: **discussed and still undecided, not approved or implemented**.
 RAI subsequently approved the capability for RAIkeep 4.2.2 and clarified that
 the required verification boundary is the wrapper contract—not duplicated
 PitSeeder or ImgSeeder product testing. The accepted scope is recorded in
-[`CR014_RAI_to_RAIkeep_Typed_CLI_Command_Wrappers.md`](CR014_RAI_to_RAIkeep_Typed_CLI_Command_Wrappers.md).
+[`CR014_RAI_to_RAIkeep_Typed_CLI_Command_Wrappers.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR014_RAI_to_RAIkeep_Typed_CLI_Command_Wrappers.md).
 
 That later decision supersedes the historical status above without changing
 the provenance of the earlier conversation excerpts.
