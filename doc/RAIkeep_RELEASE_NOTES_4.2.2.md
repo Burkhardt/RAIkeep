@@ -63,4 +63,8 @@ These notes do not authorize tagging or publication.
   RaiDiagram 34, JsonPit 146, ImgSeeder 16, and PitSeeder 20 tests passed.
 - Seven freshly packed 4.2.2 artifacts passed downstream package-only restore
   and pack validation with local project substitution disabled.
-- RaiDiagram used the checksum-verified official PlantUML 1.2026.6 JAR.
+- All four real RaiDiagram renderer tests passed locally. They are categorized
+  as `PlantUMLIntegration` and skip with an explicit diagnostic in environments
+  without a complete PlantUML/Graphviz installation; the other 30 RaiDiagram
+  tests remain mandatory. `RAIDIAGRAM_REQUIRE_REAL_PLANTUML=1` restores a hard
+  external-tool gate where desired.

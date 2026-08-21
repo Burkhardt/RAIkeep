@@ -30,5 +30,9 @@ decision is recorded in
 No tag or publication is authorized by these notes. RAI starts the coordinated
 release chain manually after reviewing the prepared commits and verification.
 
-Release verification: 34 RaiDiagram Release tests passed against the pinned,
-official PlantUML 1.2026.6 JAR.
+Local release verification: all 34 RaiDiagram Release tests passed through the
+real PlantUML renderer. The four real-renderer tests are categorized as
+`PlantUMLIntegration`; environments without a complete PlantUML/Graphviz
+installation report them as skipped while continuing to enforce the remaining
+30 tests. `RAIDIAGRAM_REQUIRE_REAL_PLANTUML=1` makes an unavailable renderer a
+hard failure for dedicated integration environments.
