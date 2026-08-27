@@ -32,8 +32,7 @@ This release also implements the OsLibCore portion of accepted
 - Extends `SshSystem` with tokenized SSH options; JsonPit's remote scenarios no
   longer hand-build SSH process invocations.
 
-No tag or publication is authorized by these notes. RAI starts the coordinated
-release chain manually after reviewing the prepared commits and verification.
+Released as part of the coordinated RAIkeep v4.2.2 release.
 
 Release verification: 104 OsLib Release tests passed, including 21 focused
 CR014/CR014.1 wrapper-contract tests.

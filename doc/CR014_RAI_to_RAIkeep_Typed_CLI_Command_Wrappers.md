@@ -5,7 +5,7 @@
 **Receiving product:** RAIkeep
 **Target release:** RAIkeep v4.2.2
 **Date:** 2026-08-20
-**Status:** Accepted by RAI — implementation underway
+**Status:** Implemented, accepted by RAI, and released in RAIkeep v4.2.2
 
 ## 1. Scope clarification
 

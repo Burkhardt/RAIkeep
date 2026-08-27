@@ -27,8 +27,7 @@ The subscriber is an ImageTree storage-routing segment only. The architectural
 decision is recorded in
 `ADR002_RaiDiagram_Subscriber_Scoped_Artifacts_and_Style_Lookup.md`.
 
-No tag or publication is authorized by these notes. RAI starts the coordinated
-release chain manually after reviewing the prepared commits and verification.
+Released as part of the coordinated RAIkeep v4.2.2 release.
 
 Local release verification: all 34 RaiDiagram Release tests passed through the
 real PlantUML renderer. The four real-renderer tests are categorized as

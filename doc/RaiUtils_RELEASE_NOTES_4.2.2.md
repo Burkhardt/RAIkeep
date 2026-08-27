@@ -10,7 +10,6 @@ boundaries.
 - CR014 introduces no process wrapper in RaiUtils and preserves its
   dependency-light boundary; tool execution remains in OsLib and RaiImage.
 
-No tag or publication is authorized by these notes. RAI starts the coordinated
-release chain manually after reviewing the prepared commits and verification.
+Released as part of the coordinated RAIkeep v4.2.2 release.
 
 Release verification: 22 RaiUtils Release tests passed.

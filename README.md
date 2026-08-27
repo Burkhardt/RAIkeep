@@ -8,13 +8,13 @@ ImgSeeder (`iorg`) and PitSeeder (`pits`) use embedded Nerd Font provider and nu
 
 | Order | Repository | Package / command | Current or upcoming role |
 |---:|---|---|---|
-| 1 | `OsLib` | `OsLibCore` | 4.2.2: TempDir/file boundaries plus typed `pits` and `iorg` wrappers |
-| 2 | `RaiUtils` | `RaiUtils` | 4.2.2: coordinated shared exception foundation |
-| 3 | `RaiImage` | `RaiImage` | 4.2.2: typed ImageTree artifacts plus wrapped image/diagram tools |
-| 4 | `RaiDiagram` | `RaiDiagram` | 4.2.2: CR010 subscriber artifacts, local styles, and SVG provenance |
-| 5 | `JsonPit` | `JsonPit` | 4.2.2: finalizer contract carried forward on aligned dependencies |
-| 6 | `ImgSeeder` | `ImgSeeder` / `iorg` | 4.2.2 dependencies with 4.2.1 Nerd Font behavior retained |
-| 7 | `PitSeeder` | `PitSeeder` / `pits` | 4.2.2 dependencies with 4.2.1 Nerd Font behavior retained |
+| 1 | `OsLib` | `OsLibCore` | 4.2.3: typed `pits` delete requests plus existing tool wrappers |
+| 2 | `RaiUtils` | `RaiUtils` | 4.2.3: coordinated shared exception foundation |
+| 3 | `RaiImage` | `RaiImage` | 4.2.3: coordinated image and diagram tool boundary |
+| 4 | `RaiDiagram` | `RaiDiagram` | 4.2.3: coordinated diagram artifacts and SVG provenance |
+| 5 | `JsonPit` | `JsonPit` | 4.2.3: nested property tombstones and empty-parent pruning |
+| 6 | `ImgSeeder` | `ImgSeeder` / `iorg` | 4.2.3 coordinated dependency line |
+| 7 | `PitSeeder` | `PitSeeder` / `pits` | 4.2.3: `delete-property` and `delete-item` commands |
 
 Each child remains its own Git repository, package, solution, and release
 workflow. The umbrella workspace supplies local project wiring, coordinated
@@ -22,19 +22,18 @@ validation, dependency-order documentation, and sequential release automation.
 
 ## Current release line
 
-The prepared coordinated release is `4.2.2`. It realigns all seven package
-repositories after the ImgSeeder and PitSeeder `4.2.1` CLI-only maintenance
-release. RAI starts the release chain manually after reviewing the prepared
-commits and verification results.
+The prepared coordinated release is `4.2.3`. RAI starts the release chain
+manually after reviewing the prepared commits and verification results.
 
-RAIkeep 4.2.2 implements accepted CR010, completes the requested CR008
-`RaiFileIOException` boundary, confirms the CR009 public construction exports,
-implements CR014 typed CLI invocation, and carries the JsonPit finalizer-
-ownership regression fix forward.
+RAIkeep 4.2.3 implements accepted CR015: JsonPit supports property tombstones at
+arbitrary nesting depth, PitSeeder exposes first-class property/item deletion,
+and OsLibCore exposes the corresponding typed `PitsCommand` requests.
 
 The principal functional changes are:
 
-- `PitSeeder`: command-first `seed`, `export`, and `audit` syntax, contextual help, and early option validation.
+- `PitSeeder`: adds `delete-property` with explicit dot-path traversal and `delete-item` while retaining command-first `seed`, `export`, and `audit`.
+- `JsonPit`: recursively applies nested null tombstones, preserves siblings, prunes empty parent containers, and retains append-only history.
+- `OsLibCore`: adds typed, tokenized delete-property and delete-item requests to `PitsCommand`.
 - `ImgSeeder`: command-first `organize` and safe short-name `clean` syntax with isolated options.
 - Established flat seed/export/image-organizer invocations remain supported throughout `4.x`; the legacy parsers are scheduled for removal in `5.x.x`.
 - The recently added `pits` audit flags move directly to the new command syntax and are not retained as legacy aliases.
@@ -52,16 +51,16 @@ RaiUtils, RaiImage, and ImgSeeder participate in the same major line so fallback
 
 All change requests and release notes are centralized in [`doc/`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/README.md). Child repositories should not contain independent `CR_*.md` or `RELEASE_NOTES*.md` files.
 
-Current coordinated 4.2.2 release notes:
+Current coordinated 4.2.3 release notes:
 
-- [OsLibCore 4.2.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.2.2.md)
-- [RaiUtils 4.2.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.2.2.md)
-- [RaiImage 4.2.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.2.2.md)
-- [RaiDiagram 4.2.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.2.2.md)
-- [JsonPit 4.2.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.2.2.md)
-- [ImgSeeder 4.2.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.2.2.md)
-- [PitSeeder 4.2.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.2.2.md)
-- [RAIkeep 4.2.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.2.2.md)
+- [OsLibCore 4.2.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.2.3.md)
+- [RaiUtils 4.2.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.2.3.md)
+- [RaiImage 4.2.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.2.3.md)
+- [RaiDiagram 4.2.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.2.3.md)
+- [JsonPit 4.2.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.2.3.md)
+- [ImgSeeder 4.2.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.2.3.md)
+- [PitSeeder 4.2.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.2.3.md)
+- [RAIkeep 4.2.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.2.3.md)
 
 The prior coordinated line remains documented in [RAIkeep 4.1.0 release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.1.0.md).
 
@@ -91,7 +90,7 @@ After approval, use one release mechanism for the chain. The established local o
 
 ```bash
 cd /Users/RSB/Projects/GitHub/RAIkeep
-scripts/release-chain.sh 4.2.2
+scripts/release-chain.sh 4.2.3
 ```
 
 Before publication begins, all seven child release commits and their exact submodule pointers must already be committed on the umbrella `main`. The script preflights that state, pushes the prepared umbrella `main`, and applies the passed version as its tag first. The umbrella tag does not publish a package; its workflow is manual-only.
@@ -105,7 +104,7 @@ OsLibCore → RaiUtils → RaiImage → RaiDiagram → JsonPit → ImgSeeder →
 For every package before the next repository is pushed/tagged:
 
 1. Push the prepared repository `main` only if it is ahead.
-2. Push that repository's requested version tag, such as `v4.2.2`, to trigger its publish workflow.
+2. Push that repository's requested version tag, such as `v4.2.3`, to trigger its publish workflow.
 3. Wait for the matching GitHub workflow to finish successfully.
 4. Verify the exact `.nupkg` and exact-version registration document are both visible from NuGet with HTTP `200`.
 5. Only then continue to the next repository.

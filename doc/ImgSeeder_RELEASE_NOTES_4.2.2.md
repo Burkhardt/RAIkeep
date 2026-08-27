@@ -13,7 +13,6 @@ Coordinated dependency release for the seven-package RAIkeep 4.2.2 line.
   CR014.1 real-CLI smoke check. OsLib tests the transport contract and does not
   duplicate image-organization behavior.
 
-No tag or publication is authorized by these notes. RAI starts the coordinated
-release chain manually after reviewing the prepared commits and verification.
+Released as part of the coordinated RAIkeep v4.2.2 release.
 
 Release verification: 16 ImgSeeder Release tests passed.

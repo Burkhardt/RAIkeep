@@ -23,8 +23,9 @@ It also implements the RaiImage tool-boundary portion of accepted
 - Confirms PlantUML remains behind `PlantUmlCommand`, including the deliberate
   headless `java -jar` launch owned inside that wrapper.
 
-No identity-management abstraction, direct theme download, tag, or publication
-is introduced by this preparation.
+No identity-management abstraction or direct theme download was introduced.
+
+Released as part of the coordinated RAIkeep v4.2.2 release.
 
 Release verification: 104 RaiImage Release tests passed in one run, including
 the real ImageMagick transparency integration.

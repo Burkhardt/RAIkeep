@@ -1,5 +1,5 @@
 @startuml CliCommandHierarchy
-' Release: 4.2.2 / CR014
+' Release: 4.2.3 / CR014 + CR015
 skinparam backgroundColor white
 skinparam shadowing false
 skinparam linetype ortho
@@ -63,9 +63,13 @@ package "OsLib" {
 		+BuildSeedArguments(request : PitsSeedRequest) : IReadOnlyList<string>
 		+BuildExportArguments(request : PitsExportRequest) : IReadOnlyList<string>
 		+BuildAuditArguments(request : PitsAuditRequest) : IReadOnlyList<string>
+		+BuildDeletePropertyArguments(request : PitsDeletePropertyRequest) : IReadOnlyList<string>
+		+BuildDeleteItemArguments(request : PitsDeleteItemRequest) : IReadOnlyList<string>
 		+Seed(request : PitsSeedRequest) : RaiSystemResult
 		+Export(request : PitsExportRequest) : RaiSystemResult
 		+Audit(request : PitsAuditRequest) : RaiSystemResult
+		+DeleteProperty(request : PitsDeletePropertyRequest) : RaiSystemResult
+		+DeleteItem(request : PitsDeleteItemRequest) : RaiSystemResult
 	}
 	class IorgCommand {
 		+BuildOrganizeArguments(request : IorgOrganizeRequest) : IReadOnlyList<string>

@@ -14,8 +14,7 @@ Coordinated dependency release for the RAIkeep 4.2.2 package line.
   through `OsLib.PitsCommand` and execute SSH through `SshSystem`; no JsonPit
   production behavior is moved into the wrapper tests.
 
-No tag or publication is authorized by these notes. RAI starts the coordinated
-release chain manually after reviewing the prepared commits and verification.
+Released as part of the coordinated RAIkeep v4.2.2 release.
 
 Release verification: the focused finalizer regression passed and the complete
 JsonPit Release suite passed 146 tests, including configured cloud/remote

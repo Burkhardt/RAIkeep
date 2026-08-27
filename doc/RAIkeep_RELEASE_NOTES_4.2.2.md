@@ -1,6 +1,6 @@
 # RAIkeep 4.2.2 Release Notes
 
-**Status:** Prepared source and verification candidate; not published
+**Status:** Released
 **Accepted requests:**
 `CR008_AIA_to_RAIkeep_OsLib_RaiImage_Boundary_Enhancements.md`,
 `CR009_AIA_to_RAIkeep_RaiDiagram_Package.md`, and
