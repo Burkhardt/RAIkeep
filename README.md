@@ -8,13 +8,13 @@ ImgSeeder (`iorg`) and PitSeeder (`pits`) use embedded Nerd Font provider and nu
 
 | Order | Repository | Package / command | Current or upcoming role |
 |---:|---|---|---|
-| 1 | `OsLib` | `OsLibCore` | 4.2.4: coordinated path/file and tool boundary |
-| 2 | `RaiUtils` | `RaiUtils` | 4.2.4: coordinated shared exception foundation |
-| 3 | `RaiImage` | `RaiImage` | 4.2.4: Unicode-safe ImageTree bucketing and legacy lookup |
-| 4 | `RaiDiagram` | `RaiDiagram` | 4.2.4: Unicode-safe diagram artifact dependency line |
-| 5 | `JsonPit` | `JsonPit` | 4.2.4 coordinated dependency line |
-| 6 | `ImgSeeder` | `ImgSeeder` / `iorg` | 4.2.4: Unicode-safe organized image destinations |
-| 7 | `PitSeeder` | `PitSeeder` / `pits` | 4.2.4 coordinated dependency line |
+| 1 | `OsLib` | `OsLibCore` | 4.2.5: typed point-in-time `pits` export boundary |
+| 2 | `RaiUtils` | `RaiUtils` | 4.2.5: coordinated shared exception foundation |
+| 3 | `RaiImage` | `RaiImage` | 4.2.5 coordinated dependency line |
+| 4 | `RaiDiagram` | `RaiDiagram` | 4.2.5 coordinated dependency line |
+| 5 | `JsonPit` | `JsonPit` | 4.2.5: historical projection engine |
+| 6 | `ImgSeeder` | `ImgSeeder` / `iorg` | 4.2.5 coordinated dependency line |
+| 7 | `PitSeeder` | `PitSeeder` / `pits` | 4.2.5: point-in-time export CLI |
 
 Each child remains its own Git repository, package, solution, and release
 workflow. The umbrella workspace supplies local project wiring, coordinated
@@ -22,40 +22,39 @@ validation, dependency-order documentation, and sequential release automation.
 
 ## Current release line
 
-The prepared coordinated release is `4.2.4`. RAI starts the release chain
+The prepared coordinated release is `4.2.5`. RAI starts the release chain
 manually after reviewing the prepared commits and verification results.
 
-RAIkeep 4.2.4 implements accepted CR016. RaiImage normalizes ImageTree-owned
-logical names to NFC before deriving buckets or filenames, slices prefixes by
-Unicode text elements, and resolves legacy NFC, NFD, or mixed-normalization
-trees segment by segment.
+RAIkeep 4.2.5 implements accepted CR017. `pits export --at` exposes JsonPit's
+existing historical projection through both single-pit and WWWA exports,
+whether written as JSON to standard output or to the established export files.
 
 The principal functional changes are:
 
-- `RaiImage`: canonicalizes subscriber names, item identifiers, templates, image filenames, and typed ImageTree text artifacts to Unicode NFC.
-- `RaiImage`: derives 3x3, 8x2, and canonical-name buckets by Unicode text elements so surrogate pairs and combining sequences are never split.
-- `RaiImage`: resolves legacy directory levels and source filenames by canonical equivalence while preserving the caller-provided ImageTree root.
-- `RaiImage`: fails with `RaiImageIOException` when a normalization-sensitive filesystem contains ambiguous canonically equivalent matches.
-- `RaiImage`: includes SVG in its default source-image lookup extensions.
-- Directory and file discovery stays behind OsLib's `RaiPath`/`RaiFile` boundary.
-- The accepted CR015 nested tombstone, delete-command, and typed CLI contracts carry forward unchanged.
+- `PitSeeder`: accepts an offset-explicit `--at` timestamp for single-pit and WWWA exports through both `--json` and `--out-dir`.
+- `PitSeeder`: projects each known item with JsonPit's established event ordering, tombstone, deletion-wall, and resurrection semantics.
+- `PitSeeder`: emits strict `{ "_export": { "at", "exported" }, "data": ... }` JSON only for point-in-time exports; no-`--at` output remains unchanged.
+- `PitSeeder`: resolves WWWA references from four independently projected pits, preserving unresolved source references when a target is absent at the cutoff.
+- `OsLibCore`: adds optional `PitsExportRequest.At` and exact `--at` argument tokenization for server and agent callers.
+- Existing filenames remain unchanged; authoritative projection and export timestamps travel inside the point-in-time document.
+- CR016 Unicode-safe ImageTree behavior and CR015 delete behavior carry forward unchanged.
 
-RaiUtils, RaiImage, and ImgSeeder participate in the same major line so fallback package dependencies remain aligned throughout the release order.
+All seven packages participate in the coordinated patch line so fallback package dependencies remain aligned throughout the release order.
 
 ## Documentation
 
 All change requests and release notes are centralized in [`doc/`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/README.md). Child repositories should not contain independent `CR_*.md` or `RELEASE_NOTES*.md` files.
 
-Current coordinated 4.2.4 release notes:
+Current coordinated 4.2.5 release notes:
 
-- [OsLibCore 4.2.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.2.4.md)
-- [RaiUtils 4.2.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.2.4.md)
-- [RaiImage 4.2.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.2.4.md)
-- [RaiDiagram 4.2.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.2.4.md)
-- [JsonPit 4.2.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.2.4.md)
-- [ImgSeeder 4.2.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.2.4.md)
-- [PitSeeder 4.2.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.2.4.md)
-- [RAIkeep 4.2.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.2.4.md)
+- [OsLibCore 4.2.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.2.5.md)
+- [RaiUtils 4.2.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.2.5.md)
+- [RaiImage 4.2.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.2.5.md)
+- [RaiDiagram 4.2.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.2.5.md)
+- [JsonPit 4.2.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.2.5.md)
+- [ImgSeeder 4.2.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.2.5.md)
+- [PitSeeder 4.2.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.2.5.md)
+- [RAIkeep 4.2.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.2.5.md)
 
 The prior coordinated line remains documented in [RAIkeep 4.1.0 release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.1.0.md).
 
@@ -85,7 +84,7 @@ After approval, use one release mechanism for the chain. The established local o
 
 ```bash
 cd /Users/RSB/Projects/GitHub/RAIkeep
-scripts/release-chain.sh 4.2.4
+scripts/release-chain.sh 4.2.5
 ```
 
 Before publication begins, all seven child release commits and their exact submodule pointers must already be committed on the umbrella `main`. The script preflights that state, pushes the prepared umbrella `main`, and applies the passed version as its tag first. The umbrella tag does not publish a package; its workflow is manual-only.
@@ -99,7 +98,7 @@ OsLibCore → RaiUtils → RaiImage → RaiDiagram → JsonPit → ImgSeeder →
 For every package before the next repository is pushed/tagged:
 
 1. Push the prepared repository `main` only if it is ahead.
-2. Push that repository's requested version tag, such as `v4.2.4`, to trigger its publish workflow.
+2. Push that repository's requested version tag, such as `v4.2.5`, to trigger its publish workflow.
 3. Wait for the matching GitHub workflow to finish successfully.
 4. Verify the exact `.nupkg` and exact-version registration document are both visible from NuGet with HTTP `200`.
 5. Only then continue to the next repository.
