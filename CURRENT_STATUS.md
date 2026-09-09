@@ -1,54 +1,54 @@
 # CURRENT_STATUS
 
-Last updated: 2026-08-14
+Last updated: 2026-09-08
 
-Current released package line: `4.1.0`
+Current released package line: `4.2.6`
 
-Upcoming coordinated package line: `4.2.0`
+Upcoming coordinated package line: `4.2.7`
 
-## Released 4.1.0 state
+## Released 4.2.6 state
 
-- The RAIkeep umbrella and all six established package repositories carry matching `v4.1.0` tags at their released commits.
-- `OsLibCore`, `RaiUtils`, `RaiImage`, `JsonPit`, `ImgSeeder`, and `PitSeeder` `4.1.0` are visible through both NuGet's exact flat-container package and exact-version registration endpoints.
-- CR008's TempDir validation, shared exception boundaries, and stream-free ingestion APIs are released.
-- JsonPit's finalizer ownership regression is fixed while retaining the no-finalizer-I/O and no-finalizer-recovery-publication contract.
-- ImgSeeder's package-only test graph no longer duplicates stale OsLibCore and RaiImage dependency versions.
+- The RAIkeep umbrella coordinates seven independently published package repositories.
+- `OsLibCore`, `RaiUtils`, `RaiImage`, `RaiDiagram`, `JsonPit`, `ImgSeeder`, and `PitSeeder` 4.2.6 are visible through NuGet's exact package endpoint.
+- CR019's canonical RaiUtils word-case and Unicode-safe word-seam implementation is available throughout the aligned package line.
 
-## Coordinated 4.2.0 preparation
+## Coordinated 4.2.7 preparation
 
-- `RaiDiagram` is a public standalone repository and a RAIkeep submodule: <https://github.com/Burkhardt/RaiDiagram>.
-- The initial CR009 implementation provides JSON5 `.raid` manifests, semantic and presentation hashing, domain-neutral model-provider contracts, structured reconciliation, PlantUML compilation/rendering, and SVG provenance metadata.
-- The repository includes the RAI logo, Apache-2.0 license, foldable `API.md`, 20 passing tests, and a tag-triggered NuGet trusted-publishing workflow.
-- No RaiDiagram version tag or NuGet package has been published.
-- All seven package projects and fallback dependency properties are aligned on `4.2.0`.
-- RaiImage and JsonPit now honor `UseLocalRAIkeepSources=false`; JsonPit tests no longer directly reintroduce sibling project references.
+- Accepted CR020 establishes `ItemTreePath` as the object-oriented home of one subscriber-local ItemId and all of its image and diagram files.
+- `ItemTreePath.SelectFiles()` selects an exact item family while excluding similarly named siblings in a shared bucket.
+- Destination-oriented `ItemTreePath.mv(source)` moves or renames complete item families across subscriber roots and canonical, 3x3, 8x2, or Flat layouts.
+- `ImageTreeFile`, `ItemTreeTextFile`, and the RaiDiagram artifact types accept `ItemTreePath`; the active static `FromImageTree` / `FromItemTree` construction path has been removed.
+- `iorg list` provides read-only wildcard discovery. `iorg move` provides exact-ItemId relocation and optional rename. `iorg clean` distinguishes complete item deletion from explicit derivative-cache cleanup.
+- OsLibCore exposes typed list and move requests through `IorgCommand` and keeps recursive filesystem traversal behind the `RaiPath` / `RaiFile` boundary.
+- All seven package projects and fallback dependency properties are aligned on 4.2.7.
+- No 4.2.7 tag or NuGet publication has been created; RAI retains the manual release gate.
 
 ## Coordinated release tooling
 
 - `scripts/release-chain.sh` is the single coordinated release orchestrator.
 - The enforced order is `OsLibCore → RaiUtils → RaiImage → RaiDiagram → JsonPit → ImgSeeder → PitSeeder`.
 - Every package performs a package-only restore before its tag is created.
-- The chain waits for both the exact `.nupkg` and exact-version NuGet registration document to return HTTP `200`; it no longer uses a fixed indexing delay.
-- The obsolete umbrella workflow that could publish a second chain independently has been removed.
+- The chain waits for both the exact `.nupkg` and exact-version NuGet registration document to return HTTP `200`; it does not use a fixed indexing delay.
+- The umbrella label records the exact seven child commits before any package tag is created.
 
 ## Documentation state
 
 - Package README links to Markdown documents use absolute GitHub URLs so they work from NuGet as well as GitHub.
-- Package READMEs use ordinary Markdown headings rather than raw `<details>` markup that NuGet displays poorly.
 - Foldable API references exist for OsLibCore, RaiUtils, RaiImage, JsonPit, and RaiDiagram.
+- CR020 and coordinated 4.2.7 release notes are centralized under `doc/`.
 - `scripts/check-markdown-document-links.sh` and its GitHub workflow reject new relative Markdown document links.
 
 ## Validation
 
-- The full umbrella Release build, including RaiDiagram, succeeds.
-- Release suites pass: OsLibCore 81, RaiUtils 22, RaiImage 97, RaiDiagram 20, JsonPit 146, ImgSeeder 15, and PitSeeder 20 tests.
-- The focused JsonPit finalizer regression passes independently.
-- The real Nkosikazi-to-Mzansi synchronization test passes after its test harness renews and observes a fresh exact-owner lease following initial cloud sync.
-- A disposable local feed restores and packs all seven 4.2.0 packages with `UseLocalRAIkeepSources=false`; the resulting package metadata contains only the intended 4.2.0 package dependencies.
-- Markdown link and whitespace validation passes across the umbrella and all seven child repositories.
-- The umbrella build currently reports existing xUnit analyzer warnings in JsonPit concurrency tests; this release-tooling and documentation work adds no compiler errors.
+- The full umbrella Release build succeeds.
+- Current deterministic release suites pass: OsLibCore 117, RaiUtils 51, RaiImage 117, RaiDiagram 35, JsonPit 154, ImgSeeder 28, and PitSeeder 37 tests (539 total).
+- RaiDiagram's passing suite includes the real local PlantUML integration path.
+- The complete mixed `AfricanBrisket` image/diagram family, wildcard listing, sibling exclusion, rename, subscriber relocation, 3x3/8x2/Flat migration, indexed ItemIds, and short ItemIds with coincident physical convention homes are covered.
+- The two Mzansi-backed JsonPit integration tests are not presently a code gate: read-only diagnosis found the remote OneDrive synchronizer inactive. The deterministic JsonPit suite remains green.
+- The umbrella build still reports existing xUnit analyzer warnings in JsonPit concurrency tests; CR020 adds no compiler errors.
 
-## Remaining 4.2.0 release preparation
+## Remaining 4.2.7 release preparation
 
-- Configure RaiDiagram as a trusted publisher on NuGet.org before its first tag-triggered publication.
-- Commit the exact seven child release pointers in the umbrella before RAI starts `scripts/release-chain.sh 4.2.0`.
+- Pack and inspect all seven local 4.2.7 artifacts.
+- Commit each child repository on `main`, then commit the exact seven updated submodule pointers and umbrella documents on `main`.
+- RAI may then start `scripts/release-chain.sh 4.2.7` manually.

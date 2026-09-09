@@ -11,14 +11,14 @@ Do not add `RELEASE_NOTES*.md` or `CR_*.md` files to child-project directories. 
 
 ## Current coordinated release notes
 
-- [RAIkeep 4.2.6](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.2.6.md)
-- [OsLibCore 4.2.6](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.2.6.md)
-- [RaiUtils 4.2.6](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.2.6.md)
-- [RaiImage 4.2.6](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.2.6.md)
-- [RaiDiagram 4.2.6](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.2.6.md)
-- [JsonPit 4.2.6](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.2.6.md)
-- [ImgSeeder 4.2.6](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.2.6.md)
-- [PitSeeder 4.2.6](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.2.6.md)
+- [RAIkeep 4.2.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.2.7.md)
+- [OsLibCore 4.2.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.2.7.md)
+- [RaiUtils 4.2.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.2.7.md)
+- [RaiImage 4.2.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.2.7.md)
+- [RaiDiagram 4.2.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.2.7.md)
+- [JsonPit 4.2.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.2.7.md)
+- [ImgSeeder 4.2.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.2.7.md)
+- [PitSeeder 4.2.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.2.7.md)
 
 ## Technical guides
 
@@ -43,6 +43,7 @@ Open:
 
 Resolved:
 
+- [`CR020_RAI_to_RAIkeep_Iorg_Read_Only_Wildcard_Listing.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR020_RAI_to_RAIkeep_Iorg_Read_Only_Wildcard_Listing.md) — accepted and implemented for coordinated RAIkeep v4.2.7; publication remains behind RAI's manual gate
 - [`CR019_AIA_to_RAIkeep_WordCase_Seams_and_Placement.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR019_AIA_to_RAIkeep_WordCase_Seams_and_Placement.md) — formally accepted for coordinated RAIkeep v4.2.6; relocates word-case helpers to RaiUtils and adds lossless Unicode-safe seam positions
 - [`CR017_AIA_to_RAIkeep_Pits_Point_in_Time_Export.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR017_AIA_to_RAIkeep_Pits_Point_in_Time_Export.md) — formally accepted, implemented, and verified for RAIkeep v4.2.5; publication remained behind RAI's manual gate
 - [`CR015_AIA_to_RAIkeep_Nested_Property_Tombstones_and_CLI_Delete.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR015_AIA_to_RAIkeep_Nested_Property_Tombstones_and_CLI_Delete.md) — accepted, implemented, verified, and released in RAIkeep v4.2.3
