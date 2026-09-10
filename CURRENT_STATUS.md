@@ -47,8 +47,9 @@ Upcoming coordinated package line: `4.2.8`
 - Of the two Mzansi scenarios, the broader remote-sync flow passed and the split-master propagation scenario reached its established ten-minute timeout because Mzansi's OneDrive synchronizer was inactive. This is an external operational prerequisite rather than a CR021 code failure. CR021's required configured-CloudDrive storage boundary is green locally without a skip.
 - The umbrella build still reports existing xUnit analyzer warnings in JsonPit concurrency tests; CR020 adds no compiler errors.
 
-## Remaining 4.2.8 release preparation
+## 4.2.8 release readiness
 
-- Commit each child repository on `main`, then commit the exact seven updated submodule pointers and umbrella documents on `main`.
-- Confirm the resulting worktrees are clean and the seven inspected local package artifacts remain aligned on 4.2.8.
-- RAI may then start `scripts/release-chain.sh 4.2.8` manually.
+- Every child repository is committed on `main`; the umbrella records the exact seven prepared child commits.
+- All eight worktrees are clean, the inspected local packages and dependency pins align on 4.2.8, and no v4.2.8 tag exists yet.
+- The post-commit umbrella Release build succeeds with zero errors. Existing JsonPit xUnit analyzer warnings remain documented and unchanged.
+- RAI may start `scripts/release-chain.sh 4.2.8` manually.
