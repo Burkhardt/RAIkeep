@@ -2,25 +2,27 @@
 
 Last updated: 2026-09-09
 
-Current released package line: `4.2.7`
+Current released package line: `4.2.8`
 
-Upcoming coordinated package line: `4.2.8`
+Prepared coordinated package line: `4.2.9`
 
-## Released 4.2.7 state
+## Released 4.2.8 state
 
 - The RAIkeep umbrella coordinates seven independently published package repositories.
-- `OsLibCore`, `RaiUtils`, `RaiImage`, `RaiDiagram`, `JsonPit`, `ImgSeeder`, and `PitSeeder` 4.2.7 are the current coordinated baseline.
-- CR020 ItemTree selection, movement, and `iorg` custodianship are aligned throughout that package line.
+- `OsLibCore`, `RaiUtils`, `RaiImage`, `RaiDiagram`, `JsonPit`, `ImgSeeder`, and `PitSeeder` 4.2.8 are the current coordinated baseline.
+- CR021 durable cleanup receipts, explicit maintenance, process-artifact pruning, and legacy-extension repair are available throughout that line.
 
-## Coordinated 4.2.8 preparation
+## Coordinated 4.2.9 preparation
 
-- Accepted CR021 replaces JsonPit's process-local change-cleanup timer with immutable same-stem `.receipt` evidence whose first canonical-accounting time survives restart and master transfer.
-- `Pit.Maintain(...)` provides report-only and explicit apply behavior; eligible cleanup revalidates authority and canonical accounting, then removes change first and receipt second.
-- PID-window pruning requires explicit apply plus an age; recognizable extensionless flags/events require separate repair authorization.
-- `pits maintain` supports one pit or WWWA with human/JSON results and avoids disposal republishing retired changes.
-- OsLibCore preserves dotted explicit `TextFile` stems and serializes same-target typed `PitsCommand` calls across wrapper instances.
-- All seven package projects and fallback dependency properties are aligned on 4.2.8.
-- No 4.2.8 tag or NuGet publication has been created; RAI retains the manual release gate.
+- Accepted CR022 records the 2026-09-09 OneDrive incident investigation and establishes the universal cloud-storage in-place invariant.
+- The investigation found no deletion or replacement of the four established live AIA pit directories. OneDrive's mass-deletion prompt was consistent with the explicitly requested retirement of expired process flags and repaired extensionless artifacts.
+- A separate report-only defect could create empty missing pit directories through JsonPit's lazy `PitDir`; maintenance now checks the non-creating canonical parent.
+- `pits maintain` validates the resolved root and canonical pit files before constructing any `Pit`. Wrong and partial WWWA roots are never filled in implicitly.
+- OsLibCore rejects TempDir-to-cloud file and directory moves before mutation, preserves existing cloud file pathnames during replacement, rejects cloud-directory replacement, and copies cloud backups.
+- ImgSeeder writes directly to final ItemTree destinations; its retained `tempRoot` parameter is behaviorally inert.
+- RaiImage `JpegTran` uses isolated temporary tool files and writes successful result bytes into the continuously present destination pathname.
+- All seven package projects and fallback dependency properties align on 4.2.9.
+- No v4.2.9 tag, push, GitHub label, workflow dispatch, or NuGet publication has occurred; RAI retains the manual release gate.
 
 ## Coordinated release tooling
 
@@ -33,23 +35,25 @@ Upcoming coordinated package line: `4.2.8`
 ## Documentation state
 
 - Package README links to Markdown documents use absolute GitHub URLs so they work from NuGet as well as GitHub.
-- Foldable API references exist for OsLibCore, RaiUtils, RaiImage, JsonPit, and RaiDiagram.
-- CR021 and coordinated 4.2.8 release notes are centralized under `doc/`.
+- Foldable API references describe every changed public boundary.
+- CR022, the cloud-storage invariant, and coordinated 4.2.9 release notes are centralized under `doc/`.
 - `scripts/check-markdown-document-links.sh` and its GitHub workflow reject new relative Markdown document links.
 
 ## Validation
 
-- The full umbrella Release build succeeds.
-- Current package tests pass 558 of 559 cases: OsLibCore 124, RaiUtils 51, RaiImage 117, RaiDiagram 35, JsonPit 164 of 165, ImgSeeder 28, and PitSeeder 39 (zero skipped).
-- The CR021 receipt lifecycle passes against a real configured CloudDrive root, including materialization, restart, preservation of the original receipt time, elapsed-grace change-first cleanup, and receipt removal.
+- All seven complete package Release suites pass: OsLibCore 131, RaiUtils 51, RaiImage 119, RaiDiagram 35, JsonPit 167, ImgSeeder 29, and PitSeeder 41—573/573 total with zero skipped.
+- The CR022 focused suites pass on isolated configured-cloud roots: OsLibCore 7, RaiImage 5, JsonPit 2, ImgSeeder 7, and PitSeeder 4.
+- Configured-cloud coverage observes established pathnames throughout copy/move replacement and JPEG success/failure; TempDir-to-cloud moves fail before mutation.
+- Missing, wrong, and partial maintenance roots remain entry-for-entry unchanged, including directory timestamps.
+- CR021 receipt, grace, legacy repair, explicit pruning, finalizer-no-I/O, and abandoned-path-reopenability coverage remains green.
 - RaiDiagram's passing suite includes the real local PlantUML integration path.
-- The complete mixed `AfricanBrisket` image/diagram family, wildcard listing, sibling exclusion, rename, subscriber relocation, 3x3/8x2/Flat migration, indexed ItemIds, and short ItemIds with coincident physical convention homes are covered.
-- Of the two Mzansi scenarios, the broader remote-sync flow passed and the split-master propagation scenario reached its established ten-minute timeout because Mzansi's OneDrive synchronizer was inactive. This is an external operational prerequisite rather than a CR021 code failure. CR021's required configured-CloudDrive storage boundary is green locally without a skip.
-- The umbrella build still reports existing xUnit analyzer warnings in JsonPit concurrency tests; CR020 adds no compiler errors.
+- The full umbrella Release build succeeds with zero warnings and zero errors.
+- The Markdown absolute-link check passes.
 
-## 4.2.8 release readiness
+## 4.2.9 release readiness
 
-- Every child repository is committed on `main`; the umbrella records the exact seven prepared child commits.
-- All eight worktrees are clean, the inspected local packages and dependency pins align on 4.2.8, and no v4.2.8 tag exists yet.
-- The post-commit umbrella Release build succeeds with zero errors. Existing JsonPit xUnit analyzer warnings remain documented and unchanged.
-- RAI may start `scripts/release-chain.sh 4.2.8` manually.
+- The seven package implementations, tests, versions, dependency pins, READMEs, API references, and coordinated release notes are complete.
+- Every child repository is committed on `main`; the umbrella records those exact seven prepared child commits.
+- All eight worktrees are clean, package artifacts have been inspected, and no v4.2.9 tag exists.
+- The post-commit branch, pointer, version, workflow-name, and ahead/behind checks pass.
+- RAI may start `scripts/release-chain.sh 4.2.9` manually.
