@@ -41,7 +41,11 @@ A process updates its activity flag after a successful flagged load and during f
 
 The file is not deleted or renamed. This avoids the delete/recreate pattern that caused trouble when consecutive CLI processes updated the same OneDrive-backed flag path.
 
-An old tombstone can therefore remain in the pit directory. Accumulating these small files is an accepted trade-off for process-specific diagnostics and safer cloud synchronization.
+An old tombstone can therefore remain in the pit directory. Since v4.2.8,
+`pits maintain ... --apply --prune-process-flags --older-than <duration>` can
+explicitly remove only revalidated, expired, PID-specific tombstones. Report-only
+maintenance inventories them; active windows, `Master.flag`, longer conflict
+evidence, malformed files, and unknown files are retained.
 
 PitSeeder performs this release by default when a finite command completes. `--retain-window` keeps the normal timeout-based activity window instead.
 
@@ -85,7 +89,20 @@ Keeping the lease for its timeout gives the canonical write time to propagate th
 
 Every ordinary change file — non-master persistence, split-master recovery, and graceful-shutdown export — uses the collision-safe identity `{Modified.UtcTicks}_{ExactProcessIdentity}_{Sha256}.json`, where `Sha256` is the full lowercase SHA-256 of the exact canonical UTF-8 JSON payload. Republishing the same fragment is filename-idempotent; distinct equal-timestamp fragments cannot suppress one another. A participant merges a change file only after its content matches the filename hash and parses completely.
 
-Cleanup is a current-master-only two-stage operation: merge and successfully persist a canonical snapshot that accounts for the fragment, then retain the file for a ten-minute propagation grace measured from that save (never from original file age). Restart or master transfer resets eligibility; the new master merges, persists, and starts a fresh grace period.
+Cleanup is a current-master-only, receipt-backed operation. After merge and
+successful persistence (or validation of an existing healthy canonical snapshot
+that already accounts for the exact fragment), JsonPit creates an immutable
+same-stem `.receipt` containing the first local canonical-accounting time. The
+change and receipt remain for the ten-minute propagation grace measured from that
+time, never from original change-file age. Restart, replay, and master transfer
+revalidate the evidence but do not refresh a valid receipt. After the grace, the
+current exact master revalidates everything and removes the change first and its
+receipt second. A missing or malformed receipt cannot authorize deletion.
+
+This v4.2.8 CR021 rule narrowly supersedes CR003's original in-memory eligibility
+map and restart-reset rule. All other CR003 durability and concurrency rules remain.
+Explicit `Pit.Maintain(...)` and `pits maintain` provide report/apply control; no
+timer, finalizer I/O, or `Os.Config` mutation was added.
 
 ## Split-master recovery and durable audit events
 
@@ -148,6 +165,7 @@ CR003 retains the established configuration model: the machine's configuration f
 ## Related documentation
 
 - [`CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR003_RAI_to_RAIkeep_JsonPit-concurrency-contract-and-persistence-races.md)
+- [`CR021_RAI_to_RAIkeep_JsonPit_Durable_Cleanup_Receipts_and_Pits_Coordination.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR021_RAI_to_RAIkeep_JsonPit_Durable_Cleanup_Receipts_and_Pits_Coordination.md)
 - [`JsonPit-CONCEPT-Live-Split-Master-Recovery.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit-CONCEPT-Live-Split-Master-Recovery.md)
 - [`JsonPit_RELEASE_NOTES_3.13.2.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_3.13.2.md)
 - [`OsLib_RELEASE_NOTES_3.13.2.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_3.13.2.md)

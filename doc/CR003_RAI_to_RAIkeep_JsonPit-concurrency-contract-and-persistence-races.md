@@ -7,6 +7,14 @@ Finalized: 2026-08-05
 
 Detailed implementation guidance, current code seams, sequencing pseudocode, traps, and per-agreement test designs are recorded in [`Details of CR003.md`](<https://github.com/Burkhardt/RAIkeep/blob/main/doc/Details%20of%20CR003.md>).
 
+> **v4.2.8 amendment:** Accepted
+> [CR021](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR021_RAI_to_RAIkeep_JsonPit_Durable_Cleanup_Receipts_and_Pits_Coordination.md)
+> narrowly supersedes CR003's in-memory-only cleanup eligibility and
+> restart/master-transfer reset rule. Immutable same-stem `.receipt` evidence now
+> preserves the first successful canonical-accounting time across process lifetime.
+> Canonical-save-before-delete, current exact-master revalidation, the ten-minute
+> grace, change-first removal, finalizer non-I/O, and every other CR003 rule remain.
+
 ## Current Assessment
 
 RAIkeep is not yet fully at the desired concurrency contract.
@@ -191,9 +199,9 @@ The exact recovery design is specified in [`JsonPit-CONCEPT-Live-Split-Master-Re
 - A live transfer of exact master authority to another process is a durability handoff even when no longer conflict flag exists. The former master enters the persistence/recovery gate, publishes its completed-tenure recovery write set plus currently dirty fragments as ordinary change files, removes only locally validated entries, and continues as a non-master. Mere lease expiry followed by reacquisition by the same exact process is not a transfer and does not trigger this export.
 - Every participant that encounters those files may merge them through the ordinary deterministic change-file path. Exact replay duplicates are harmless and ignored.
 - Only the exact current master may persist the reconciled canonical pit and complete recovery cleanup. That responsibility follows canonical `Master.flag` if master authority changes while recovery is in progress.
-- Change-file cleanup is a current-master-only two-stage operation. The master first validates and merges a file, successfully persists a canonical snapshot that accounts for its fragment under the configured history-retention rules, and records the file's cleanup-eligibility time in memory. It must not delete the file before that canonical save.
+- Change-file cleanup is a current-master-only two-stage operation. The master first validates and merges a file and successfully persists or validates a canonical snapshot that accounts for its fragment under the configured history-retention rules. Since v4.2.8/CR021 it records the first cleanup-eligibility time in an immutable same-stem `.receipt`, not solely in memory. It must not delete the file before that canonical accounting.
 - The file remains for a ten-minute propagation grace period measured from successful canonical persistence, not from original change-file creation. A later cleanup pass revalidates current exact-master authority and canonical health before deletion.
-- Restart or master change loses the in-memory eligibility time. The new current master therefore merges/persists again and starts a fresh ten-minute grace period. No acknowledgement sidecar is required. The grace is an explicit operational safety margin, not a proof of replication under unlimited provider delay.
+- **Superseded by CR021 in v4.2.8:** restart or master change no longer loses a valid receipt time and does not refresh the grace. The new current master must still revalidate change integrity, canonical accounting, receipt validity, and exact-master authority. A missing receipt begins a new conservative grace only after canonical revalidation. The receipt is cleanup evidence, not distributed acknowledgement or proof of replication under unlimited provider delay.
 - Explicit disposal of a writable `Pit` is a durability boundary. Under the persistence/recovery gate it snapshots the recovery write set plus currently dirty fragments, publishes them as ordinary collision-safe change files, optionally completes a canonical save if it still owns exact master authority, and only then releases process/master authority and its watcher.
 - Graceful shutdown must publish the change files before attempting the optional canonical save so the fragments remain recoverable if that canonical save fails. Finalizers do not perform this I/O. Crash, forced termination, power loss, and failure to dispose remain outside the live in-memory recovery guarantee.
 - Do not remove recent fragments or manufacture timestamp-based undo. `GetAt` historical projection is not an undo implementation.

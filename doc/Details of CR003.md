@@ -314,17 +314,21 @@ Cleanup is a strict two-stage protocol:
 
 1. Validate and merge a change file.
 2. Successfully persist a canonical snapshot accounting for its fragment under history retention.
-3. Record an in-memory cleanup-eligibility timestamp for that file after the successful canonical save.
-4. Keep it for ten minutes measured from that save.
-5. On a later pass, revalidate exact master authority and canonical health, then delete.
+3. Record cleanup eligibility only after that accounting succeeds.
+4. Keep it for ten minutes measured from that successful accounting time.
+5. On a later pass, revalidate exact master authority and canonical accounting, remove the change file first, and remove its eligibility evidence second.
 
-Original file age does not count. Restart or master transfer loses the in-memory eligibility map, deliberately forcing another merge, canonical save, and fresh ten-minute grace. There is no acknowledgement sidecar.
+Original file age does not count. **This paragraph's original restart-reset rule is
+superseded by accepted CR021 in v4.2.8:** cleanup eligibility is now an immutable
+same-stem `.receipt` timestamp created after successful canonical accounting.
+Restart or master transfer revalidates but does not refresh a valid receipt. A
+missing receipt starts a new conservative grace after canonical revalidation.
 
 The current `MergeChanges()` order—deleting files older than ten minutes before `Store()`—is the exact trap to remove. Its broad catch-and-ignore cleanup behavior must also become structured diagnostics; silent deletion failure may be retryable, but silent pre-save deletion is data loss.
 
 ### Test approach
 
-Start with an old change file so its filesystem age already exceeds ten minutes. Merge it and prove it survives until after a successful canonical save plus a new ten-minute grace. Make the canonical save fail and prove the change file remains. Restart or transfer master during the grace and prove the new master starts a new merge/save/grace cycle. Have a non-master merge the same file and prove it neither writes the canonical pit nor deletes the file. Release acceptance should exercise the real ten-minute configured-cloud grace; a fast local substitute or injected clock does not prove the operational contract.
+Start with an old change file so its filesystem age already exceeds ten minutes. Merge it and prove it survives until after successful canonical accounting plus a new ten-minute grace. Make the canonical save fail and prove the change file remains. Under the CR021 amendment, restart or transfer master during the grace and prove the immutable receipt retains the original accounting time while the new master revalidates it. Have a non-master merge the same file and prove it neither writes the canonical pit nor deletes the file. Release acceptance should exercise the configured-cloud receipt lifecycle; a skipped cloud test or local-only substitute does not prove that storage-boundary contract.
 
 ## 14. Agreement: Per-Master-Tenure In-Memory Recovery Write Set
 
@@ -583,12 +587,12 @@ persistence gate
   merge exact non-replays under state gate
   revalidate exact authority
   persist canonical snapshot containing merged fragments
-  mark those files cleanup-eligible now
+  create missing immutable same-stem receipts for accounted fragments
 release persistence gate
 
 on a later pass after ten minutes:
-  revalidate exact authority and canonical health
-  delete only still-eligible files
+  revalidate exact authority and canonical accounting
+  delete only receipt-eligible changes, then their receipts
 ```
 
 ### Live split-master loser
@@ -650,7 +654,7 @@ The implementation is not complete if it uses any of these shortcuts:
 - Reading longer conflict flags as authority or reading `Object (1).pit` as recovery input.
 - Letting the current master delete a still-live loser's conflict flag.
 - Deleting a change file based on original age or before canonical persistence.
-- Keeping cleanup eligibility across restart or master transfer.
+- Keeping cleanup eligibility only in process memory (superseded in v4.2.8 by CR021 durable receipts).
 - Performing recovery or filesystem I/O in a finalizer.
 - Using `Debug.WriteLine` as the CR003 diagnostic record.
 - Giving OsLib knowledge of JsonPit event fields, machine grouping, severity, or stage semantics.
@@ -701,7 +705,7 @@ Before describing CR003 as implemented, verify all of the following:
 - Every change file is hash/parse validated before use or responsibility transfer.
 - Tenure write-set and dirty-fragment handoff cover conflict, normal transfer, and graceful disposal.
 - Every participant may merge; only current exact master canonicalizes and cleans.
-- Cleanup begins its grace after successful canonical save and resets on restart/transfer.
+- Cleanup begins its grace after successful canonical accounting and its immutable receipt survives restart/transfer without refresh.
 - Watcher plus operation-boundary scans detect general longer `Master*.flag` evidence.
 - Loser and orphan evidence deletion rules are enforced exactly.
 - Noncanonical `Object*.pit` copies remain untouched.
@@ -742,7 +746,7 @@ This table restates the recovery concept's numbered scenarios as decisive implem
 | 17 | Per-fragment responsibility transfer | Successful siblings leave the write set after local validation while a failed sibling remains retryable without cloud acknowledgement |
 | 18 | No deletion before canonical save | A forced canonical failure leaves every processed change file present |
 | 19 | Grace starts at canonical persistence | A pre-aged change file still remains for the full ten minutes after the successful save |
-| 20 | Restart/master transfer resets eligibility | New process/master repeats merge and persistence and begins a fresh grace rather than inheriting old memory |
+| 20 | Restart/master transfer preserves durable eligibility | New process/master revalidates the canonical fragment and original immutable receipt without refreshing its grace |
 | 21 | Event filename collision behavior | Multi-machine coexistence, idempotent same content, different-content hash names, and nonce collision preservation all succeed |
 | 22 | Fresh schema-agnostic event aggregation | Missing directory stays absent/empty; later calls discover new complete files as filename/unchanged-object pairs |
 | 23 | Bad event isolation and reconsideration | One bad event does not hide valid siblings; completing it makes it appear on a later fresh call |
