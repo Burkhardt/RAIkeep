@@ -1,28 +1,28 @@
 # CURRENT_STATUS
 
-Last updated: 2026-09-09
+Last updated: 2026-09-10
 
-Current released package line: `4.2.8`
+Current released package line: `4.2.9`
 
-Prepared coordinated package line: `4.2.9`
+Prepared coordinated package line: `4.2.10`
 
-## Released 4.2.8 state
+## Released 4.2.9 state
 
 - The RAIkeep umbrella coordinates seven independently published package repositories.
-- `OsLibCore`, `RaiUtils`, `RaiImage`, `RaiDiagram`, `JsonPit`, `ImgSeeder`, and `PitSeeder` 4.2.8 are the current coordinated baseline.
-- CR021 durable cleanup receipts, explicit maintenance, process-artifact pruning, and legacy-extension repair are available throughout that line.
+- `OsLibCore`, `RaiUtils`, `RaiImage`, `RaiDiagram`, `JsonPit`, `ImgSeeder`, and `PitSeeder` 4.2.9 are the current coordinated baseline.
+- CR022 cloud-safe in-place filesystem enforcement and CR021 durable cleanup receipts remain active throughout the line.
 
-## Coordinated 4.2.9 preparation
+## Coordinated 4.2.10 preparation
 
-- Accepted CR022 records the 2026-09-09 OneDrive incident investigation and establishes the universal cloud-storage in-place invariant.
-- The investigation found no deletion or replacement of the four established live AIA pit directories. OneDrive's mass-deletion prompt was consistent with the explicitly requested retirement of expired process flags and repaired extensionless artifacts.
-- A separate report-only defect could create empty missing pit directories through JsonPit's lazy `PitDir`; maintenance now checks the non-creating canonical parent.
-- `pits maintain` validates the resolved root and canonical pit files before constructing any `Pit`. Wrong and partial WWWA roots are never filled in implicitly.
-- OsLibCore rejects TempDir-to-cloud file and directory moves before mutation, preserves existing cloud file pathnames during replacement, rejects cloud-directory replacement, and copies cloud backups.
-- ImgSeeder writes directly to final ItemTree destinations; its retained `tempRoot` parameter is behaviorally inert.
-- RaiImage `JpegTran` uses isolated temporary tool files and writes successful result bytes into the continuously present destination pathname.
-- All seven package projects and fallback dependency properties align on 4.2.9.
-- No v4.2.9 tag, push, GitHub label, workflow dispatch, or NuGet publication has occurred; RAI retains the manual release gate.
+- RAI explicitly authorized implementation of the recovery-event archive backlog.
+- `RaiZipFile` creates immutable collection archives directly at the final pathname inside an existing directory; same-name content is validated and never overwritten.
+- `PitMaintenanceOptions.ArchiveEvents` and `pits maintain --archive-events` support non-mutating preview and explicit apply for one pit or WWWA.
+- Loose event sources remain until complete filename/byte validation succeeds, then retire individually. Retry, corruption, collision, and post-snapshot publication paths retain evidence safely.
+- `PitAudit` and `pits audit` combine loose and archived events without extraction and deduplicate by event identity.
+- `iorg` adds `-a, --app` application-root addressing and preferred `-t, --tenant`; `-r, --root` remains the exact ImageTree-root alternative and `--subscriber` remains an alias.
+- OsLib typed wrappers expose the new `pits` and `iorg` option forms.
+- All seven package projects and fallback dependency properties align on 4.2.10.
+- No v4.2.10 tag, push, GitHub label, workflow dispatch, or NuGet publication has occurred; RAI retains the manual release gate.
 
 ## Coordinated release tooling
 
@@ -34,26 +34,22 @@ Prepared coordinated package line: `4.2.9`
 
 ## Documentation state
 
-- Package README links to Markdown documents use absolute GitHub URLs so they work from NuGet as well as GitHub.
-- Foldable API references describe every changed public boundary.
-- CR022, the cloud-storage invariant, and coordinated 4.2.9 release notes are centralized under `doc/`.
+- Every package README identifies 4.2.10 as its current prepared line and links to centralized release notes with absolute GitHub URLs.
+- Foldable API references document each changed public library boundary.
+- The `pits audit` and `iorg` operational manuals document event archives and application-root/tenant addressing respectively.
 - `scripts/check-markdown-document-links.sh` and its GitHub workflow reject new relative Markdown document links.
 
 ## Validation
 
-- All seven complete package Release suites pass: OsLibCore 131, RaiUtils 51, RaiImage 119, RaiDiagram 35, JsonPit 167, ImgSeeder 29, and PitSeeder 41—573/573 total with zero skipped.
-- The CR022 focused suites pass on isolated configured-cloud roots: OsLibCore 7, RaiImage 5, JsonPit 2, ImgSeeder 7, and PitSeeder 4.
-- Configured-cloud coverage observes established pathnames throughout copy/move replacement and JPEG success/failure; TempDir-to-cloud moves fail before mutation.
-- Missing, wrong, and partial maintenance roots remain entry-for-entry unchanged, including directory timestamps.
-- CR021 receipt, grace, legacy repair, explicit pruning, finalizer-no-I/O, and abandoned-path-reopenability coverage remains green.
-- RaiDiagram's passing suite includes the real local PlantUML integration path.
-- The full umbrella Release build succeeds with zero warnings and zero errors.
-- The Markdown absolute-link check passes.
+- All seven complete package Release suites pass: OsLibCore 135, RaiUtils 51, RaiImage 119, RaiDiagram 35, JsonPit 174, ImgSeeder 33, and PitSeeder 43—590/590 total with zero skipped.
+- The RaiDiagram suite exercised the real local PlantUML integration path.
+- Focused archive coverage includes preview, apply, single-pit/WWWA CLI paths, immutable retry, corruption/collision retention, identity deduplication, and post-snapshot event publication.
+- Focused iorg coverage proves app-root/tenant resolution, exact-root equivalence, aliases, mutual exclusion, required tenant validation, and help alignment.
+- The coordinated Release build succeeds with zero warnings and zero errors; the umbrella solution now includes the ImgSeeder executable explicitly, so every deliverable builds under `Release`.
+- All seven local `4.2.10` NuGet artifacts have been packed and inspected for exact package identity, version, coordinated dependency pins, package README, and CLI tool payloads.
 
-## 4.2.9 release readiness
+## 4.2.10 release readiness
 
-- The seven package implementations, tests, versions, dependency pins, READMEs, API references, and coordinated release notes are complete.
-- Every child repository is committed on `main`; the umbrella records those exact seven prepared child commits.
-- All eight worktrees are clean, package artifacts have been inspected, and no v4.2.9 tag exists.
-- The post-commit branch, pointer, version, workflow-name, and ahead/behind checks pass.
-- RAI may start `scripts/release-chain.sh 4.2.9` manually.
+- The seven package implementations, tests, versions, dependency pins, READMEs, API references, coordinated release notes, and local package inspections are complete.
+- All package work is committed on `main`; the umbrella commit records the exact seven prepared child revisions.
+- RAI may start `scripts/release-chain.sh 4.2.10` manually. The release chain remains the only action that pushes, tags, labels, dispatches publishing workflows, or waits for NuGet availability.

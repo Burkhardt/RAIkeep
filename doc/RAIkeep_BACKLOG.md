@@ -6,7 +6,9 @@ commitments and do not authorize package publication.
 
 ## JsonPit recovery-event archive compaction
 
-**Status:** Proposed after the CR021/CR022 maintenance review; not implemented.
+**Status:** Implemented and verified for coordinated RAIkeep v4.2.10 after
+explicit RAI authorization; publication remains behind RAI's manual release
+gate.
 
 ### Goal
 
@@ -34,10 +36,10 @@ The range is derived from the validated event contents, not filesystem modified
 times. The archive records UTC explicitly in its metadata even though the compact
 filename omits punctuation and a timezone suffix.
 
-### Proposed CLI boundary
+### CLI boundary
 
-The first implementation should be explicitly requested rather than silently
-added to every applying maintenance run:
+The first implementation is explicitly requested rather than silently added to
+every applying maintenance run:
 
 ```bash
 pits maintain Object -c OneDrive -r AIA --apply --archive-events --json
@@ -49,10 +51,10 @@ reviewable while the behavior is new. Whether event archiving should later
 become automatic during ordinary applying maintenance remains a separate
 product decision based on operational experience.
 
-A report-only preview must identify the exact archive name, selected event
-count, date range, and any deferred files without writing or deleting anything.
-The final option shape and any minimum-age/grace policy must be frozen before
-implementation.
+A report-only preview identifies the exact archive name, selected event count,
+date range, and any deferred files without writing or deleting anything. The
+implemented first version archives the stable snapshot of all valid loose events
+when explicitly requested; it introduces no independent minimum-age gate.
 
 ### Audit continuity
 
@@ -103,4 +105,3 @@ history visible to users and agents.
   delete/recreate of an established archive pathname.
 - OsLib tests for the collection ZIP abstraction and JsonPit/PitSeeder tests for
   the domain policy and CLI argument/reporting boundary.
-

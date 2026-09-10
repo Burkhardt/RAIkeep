@@ -2,10 +2,11 @@
 
 ## Purpose
 
-`pits audit` reads JsonPit's durable persistence and recovery log. Each `.event`
-file beneath a pit's `Events` directory records one structured occurrence such
-as a role decision, change-file publication, canonical persistence, cleanup,
-conflict, deferral, or failure.
+`pits audit` reads JsonPit's durable persistence and recovery log. Each logical
+event beneath a pit's `Events` directory—either a loose `.event` file or an
+entry in an immutable `Events_*.zip` archive—records one structured occurrence
+such as a role decision, change-file publication, canonical persistence,
+cleanup, conflict, deferral, or failure.
 
 Audit events answer questions such as:
 
@@ -26,6 +27,7 @@ They are diagnostic evidence, not the authoritative domain data.
 | hashed `.json` change file | Durable fragments awaiting or surviving canonical merge |
 | `.receipt` | Immutable evidence establishing cleanup-grace eligibility |
 | `.event` | Structured recovery/audit logfile occurrence |
+| `Events_<start>_to_<end>.zip` | Immutable compact collection of validated `.event` files |
 | `Master.flag` | Current master-writer lease record |
 | process `.flag` | Exact-process activity window or released tombstone |
 
@@ -48,7 +50,9 @@ directly and does not:
 A missing `Events` directory produces an empty result and is not created. A
 temporarily incomplete, unparseable, or hash-invalid event is omitted from that
 read and reconsidered on the next invocation; it is not deleted or repaired by
-audit mode.
+audit mode. Archives are read in memory without extracting files. Invalid
+archives, conflicting event identities, and conflicting loose/archive content
+produce audit warnings and a nonzero result while all evidence remains untouched.
 
 ## Command syntax
 
@@ -81,7 +85,7 @@ pits audit Object -c OneDrive -r AIA
 For a configured OneDrive root, this inspects:
 
 ```text
-<configured OneDrive>/AIA/Object/Events/*.event
+<configured OneDrive>/AIA/Object/Events/
 ```
 
 Without `-c`, pass an explicit local or mounted pit root:
@@ -146,6 +150,44 @@ pits audit --wwwa -c OneDrive -r AIA --machine Nkosikazi
   case-insensitively.
 
 Machine and severity filters can be combined.
+
+## Compact loose event files
+
+Archiving changes only physical storage density; it does not change the logical
+history returned by `pits audit`.
+
+Preview one pit without mutation:
+
+```bash
+pits maintain Object -c OneDrive -r AIA --archive-events --json
+```
+
+Apply after reviewing `EventFilesEligible`, `EventArchiveName`, the UTC range,
+`Deferred`, and `Failures`:
+
+```bash
+pits maintain Object -c OneDrive -r AIA \
+  --apply --archive-events --json
+```
+
+The WWWA form applies independently to each existing pit:
+
+```bash
+pits maintain --wwwa -c OneDrive -r AIA \
+  --apply --archive-events --json
+```
+
+The filename uses the oldest and newest validated event content timestamps in
+UTC, for example `Events_20260804-0118_to_20260910-1643.zip`. A compact metadata
+entry records the UTC basis explicitly. The archive is created once at its final
+pathname inside the already-existing `Events` directory. It is never appended
+to, overwritten, deleted/recreated, or staged in `Os.TempDir`.
+
+Loose source files stay present until the archive validates every expected
+filename and exact byte payload. They are then retired one by one. A retry
+recognizes identical loose/archive copies and safely completes remaining source
+retirement. A different or corrupt same-name archive is retained as a collision,
+and loose evidence is not removed.
 
 ## Severity levels
 
@@ -300,4 +342,3 @@ them. Transparent ZIP archiving—including continued `pits audit` access—is
 recorded as proposed work in
 [RAIkeep_BACKLOG.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_BACKLOG.md),
 but is not current behavior.
-

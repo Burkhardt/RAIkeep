@@ -55,23 +55,42 @@ iorg clean --help
 
 There is no `iorg maintain` command. In the 4.x compatibility parser, an
 unrecognized bare first token can still be interpreted as the legacy positional
-subscriber. Consequently, `iorg maintain -h` displays `Subscriber: maintain`
-and resolves a corresponding destination; it does not select a maintenance
+subscriber. Consequently, `iorg maintain -h` displays `maintain` on the aligned
+`-t, --tenant` row with a backward-compatibility explanation and resolves a
+corresponding destination; it does not select a maintenance
 operation. Use `iorg --help` for root help and one of the four command names
 shown above for contextual help. This positional ambiguity disappears when the
 legacy parser is removed in `5.x.x`.
 
-## Root and subscriber resolution
+## Application root, ImageTree root, and tenant resolution
 
-There are two supported ways to identify a subscriber tree.
+There are three equivalent ways to identify one tenant/subscriber tree.
 
-### Parent root plus explicit subscriber
+### Application root plus tenant
+
+Use `-a` or `--app` when the supplied path is the application root. Iorg appends
+the conventional `Image` segment and then the tenant:
+
+```bash
+iorg list '*' \
+  -c OneDrive \
+  --app AIA \
+  --tenant nomsa
+```
+
+This resolves to:
+
+```text
+<configured OneDrive>/AIA/Image/nomsa
+```
+
+### Exact ImageTree root plus tenant
 
 ```bash
 iorg list '*' \
   -c OneDrive \
   --root LiveAfricaStageImage \
-  --subscriber Nomsa
+  --tenant Nomsa
 ```
 
 This resolves to:
@@ -80,21 +99,28 @@ This resolves to:
 <configured OneDrive>/LiveAfricaStageImage/Nomsa
 ```
 
-### Complete subscriber root
+### Complete tenant root
 
 ```bash
 iorg list '*' --root /srv/images/LiveAfricaStageImage/Nomsa
 ```
 
-When `--subscriber` is omitted, the final `--root` segment is treated as the
-subscriber and the supplied path is the complete subscriber destination.
+When `--tenant` is omitted, the final `--root` segment is treated as the tenant
+and the supplied path is the complete tenant destination.
 
 For predictable scripts, specify `-c` explicitly for configured CloudDrive
 roots or use an explicit absolute local path. If `-c` is omitted for a relative
 root, iorg may select the first configured provider in
 `Os.Config.DefaultCloudOrder`.
 
-`-r` and `--root` are equivalent supported spellings. `-r` is not legacy.
+`-r` and `--root` are equivalent supported spellings for the exact ImageTree
+root. `-a` and `--app` are equivalent spellings for an application root; `Image`
+is appended automatically and an explicit tenant is required. Root and app are
+alternatives and cannot be combined.
+
+`-t` and `--tenant` are the preferred tenant spellings. `--subscriber` remains
+a compatibility alias, and the legacy unnamed subscriber remains accepted only
+where it is unambiguous.
 
 ## Path conventions
 
@@ -128,7 +154,7 @@ iorg organize \
   --source /srv/incoming/Nomsa \
   -c OneDrive \
   --root LiveAfricaStageImage \
-  --subscriber Nomsa \
+  --tenant Nomsa \
   --pathconv 3 \
   --nameconv 3
 ```
@@ -159,16 +185,16 @@ read-only.
 
 ```bash
 iorg list 'WorkInPro*' \
-  -c OneDrive --root LiveAfricaStageImage --subscriber Nomsa
+  -c OneDrive --root LiveAfricaStageImage --tenant Nomsa
 
 iorg list '*.puml' \
-  -c OneDrive --root LiveAfricaStageImage --subscriber Nomsa
+  -c OneDrive --root LiveAfricaStageImage --tenant Nomsa
 
 iorg list '*.raid' \
-  -c OneDrive --root LiveAfricaStageImage --subscriber Nomsa
+  -c OneDrive --root LiveAfricaStageImage --tenant Nomsa
 
 iorg list '*' \
-  -c OneDrive --root LiveAfricaStageImage --subscriber Nomsa
+  -c OneDrive --root LiveAfricaStageImage --tenant Nomsa
 ```
 
 Quote wildcard patterns so the invoking shell does not expand them before iorg
@@ -193,7 +219,7 @@ family, use `clean` without `--force`:
 
 ```bash
 iorg clean AfricanBrisket \
-  -c OneDrive --root LiveAfricaStageImage --subscriber Nomsa
+  -c OneDrive --root LiveAfricaStageImage --tenant Nomsa
 ```
 
 This searches every supported path convention for files belonging to the exact
@@ -209,7 +235,7 @@ does not itself have a dry-run option.
 
 ```bash
 iorg move AfricanBrisket \
-  -c OneDrive --root LiveAfricaStageImage --subscriber Nomsa \
+  -c OneDrive --root LiveAfricaStageImage --tenant Nomsa \
   --pathconv 3
 ```
 
@@ -220,7 +246,7 @@ home.
 
 ```bash
 iorg move AfricanBrisket AfricanDinner \
-  -c OneDrive --root LiveAfricaStageImage --subscriber Nomsa \
+  -c OneDrive --root LiveAfricaStageImage --tenant Nomsa \
   --pathconv 3
 ```
 
@@ -256,14 +282,14 @@ Dry-run preview:
 
 ```bash
 iorg clean AfricanBrisket \
-  -c OneDrive --root LiveAfricaStageImage --subscriber Nomsa
+  -c OneDrive --root LiveAfricaStageImage --tenant Nomsa
 ```
 
 Apply the exact-family deletion:
 
 ```bash
 iorg clean AfricanBrisket \
-  -c OneDrive --root LiveAfricaStageImage --subscriber Nomsa \
+  -c OneDrive --root LiveAfricaStageImage --tenant Nomsa \
   --force
 ```
 
@@ -279,7 +305,7 @@ CloudDrive.
 
 ```bash
 iorg clean --cache \
-  -c OneDrive --root LiveAfricaStageImage --subscriber Nomsa
+  -c OneDrive --root LiveAfricaStageImage --tenant Nomsa
 ```
 
 This recursively deletes recognized rendered derivatives, including WebP/AVIF
@@ -296,21 +322,21 @@ Find all PlantUML sources:
 
 ```bash
 iorg list '*.puml' -c OneDrive --root LiveAfricaStageImage \
-  --subscriber Nomsa --json
+  --tenant Nomsa --json
 ```
 
 Count a discovered family:
 
 ```bash
 iorg list 'AfricanBrisket*' -c OneDrive --root LiveAfricaStageImage \
-  --subscriber Nomsa --json | jq 'length'
+  --tenant Nomsa --json | jq 'length'
 ```
 
 Record a move result:
 
 ```bash
 iorg move AfricanBrisket AfricanDinner \
-  -c OneDrive --root LiveAfricaStageImage --subscriber Nomsa \
+  -c OneDrive --root LiveAfricaStageImage --tenant Nomsa \
   --pathconv 3 --json
 ```
 

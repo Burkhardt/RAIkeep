@@ -11,18 +11,18 @@ Do not add `RELEASE_NOTES*.md` or `CR_*.md` files to child-project directories. 
 
 ## Current coordinated release notes
 
-- [RAIkeep 4.2.9](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.2.9.md)
-- [OsLibCore 4.2.9](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.2.9.md)
-- [RaiUtils 4.2.9](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.2.9.md)
-- [RaiImage 4.2.9](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.2.9.md)
-- [RaiDiagram 4.2.9](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.2.9.md)
-- [JsonPit 4.2.9](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.2.9.md)
-- [ImgSeeder 4.2.9](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.2.9.md)
-- [PitSeeder 4.2.9](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.2.9.md)
+- [RAIkeep 4.2.10](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.2.10.md)
+- [OsLibCore 4.2.10](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.2.10.md)
+- [RaiUtils 4.2.10](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.2.10.md)
+- [RaiImage 4.2.10](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.2.10.md)
+- [RaiDiagram 4.2.10](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.2.10.md)
+- [JsonPit 4.2.10](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.2.10.md)
+- [ImgSeeder 4.2.10](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.2.10.md)
+- [PitSeeder 4.2.10](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.2.10.md)
 
 ## Technical guides
 
-- [`RAIkeep_BACKLOG.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_BACKLOG.md) records proposed work that still requires a dedicated design or change-request decision, beginning with transparent JsonPit recovery-event ZIP archiving.
+- [`RAIkeep_BACKLOG.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_BACKLOG.md) records product-backlog designs and their implementation status, including the event archive delivered in 4.2.10.
 - [`PITS-AUDIT.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PITS-AUDIT.md) is the operational manual for interpreting and safely querying JsonPit's durable recovery log with `pits audit`.
 - [`IORG-OPERATIONS.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/IORG-OPERATIONS.md) documents iorg organization, read-only discovery, exact-family inspection, moves, cleanup, conventions, and CloudDrive safety; iorg has no event-audit facility.
 - [`Cloud-Storage-In-Place-Invariant.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/Cloud-Storage-In-Place-Invariant.md) defines the mandatory no-TempDir-to-cloud and continuous-cloud-pathname rules formalized after the CR022 incident investigation.
