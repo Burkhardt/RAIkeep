@@ -19,8 +19,8 @@
 
 **Date proposed:** 2026-09-09
 
-**Status:** Accepted and authorized by RAI on 2026-09-09; implementation and
-v4.2.9 release preparation approved
+**Status:** Accepted, implemented, and verified for v4.2.9; awaiting RAI's
+manual release-chain gate
 
 ---
 
