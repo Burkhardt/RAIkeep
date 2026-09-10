@@ -23,6 +23,8 @@ Do not add `RELEASE_NOTES*.md` or `CR_*.md` files to child-project directories. 
 ## Technical guides
 
 - [`RAIkeep_BACKLOG.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_BACKLOG.md) records proposed work that still requires a dedicated design or change-request decision, beginning with transparent JsonPit recovery-event ZIP archiving.
+- [`PITS-AUDIT.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PITS-AUDIT.md) is the operational manual for interpreting and safely querying JsonPit's durable recovery log with `pits audit`.
+- [`IORG-OPERATIONS.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/IORG-OPERATIONS.md) documents iorg organization, read-only discovery, exact-family inspection, moves, cleanup, conventions, and CloudDrive safety; iorg has no event-audit facility.
 - [`Cloud-Storage-In-Place-Invariant.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/Cloud-Storage-In-Place-Invariant.md) defines the mandatory no-TempDir-to-cloud and continuous-cloud-pathname rules formalized after the CR022 incident investigation.
 - [`CLI-PARSER-TRANSITION-4.x-TO-5.x.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CLI-PARSER-TRANSITION-4.x-TO-5.x.md) records the dual-syntax compatibility contract for `pits` and `iorg` in `4.x` and the planned removal of their legacy parsers in `5.x.x`.
 - [`JsonPit-FlagFiles-And-Concurrency.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit-FlagFiles-And-Concurrency.md) explains the separate per-process activity flags, stable `Master.flag` lease, canonical-write decision, CLI cleanup, and current coordination boundary.
