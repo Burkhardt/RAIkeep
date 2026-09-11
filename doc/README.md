@@ -11,14 +11,14 @@ Do not add `RELEASE_NOTES*.md` or `CR_*.md` files to child-project directories. 
 
 ## Current coordinated release notes
 
-- [RAIkeep 4.2.10](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.2.10.md)
-- [OsLibCore 4.2.10](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.2.10.md)
-- [RaiUtils 4.2.10](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.2.10.md)
-- [RaiImage 4.2.10](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.2.10.md)
-- [RaiDiagram 4.2.10](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.2.10.md)
-- [JsonPit 4.2.10](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.2.10.md)
-- [ImgSeeder 4.2.10](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.2.10.md)
-- [PitSeeder 4.2.10](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.2.10.md)
+- [RAIkeep 4.2.11](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.2.11.md)
+- [OsLibCore 4.2.11](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.2.11.md)
+- [RaiUtils 4.2.11](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.2.11.md)
+- [RaiImage 4.2.11](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.2.11.md)
+- [RaiDiagram 4.2.11](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.2.11.md)
+- [JsonPit 4.2.11](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.2.11.md)
+- [ImgSeeder 4.2.11](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.2.11.md)
+- [PitSeeder 4.2.11](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.2.11.md)
 
 ## Technical guides
 
@@ -30,8 +30,8 @@ Do not add `RELEASE_NOTES*.md` or `CR_*.md` files to child-project directories. 
 - [`JsonPit-FlagFiles-And-Concurrency.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit-FlagFiles-And-Concurrency.md) explains the separate per-process activity flags, stable `Master.flag` lease, canonical-write decision, CLI cleanup, and current coordination boundary.
 - [`JsonPit-CONCEPT-Live-Split-Master-Recovery.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit-CONCEPT-Live-Split-Master-Recovery.md) is the accepted v3.13.2 live-process recovery design after a cloud provider exposes a conflicting `Master*.flag` copy.
 - [`RaiDiagram-CONCEPT-UML26.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram-CONCEPT-UML26.md) proposes the RAIkeep UML26 semantic diagram dialect, separate RaiDiagram package, role-first use-case model, tenant themes, and PlantUML-first rendering architecture.
-- [`ADR001_RaiDiagram_Package_Boundary.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ADR001_RaiDiagram_Package_Boundary.md) records the accepted boundary between RaiDiagram's public diagram capabilities and AIA's WWWA modeling responsibilities.
-- [`ADR002_RaiDiagram_Subscriber_Scoped_Artifacts_and_Style_Lookup.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ADR002_RaiDiagram_Subscriber_Scoped_Artifacts_and_Style_Lookup.md) records that subscriber values remain ImageTree storage-routing segments rather than identities and that style fallbacks are explicit and local.
+- [`ADR-0001-RaiDiagram-Package-Boundary.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ADR-0001-RaiDiagram-Package-Boundary.md) records the accepted boundary between RaiDiagram's public diagram capabilities and AIA's WWWA modeling responsibilities.
+- [`ADR-0002-RaiDiagram-Subscriber-Scoped-Artifacts-and-Styles.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ADR-0002-RaiDiagram-Subscriber-Scoped-Artifacts-and-Styles.md) records that subscriber values remain ImageTree storage-routing segments rather than identities and that style fallbacks are explicit and local.
 - [`Details of CR003.md`](<https://github.com/Burkhardt/RAIkeep/blob/main/doc/Details%20of%20CR003.md>) is the implementation companion for CR003, including current code seams, sequencing guidance, rejected shortcuts, and a test approach for every substantial agreement.
 
 ## Change requests
@@ -47,6 +47,8 @@ Open:
 
 Resolved:
 
+- [`CR024_AIA_to_RAIkeep_Ephemeral_Flag_Self_Cleanup.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR024_AIA_to_RAIkeep_Ephemeral_Flag_Self_Cleanup.md) — accepted and implemented for coordinated RAIkeep v4.2.11; publication remains behind RAI's manual gate
+- [`CR023_AIA_to_RAIkeep_PlantUml_Relationship_Rendering.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR023_AIA_to_RAIkeep_PlantUml_Relationship_Rendering.md) — accepted and implemented for coordinated RAIkeep v4.2.11; publication remains behind RAI's manual gate
 - [`CR022_RAI_to_RAIkeep_Cloud_Safe_In_Place_Filesystem_Invariant.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR022_RAI_to_RAIkeep_Cloud_Safe_In_Place_Filesystem_Invariant.md) — accepted incident corrective action implemented for coordinated RAIkeep v4.2.9; publication remains behind RAI's manual gate
 - [`CR021_RAI_to_RAIkeep_JsonPit_Durable_Cleanup_Receipts_and_Pits_Coordination.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR021_RAI_to_RAIkeep_JsonPit_Durable_Cleanup_Receipts_and_Pits_Coordination.md) — accepted and implemented for coordinated RAIkeep v4.2.8; publication remains behind RAI's manual gate
 

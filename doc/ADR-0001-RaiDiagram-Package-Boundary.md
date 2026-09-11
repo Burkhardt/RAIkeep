@@ -1,4 +1,4 @@
-# ADR001 — RaiDiagram Package Boundary
+# ADR-0001 — RaiDiagram Package Boundary
 
 **Status:** Accepted  
 **Date:** 2026-08-13  

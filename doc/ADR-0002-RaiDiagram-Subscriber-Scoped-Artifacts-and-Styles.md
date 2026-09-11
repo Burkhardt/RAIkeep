@@ -1,4 +1,4 @@
-# ADR002 — RaiDiagram Subscriber-Scoped Artifacts and Style Lookup
+# ADR-0002 — RaiDiagram Subscriber-Scoped Artifacts and Style Lookup
 
 **Status:** Accepted
 **Date:** 2026-08-17
