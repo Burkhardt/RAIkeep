@@ -29,7 +29,7 @@ They are diagnostic evidence, not the authoritative domain data.
 | `.event` | Structured recovery/audit logfile occurrence |
 | `Events_<start>_to_<end>.zip` | Immutable compact collection of validated `.event` files |
 | `Master.flag` | Current master-writer lease record |
-| process `.flag` | Exact-process activity window or released tombstone |
+| process `.flag` | Exact-process activity window; graceful v4.2.11 disposal removes owned flags, while crashes can leave them for TTL/pruning |
 
 Events do not calculate the current value of a PitItem and are not an alternative
 to `pits export`. They also do not authorize deletion of change files; receipts

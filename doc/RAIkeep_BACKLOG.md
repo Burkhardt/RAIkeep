@@ -4,12 +4,17 @@ This document records approved ideas that still require a dedicated design or
 change-request decision before implementation. Backlog entries are not release
 commitments and do not authorize package publication.
 
-## Clean-exit removal of PID-specific JsonPit process flags
+## Removal of the `pits --retain-window` compatibility exception
 
-**Status:** Backlog candidate accepted in principle by RAIkeep; implementation
-and release assignment require a later focused review.
+**Status:** Scheduled for the next major RAIkeep release by accepted CR024.
 
-### Lifecycle rule
+CR024 implements clean-exit deletion of owned PID-specific process flags in
+v4.2.11. The only deliberate exception is the explicitly supplied
+`--retain-window` CLI option, preserved for 4.x compatibility. Remove the option
+and its bypass path in the next major release; default behavior must remain
+deterministic owned-flag deletion.
+
+### Implemented lifecycle rule
 
 When a finite CLI or other ephemeral process exits cleanly through normal
 disposal or the process-exit lifecycle, it must remove each PID-specific process

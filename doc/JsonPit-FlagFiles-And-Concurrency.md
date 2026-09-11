@@ -36,18 +36,23 @@ A process updates its activity flag after a successful flagged load and during f
 
 1. Read the activity flag.
 2. Verify that its content still equals the current machine, process name, and PID.
-3. If ownership matches, write the Unix epoch as its timestamp.
-4. Leave the file in place as an expired diagnostic tombstone.
+3. If ownership matches, remove that exact PID-specific file through `RaiFile.rm()`.
+4. On cloud paths, wait for the removal to become visible before returning.
 
-The file is not deleted or renamed. This avoids the delete/recreate pattern that caused trouble when consecutive CLI processes updated the same OneDrive-backed flag path.
+No replacement file is created. The process-specific filename means a later CLI
+invocation receives a different pathname, so graceful cleanup cannot form the
+same-path delete/recreate cycle that older shared process flags caused.
 
-An old tombstone can therefore remain in the pit directory. Since v4.2.8,
+An abruptly terminated process can still leave an expired flag in the pit directory. Since v4.2.8,
 `pits maintain ... --apply --prune-process-flags --older-than <duration>` can
-explicitly remove only revalidated, expired, PID-specific tombstones. Report-only
+explicitly remove only revalidated, expired, PID-specific flags. Report-only
 maintenance inventories them; active windows, `Master.flag`, longer conflict
 evidence, malformed files, and unknown files are retained.
 
-PitSeeder performs this release by default when a finite command completes. `--retain-window` keeps the normal timeout-based activity window instead.
+PitSeeder performs this release by default when a finite command completes.
+`--retain-window` is a v4.2.11 compatibility exception that keeps the normal
+timeout-based activity window; it is scheduled for removal in the next major
+release.
 
 ## Master.flag
 
@@ -121,7 +126,7 @@ An abrupt crash, forced termination, or power loss before in-memory recovery-wri
 
 ## Why CLI process cleanup does not release master
 
-The PitSeeder cleanup added in `3.13.1` expires only:
+The PitSeeder cleanup removes only:
 
 ```text
 {Machine}-pits-{PID}.flag
@@ -132,7 +137,9 @@ It deliberately leaves `Master.flag` untouched. The two operations have differen
 - Releasing the process window says that this specific CLI process has finished.
 - Retaining the master lease says that the participant's canonical write remains protected during the lease and propagation window.
 
-Consequently, a completed CLI command no longer blocks the next command through a stale process activity window, while the master-writer protocol continues to direct other participants to change files.
+Consequently, a completed CLI command leaves no owned PID flag and no longer
+blocks the next command through a stale process activity window, while the
+master-writer protocol continues to direct other participants to change files.
 
 ## What the current mechanism guards
 
