@@ -4,6 +4,37 @@ This document records approved ideas that still require a dedicated design or
 change-request decision before implementation. Backlog entries are not release
 commitments and do not authorize package publication.
 
+## Clean-exit removal of PID-specific JsonPit process flags
+
+**Status:** Backlog candidate accepted in principle by RAIkeep; implementation
+and release assignment require a later focused review.
+
+### Lifecycle rule
+
+When a finite CLI or other ephemeral process exits cleanly through normal
+disposal or the process-exit lifecycle, it must remove each PID-specific process
+flag that it owns. Leaving an expired copy behind is crash-recovery behavior and
+must not be the normal successful-exit path.
+
+A standing server daemon keeps its PID-specific flags while it is running. A
+crashed, killed, or otherwise ungracefully terminated process can leave flags
+behind; existing expiry and explicit maintenance pruning remain the recovery
+mechanisms for those cases.
+
+### Required safeguards and coverage
+
+- Cleanup is ownership-safe and idempotent: a process may remove only the exact
+  PID-specific flag it created, never another PID's flag, a legacy ambiguous
+  flag, or `Master.flag`.
+- Normal `Dispose()` and CLI/process-exit paths converge on the same cleanup
+  operation without double-removal failures.
+- Multi-pit and `--wwwa` invocations clean every owned per-pit process flag.
+- Active long-running servers retain their flags until their own clean shutdown.
+- Crash simulation proves that an abandoned flag remains available for
+  timeout-based detection and maintenance pruning.
+- Cleanup follows the CR022 cloud-safe in-place boundary and never replaces or
+  recreates a directory.
+
 ## JsonPit recovery-event archive compaction
 
 **Status:** Implemented and verified for coordinated RAIkeep v4.2.10 after
