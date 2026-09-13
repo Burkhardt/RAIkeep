@@ -50,7 +50,7 @@ maintenance inventories them; active windows, `Master.flag`, longer conflict
 evidence, malformed files, and unknown files are retained.
 
 PitSeeder performs this release by default when a finite command completes.
-`--retain-window` is a v4.2.11 compatibility exception that keeps the normal
+`--retain-window` is a v4.3.0 compatibility exception that keeps the normal
 timeout-based activity window; it is scheduled for removal in the next major
 release.
 

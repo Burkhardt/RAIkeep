@@ -11,14 +11,14 @@ Do not add `RELEASE_NOTES*.md` or `CR_*.md` files to child-project directories. 
 
 ## Current coordinated release notes
 
-- [RAIkeep 4.2.11](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.2.11.md)
-- [OsLibCore 4.2.11](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.2.11.md)
-- [RaiUtils 4.2.11](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.2.11.md)
-- [RaiImage 4.2.11](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.2.11.md)
-- [RaiDiagram 4.2.11](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.2.11.md)
-- [JsonPit 4.2.11](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.2.11.md)
-- [ImgSeeder 4.2.11](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.2.11.md)
-- [PitSeeder 4.2.11](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.2.11.md)
+- [RAIkeep 4.3.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.3.0.md)
+- [OsLibCore 4.3.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.3.0.md)
+- [RaiUtils 4.3.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.3.0.md)
+- [RaiImage 4.3.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.3.0.md)
+- [RaiDiagram 4.3.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.3.0.md)
+- [JsonPit 4.3.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.3.0.md)
+- [ImgSeeder 4.3.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.3.0.md)
+- [PitSeeder 4.3.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.3.0.md)
 
 ## Technical guides
 
@@ -47,8 +47,9 @@ Open:
 
 Resolved:
 
-- [`CR024_AIA_to_RAIkeep_Ephemeral_Flag_Self_Cleanup.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR024_AIA_to_RAIkeep_Ephemeral_Flag_Self_Cleanup.md) — accepted and implemented for coordinated RAIkeep v4.2.11; publication remains behind RAI's manual gate
-- [`CR023_AIA_to_RAIkeep_PlantUml_Relationship_Rendering.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR023_AIA_to_RAIkeep_PlantUml_Relationship_Rendering.md) — accepted and implemented for coordinated RAIkeep v4.2.11; publication remains behind RAI's manual gate
+- [`CR025_AIA_to_RAIkeep_Typed_Raid_Builders_and_Deterministic_ItemTree_Emission.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR025_AIA_to_RAIkeep_Typed_Raid_Builders_and_Deterministic_ItemTree_Emission.md) — accepted and implemented for coordinated RAIkeep v4.3.0; publication remains behind RAI's manual gate
+- [`CR024_AIA_to_RAIkeep_Ephemeral_Flag_Self_Cleanup.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR024_AIA_to_RAIkeep_Ephemeral_Flag_Self_Cleanup.md) — accepted and implemented for coordinated RAIkeep v4.3.0 after the unpublished v4.2.11 preparation
+- [`CR023_AIA_to_RAIkeep_PlantUml_Relationship_Rendering.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR023_AIA_to_RAIkeep_PlantUml_Relationship_Rendering.md) — accepted and implemented for coordinated RAIkeep v4.3.0 after the unpublished v4.2.11 preparation
 - [`CR022_RAI_to_RAIkeep_Cloud_Safe_In_Place_Filesystem_Invariant.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR022_RAI_to_RAIkeep_Cloud_Safe_In_Place_Filesystem_Invariant.md) — accepted incident corrective action implemented for coordinated RAIkeep v4.2.9; publication remains behind RAI's manual gate
 - [`CR021_RAI_to_RAIkeep_JsonPit_Durable_Cleanup_Receipts_and_Pits_Coordination.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR021_RAI_to_RAIkeep_JsonPit_Durable_Cleanup_Receipts_and_Pits_Coordination.md) — accepted and implemented for coordinated RAIkeep v4.2.8; publication remains behind RAI's manual gate
 

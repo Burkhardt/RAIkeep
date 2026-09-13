@@ -1,5 +1,8 @@
 # JsonPit 4.2.11 Release Notes
 
+> **Superseded before publication.** This prepared package line was not released;
+> its changes are carried into v4.3.0.
+
 JsonPit 4.2.11 implements accepted
 [CR024](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR024_AIA_to_RAIkeep_Ephemeral_Flag_Self_Cleanup.md).
 

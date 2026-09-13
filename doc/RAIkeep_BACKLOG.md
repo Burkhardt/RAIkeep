@@ -9,7 +9,7 @@ commitments and do not authorize package publication.
 **Status:** Scheduled for the next major RAIkeep release by accepted CR024.
 
 CR024 implements clean-exit deletion of owned PID-specific process flags in
-v4.2.11. The only deliberate exception is the explicitly supplied
+v4.3.0 (carried from the unpublished v4.2.11 preparation). The only deliberate exception is the explicitly supplied
 `--retain-window` CLI option, preserved for 4.x compatibility. Remove the option
 and its bypass path in the next major release; default behavior must remain
 deterministic owned-flag deletion.

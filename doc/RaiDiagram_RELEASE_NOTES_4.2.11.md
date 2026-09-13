@@ -1,5 +1,8 @@
 # RaiDiagram 4.2.11 Release Notes
 
+> **Superseded before publication.** This prepared package line was not released;
+> its changes are carried into v4.3.0.
+
 RaiDiagram 4.2.11 implements accepted
 [CR023](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR023_AIA_to_RAIkeep_PlantUml_Relationship_Rendering.md).
 

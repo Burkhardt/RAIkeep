@@ -1,5 +1,8 @@
 # RAIkeep 4.2.11 Release Notes
 
+> **Superseded before publication.** RAI intentionally skipped v4.2.11. These
+> prepared changes are delivered in the coordinated v4.3.0 release.
+
 RAIkeep 4.2.11 is the coordinated seven-package delivery of accepted
 [CR023 PlantUML relationship rendering](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR023_AIA_to_RAIkeep_PlantUml_Relationship_Rendering.md)
 and

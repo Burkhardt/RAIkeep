@@ -10,11 +10,11 @@
 
 **Accepted by:** RAI and Adele (PM, AIA)
 
-**Target release:** Coordinated RAIkeep v4.2.11
+**Target release:** Coordinated RAIkeep v4.3.0 (carried forward from the unpublished v4.2.11 preparation)
 
 **Parent contracts:** CR003, CR021, CR022
 
-**Status:** Accepted and implemented; awaiting RAI's manual release-chain gate
+**Status:** Accepted and implemented for v4.3.0; awaiting RAI's manual release-chain gate
 
 ## 1. Problem
 
@@ -44,7 +44,7 @@ durability boundary can also remove the exact activity flag it owns.
 
 ## 3. `--retain-window` compatibility exception
 
-RAI and AIA accepted preserving `--retain-window` in v4.2.11 for callers that
+RAI and AIA accepted preserving `--retain-window` in v4.3.0 for callers that
 explicitly request the former timeout-based behavior. Every finite CLI call
 without that option removes its owned process flag. `--retain-window` is
 scheduled for removal in the next major release and must not become the default
@@ -63,6 +63,8 @@ for new integrations.
 
 ## 5. Release boundary
 
-CR024 is part of the coordinated seven-package RAIkeep v4.2.11 line. Tagging,
+CR024 was prepared for v4.2.11, which RAI intentionally did not publish. Its
+implementation is carried unchanged into the coordinated seven-package RAIkeep
+v4.3.0 line. Tagging,
 GitHub labeling, workflow dispatch, and NuGet publication remain exclusively
-behind RAI's manual `scripts/release-chain.sh 4.2.11` gate.
+behind RAI's manual `scripts/release-chain.sh 4.3.0` gate.
