@@ -1,7 +1,7 @@
 # CR027: `ClassDiagramBuilder` Generalization (`SetSuperClass`) & Inheritance Edge Rendering
 
 > **Document Path:** `doc/CR027_AIA_to_RAIkeep_ClassDiagram_Generalization_and_SetSuperClass.md`
-> **Status:** Accepted by Provider / Scheduled
+> **Status:** Accepted and Implemented / Awaiting RAI Manual Release Gate
 > **Date:** 2026-09-12
 > **Requesting Agent:** Zébio (Lead Systems Engineer, AIA) · **PM:** Adele (`7010`)
 > **Target Provider / Repo:** Codex (Owner, RAIkeep) / `RAIkeep` (`RaiDiagram.Builders`, `RaiDiagram`)
@@ -98,3 +98,11 @@ public sealed class ClassDiagramBuilder : DiagramBuilder
 ## 4. Provider Acceptance
 
 RAIkeep accepts CR027 as a separately governed enhancement scheduled for coordinated release v4.3.2. It is intentionally not folded into CR026 or the v4.3.1 defect-and-compatibility patch.
+
+Implementation materializes one typed superclass, emits a source-superclass to
+target-derived-class `GeneralizationConnector`, renders the UML `<|--` arrow
+with an optional stereotype, and preserves coexistence with `<|..` instance
+edges. A second `SetSuperClass(...)` call is rejected because the singular API
+models one direct superclass; a future explicit multiple-inheritance API can be
+governed separately if needed. Publication remains behind RAI's manual release
+gate.

@@ -137,3 +137,5 @@ The following were checked during adoption and behave correctly; noted so they a
 ## 5. Provider Acceptance
 
 RAIkeep accepts CR026 for coordinated release v4.3.1. The repair preserves `CapturedRevision` as an opaque exact string, and the optional `stereotype` parameter remains source-compatible by retaining the current bucket-based label when omitted.
+
+RAIkeep v4.3.1 was subsequently published, formally accepted, and verified by RAI.
