@@ -329,26 +329,26 @@ final_visibility_summary() {
 }
 
 resume_after_raidiagram() {
-	local umbrella_behind umbrella_ahead
+	local umbrella_behind
 
 	log "Recovery mode: preserve existing $TAG labels and resume after RaiDiagram"
 	assert_tracked_clean "$ROOT_DIR" "RAIkeep"
 	[[ "$(git -C "$ROOT_DIR" branch --show-current)" == "main" ]] \
 		|| die "RAIkeep must be on main for recovery."
 	git -C "$ROOT_DIR" fetch origin --prune
-	read -r umbrella_behind umbrella_ahead \
+	read -r umbrella_behind _ \
 		<<<"$(git -C "$ROOT_DIR" rev-list --left-right --count origin/main...HEAD)"
 	[[ "$umbrella_behind" == "0" ]] \
 		|| die "RAIkeep main is behind or diverged from origin/main."
-	[[ "$umbrella_ahead" == "0" ]] \
-		|| die "RAIkeep main has unpushed commits. Push the reviewed recovery commit first."
 	git -C "$ROOT_DIR" rev-parse --verify "refs/tags/$TAG" >/dev/null \
 		|| die "RAIkeep does not have the required immutable $TAG label."
+	push_main_if_needed "$ROOT_DIR" "RAIkeep recovery"
 
 	require_package_published "oslibcore" "$VER"
 	require_package_published "raiutils" "$VER"
 	require_package_published "raiimage" "$VER"
-	require_package_published "raidiagram" "$VER"
+	log "Waiting for the recovered RaiDiagram publication to become fully visible"
+	hold_and_check_flatcontainer "raidiagram" "$VER"
 
 	assert_tagged_submodule_pointer "JsonPit" "JsonPit"
 	assert_tagged_submodule_pointer "ImgSeeder" "ImgSeeder"

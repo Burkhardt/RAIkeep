@@ -32,6 +32,18 @@ The preflight refuses to start unless every child is clean, on `main`, not behin
 
 Use this local orchestrator as the single coordinated release mechanism. Each child repository's tag-triggered workflow still owns its package publication.
 
+If the chain stops after RaiDiagram has already been tagged, repair and dispatch
+the immutable RaiDiagram release workflow as documented for that incident, then
+resume only through:
+
+<code>scripts/release-chain.sh 4.3.0 --resume-after-raidiagram</code>
+
+Recovery mode preserves all existing tags, pushes a clean reviewed umbrella
+recovery commit when necessary, waits until the RaiDiagram package and
+registration endpoints both return HTTP `200`, and only then releases JsonPit,
+ImgSeeder, and PitSeeder in order. Do not manually time NuGet propagation or
+start the remaining package workflows independently.
+
 Do not run this as part of version-prep work unless publication is explicitly requested.
 
 ## About running inside the LLM:
