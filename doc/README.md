@@ -11,14 +11,15 @@ Do not add `RELEASE_NOTES*.md` or `CR_*.md` files to child-project directories. 
 
 ## Current coordinated release notes
 
-- [RAIkeep 4.3.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.3.2.md)
-- [OsLibCore 4.3.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.3.2.md)
-- [RaiUtils 4.3.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.3.2.md)
-- [RaiImage 4.3.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.3.2.md)
-- [RaiDiagram 4.3.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.3.2.md)
-- [JsonPit 4.3.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.3.2.md)
-- [ImgSeeder 4.3.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.3.2.md)
-- [PitSeeder 4.3.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.3.2.md)
+- [RAIkeep 4.4.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.4.0.md)
+- [OsLibCore 4.4.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.4.0.md)
+- [RaiUtils 4.4.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.4.0.md)
+- [RaiImage 4.4.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.4.0.md)
+- [RaiDiagram 4.4.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.4.0.md)
+- [RaidCli 4.4.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaidCli_RELEASE_NOTES_4.4.0.md)
+- [JsonPit 4.4.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.4.0.md)
+- [ImgSeeder 4.4.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.4.0.md)
+- [PitSeeder 4.4.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.4.0.md)
 
 ## Technical guides
 
@@ -47,6 +48,7 @@ Open:
 
 Resolved:
 
+- [`CR036_AIA_to_RAIkeep_Raid_CLI.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR036_AIA_to_RAIkeep_Raid_CLI.md) — accepted and implemented for synchronized RAIkeep v4.4.0; publication remains behind RAI's manual gate
 - [`CR027_AIA_to_RAIkeep_ClassDiagram_Generalization_and_SetSuperClass.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR027_AIA_to_RAIkeep_ClassDiagram_Generalization_and_SetSuperClass.md) — accepted and implemented for coordinated RAIkeep v4.3.2; publication remains behind RAI's manual gate
 - [`CR026_AIA_to_RAIkeep_Diagram_Builder_Revision_Fidelity_and_Reference_Stereotypes.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR026_AIA_to_RAIkeep_Diagram_Builder_Revision_Fidelity_and_Reference_Stereotypes.md) — released, formally accepted, and verified in coordinated RAIkeep v4.3.1
 - [`CR025_AIA_to_RAIkeep_Typed_Raid_Builders_and_Deterministic_ItemTree_Emission.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR025_AIA_to_RAIkeep_Typed_Raid_Builders_and_Deterministic_ItemTree_Emission.md) — accepted and implemented for coordinated RAIkeep v4.3.0; publication remains behind RAI's manual gate

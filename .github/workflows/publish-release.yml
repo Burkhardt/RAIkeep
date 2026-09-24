@@ -1,0 +1,44 @@
+name: Publish synchronized RAIkeep release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout immutable tag
+        uses: actions/checkout@v5
+
+      - name: Validate release notes and publish GitHub Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          VERSION="${TAG#v}"
+          NOTES="doc/RAIkeep_RELEASE_NOTES_${VERSION}.md"
+          TITLE="RAIkeep ${TAG}"
+          if [[ ! "${TAG}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Expected a vX.Y.Z tag, found ${TAG}."
+            exit 1
+          fi
+          if [[ ! -f "${NOTES}" ]]; then
+            echo "Missing synchronized release notes: ${NOTES}"
+            exit 1
+          fi
+          if gh release view "${TAG}" >/dev/null 2>&1; then
+            EXISTING_TITLE="$(gh release view "${TAG}" --json name --jq '.name')"
+            if [[ "${EXISTING_TITLE}" != "${TITLE}" ]]; then
+              echo "Existing release title '${EXISTING_TITLE}' does not match '${TITLE}'."
+              exit 1
+            fi
+            echo "Verified existing synchronized GitHub Release ${TITLE}."
+          else
+            gh release create "${TAG}" --title "${TITLE}" --notes-file "${NOTES}"
+          fi
