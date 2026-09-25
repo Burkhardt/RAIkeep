@@ -9,7 +9,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VER="${1:-}"
 MODE="${2:-}"
-PACKAGE_REPOS=(OsLib RaiUtils RaiImage RaiDiagram RaidCli JsonPit ImgSeeder PitSeeder)
+PACKAGE_REPOS=(OsLib RaiUtils RaiImage RaiDiagram RaidSeeder JsonPit ImgSeeder PitSeeder)
 
 require_cmd() {
 	command -v "$1" >/dev/null 2>&1 || {
@@ -306,7 +306,7 @@ verify_parent_pointers_unchanged() {
 	local parent_dir="$ROOT_DIR"
 	local changed
 
-	changed="$(git -C "$parent_dir" status --porcelain --untracked-files=no -- OsLib RaiUtils RaiImage RaiDiagram RaidCli JsonPit ImgSeeder PitSeeder || true)"
+	changed="$(git -C "$parent_dir" status --porcelain --untracked-files=no -- OsLib RaiUtils RaiImage RaiDiagram RaidSeeder JsonPit ImgSeeder PitSeeder || true)"
 	[[ -z "$changed" ]] || die "RAIkeep submodule pointers changed after umbrella label $TAG was created. Stop and investigate; the label must describe the exact released commits."
 	log "RAIkeep: submodule pointers still match umbrella label $TAG"
 }
@@ -328,7 +328,7 @@ final_visibility_summary() {
 	check_url raiutils
 	check_url raiimage
 	check_url raidiagram
-	check_url raidcli
+	check_url raidseeder
 	check_url jsonpit
 	check_url imgseeder
 	check_url pitseeder
@@ -356,23 +356,23 @@ resume_after_raidiagram() {
 	log "Waiting for the recovered RaiDiagram publication to become fully visible"
 	hold_and_check_flatcontainer "raidiagram" "$VER"
 
-	assert_tagged_submodule_pointer "RaidCli" "RaidCli"
+	assert_tagged_submodule_pointer "RaidSeeder" "RaidSeeder"
 	assert_tagged_submodule_pointer "JsonPit" "JsonPit"
 	assert_tagged_submodule_pointer "ImgSeeder" "ImgSeeder"
 	assert_tagged_submodule_pointer "PitSeeder" "PitSeeder"
 
 	log "Preflighting the four unpublished packages"
-	preflight_submodule "RaidCli" "RaidCli" "raid/raid.csproj"
+	preflight_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj"
 	preflight_submodule "JsonPit" "JsonPit" "JsonPit.csproj"
 	preflight_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj"
 	preflight_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj"
 
-	release_submodule "RaidCli" "RaidCli" "raid/raid.csproj" "RaidCli.slnx" "raidcli" "publish-nuget.yaml"
+	release_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj" "RaidSeeder.slnx" "raidseeder" "publish-nuget.yaml"
 	release_submodule "JsonPit" "JsonPit" "JsonPit.csproj" "JsonPit.slnx" "jsonpit" "publish-nuget.yml"
 	release_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj" "ImgSeeder.slnx" "imgseeder" "publish-nuget.yaml"
 	release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "PitSeeder.slnx" "pitseeder" "publish-nuget.yaml"
 
-	assert_tagged_submodule_pointer "RaidCli" "RaidCli"
+	assert_tagged_submodule_pointer "RaidSeeder" "RaidSeeder"
 	assert_tagged_submodule_pointer "JsonPit" "JsonPit"
 	assert_tagged_submodule_pointer "ImgSeeder" "ImgSeeder"
 	assert_tagged_submodule_pointer "PitSeeder" "PitSeeder"
@@ -405,14 +405,14 @@ main() {
 	fi
 
 	log "Release chain start for $VER"
-	log "Order: RAIkeep umbrella release -> OsLib -> RaiUtils -> RaiImage -> RaiDiagram -> RaidCli -> JsonPit -> ImgSeeder -> PitSeeder"
+	log "Order: RAIkeep umbrella release -> OsLib -> RaiUtils -> RaiImage -> RaiDiagram -> RaidSeeder -> JsonPit -> ImgSeeder -> PitSeeder"
 
 	log "Preflighting all eight packages before labeling RAIkeep"
 	preflight_submodule "OsLib" "OsLib" "OsLib.csproj"
 	preflight_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj"
 	preflight_submodule "RaiImage" "RaiImage" "RaiImage.csproj"
 	preflight_submodule "RaiDiagram" "RaiDiagram" "RaiDiagram.csproj"
-	preflight_submodule "RaidCli" "RaidCli" "raid/raid.csproj"
+	preflight_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj"
 	preflight_submodule "JsonPit" "JsonPit" "JsonPit.csproj"
 	preflight_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj"
 	preflight_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj"
@@ -423,7 +423,7 @@ main() {
 	release_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj" "RaiUtils.slnx" "raiutils" "publish-nuget.yml"
 	release_submodule "RaiImage" "RaiImage" "RaiImage.csproj" "RaiImage.slnx" "raiimage" "publish-nuget.yml"
 	release_submodule "RaiDiagram" "RaiDiagram" "RaiDiagram.csproj" "RaiDiagram.slnx" "raidiagram" "publish-nuget.yaml"
-	release_submodule "RaidCli" "RaidCli" "raid/raid.csproj" "RaidCli.slnx" "raidcli" "publish-nuget.yaml"
+	release_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj" "RaidSeeder.slnx" "raidseeder" "publish-nuget.yaml"
 	release_submodule "JsonPit" "JsonPit" "JsonPit.csproj" "JsonPit.slnx" "jsonpit" "publish-nuget.yml"
 	release_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj" "ImgSeeder.slnx" "imgseeder" "publish-nuget.yaml"
 	release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "PitSeeder.slnx" "pitseeder" "publish-nuget.yaml"

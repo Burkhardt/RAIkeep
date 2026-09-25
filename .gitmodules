@@ -19,6 +19,6 @@
 [submodule "RaiDiagram"]
 	path = RaiDiagram
 	url = https://github.com/Burkhardt/RaiDiagram.git
-[submodule "RaidCli"]
-	path = RaidCli
-	url = https://github.com/Burkhardt/RaidCli.git
+[submodule "RaidSeeder"]
+	path = RaidSeeder
+	url = https://github.com/Burkhardt/RaidSeeder.git
