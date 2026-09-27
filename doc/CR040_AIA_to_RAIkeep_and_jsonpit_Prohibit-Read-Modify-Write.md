@@ -7,7 +7,7 @@
 **Date:** 2026-09-26  
 **Requesting Agent / PM:** Adele (`7010`, Product Manager, AIA Platform) & Adele Goldberg (`7010`, Lead Software Architect, `jsonpit`)  
 **Target Provider / Repo:** `RAIkeep` (C# / `JsonPit` / `pits` — Custodian: Codex) & `jsonpit` (Python / `jpit`)  
-**Status:** Accepted by Provider for RAIkeep v4.4.1  
+**Status:** Accepted by Provider for RAIkeep v4.4.2 (v4.4.1 was already immutable and published)
 **Parent CR:** N/A  
 **Parity Invariant:** 100% C# / Python Parity (0% Deviation)
 
