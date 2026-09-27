@@ -4,6 +4,10 @@ RAIkeep 4.4.1 is the synchronized eight-package delivery of accepted
 [`CR037_AIA_to_RAIkeep_RaidSeeder_Diagram_Artifact_Management.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR037_AIA_to_RAIkeep_RaidSeeder_Diagram_Artifact_Management.md).
 It also delivers accepted
 [`CR037.1_AIA_to_RAIkeep_CLI_Global_Flag_and_Verb_Dispatch_Resilience.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR037.1_AIA_to_RAIkeep_CLI_Global_Flag_and_Verb_Dispatch_Resilience.md).
+It additionally delivers accepted
+[`CR040_AIA_to_RAIkeep_and_jsonpit_Prohibit-Read-Modify-Write.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR040_AIA_to_RAIkeep_and_jsonpit_Prohibit-Read-Modify-Write.md)
+and
+[`CR041_jsonpit_to_RAIkeep_Restore-Clean-Change-Filenames.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR041_jsonpit_to_RAIkeep_Restore-Clean-Change-Filenames.md).
 
 ## RaidSeeder diagram artifact management
 
@@ -32,10 +36,26 @@ It also delivers accepted
 - `-v`/`--version` remains an immediate successful operation wherever it
   appears; command-first `verb --help` remains verb-specific.
 
+## JsonPit sparse mutation and clean change files
+
+- Client property mutation cannot set or tombstone engine-managed `Id`,
+  `Modified`, or `Deleted`; protected failures are atomic.
+- Live storage rejects projected read-modify-write payloads. Explicit trusted
+  historical replay retains original lifecycle fields through `AddHistorical`.
+- `pits seed` validates every payload before opening its destination and
+  `delete-property` protects the lifecycle boundary.
+- New changes and receipts use readable
+  `{UtcTicks}_{ExactProcessIdentity}.{json|receipt}` names. Both C# and Python
+  engines continue to discover legacy SHA-suffixed change files.
+- Live C# mutations receive process-monotonic UTC ticks, preventing concurrent
+  OS-clock resolution collisions without lengthening the public filename.
+- Maintenance applies canonical accounting, immutable receipts, and the
+  established ten-minute grace equally to clean and legacy names.
+
 ## Cloud safety and release coordination
 
-All managed files are written through the OsLib/RaiFile boundary directly at
-their final paths. No TempDir-to-cloud move, established-directory swap, or
+Managed artifacts remain written directly at their final paths. No
+TempDir-to-cloud move, established-directory swap, or
 no-op rewrite is used. All eight packages align at 4.4.1 in this order:
 OsLibCore, RaiUtils, RaiImage, RaiDiagram, RaidSeeder, JsonPit, ImgSeeder, and
 PitSeeder.

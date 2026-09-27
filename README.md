@@ -13,9 +13,9 @@ RaidSeeder (`raid`), ImgSeeder (`iorg`), and PitSeeder (`pits`) use embedded Ner
 | 3 | `RaiImage` | `RaiImage` | 4.4.1 synchronized dependency line |
 | 4 | `RaiDiagram` | `RaiDiagram` | 4.4.1 CR037 artifact authority, refresh, and SVG profiles |
 | 5 | `RaidSeeder` | `RaidSeeder` / `raid` | 4.4.1 diagram artifact seeder and manager |
-| 6 | `JsonPit` | `JsonPit` | 4.4.1 synchronized dependency line |
+| 6 | `JsonPit` | `JsonPit` | 4.4.1 protected sparse mutations and clean change filenames |
 | 7 | `ImgSeeder` | `ImgSeeder` / `iorg` | 4.4.1 synchronized dependency line |
-| 8 | `PitSeeder` | `PitSeeder` / `pits` | 4.4.1 comment-tolerant seed ingestion |
+| 8 | `PitSeeder` | `PitSeeder` / `pits` | 4.4.1 protected seed/mutation boundary |
 
 Each child remains its own Git repository, package, solution, and release
 workflow. The umbrella workspace supplies local project wiring, coordinated
@@ -26,7 +26,7 @@ validation, dependency-order documentation, and sequential release automation.
 The prepared coordinated release is `4.4.1`. RAI starts the release chain
 manually after reviewing the prepared commits and verification results.
 
-RAIkeep 4.4.1 implements accepted CR037 and CR037.1. The former `RaidCli` repository is
+RAIkeep 4.4.1 implements accepted CR037, CR037.1, CR040, and CR041. The former `RaidCli` repository is
 promoted to `RaidSeeder` while retaining the `raid` command. RaiDiagram adds an
 authoritative artifact manager, deterministic PUML/SVG derivation, PUML semantic
 round-trip fidelity, and hydratable/plain SVG profiles. OsLibCore adds the typed
@@ -42,6 +42,10 @@ The principal functional changes are:
   actionable verb-first correction before storage access; version flags retain
   immediate precedence wherever they appear.
 - `pits seed` accepts JSON5 line/block comments before the root array or map while still rejecting malformed payloads.
+- JsonPit rejects projected read-modify-write payloads and client mutation of
+  engine-managed lifecycle fields while preserving explicit historical replay.
+- JsonPit and `pits` emit clean `{UtcTicks}_{ExactProcessIdentity}` change and
+  receipt stems and continue to discover legacy SHA-suffixed artifacts.
 - The umbrella `v4.4.1` tag automatically creates GitHub Release `RAIkeep v4.4.1` from the matching release-notes document.
 
 All eight packages participate in the coordinated line so fallback package dependencies remain aligned throughout the release order.
