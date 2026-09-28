@@ -8,14 +8,14 @@ RaidSeeder (`raid`), ImgSeeder (`iorg`), and PitSeeder (`pits`) use embedded Ner
 
 | Order | Repository | Package / command | Current or upcoming role |
 |---:|---|---|---|
-| 1 | `OsLib` | `OsLibCore` | 4.4.2 synchronized foundation |
-| 2 | `RaiUtils` | `RaiUtils` | 4.4.2 synchronized dependency line |
-| 3 | `RaiImage` | `RaiImage` | 4.4.2 synchronized dependency line |
-| 4 | `RaiDiagram` | `RaiDiagram` | 4.4.2 CR037 artifact authority, refresh, and SVG profiles |
-| 5 | `RaidSeeder` | `RaidSeeder` / `raid` | 4.4.2 diagram artifact seeder and manager |
-| 6 | `JsonPit` | `JsonPit` | 4.4.2 protected sparse mutations and clean change filenames |
-| 7 | `ImgSeeder` | `ImgSeeder` / `iorg` | 4.4.2 synchronized dependency line |
-| 8 | `PitSeeder` | `PitSeeder` / `pits` | 4.4.2 protected seed/mutation boundary |
+| 1 | `OsLib` | `OsLibCore` | 4.4.3 synchronized foundation |
+| 2 | `RaiUtils` | `RaiUtils` | 4.4.3 synchronized dependency line |
+| 3 | `RaiImage` | `RaiImage` | 4.4.3 synchronized dependency line |
+| 4 | `RaiDiagram` | `RaiDiagram` | 4.4.3 synchronized diagram line |
+| 5 | `RaidSeeder` | `RaidSeeder` / `raid` | 4.4.3 synchronized diagram artifact manager |
+| 6 | `JsonPit` | `JsonPit` | 4.4.3 synchronized persistence line |
+| 7 | `ImgSeeder` | `ImgSeeder` / `iorg` | 4.4.3 synchronized image-management line |
+| 8 | `PitSeeder` | `PitSeeder` / `pits` | 4.4.3 CR043 seed-payload ergonomics |
 
 Each child remains its own Git repository, package, solution, and release
 workflow. The umbrella workspace supplies local project wiring, coordinated
@@ -23,29 +23,32 @@ validation, dependency-order documentation, and sequential release automation.
 
 ## Current release line
 
-The prepared coordinated release is `4.4.2`. RAI starts the release chain
+The prepared coordinated release is `4.4.3`. RAI starts the release chain
 manually after reviewing the prepared commits and verification results.
 
-RAIkeep 4.4.2 implements accepted CR040 and CR041 while preserving the CR037 and
-CR037.1 diagram-management line published in 4.4.1. JsonPit protects its
-engine-managed lifecycle attributes and emits clean, dual-format-compatible
-change artifacts; PitSeeder enforces the same boundary at the `pits` CLI.
+RAIkeep 4.4.3 implements accepted CR043. `pits seed` now accepts a single root
+entity when it carries an exact, non-empty string `Id`, while preserving arrays
+and keyed entity maps and rejecting every invalid shape before opening the
+destination pit or creating process flags.
 
 The principal functional changes are:
 
 - `raid import`, `export`, `refresh`, and `validate` manage `.raid`, `.puml`, and `.svg` artifacts using iorg-aligned cloud/tenant addressing.
 - `.raid` is authoritative; export derives current output and refresh writes only missing or stale siblings.
 - Hydratable SVG contains structural and declared-expression metadata but no dynamic evaluation state; plain SVG contains no `aim-*` metadata.
-- `raid --version`, `pits --version`, and `iorg --version` report `4.4.2`.
+- `raid --version`, `pits --version`, and `iorg --version` report `4.4.3`.
 - All three CLIs reject misplaced reserved verbs with exit code `2` and an
   actionable verb-first correction before storage access; version flags retain
   immediate precedence wherever they appear.
 - `pits seed` accepts JSON5 line/block comments before the root array or map while still rejecting malformed payloads.
+- `pits seed` accepts a single root entity with a non-empty string `Id`; invalid
+  roots now identify arrays, single entities, and keyed maps as the three valid
+  forms before any pit is opened.
 - JsonPit rejects projected read-modify-write payloads and client mutation of
   engine-managed lifecycle fields while preserving explicit historical replay.
 - JsonPit and `pits` emit clean `{UtcTicks}_{ExactProcessIdentity}` change and
   receipt stems and continue to discover legacy SHA-suffixed artifacts.
-- The umbrella `v4.4.2` tag automatically creates GitHub Release `RAIkeep v4.4.2` from the matching release-notes document.
+- The umbrella `v4.4.3` tag automatically creates GitHub Release `RAIkeep v4.4.3` from the matching release-notes document.
 
 All eight packages participate in the coordinated line so fallback package dependencies remain aligned throughout the release order.
 
@@ -53,17 +56,17 @@ All eight packages participate in the coordinated line so fallback package depen
 
 All change requests and release notes are centralized in [`doc/`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/README.md). Child repositories should not contain independent `CR_*.md` or `RELEASE_NOTES*.md` files.
 
-Current coordinated 4.4.2 release notes:
+Current coordinated 4.4.3 release notes:
 
-- [OsLibCore 4.4.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.4.2.md)
-- [RaiUtils 4.4.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.4.2.md)
-- [RaiImage 4.4.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.4.2.md)
-- [RaiDiagram 4.4.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.4.2.md)
-- [RaidSeeder 4.4.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaidSeeder_RELEASE_NOTES_4.4.2.md)
-- [JsonPit 4.4.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.4.2.md)
-- [ImgSeeder 4.4.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.4.2.md)
-- [PitSeeder 4.4.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.4.2.md)
-- [RAIkeep 4.4.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.4.2.md)
+- [OsLibCore 4.4.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.4.3.md)
+- [RaiUtils 4.4.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.4.3.md)
+- [RaiImage 4.4.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.4.3.md)
+- [RaiDiagram 4.4.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.4.3.md)
+- [RaidSeeder 4.4.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaidSeeder_RELEASE_NOTES_4.4.3.md)
+- [JsonPit 4.4.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.4.3.md)
+- [ImgSeeder 4.4.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.4.3.md)
+- [PitSeeder 4.4.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.4.3.md)
+- [RAIkeep 4.4.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.4.3.md)
 
 The prior coordinated line remains documented in [RAIkeep 4.1.0 release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.1.0.md).
 
@@ -95,7 +98,7 @@ After approval, use one release mechanism for the chain. The established local o
 
 ```bash
 cd /Users/RSB/Projects/GitHub/RAIkeep
-scripts/release-chain.sh 4.4.2
+scripts/release-chain.sh 4.4.3
 ```
 
 Before publication begins, all eight child release commits and their exact submodule pointers must already be committed on the umbrella `main`. The script preflights that state, pushes the prepared umbrella `main`, and applies the passed version as its tag first. The umbrella tag publishes no NuGet package; it creates and verifies the synchronized GitHub Release before package tagging begins.
@@ -109,7 +112,7 @@ OsLibCore → RaiUtils → RaiImage → RaiDiagram → RaidSeeder → JsonPit �
 For every package before the next repository is pushed/tagged:
 
 1. Push the prepared repository `main` only if it is ahead.
-2. Push that repository's requested version tag, such as `v4.4.2`, to trigger its publish workflow.
+2. Push that repository's requested version tag, such as `v4.4.3`, to trigger its publish workflow.
 3. Wait for the matching GitHub workflow to finish successfully.
 4. Verify the exact `.nupkg` and exact-version registration document are both visible from NuGet with HTTP `200`.
 5. Only then continue to the next repository.
