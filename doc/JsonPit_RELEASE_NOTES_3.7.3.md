@@ -7,7 +7,9 @@
 
 ## Summary
 
-This release is the result of a comprehensive review of `JsonPit.cs` conducted collaboratively between Rainer and Claude (Anthropic). Every class in the file was examined for correctness, thread safety, adherence to OsLib conventions, and compatibility with cloud-synced filesystems. The changes strengthen JsonPit's core promise of *asynchronous persistence with eventual durability* across multiple machines sharing a cloud-synced filesystem.
+This release is the result of a comprehensive review of `JsonPit.cs` conducted collaboratively between Rainer and Claude (Anthropic). Every class in the file was examined for correctness, thread safety, adherence to OsLib conventions, and compatibility with cloud-synced filesystems. The changes strengthen JsonPit's core promise of
+[*asynchronous persistence with eventual durability*](https://github.com/Burkhardt/RAIkeep/blob/main/MANIFESTO.md#asynchronous-persistence-with-eventual-durability)
+across multiple machines sharing a cloud-synced filesystem.
 
 ---
 
@@ -130,7 +132,8 @@ All tests pass after updates. Build succeeds with zero errors.
 
 ## Architecture Reminder
 
-JsonPit follows a model of **asynchronous persistence with eventual durability**:
+JsonPit follows a model of
+[**asynchronous persistence with eventual durability**](https://github.com/Burkhardt/RAIkeep/blob/main/MANIFESTO.md#asynchronous-persistence-with-eventual-durability):
 
 - A change is not guaranteed to be durably visible everywhere immediately after the local write returns.
 - The system is designed so that changes become durably visible over time.

@@ -56,6 +56,10 @@ All nine packages participate in the coordinated line so fallback package depend
 
 All change requests and release notes are centralized in [`doc/`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/README.md). Child repositories should not contain independent `CR_*.md` or `RELEASE_NOTES*.md` files.
 
+The [RAIkeep Manifesto](https://github.com/Burkhardt/RAIkeep/blob/main/MANIFESTO.md)
+explains why transparent, historical JSON matters for agentic engineering and
+defines JsonPit's asynchronous persistence and eventual-durability model.
+
 Current coordinated 4.4.4 release notes:
 
 - [Amafu 4.4.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/Amafu_RELEASE_NOTES_4.4.4.md)

@@ -94,9 +94,10 @@ First domain target in scope:
 
 - JsonPit-backed API-visible data
 
-## Architectural Note: Asynchronously Persisted With Eventual Durability
+## Architectural Note: [Asynchronously Persisted With Eventual Durability](https://github.com/Burkhardt/RAIkeep/blob/main/MANIFESTO.md#asynchronous-persistence-with-eventual-durability)
 
-JsonPit should be understood here as following a model of asynchronous persistence with eventual durability.
+JsonPit should be understood here as following a model of
+[asynchronous persistence with eventual durability](https://github.com/Burkhardt/RAIkeep/blob/main/MANIFESTO.md#asynchronous-persistence-with-eventual-durability).
 
 This is preferred over the looser phrase "eventually persistent".
 

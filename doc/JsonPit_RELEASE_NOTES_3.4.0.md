@@ -22,7 +22,9 @@
 
 - Existing `Pit` / `PitItem` application code remains stable.
 - JsonPit remains suitable for cloud-backed shared storage scenarios when used with explicit OsLib configuration.
-- Cross-server behavior should be understood as asynchronous persistence with eventual durability rather than immediate real-time synchronization.
+- Cross-server behavior should be understood as
+  [asynchronous persistence with eventual durability](https://github.com/Burkhardt/RAIkeep/blob/main/MANIFESTO.md#asynchronous-persistence-with-eventual-durability)
+  rather than immediate real-time synchronization.
 
 ## Validation
 
