@@ -9,7 +9,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VER="${1:-}"
 MODE="${2:-}"
-PACKAGE_REPOS=(OsLib RaiUtils RaiImage RaiDiagram RaidSeeder JsonPit ImgSeeder PitSeeder)
+PACKAGE_REPOS=(Amafu OsLib RaiUtils RaiImage RaiDiagram RaidSeeder JsonPit ImgSeeder PitSeeder)
 
 require_cmd() {
 	command -v "$1" >/dev/null 2>&1 || {
@@ -248,7 +248,7 @@ require_package_published() {
 		"https://api.nuget.org/v3/registration5-gz-semver2/${package_id}/${version}.json")"
 	log "Resume prerequisite: $package_id $version nupkg=$package_code registration=$registration_code"
 	[[ "$package_code" == "200" && "$registration_code" == "200" ]] \
-		|| die "Cannot resume after RaiDiagram: $package_id $version is not fully published."
+		|| die "Cannot resume: $package_id $version is not fully published."
 }
 
 assert_tagged_submodule_pointer() {
@@ -306,7 +306,7 @@ verify_parent_pointers_unchanged() {
 	local parent_dir="$ROOT_DIR"
 	local changed
 
-	changed="$(git -C "$parent_dir" status --porcelain --untracked-files=no -- OsLib RaiUtils RaiImage RaiDiagram RaidSeeder JsonPit ImgSeeder PitSeeder || true)"
+	changed="$(git -C "$parent_dir" status --porcelain --untracked-files=no -- Amafu OsLib RaiUtils RaiImage RaiDiagram RaidSeeder JsonPit ImgSeeder PitSeeder || true)"
 	[[ -z "$changed" ]] || die "RAIkeep submodule pointers changed after umbrella label $TAG was created. Stop and investigate; the label must describe the exact released commits."
 	log "RAIkeep: submodule pointers still match umbrella label $TAG"
 }
@@ -324,6 +324,7 @@ final_visibility_summary() {
 			|| die "$pkg $VER is not fully visible at the final release gate."
 	}
 
+	check_url amafu
 	check_url oslibcore
 	check_url raiutils
 	check_url raiimage
@@ -334,10 +335,9 @@ final_visibility_summary() {
 	check_url pitseeder
 }
 
-resume_after_raidiagram() {
+prepare_recovery() {
 	local umbrella_behind
 
-	log "Recovery mode: preserve existing $TAG labels and resume after RaiDiagram"
 	assert_tracked_clean "$ROOT_DIR" "RAIkeep"
 	[[ "$(git -C "$ROOT_DIR" branch --show-current)" == "main" ]] \
 		|| die "RAIkeep must be on main for recovery."
@@ -349,7 +349,53 @@ resume_after_raidiagram() {
 	git -C "$ROOT_DIR" rev-parse --verify "refs/tags/$TAG" >/dev/null \
 		|| die "RAIkeep does not have the required immutable $TAG label."
 	push_main_if_needed "$ROOT_DIR" "RAIkeep recovery"
+}
 
+resume_after_amafu() {
+	log "Recovery mode: preserve existing $TAG labels and resume after Amafu"
+	prepare_recovery
+
+	log "Waiting for the recovered Amafu publication to become fully visible"
+	hold_and_check_flatcontainer "amafu" "$VER"
+
+	assert_tagged_submodule_pointer "OsLib" "OsLib"
+	assert_tagged_submodule_pointer "RaiUtils" "RaiUtils"
+	assert_tagged_submodule_pointer "RaiImage" "RaiImage"
+	assert_tagged_submodule_pointer "RaiDiagram" "RaiDiagram"
+	assert_tagged_submodule_pointer "RaidSeeder" "RaidSeeder"
+	assert_tagged_submodule_pointer "JsonPit" "JsonPit"
+	assert_tagged_submodule_pointer "ImgSeeder" "ImgSeeder"
+	assert_tagged_submodule_pointer "PitSeeder" "PitSeeder"
+
+	log "Preflighting the eight unpublished packages"
+	preflight_submodule "OsLib" "OsLib" "OsLib.csproj"
+	preflight_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj"
+	preflight_submodule "RaiImage" "RaiImage" "RaiImage.csproj"
+	preflight_submodule "RaiDiagram" "RaiDiagram" "RaiDiagram.csproj"
+	preflight_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj"
+	preflight_submodule "JsonPit" "JsonPit" "JsonPit.csproj"
+	preflight_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj"
+	preflight_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj"
+
+	release_submodule "OsLib" "OsLib" "OsLib.csproj" "OsLib.slnx" "oslibcore" "publish-nuget.yml"
+	release_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj" "RaiUtils.slnx" "raiutils" "publish-nuget.yml"
+	release_submodule "RaiImage" "RaiImage" "RaiImage.csproj" "RaiImage.slnx" "raiimage" "publish-nuget.yml"
+	release_submodule "RaiDiagram" "RaiDiagram" "RaiDiagram.csproj" "RaiDiagram.slnx" "raidiagram" "publish-nuget.yaml"
+	release_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj" "RaidSeeder.slnx" "raidseeder" "publish-nuget.yaml"
+	release_submodule "JsonPit" "JsonPit" "JsonPit.csproj" "JsonPit.slnx" "jsonpit" "publish-nuget.yml"
+	release_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj" "ImgSeeder.slnx" "imgseeder" "publish-nuget.yaml"
+	release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "PitSeeder.slnx" "pitseeder" "publish-nuget.yaml"
+
+	verify_parent_pointers_unchanged
+	final_visibility_summary
+	log "Release chain recovery completed for $VER"
+}
+
+resume_after_raidiagram() {
+	log "Recovery mode: preserve existing $TAG labels and resume after RaiDiagram"
+	prepare_recovery
+
+	require_package_published "amafu" "$VER"
 	require_package_published "oslibcore" "$VER"
 	require_package_published "raiutils" "$VER"
 	require_package_published "raiimage" "$VER"
@@ -388,26 +434,30 @@ main() {
 	require_cmd sed
 	require_cmd sleep
 
-	[[ $# -le 2 ]] || die "Usage: scripts/release-chain.sh [version] [--resume-after-raidiagram]"
-	if [[ -n "$MODE" && "$MODE" != "--resume-after-raidiagram" ]]; then
-		die "Unknown release mode '$MODE'. Expected --resume-after-raidiagram."
+	[[ $# -le 2 ]] || die "Usage: scripts/release-chain.sh [version] [--resume-after-amafu|--resume-after-raidiagram]"
+	if [[ -n "$MODE" && "$MODE" != "--resume-after-amafu" && "$MODE" != "--resume-after-raidiagram" ]]; then
+		die "Unknown release mode '$MODE'. Expected --resume-after-amafu or --resume-after-raidiagram."
 	fi
-	if [[ "$MODE" == "--resume-after-raidiagram" && -z "$VER" ]]; then
+	if [[ -n "$MODE" && -z "$VER" ]]; then
 		die "Recovery mode requires the interrupted release version."
 	fi
 	if [[ -z "$VER" ]]; then
 		VER="$(derive_next_patch_version)"
 	fi
 	TAG="v${VER}"
-	if [[ "$MODE" == "--resume-after-raidiagram" ]]; then
+	if [[ "$MODE" == "--resume-after-amafu" ]]; then
+		resume_after_amafu
+		return
+	elif [[ "$MODE" == "--resume-after-raidiagram" ]]; then
 		resume_after_raidiagram
 		return
 	fi
 
 	log "Release chain start for $VER"
-	log "Order: RAIkeep umbrella release -> OsLib -> RaiUtils -> RaiImage -> RaiDiagram -> RaidSeeder -> JsonPit -> ImgSeeder -> PitSeeder"
+	log "Order: RAIkeep umbrella release -> Amafu -> OsLib -> RaiUtils -> RaiImage -> RaiDiagram -> RaidSeeder -> JsonPit -> ImgSeeder -> PitSeeder"
 
-	log "Preflighting all eight packages before labeling RAIkeep"
+	log "Preflighting all nine packages before labeling RAIkeep"
+	preflight_submodule "Amafu" "Amafu" "amafu/amafu.csproj"
 	preflight_submodule "OsLib" "OsLib" "OsLib.csproj"
 	preflight_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj"
 	preflight_submodule "RaiImage" "RaiImage" "RaiImage.csproj"
@@ -419,6 +469,7 @@ main() {
 
 	release_umbrella
 
+	release_submodule "Amafu" "Amafu" "amafu/amafu.csproj" "Amafu.slnx" "amafu" "publish-nuget.yaml"
 	release_submodule "OsLib" "OsLib" "OsLib.csproj" "OsLib.slnx" "oslibcore" "publish-nuget.yml"
 	release_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj" "RaiUtils.slnx" "raiutils" "publish-nuget.yml"
 	release_submodule "RaiImage" "RaiImage" "RaiImage.csproj" "RaiImage.slnx" "raiimage" "publish-nuget.yml"

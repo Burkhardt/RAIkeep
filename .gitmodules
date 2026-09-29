@@ -1,3 +1,6 @@
+[submodule "Amafu"]
+	path = Amafu
+	url = https://github.com/Burkhardt/Amafu.git
 [submodule "JsonPit"]
 	path = JsonPit
 	url = https://github.com/Burkhardt/JsonPit.git

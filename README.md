@@ -2,20 +2,21 @@
 
 ## Terminal font for RAIkeep CLIs
 
-RaidSeeder (`raid`), ImgSeeder (`iorg`), and PitSeeder (`pits`) use embedded Nerd Font provider and numbered-option glyphs in their help output. Installation instructions for Blink on iPadOS, macOS, and Ubuntu—including the Blink CSS font-family stylesheet URL—are in [TERMINAL_FONTS.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/TERMINAL_FONTS.md).
+Amafu (`amafu`), RaidSeeder (`raid`), ImgSeeder (`iorg`), and PitSeeder (`pits`) use embedded Nerd Font provider and numbered-option glyphs in their help output. Installation instructions for Blink on iPadOS, macOS, and Ubuntu—including the Blink CSS font-family stylesheet URL—are in [TERMINAL_FONTS.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/TERMINAL_FONTS.md).
 
-`RAIkeep` is the umbrella workspace for five related .NET libraries and three command-line packages:
+`RAIkeep` is the umbrella workspace for five related .NET libraries and four command-line packages:
 
 | Order | Repository | Package / command | Current or upcoming role |
 |---:|---|---|---|
-| 1 | `OsLib` | `OsLibCore` | 4.4.3 synchronized foundation |
-| 2 | `RaiUtils` | `RaiUtils` | 4.4.3 synchronized dependency line |
-| 3 | `RaiImage` | `RaiImage` | 4.4.3 synchronized dependency line |
-| 4 | `RaiDiagram` | `RaiDiagram` | 4.4.3 synchronized diagram line |
-| 5 | `RaidSeeder` | `RaidSeeder` / `raid` | 4.4.3 synchronized diagram artifact manager |
-| 6 | `JsonPit` | `JsonPit` | 4.4.3 synchronized persistence line |
-| 7 | `ImgSeeder` | `ImgSeeder` / `iorg` | 4.4.3 synchronized image-management line |
-| 8 | `PitSeeder` | `PitSeeder` / `pits` | 4.4.3 CR043 seed-payload ergonomics |
+| 1 | `Amafu` | `Amafu` / `amafu` | 4.4.4 standalone cloud detection and configuration bootstrap |
+| 2 | `OsLib` | `OsLibCore` | 4.4.4 synchronized immutable configuration consumer |
+| 3 | `RaiUtils` | `RaiUtils` | 4.4.4 synchronized dependency line |
+| 4 | `RaiImage` | `RaiImage` | 4.4.4 synchronized dependency line |
+| 5 | `RaiDiagram` | `RaiDiagram` | 4.4.4 synchronized diagram line |
+| 6 | `RaidSeeder` | `RaidSeeder` / `raid` | 4.4.4 synchronized diagram artifact manager |
+| 7 | `JsonPit` | `JsonPit` | 4.4.4 synchronized persistence line |
+| 8 | `ImgSeeder` | `ImgSeeder` / `iorg` | 4.4.4 synchronized image-management line |
+| 9 | `PitSeeder` | `PitSeeder` / `pits` | 4.4.4 Amafu bootstrap guidance |
 
 Each child remains its own Git repository, package, solution, and release
 workflow. The umbrella workspace supplies local project wiring, coordinated
@@ -23,50 +24,50 @@ validation, dependency-order documentation, and sequential release automation.
 
 ## Current release line
 
-The prepared coordinated release is `4.4.3`. RAI starts the release chain
+The prepared coordinated release is `4.4.4`. RAI starts the release chain
 manually after reviewing the prepared commits and verification results.
 
-RAIkeep 4.4.3 implements accepted CR043. `pits seed` now accepts a single root
-entity when it carries an exact, non-empty string `Id`, while preserving arrays
-and keyed entity maps and rejecting every invalid shape before opening the
-destination pit or creating process flags.
+RAIkeep 4.4.4 implements accepted CR044. The new standalone `amafu` CLI detects
+mounted cloud providers and creates `~/.config/RAIkeep.json5` without adding a
+mutable configuration or detection seam to OsLib. NativeAOT release binaries
+serve zero-runtime consumers, while the NuGet tool installs the same `amafu`
+command for .NET operators.
 
 The principal functional changes are:
 
-- `raid import`, `export`, `refresh`, and `validate` manage `.raid`, `.puml`, and `.svg` artifacts using iorg-aligned cloud/tenant addressing.
-- `.raid` is authoritative; export derives current output and refresh writes only missing or stale siblings.
-- Hydratable SVG contains structural and declared-expression metadata but no dynamic evaluation state; plain SVG contains no `aim-*` metadata.
-- `raid --version`, `pits --version`, and `iorg --version` report `4.4.3`.
-- All three CLIs reject misplaced reserved verbs with exit code `2` and an
-  actionable verb-first correction before storage access; version flags retain
-  immediate precedence wherever they appear.
-- `pits seed` accepts JSON5 line/block comments before the root array or map while still rejecting malformed payloads.
-- `pits seed` accepts a single root entity with a non-empty string `Id`; invalid
-  roots now identify arrays, single entities, and keyed maps as the three valid
-  forms before any pit is opened.
-- JsonPit rejects projected read-modify-write payloads and client mutation of
-  engine-managed lifecycle fields while preserving explicit historical replay.
-- JsonPit and `pits` emit clean `{UtcTicks}_{ExactProcessIdentity}` change and
-  receipt stems and continue to discover legacy SHA-suffixed artifacts.
-- The umbrella `v4.4.3` tag automatically creates GitHub Release `RAIkeep v4.4.3` from the matching release-notes document.
+- `amafu detect` performs read-only provider discovery; `amafu init` and its
+  `init-config` alias render deterministic JSON5, refuse overwrite without
+  `--force`, and support a no-write `--dry-run` path.
+- Automatic provider discovery is supported and tested only on macOS in 4.4.4;
+  Linux and Windows native binaries currently provide the starter-template fallback.
+- Amafu writes only the final local configuration pathname and never stages a
+  file or directory in `TempDir` or moves one into cloud storage.
+- `pits` reports an actionable `amafu init` diagnostic when the standard
+  RAIkeep configuration is absent before resolving a cloud provider.
+- `amafu --version`, `raid --version`, `pits --version`, and `iorg --version`
+  report `4.4.4`.
+- CR043 seed ergonomics and the established library/CLI contracts remain
+  available unchanged on the synchronized line.
+- The umbrella `v4.4.4` tag automatically creates GitHub Release `RAIkeep v4.4.4` from the matching release-notes document.
 
-All eight packages participate in the coordinated line so fallback package dependencies remain aligned throughout the release order.
+All nine packages participate in the coordinated line so fallback package dependencies remain aligned throughout the release order.
 
 ## Documentation
 
 All change requests and release notes are centralized in [`doc/`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/README.md). Child repositories should not contain independent `CR_*.md` or `RELEASE_NOTES*.md` files.
 
-Current coordinated 4.4.3 release notes:
+Current coordinated 4.4.4 release notes:
 
-- [OsLibCore 4.4.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.4.3.md)
-- [RaiUtils 4.4.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.4.3.md)
-- [RaiImage 4.4.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.4.3.md)
-- [RaiDiagram 4.4.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.4.3.md)
-- [RaidSeeder 4.4.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaidSeeder_RELEASE_NOTES_4.4.3.md)
-- [JsonPit 4.4.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.4.3.md)
-- [ImgSeeder 4.4.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.4.3.md)
-- [PitSeeder 4.4.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.4.3.md)
-- [RAIkeep 4.4.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.4.3.md)
+- [Amafu 4.4.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/Amafu_RELEASE_NOTES_4.4.4.md)
+- [OsLibCore 4.4.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.4.4.md)
+- [RaiUtils 4.4.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.4.4.md)
+- [RaiImage 4.4.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.4.4.md)
+- [RaiDiagram 4.4.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.4.4.md)
+- [RaidSeeder 4.4.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaidSeeder_RELEASE_NOTES_4.4.4.md)
+- [JsonPit 4.4.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.4.4.md)
+- [ImgSeeder 4.4.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.4.4.md)
+- [PitSeeder 4.4.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.4.4.md)
+- [RAIkeep 4.4.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.4.4.md)
 
 The prior coordinated line remains documented in [RAIkeep 4.1.0 release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.1.0.md).
 
@@ -78,6 +79,7 @@ From the workspace root:
 
 ```bash
 dotnet build RAIkeep.slnx
+dotnet test Amafu/Amafu.slnx
 dotnet test OsLib/OsLib.Tests/OsLib.Tests.csproj
 dotnet test RaiUtils/RaiUtils.slnx
 dotnet test RaiImage/RaiImage.slnx
@@ -98,21 +100,21 @@ After approval, use one release mechanism for the chain. The established local o
 
 ```bash
 cd /Users/RSB/Projects/GitHub/RAIkeep
-scripts/release-chain.sh 4.4.3
+scripts/release-chain.sh 4.4.4
 ```
 
-Before publication begins, all eight child release commits and their exact submodule pointers must already be committed on the umbrella `main`. The script preflights that state, pushes the prepared umbrella `main`, and applies the passed version as its tag first. The umbrella tag publishes no NuGet package; it creates and verifies the synchronized GitHub Release before package tagging begins.
+Before publication begins, all nine child release commits and their exact submodule pointers must already be committed on the umbrella `main`. The script preflights that state, pushes the prepared umbrella `main`, and applies the passed version as its tag first. The umbrella tag publishes no NuGet package; it creates and verifies the synchronized GitHub Release before package tagging begins.
 
 It then processes packages in this exact order:
 
 ```text
-OsLibCore → RaiUtils → RaiImage → RaiDiagram → RaidSeeder → JsonPit → ImgSeeder → PitSeeder
+Amafu → OsLibCore → RaiUtils → RaiImage → RaiDiagram → RaidSeeder → JsonPit → ImgSeeder → PitSeeder
 ```
 
 For every package before the next repository is pushed/tagged:
 
 1. Push the prepared repository `main` only if it is ahead.
-2. Push that repository's requested version tag, such as `v4.4.3`, to trigger its publish workflow.
+2. Push that repository's requested version tag, such as `v4.4.4`, to trigger its publish workflow.
 3. Wait for the matching GitHub workflow to finish successfully.
 4. Verify the exact `.nupkg` and exact-version registration document are both visible from NuGet with HTTP `200`.
 5. Only then continue to the next repository.

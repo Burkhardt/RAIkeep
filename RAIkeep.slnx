@@ -1,4 +1,8 @@
 <Solution>
+	<Folder Name="/Amafu/">
+		<Project Path="Amafu/amafu/amafu.csproj" />
+		<Project Path="Amafu/amafu.Tests/amafu.Tests.csproj" />
+	</Folder>
 	<Folder Name="/JsonPit/">
 		<Project Path="JsonPit/JsonPit.Tests/JsonPit.Tests.csproj" />
 	</Folder>
