@@ -1,10 +1,17 @@
 # Release Notes: RAIkeep v4.4.6
 
-RAIkeep v4.4.6 implements [CR049](CR/CR049_AIA_and_jsonpit_to_RAIkeep_Live-ID-Validation_and_Zip-Image-Import.md), including Rainer's subsequent filename, EXIF, optional-limit, and native-unzip decisions.
+RAIkeep v4.4.6 implements [CR049](CR/CR049_AIA_and_jsonpit_to_RAIkeep_Live-ID-Validation_and_Zip-Image-Import.md), incorporating Rainer's live-ID validation, ZIP ingestion, EXIF inspection, and storage filename optimization decisions.
 
 ## Live IDs and stdin receipts
 
 JsonPit rejects `{` and `<` inside IDs at live write boundaries, including direct library calls and complete batches. Ordinary field values remain unrestricted by this rule. Historical records remain readable/exportable and can be explicitly deleted, while live re-insertion fails. PitSeeder validates the whole input before writable Pit creation, including strict patch mode. `pits seed <PitName> --source -` accepts explicit standard input.
+
+## Storage Filename Refinements & Cloud Sync Optimization
+
+- **ChangeFiles (4-Character Checksum):** Restored a concise 4-character hex checksum suffix (`{UtcTicks}_{ExactProcessIdentity}_{4charHex}.json`). This provides reliable cloud-sync integrity against partial writes without inflating path lengths or causing synchronization bottlenecks on cloud providers like OneDrive.
+- **EventFiles (Clean Logical Naming):** Removed the 64-character SHA-256 hash suffix from compaction event filenames, standardizing on clean `{LogicalStem}.event` files.
+- **Automated Event Migration:** `pits maintain --apply` automatically discovers legacy `{stem}_{sha256}.event` archives, verifies payload digests, and migrates them in-place to clean names.
+- **Engine Hygiene:** Removed the obsolete `Item` class from `JsonPit` in favor of polymorphic `PitItem`.
 
 ## ZIP image imports
 
