@@ -11,16 +11,16 @@ Do not add `RELEASE_NOTES*.md` or `CR_*.md` files to child-project directories. 
 
 ## Current coordinated release notes
 
-- [RAIkeep 4.4.6](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.4.6.md)
-- [Amafu 4.4.6](https://github.com/Burkhardt/RAIkeep/blob/main/doc/Amafu_RELEASE_NOTES_4.4.6.md)
-- [OsLibCore 4.4.6](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.4.6.md)
-- [RaiUtils 4.4.6](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.4.6.md)
-- [RaiImage 4.4.6](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.4.6.md)
-- [RaiDiagram 4.4.6](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.4.6.md)
-- [RaidSeeder 4.4.6](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaidSeeder_RELEASE_NOTES_4.4.6.md)
-- [JsonPit 4.4.6](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.4.6.md)
-- [ImgSeeder 4.4.6](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.4.6.md)
-- [PitSeeder 4.4.6](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.4.6.md)
+- [RAIkeep 4.4.8](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.4.8.md)
+- [Amafu 4.4.8](https://github.com/Burkhardt/RAIkeep/blob/main/doc/Amafu_RELEASE_NOTES_4.4.8.md)
+- [OsLibCore 4.4.8](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.4.8.md)
+- [RaiUtils 4.4.8](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.4.8.md)
+- [RaiImage 4.4.8](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.4.8.md)
+- [RaiDiagram 4.4.8](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.4.8.md)
+- [RaidSeeder 4.4.8](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaidSeeder_RELEASE_NOTES_4.4.8.md)
+- [JsonPit 4.4.8](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.4.8.md)
+- [ImgSeeder 4.4.8](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.4.8.md)
+- [PitSeeder 4.4.8](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.4.8.md)
 
 - [CR049](CR/CR049_AIA_and_jsonpit_to_RAIkeep_Live-ID-Validation_and_Zip-Image-Import.md) — live-ID validation, ZIP image import, stdin receipts, and EXIF clarifications.
 
