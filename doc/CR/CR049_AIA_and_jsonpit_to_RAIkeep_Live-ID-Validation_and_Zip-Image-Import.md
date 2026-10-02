@@ -122,7 +122,7 @@ iorg organize --source-url <https-url> --import-id <ImportId> [--activity-id <Ac
 ### 4.2 Security, Bounds, and Extraction Invariants
 
 1. **Path-Traversal Defense:** Reject any archive entry containing `..`, absolute paths, or symlinks.
-2. **Resource Quotas:** Enforce documented limits on max archive bytes, max uncompressed bytes, and max entry count.
+2. **Resource Quotas (Rainer amendment, 2026-10-01):** Limits on archive bytes, expanded bytes, entry count, and download duration are opt-in CLI parameters. No application-imposed defaults. Validate configured bounds before extraction and verify extracted sizes afterward; OS storage constraints still apply.
 3. **Canonical 8x2 Placement:** Each image is normalized via `RaiImage` into `ImagesRoot/<Tenant>/<ItemIdTree8x2>/<ShortName>.<ext>`.
 4. **Collision Handling:** If an identical file exists at the target, mark `Unchanged`. If a different file exists at the target, report collision error; never silently overwrite.
 5. **CR022 Cloud-Safe Invariant:** Any temporary download/extraction workspace must reside in OS temp space, outside the CloudDrive. Files are written directly to their canonical destination.
@@ -151,11 +151,11 @@ When `--json` is specified, `iorg` outputs **strictly valid JSON to stdout** (pr
   },
   "Files": [
     {
-      "SourceEntry": "Nomsa/Nomsa-San-Diego-State-26-10.jpg",
-      "ItemId": "NomsaSanDiegoState2610",
-      "ImageNumber": 10,
-      "RelativePath": "NomsaSan/NomsaSanDieg/NomsaSanDiegoState2610.jpg",
-      "Captured": "2026-09-28T17:40:31-07:00",
+      "SourceEntry": "Nomsa/Nomsa_San_Diego_State_0001.jpg",
+      "ItemId": "NomsaSanDiegoState",
+      "ImageNumber": 1,
+      "RelativePath": "NomsaSan/NomsaSanDi/NomsaSanDiegoState_01.jpg",
+      "Exif": {"DateTimeOriginal": "2026-09-28T17:40:31-07:00"},
       "Status": "Copied"
     }
   ]
@@ -227,3 +227,18 @@ fi
 
 - **Ratification:** This specification is approved and ratified by Adele (`7010`) on behalf of AIA Platform Governance.
 - **Action for RAIkeep Codex Agent:** Implement Deliverables A, B, and C in `RAIkeep` (`JsonPit`, `PitSeeder`, `ImgSeeder`), publish `v4.4.6`, and coordinate lockstep implementation with `jsonpit-python v4.4.6`.
+
+## 8. Rainer's implementation clarifications (2026-10-01)
+
+- Retain existing RaiImage/ImageTreeFile naming behavior; no separate ZIP renaming policy.
+- On macOS and Ubuntu use the native `unzip` CLI through asynchronous `RaiSystem` execution into OS temporary storage. Keep archive preflight, collision checks, direct final writes, cancellation, and failure receipts. Insufficient temporary disk space is an import failure, not a reason to bypass staging.
+- Offer `--exif` on both `iorg list` and `iorg organize`, accepting `*`, individual tags, comma-separated selectors, and dotted group selectors.
+- Emit structured EXIF objects with matching date/offset pairs converted to C# `DateTimeOffset`; group thumbnail/lens/focal-plane/exposure fields. Preserve unconvertible values with diagnostics. No `Captured` alias and no filesystem or local-timezone fallback.
+- Rainer runs the release chain. Adele owns Python implementation and release parity; this repository provides the C# reference and acceptance evidence, without asserting Python completion.
+
+The ratified matrix above ends at B04/C03 and differs in numbering from the
+original draft. Its rows remain authoritative. The requested additional draft
+coverage is retained as B05 (direct HTTPS, rejection of share pages and credential
+redaction), B06 (strict JSON stdout including debug mode), and C04 (repeat import
+and cloud-safe final writes). Partial copy failures and collision handling are
+also covered independently of the numbering.

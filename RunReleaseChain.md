@@ -12,9 +12,9 @@ scripts/release-chain.sh</code>
 
 Passing the prepared coordinated version explicitly is recommended:
 
-<code>scripts/release-chain.sh 4.4.5</code>
+<code>scripts/release-chain.sh 4.4.6</code>
 
-The script first preflights all ten repositories: the umbrella and nine package repositories. It then pushes the prepared RAIkeep umbrella `main` if needed and applies the passed version as the umbrella tag (for example `v4.4.5`). The umbrella tag is applied before any child repository is pushed or tagged. It does not publish a NuGet package because the umbrella workflow creates the coordinated GitHub Release only.
+The script first preflights all ten repositories: the umbrella and nine package repositories. It then pushes the prepared RAIkeep umbrella `main` if needed and applies the passed version as the umbrella tag (for example `v4.4.6`). The umbrella tag is applied before any child repository is pushed or tagged. It does not publish a NuGet package because the umbrella workflow creates the coordinated GitHub Release only.
 
 The enforced package order after that umbrella label is:
 
@@ -47,7 +47,7 @@ If the chain stops after RaiDiagram has already been tagged, repair and dispatch
 the immutable RaiDiagram release workflow as documented for that incident, then
 resume only through:
 
-<code>scripts/release-chain.sh 4.4.5 --resume-after-raidiagram</code>
+<code>scripts/release-chain.sh 4.4.6 --resume-after-raidiagram</code>
 
 Recovery mode preserves all existing tags, pushes a clean reviewed umbrella
 recovery commit when necessary, waits until the RaiDiagram package and
@@ -58,7 +58,7 @@ start the remaining package workflows independently.
 If the inaugural Amafu publication needs recovery after its immutable tag was
 created, resume the remaining chain through:
 
-<code>scripts/release-chain.sh 4.4.5 --resume-after-amafu</code>
+<code>scripts/release-chain.sh 4.4.6 --resume-after-amafu</code>
 
 This waits for Amafu's NuGet visibility before releasing OsLibCore and the
 remaining dependency chain.
