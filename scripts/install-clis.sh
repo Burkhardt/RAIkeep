@@ -6,8 +6,13 @@ set -euo pipefail
 # CLIs: amafu, raid, iorg, pits, and jpit (Python jsonpit)
 # ==============================================================================
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-MANIFEST_FILE="$ROOT_DIR/scripts/release-manifest.json"
+SCRIPT_SOURCE="${BASH_SOURCE[0]:-}"
+if [[ -n "$SCRIPT_SOURCE" ]]; then
+	ROOT_DIR="$(cd "$(dirname "$SCRIPT_SOURCE")/.." 2>/dev/null && pwd || true)"
+else
+	ROOT_DIR=""
+fi
+MANIFEST_FILE="${ROOT_DIR:+$ROOT_DIR/scripts/release-manifest.json}"
 
 # Resolve default version from release-manifest.json
 resolve_default_version() {
