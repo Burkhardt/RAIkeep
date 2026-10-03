@@ -63,6 +63,12 @@ created, resume the remaining chain through:
 This waits for Amafu's NuGet visibility before releasing OsLibCore and the
 remaining dependency chain.
 
+If the chain stops after OsLibCore has already been published, resume the remaining chain through:
+
+<code>scripts/release-chain.sh 4.4.8 --resume-after-oslib</code>
+
+This verifies that Amafu and OsLibCore are both available on NuGet before releasing RaiUtils and the remaining dependency chain.
+
 Do not run this as part of version-prep work unless publication is explicitly requested.
 
 ## About running inside the LLM:

@@ -391,6 +391,43 @@ resume_after_amafu() {
 	log "Release chain recovery completed for $VER"
 }
 
+resume_after_oslib() {
+	log "Recovery mode: preserve existing $TAG labels and resume after OsLib"
+	prepare_recovery
+
+	require_package_published "amafu" "$VER"
+	require_package_published "oslibcore" "$VER"
+
+	assert_tagged_submodule_pointer "RaiUtils" "RaiUtils"
+	assert_tagged_submodule_pointer "RaiImage" "RaiImage"
+	assert_tagged_submodule_pointer "RaiDiagram" "RaiDiagram"
+	assert_tagged_submodule_pointer "RaidSeeder" "RaidSeeder"
+	assert_tagged_submodule_pointer "JsonPit" "JsonPit"
+	assert_tagged_submodule_pointer "ImgSeeder" "ImgSeeder"
+	assert_tagged_submodule_pointer "PitSeeder" "PitSeeder"
+
+	log "Preflighting the seven unpublished packages"
+	preflight_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj"
+	preflight_submodule "RaiImage" "RaiImage" "RaiImage.csproj"
+	preflight_submodule "RaiDiagram" "RaiDiagram" "RaiDiagram.csproj"
+	preflight_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj"
+	preflight_submodule "JsonPit" "JsonPit" "JsonPit.csproj"
+	preflight_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj"
+	preflight_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj"
+
+	release_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj" "RaiUtils.slnx" "raiutils" "publish-nuget.yml"
+	release_submodule "RaiImage" "RaiImage" "RaiImage.csproj" "RaiImage.slnx" "raiimage" "publish-nuget.yml"
+	release_submodule "RaiDiagram" "RaiDiagram" "RaiDiagram.csproj" "RaiDiagram.slnx" "raidiagram" "publish-nuget.yaml"
+	release_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj" "RaidSeeder.slnx" "raidseeder" "publish-nuget.yaml"
+	release_submodule "JsonPit" "JsonPit" "JsonPit.csproj" "JsonPit.slnx" "jsonpit" "publish-nuget.yml"
+	release_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj" "ImgSeeder.slnx" "imgseeder" "publish-nuget.yaml"
+	release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "PitSeeder.slnx" "pitseeder" "publish-nuget.yaml"
+
+	verify_parent_pointers_unchanged
+	final_visibility_summary
+	log "Release chain recovery completed for $VER"
+}
+
 resume_after_raidiagram() {
 	log "Recovery mode: preserve existing $TAG labels and resume after RaiDiagram"
 	prepare_recovery
@@ -434,9 +471,9 @@ main() {
 	require_cmd sed
 	require_cmd sleep
 
-	[[ $# -le 2 ]] || die "Usage: scripts/release-chain.sh [version] [--resume-after-amafu|--resume-after-raidiagram]"
-	if [[ -n "$MODE" && "$MODE" != "--resume-after-amafu" && "$MODE" != "--resume-after-raidiagram" ]]; then
-		die "Unknown release mode '$MODE'. Expected --resume-after-amafu or --resume-after-raidiagram."
+	[[ $# -le 2 ]] || die "Usage: scripts/release-chain.sh [version] [--resume-after-amafu|--resume-after-oslib|--resume-after-raidiagram]"
+	if [[ -n "$MODE" && "$MODE" != "--resume-after-amafu" && "$MODE" != "--resume-after-oslib" && "$MODE" != "--resume-after-raidiagram" ]]; then
+		die "Unknown release mode '$MODE'. Expected --resume-after-amafu, --resume-after-oslib, or --resume-after-raidiagram."
 	fi
 	if [[ -n "$MODE" && -z "$VER" ]]; then
 		die "Recovery mode requires the interrupted release version."
@@ -447,6 +484,9 @@ main() {
 	TAG="v${VER}"
 	if [[ "$MODE" == "--resume-after-amafu" ]]; then
 		resume_after_amafu
+		return
+	elif [[ "$MODE" == "--resume-after-oslib" ]]; then
+		resume_after_oslib
 		return
 	elif [[ "$MODE" == "--resume-after-raidiagram" ]]; then
 		resume_after_raidiagram
