@@ -285,15 +285,149 @@ class ReleaseValidator:
             return True
 
 
+class ReleaseBumper:
+    """
+    Deterministic version bumper driven by scripts/release-manifest.json.
+    Touches only explicitly registered targets without filesystem crawling.
+    """
+    def __init__(self, root_dir: Path, manifest_path: Path, target_version: str):
+        self.root_dir = root_dir.resolve()
+        self.manifest_path = manifest_path.resolve()
+        self.target_version = target_version
+        self.manifest = self._load_manifest()
+
+    def _load_manifest(self) -> dict:
+        import json
+        if not self.manifest_path.is_file():
+            raise FileNotFoundError(f"Manifest not found: {self.manifest_path}")
+        return json.loads(self.manifest_path.read_text(encoding="utf-8"))
+
+    def bump(self) -> bool:
+        v = self.target_version
+        old_v = self.manifest.get("current_version", "")
+        print(f"============================================================")
+        print(f"🚀 Bumping RAIkeep Platform from {old_v} -> {v}")
+        print(f"============================================================")
+
+        changed_count = 0
+
+        # 1. Update manifest targets via targeted regex
+        print("\n[1/4] Applying targeted replacements across registered files...")
+        for target in self.manifest.get("targets", []):
+            rel_path = target["path"]
+            file_path = self.root_dir / rel_path
+            if not file_path.is_file():
+                print(f"  ⚠️ Warning: Target file {rel_path} does not exist. Skipping.")
+                continue
+
+            content = file_path.read_text(encoding="utf-8")
+            updated = content
+
+            # Apply explicit replacement rules
+            for rule in target.get("replacements", []):
+                pattern = rule["pattern"]
+                replacement = rule["replacement"].format(version=v)
+                updated = re.sub(pattern, replacement, updated)
+
+            # Also apply @latestVersion line markers if present
+            if "@latestVersion" in updated:
+                def replace_marker(match):
+                    line = match.group(0)
+                    prefix, sep, marker = line.partition("@latestVersion")
+                    updated_prefix = re.sub(r"(?<!\d)\d+\.\d+\.\d+(?!\d)", v, prefix)
+                    return updated_prefix + sep + marker
+
+                updated = re.sub(r"^.*@latestVersion.*$", replace_marker, updated, flags=re.MULTILINE)
+
+            if updated != content:
+                file_path.write_text(updated, encoding="utf-8")
+                print(f"  ✏️ Updated: {rel_path}")
+                changed_count += 1
+            else:
+                print(f"  ✔️ Up to date: {rel_path}")
+
+        # 2. Prepend version headers in submodule READMEs if needed
+        print("\n[2/4] Ensuring version history headers in submodule READMEs...")
+        for name, repo_rel, _ in PACKAGE_REPOS:
+            readme_rel = f"{repo_rel}/README.md"
+            readme_path = self.root_dir / readme_rel
+            if not readme_path.is_file():
+                continue
+            text = readme_path.read_text(encoding="utf-8")
+            if not re.search(rf"^## {re.escape(v)}\b", text, re.MULTILINE):
+                # Find the first existing ## section to prepend before it
+                match = re.search(r"^## \d+\.\d+\.\d+", text, re.MULTILINE)
+                if match:
+                    header = (
+                        f"## {v}\n\n"
+                        f"Coordinated {v} release; public behavior is aligned with the synchronized platform.\n\n"
+                        f"Release notes: [{name}_RELEASE_NOTES_{v}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/{name}_RELEASE_NOTES_{v}.md).\n\n"
+                    )
+                    idx = match.start()
+                    new_text = text[:idx] + header + text[idx:]
+                    readme_path.write_text(new_text, encoding="utf-8")
+                    print(f"  📝 Prepended ## {v} section to {readme_rel}")
+                    changed_count += 1
+
+        # 3. Scaffold missing release note markdown files
+        print("\n[3/4] Scaffolding release notes templates...")
+        for note_pattern in self.manifest.get("release_notes", []):
+            rel_note = note_pattern.format(version=v)
+            note_path = self.root_dir / rel_note
+            if not note_path.is_file():
+                note_path.parent.mkdir(parents=True, exist_ok=True)
+                title = Path(rel_note).stem.replace(f"_{v}", f" {v}").replace("_", " ")
+                template = (
+                    f"# {title}\n\n"
+                    f"- Release version: `{v}`\n"
+                    f"- Coordination tag: `v{v}`\n\n"
+                    f"## Highlights\n"
+                    f"<!-- LLM / Author: summarize key architectural highlights and changes here -->\n\n"
+                    f"## Coordinated Dependencies\n"
+                    f"- Aligned with RAIkeep synchronized `{v}` line.\n"
+                )
+                note_path.write_text(template, encoding="utf-8")
+                print(f"  📄 Scaffolding created: {rel_note}")
+                changed_count += 1
+            else:
+                print(f"  ✔️ Exists: {rel_note}")
+
+        # 4. Update current_version in manifest itself
+        print("\n[4/4] Updating release manifest version...")
+        import json
+        self.manifest["current_version"] = v
+        self.manifest_path.write_text(json.dumps(self.manifest, indent=2) + "\n", encoding="utf-8")
+        print(f"  💾 Updated {self.manifest_path.name} current_version to {v}")
+
+        print(f"\n✨ Bump complete! ({changed_count} files touched/scaffolded)")
+        print("Now running release validation suite...\n")
+
+        validator = ReleaseValidator(self.root_dir, v)
+        stale = [old_v] if old_v and old_v != v else ["4.4.5", "4.4.6", "4.4.8"]
+        return validator.run_all_validations(stale)
+
+
 def main():
     if len(sys.argv) < 2:
         print("Usage: python3 scripts/validate-release.py <version> [stale_version_1 stale_version_2 ...]")
+        print("   or: python3 scripts/validate-release.py --bump <new_version>")
         sys.exit(1)
+
+    root_dir = Path(__file__).resolve().parent.parent
+    manifest_path = root_dir / "scripts" / "release-manifest.json"
+
+    if sys.argv[1] == "--bump":
+        if len(sys.argv) < 3:
+            print("Error: --bump requires a target version (e.g. python3 scripts/validate-release.py --bump 4.5.1)")
+            sys.exit(1)
+        new_version = sys.argv[2].lstrip("v")
+        bumper = ReleaseBumper(root_dir, manifest_path, new_version)
+        success = bumper.bump()
+        sys.exit(0 if success else 1)
 
     version = sys.argv[1].lstrip("v")
     stale_versions = sys.argv[2:] if len(sys.argv) > 2 else ["4.4.5", "4.4.6", "4.4.8"]
 
-    root_dir = Path(__file__).resolve().parent.parent
     validator = ReleaseValidator(root_dir, version)
     success = validator.run_all_validations(stale_versions)
     sys.exit(0 if success else 1)
@@ -301,3 +435,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
