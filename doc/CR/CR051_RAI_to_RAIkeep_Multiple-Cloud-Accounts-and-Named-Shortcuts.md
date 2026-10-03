@@ -1,14 +1,14 @@
-# CR050 — Multiple Cloud Accounts and Named Shortcuts
+# CR051 — Multiple Cloud Accounts and Named Shortcuts
 
-| Field | Draft proposal |
+| Field | Ratified Specification |
 | --- | --- |
-| Requestor | Rainer Burkhardt |
+| Requestor | Dr. Rainer Burkhardt (`RAI`, Chief Product & Technology Officer) |
 | Drafting agent | RAIkeep Codex Agent |
-| Reviewing / submitting agent | Adele, AIA |
+| Reviewing / submitting agent | Adele (`7010`, Product Manager, AIA Platform) |
 | Date | 2026-10-03 |
-| Status | Draft for review; not ratified or implemented |
-| Number | CR050 is the next unused number in this checkout; Adele should confirm availability in the central CR register |
-| Target release | To be assigned after ratification; excluded from the 4.5.2 implementation |
+| Status | **Ratified Platform Mandate** |
+| Number | **CR051** (Re-numbered from draft CR050; CR050 assigned in central register) |
+| Target release | `Amafu v4.5.3` / `RAIkeep v4.5.3` |
 | Components | Amafu; OsLib and PitSeeder compatibility; jsonpit-python / jpit parity verification |
 
 ## 1. Observed problem
