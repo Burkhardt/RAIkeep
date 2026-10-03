@@ -240,7 +240,8 @@ if command -v amafu >/dev/null 2>&1; then
 	fi
 fi
 
-echo -e "\n  🔍 Verification results on $(hostname):"
+CURRENT_USER="${USER:-$(id -un 2>/dev/null || whoami 2>/dev/null || echo 'user')}"
+echo -e "\n  🔍 Verification results for ${CURRENT_USER} on $(hostname):"
 for cmd in amafu raid iorg pits jpit; do
 	if command -v "$cmd" >/dev/null 2>&1; then
 		out="$("$cmd" --version 2>&1 | head -n 1 || true)"
@@ -254,11 +255,11 @@ python3 -c '
 from pathlib import Path
 p = Path.home() / ".CloudStorage"
 if p.is_dir():
-    links = [item for item in sorted(p.iterdir()) if item.is_symlink()]
-    if links:
-        print("\n  ☁️ Cloud Storage shortcuts in ~/.CloudStorage:")
-        for item in links:
-            print(f"    🔗 {item.name:<12} -> {item.resolve()}")
+	links = [item for item in sorted(p.iterdir()) if item.is_symlink()]
+	if links:
+		print("\n  ☁️ Cloud Storage shortcuts in ~/.CloudStorage:")
+		for item in links:
+			print(f"    🔗 {item.name:<12} -> {item.resolve()}")
 ' 2>/dev/null || true
 EOF
 
