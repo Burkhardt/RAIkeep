@@ -26,7 +26,7 @@ except Exception:
 }
 
 DEFAULT_VERSION="$(resolve_default_version)"
-DEFAULT_VERSION="${DEFAULT_VERSION:-4.5.0}"
+DEFAULT_VERSION="${DEFAULT_VERSION:-4.5.2}"
 
 # Parse arguments: version and targets
 VERSION=""
@@ -142,7 +142,7 @@ run_installation_payload() {
 set -euo pipefail
 VERSION="$1"
 
-export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$HOME/.dotnet/tools:$HOME/.dotnet:$HOME/.local/bin:/usr/local/share/dotnet:/opt/dotnet:/usr/local/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/.dotnet/tools:$HOME/.dotnet:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/share/dotnet:/opt/dotnet:/usr/local/bin:$PATH"
 
 echo "  [1/3] Checking environment..."
 if command -v dotnet >/dev/null 2>&1; then
@@ -211,14 +211,16 @@ install_jpit() {
 		fi
 	done
 
-	# Ensure ~/.zshrc and ~/.bashrc have ~/.local/bin and ~/.dotnet/tools in PATH
+	# zsh reads .zshenv for non-interactive SSH and .zprofile for login shells.
+	# Keep the managed tools ahead of older /usr/local/bin copies after path_helper.
 	local path_line='export PATH="$HOME/.local/bin:$HOME/.dotnet/tools:$PATH"'
-	for rc in "$HOME/.zshrc" "$HOME/.bashrc"; do
-		if [[ -f "$rc" ]]; then
-			if ! grep -q '\.local/bin' "$rc" 2>/dev/null; then
-				printf "\n# RAIkeep & jsonpit CLI paths\n%s\n" "$path_line" >> "$rc"
-				echo "    ✔️ Configured PATH in $rc"
+	for rc in "$HOME/.zshenv" "$HOME/.zprofile" "$HOME/.zshrc" "$HOME/.bashrc"; do
+		if ! grep -Fqx -- "$path_line" "$rc" 2>/dev/null; then
+			if [[ -f "$rc" ]]; then
+				cp -p "$rc" "${rc}.before-raikeep-path-$(date -u +%Y%m%dT%H%M%SZ)"
 			fi
+			printf "\n# RAIkeep & jsonpit CLI paths\n%s\n" "$path_line" >> "$rc"
+			echo "    ✔️ Configured PATH in $rc"
 		fi
 	done
 }

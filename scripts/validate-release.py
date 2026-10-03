@@ -107,12 +107,12 @@ class ReleaseValidator:
                     "RaiDiagramPackageVersion",
                     "JsonPitPackageVersion",
                 ]:
-                    if f"<{dep}>" in content:
-                        self.validate_file_contains(
-                            rel,
-                            rf"<{dep} Condition='[^']*'>{re.escape(v)}</{dep}>",
-                            f"{name} fallback property <{dep}>",
-                        )
+                    for match in re.finditer(rf"<{dep}\b[^>]*>([^<]+)</{dep}>", content):
+                        actual = match.group(1).strip()
+                        if actual != v:
+                            self.error(rel, None, f"{name} fallback property <{dep}> is {actual}, expected {v}")
+                        else:
+                            self.pass_check()
 
         # 2. Source code constants and version tests
         print("\n[2/6] Checking code version constants & CLI unit tests...")

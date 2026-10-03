@@ -8,15 +8,15 @@ Amafu (`amafu`), RaidSeeder (`raid`), ImgSeeder (`iorg`), and PitSeeder (`pits`)
 
 | Order | Repository | Package / command | Current or upcoming role |
 |---:|---|---|---|
-| 1 | `Amafu` | `Amafu` / `amafu` | 4.5.0 synchronized cloud configuration tool |
-| 2 | `OsLib` | `OsLibCore` | 4.5.0 synchronized immutable configuration consumer |
-| 3 | `RaiUtils` | `RaiUtils` | 4.5.0 synchronized dependency line |
-| 4 | `RaiImage` | `RaiImage` | 4.5.0 synchronized dependency line |
-| 5 | `RaiDiagram` | `RaiDiagram` | 4.5.0 synchronized diagram line |
-| 6 | `RaidSeeder` | `RaidSeeder` / `raid` | 4.5.0 synchronized diagram artifact manager |
-| 7 | `JsonPit` | `JsonPit` | 4.5.0 synchronized persistence line |
-| 8 | `ImgSeeder` | `ImgSeeder` / `iorg` | 4.5.0 synchronized image-management line |
-| 9 | `PitSeeder` | `PitSeeder` / `pits` | 4.5.0 live-ID preflight and stdin ingestion |
+| 1 | `Amafu` | `Amafu` / `amafu` | 4.5.2 synchronized cloud configuration tool |
+| 2 | `OsLib` | `OsLibCore` | 4.5.2 synchronized immutable configuration consumer |
+| 3 | `RaiUtils` | `RaiUtils` | 4.5.2 synchronized dependency line |
+| 4 | `RaiImage` | `RaiImage` | 4.5.2 synchronized dependency line |
+| 5 | `RaiDiagram` | `RaiDiagram` | 4.5.2 synchronized diagram line |
+| 6 | `RaidSeeder` | `RaidSeeder` / `raid` | 4.5.2 synchronized diagram artifact manager |
+| 7 | `JsonPit` | `JsonPit` | 4.5.2 synchronized persistence line |
+| 8 | `ImgSeeder` | `ImgSeeder` / `iorg` | 4.5.2 synchronized image-management line |
+| 9 | `PitSeeder` | `PitSeeder` / `pits` | 4.5.2 live-ID preflight and stdin ingestion |
 
 Each child remains its own Git repository, package, solution, and release
 workflow. The umbrella workspace supplies local project wiring, coordinated
@@ -24,20 +24,23 @@ validation, dependency-order documentation, and sequential release automation.
 
 ## Current release line
 
-The prepared coordinated release is `4.5.0`. RAI starts the release chain
+The prepared coordinated release is `4.5.2`. RAI starts the release chain
 manually after reviewing the prepared commits and verification results.
 
-RAIkeep 4.5.0 coordinates live object reference semantics, sparse mutation tracking, selectable tracking modes in JsonPit, and an automated release consistency gate across all nine packages.
+RAIkeep 4.5.2 adds optional cloud shortcuts and improves first-time cloud setup.
 
-- JsonPit adopts caller-supplied live objects and existing nested objects when adding an entity (`Pit.Add(item)`). Current indexers return those exact live references rather than projecting cloned copies on every lookup.
-- `Pit.DefaultMutationTrackingMode` enables process-local selection between `TrackedChangesWithFallback` and `TrackedChangesOnly`.
-- `pits del-prop` performs live item property deletion (`DeletePropertyPath`) directly without read-modify-write.
-- All four CLI tools report `4.5.0`. Rainer runs the release chain after reviewing
-  verification results. Adele owns `jsonpit-python`/`jpit` lockstep implementation.
+- `amafu detect --create-links` creates `~/.CloudStorage/<provider>` symbolic links; ordinary detection remains read-only.
+- `amafu init --create-links` creates the shortcuts alongside a new configuration. Existing paths are preserved, and dry runs write nothing.
+- The installer puts managed CLI paths first in interactive, login, and non-interactive zsh sessions.
+- GettingStarted and the new FirstSteps_pits guide cover cloud setup and importing weather JSON.
+- Release preparation validates internal dependency versions as well as package versions.
+- All four C# CLI tools report `4.5.2`. Adele coordinates `jsonpit-python`/`jpit` 4.5.2 separately; the C# release chain does not publish Python packages.
 
 All nine packages participate in the coordinated line so fallback package dependencies remain aligned throughout the release order.
 
 ## Documentation
+
+New to `pits`? Follow [First steps with pits](https://github.com/Burkhardt/RAIkeep/blob/main/doc/FirstSteps_pits.md) to create a pit in iCloud Drive and fill it with weather data from a `curl` call.
 
 All change requests and release notes are centralized in [`doc/`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/README.md). Child repositories should not contain independent `CR_*.md` or `RELEASE_NOTES*.md` files.
 
@@ -45,18 +48,18 @@ The [RAIkeep Manifesto](https://github.com/Burkhardt/RAIkeep/blob/main/MANIFESTO
 explains why transparent, historical JSON matters for agentic engineering and
 defines JsonPit's asynchronous persistence and eventual-durability model.
 
-Current coordinated 4.5.0 release notes:
+Current coordinated 4.5.2 release notes:
 
-- [Amafu 4.5.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/Amafu_RELEASE_NOTES_4.5.0.md)
-- [OsLibCore 4.5.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.5.0.md)
-- [RaiUtils 4.5.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.5.0.md)
-- [RaiImage 4.5.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.5.0.md)
-- [RaiDiagram 4.5.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.5.0.md)
-- [RaidSeeder 4.5.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaidSeeder_RELEASE_NOTES_4.5.0.md)
-- [JsonPit 4.5.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.5.0.md)
-- [ImgSeeder 4.5.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.5.0.md)
-- [PitSeeder 4.5.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.5.0.md)
-- [RAIkeep 4.5.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.5.0.md)
+- [Amafu 4.5.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/Amafu_RELEASE_NOTES_4.5.2.md)
+- [OsLibCore 4.5.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.5.2.md)
+- [RaiUtils 4.5.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.5.2.md)
+- [RaiImage 4.5.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.5.2.md)
+- [RaiDiagram 4.5.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.5.2.md)
+- [RaidSeeder 4.5.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaidSeeder_RELEASE_NOTES_4.5.2.md)
+- [JsonPit 4.5.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.5.2.md)
+- [ImgSeeder 4.5.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.5.2.md)
+- [PitSeeder 4.5.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.5.2.md)
+- [RAIkeep 4.5.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.5.2.md)
 
 The prior coordinated line remains documented in [RAIkeep 4.1.0 release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.1.0.md).
 
@@ -89,7 +92,7 @@ After approval, use one release mechanism for the chain. The established local o
 
 ```bash
 cd /Users/RSB/Projects/GitHub/RAIkeep
-scripts/release-chain.sh 4.5.0
+scripts/release-chain.sh 4.5.2
 ```
 
 Before publication begins, all nine child release commits and their exact submodule pointers must already be committed on the umbrella `main`. The script preflights that state, pushes the prepared umbrella `main`, and applies the passed version as its tag first. The umbrella tag publishes no NuGet package; it creates and verifies the synchronized GitHub Release before package tagging begins.
@@ -103,7 +106,7 @@ Amafu → OsLibCore → RaiUtils → RaiImage → RaiDiagram → RaidSeeder → 
 For every package before the next repository is pushed/tagged:
 
 1. Push the prepared repository `main` only if it is ahead.
-2. Push that repository's requested version tag, such as `v4.5.0`, to trigger its publish workflow.
+2. Push that repository's requested version tag, such as `v4.5.2`, to trigger its publish workflow.
 3. Wait for the matching GitHub workflow to finish successfully.
 4. Verify the exact `.nupkg` and exact-version registration document are both visible from NuGet with HTTP `200`.
 5. Only then continue to the next repository.

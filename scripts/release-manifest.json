@@ -1,6 +1,6 @@
 {
   "$schema": "./release-manifest.schema.json",
-  "current_version": "4.5.0",
+  "current_version": "4.5.2",
   "release_notes": [
     "doc/RAIkeep_RELEASE_NOTES_{version}.md",
     "doc/Amafu_RELEASE_NOTES_{version}.md",
@@ -211,9 +211,9 @@
       "type": "test",
       "replacements": [
         {
-          "description": "Amafu CLI test assertion (harmonized v-prefix)",
+          "description": "Amafu CLI test assertion (existing output format)",
           "pattern": "Assert\\.Equal\\(\"amafu v?\\d+\\.\\d+\\.\\d+\",",
-          "replacement": "Assert.Equal(\"amafu v{version}\","
+          "replacement": "Assert.Equal(\"amafu {version}\","
         }
       ]
     },
@@ -225,7 +225,7 @@
         {
           "description": "Amafu CLI version output prefix",
           "pattern": "WriteLine\\(\\$\"amafu (v?)\\{VersionInfo\\.Current\\}\"\\);",
-          "replacement": "WriteLine($\"amafu v{VersionInfo.Current}\");"
+          "replacement": "WriteLine($\"amafu {{VersionInfo.Current}}\");"
         }
       ]
     },
@@ -544,6 +544,14 @@
           "description": "release-chain invocation",
           "pattern": "(?:\\./)?scripts/release-chain\\.sh \\d+\\.\\d+\\.\\d+",
           "replacement": "scripts/release-chain.sh {version}"
+        },
+        {
+          "pattern": "scripts/bump-version\\.py \\d+\\.\\d+\\.\\d+",
+          "replacement": "scripts/bump-version.py {version}"
+        },
+        {
+          "pattern": "`v\\d+\\.\\d+\\.\\d+`(?=\\))",
+          "replacement": "`v{version}`"
         }
       ]
     },
@@ -581,11 +589,17 @@
           "description": "dotnet add package OsLibCore",
           "pattern": "dotnet add package OsLibCore --version \\d+\\.\\d+\\.\\d+",
           "replacement": "dotnet add package OsLibCore --version {version}"
-        },
+        }
+      ]
+    },
+    {
+      "path": "scripts/install-clis.sh",
+      "description": "Installer default release",
+      "type": "source",
+      "replacements": [
         {
-          "description": "Behavior introduced version",
-          "pattern": "This behavior is introduced in \\d+\\.\\d+\\.\\d+",
-          "replacement": "This behavior is introduced in {version}"
+          "pattern": "DEFAULT_VERSION=\"\\$\\{DEFAULT_VERSION:-\\d+\\.\\d+\\.\\d+\\}\"",
+          "replacement": "DEFAULT_VERSION=\"${{DEFAULT_VERSION:-{version}}}\""
         }
       ]
     }
