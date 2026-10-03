@@ -182,27 +182,60 @@ install_jpit() {
 		py_spec="jsonpit==4.5.1"
 	fi
 
+	link_bin() {
+		local src="$1"
+		local dest_name="$2"
+		if [[ -w /usr/local/bin ]]; then
+			ln -sf "$src" "/usr/local/bin/$dest_name"
+		elif sudo -n true 2>/dev/null; then
+			sudo -n ln -sf "$src" "/usr/local/bin/$dest_name"
+		elif [[ -d /opt/homebrew/bin && -w /opt/homebrew/bin ]]; then
+			ln -sf "$src" "/opt/homebrew/bin/$dest_name"
+		fi
+	}
+
+	mkdir -p "$HOME/.local/bin"
 	local venv_dir="$HOME/.local/share/jsonpit-venv"
 	if python3 -m venv "$venv_dir" 2>/dev/null; then
 		"$venv_dir/bin/pip" install --upgrade --no-cache-dir "$py_spec" 2>&1 | sed 's/^/      /'
-		mkdir -p "$HOME/.local/bin"
 		ln -sf "$venv_dir/bin/jpit" "$HOME/.local/bin/jpit"
 		ln -sf "$venv_dir/bin/jsonpit" "$HOME/.local/bin/jsonpit"
+		link_bin "$venv_dir/bin/jpit" "jpit"
+		link_bin "$venv_dir/bin/jsonpit" "jsonpit"
 	elif command -v uv >/dev/null 2>&1; then
 		uv tool install "$py_spec" --force --refresh 2>&1 | sed 's/^/      /'
+		if [[ -f "$HOME/.local/bin/jpit" ]]; then
+			link_bin "$HOME/.local/bin/jpit" "jpit"
+		fi
 	elif command -v pipx >/dev/null 2>&1; then
 		pipx install "$py_spec" --force 2>&1 | sed 's/^/      /' || pipx upgrade jsonpit 2>&1 | sed 's/^/      /'
+		if [[ -f "$HOME/.local/bin/jpit" ]]; then
+			link_bin "$HOME/.local/bin/jpit" "jpit"
+		fi
 	elif command -v pip3 >/dev/null 2>&1; then
 		if pip3 install --help 2>&1 | grep -q -- '--break-system-packages'; then
 			pip3 install --user --upgrade --break-system-packages "$py_spec" 2>&1 | sed 's/^/      /'
 		else
 			pip3 install --user --upgrade "$py_spec" 2>&1 | sed 's/^/      /'
 		fi
+		if [[ -f "$HOME/.local/bin/jpit" ]]; then
+			link_bin "$HOME/.local/bin/jpit" "jpit"
+		fi
 	elif command -v pip >/dev/null 2>&1; then
 		pip install --user --upgrade "$py_spec" 2>&1 | sed 's/^/      /'
+		if [[ -f "$HOME/.local/bin/jpit" ]]; then
+			link_bin "$HOME/.local/bin/jpit" "jpit"
+		fi
 	else
 		echo "      ⚠️ Warning: No python3 venv, uv, pipx, pip3 or pip found. Skipping jpit."
 	fi
+
+	# Link all dotnet global tools into /usr/local/bin
+	for tool_name in amafu raid iorg pits; do
+		if [[ -f "$HOME/.dotnet/tools/$tool_name" ]]; then
+			link_bin "$HOME/.dotnet/tools/$tool_name" "$tool_name"
+		fi
+	done
 }
 install_jpit
 
