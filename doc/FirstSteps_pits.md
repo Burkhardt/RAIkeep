@@ -12,12 +12,15 @@ pits -h -c ICloudDrive
 
 The help output should show your iCloud path. If you have not created a RAIkeep configuration yet, run `amafu init`, then try again. `amafu init --dry-run` only previews the configuration; it does not save it.
 
-With Amafu 4.5.2 or later, we recommend `amafu init --create-links` for a new
-configuration, or `amafu detect --create-links` when the configuration already
-exists. This creates a convenient `~/.CloudStorage/ICloudDrive` shortcut to the
-detected iCloud root. Preview first with `amafu detect --create-links --dry-run`.
+With Amafu 4.5.4 or later, we recommend `amafu init --create-links` for a new
+configuration. It creates the `~/.CloudStorage/ICloudDrive` shortcut and writes
+`"ICloudDrive": "~/.CloudStorage/ICloudDrive/"` into the configuration. Preview
+with `amafu init --create-links --dry-run`. For an existing configuration, use
+`amafu reconcile` to preview the migration, then `amafu reconcile --apply` to
+apply it with a backup. `amafu detect --create-links` only creates shortcuts;
+it does not update an existing configuration.
 
-Inside `~/.config/RAIkeep.json5`, a quoted path uses ordinary spaces and tildes, without shell backslashes:
+Plain `amafu init` uses the physical path instead. Inside `~/.config/RAIkeep.json5`, a quoted path uses ordinary spaces and tildes, without shell backslashes:
 
 ```json
 "ICloudDrive": "~/Library/Mobile Documents/com~apple~CloudDocs/"

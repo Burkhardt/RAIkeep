@@ -1,607 +1,583 @@
 {
-  "$schema": "./release-manifest.schema.json",
-  "current_version": "4.5.3",
-  "release_notes": [
-    "doc/RAIkeep_RELEASE_NOTES_{version}.md",
-    "doc/Amafu_RELEASE_NOTES_{version}.md",
-    "Amafu/Amafu_RELEASE_NOTES_{version}.md",
-    "doc/OsLib_RELEASE_NOTES_{version}.md",
-    "doc/RaiUtils_RELEASE_NOTES_{version}.md",
-    "doc/RaiImage_RELEASE_NOTES_{version}.md",
-    "doc/RaiDiagram_RELEASE_NOTES_{version}.md",
-    "doc/RaidSeeder_RELEASE_NOTES_{version}.md",
-    "doc/JsonPit_RELEASE_NOTES_{version}.md",
-    "doc/ImgSeeder_RELEASE_NOTES_{version}.md",
-    "doc/PitSeeder_RELEASE_NOTES_{version}.md"
-  ],
-  "targets": [
-    {
-      "path": "Amafu/amafu/amafu.csproj",
-      "description": "Amafu CLI project file",
-      "type": "csproj",
-      "replacements": [
-        {
-          "description": "Amafu Version",
-          "pattern": "<Version>\\d+\\.\\d+\\.\\d+</Version>",
-          "replacement": "<Version>{version}</Version>"
-        }
-      ]
-    },
-    {
-      "path": "OsLib/OsLib.csproj",
-      "description": "OsLib library project file",
-      "type": "csproj",
-      "replacements": [
-        {
-          "description": "OsLib Version",
-          "pattern": "<Version>\\d+\\.\\d+\\.\\d+</Version>",
-          "replacement": "<Version>{version}</Version>"
-        }
-      ]
-    },
-    {
-      "path": "RaiUtils/RaiUtils.csproj",
-      "description": "RaiUtils library project file",
-      "type": "csproj",
-      "replacements": [
-        {
-          "description": "RaiUtils Version",
-          "pattern": "<Version>\\d+\\.\\d+\\.\\d+</Version>",
-          "replacement": "<Version>{version}</Version>"
-        }
-      ]
-    },
-    {
-      "path": "RaiImage/RaiImage.csproj",
-      "description": "RaiImage library project file",
-      "type": "csproj",
-      "replacements": [
-        {
-          "description": "RaiImage Version",
-          "pattern": "<Version>\\d+\\.\\d+\\.\\d+</Version>",
-          "replacement": "<Version>{version}</Version>"
-        },
-        {
-          "description": "OsLibPackageVersion fallback",
-          "pattern": "<OsLibPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</OsLibPackageVersion>",
-          "replacement": "<OsLibPackageVersion Condition=\"'$(OsLibPackageVersion)' == ''\">{version}</OsLibPackageVersion>"
-        },
-        {
-          "description": "RaiUtilsPackageVersion fallback",
-          "pattern": "<RaiUtilsPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</RaiUtilsPackageVersion>",
-          "replacement": "<RaiUtilsPackageVersion Condition=\"'$(RaiUtilsPackageVersion)' == ''\">{version}</RaiUtilsPackageVersion>"
-        }
-      ]
-    },
-    {
-      "path": "RaiDiagram/RaiDiagram.csproj",
-      "description": "RaiDiagram library project file",
-      "type": "csproj",
-      "replacements": [
-        {
-          "description": "RaiDiagram Version",
-          "pattern": "<Version>\\d+\\.\\d+\\.\\d+</Version>",
-          "replacement": "<Version>{version}</Version>"
-        },
-        {
-          "description": "OsLibPackageVersion fallback",
-          "pattern": "<OsLibPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</OsLibPackageVersion>",
-          "replacement": "<OsLibPackageVersion Condition=\"'$(OsLibPackageVersion)' == ''\">{version}</OsLibPackageVersion>"
-        },
-        {
-          "description": "RaiUtilsPackageVersion fallback",
-          "pattern": "<RaiUtilsPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</RaiUtilsPackageVersion>",
-          "replacement": "<RaiUtilsPackageVersion Condition=\"'$(RaiUtilsPackageVersion)' == ''\">{version}</RaiUtilsPackageVersion>"
-        },
-        {
-          "description": "RaiImagePackageVersion fallback",
-          "pattern": "<RaiImagePackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</RaiImagePackageVersion>",
-          "replacement": "<RaiImagePackageVersion Condition=\"'$(RaiImagePackageVersion)' == ''\">{version}</RaiImagePackageVersion>"
-        }
-      ]
-    },
-    {
-      "path": "RaidSeeder/raid/raid.csproj",
-      "description": "RaidSeeder CLI project file",
-      "type": "csproj",
-      "replacements": [
-        {
-          "description": "RaidSeeder Version",
-          "pattern": "<Version>\\d+\\.\\d+\\.\\d+</Version>",
-          "replacement": "<Version>{version}</Version>"
-        },
-        {
-          "description": "RaiDiagramPackageVersion fallback",
-          "pattern": "<RaiDiagramPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</RaiDiagramPackageVersion>",
-          "replacement": "<RaiDiagramPackageVersion Condition=\"'$(RaiDiagramPackageVersion)' == ''\">{version}</RaiDiagramPackageVersion>"
-        }
-      ]
-    },
-    {
-      "path": "JsonPit/JsonPit.csproj",
-      "description": "JsonPit storage engine project file",
-      "type": "csproj",
-      "replacements": [
-        {
-          "description": "JsonPit Version",
-          "pattern": "<Version>\\d+\\.\\d+\\.\\d+</Version>",
-          "replacement": "<Version>{version}</Version>"
-        },
-        {
-          "description": "OsLibPackageVersion fallback",
-          "pattern": "<OsLibPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</OsLibPackageVersion>",
-          "replacement": "<OsLibPackageVersion Condition=\"'$(OsLibPackageVersion)' == ''\">{version}</OsLibPackageVersion>"
-        },
-        {
-          "description": "RaiUtilsPackageVersion fallback",
-          "pattern": "<RaiUtilsPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</RaiUtilsPackageVersion>",
-          "replacement": "<RaiUtilsPackageVersion Condition=\"'$(RaiUtilsPackageVersion)' == ''\">{version}</RaiUtilsPackageVersion>"
-        }
-      ]
-    },
-    {
-      "path": "ImgSeeder/ImgSeeder.csproj",
-      "description": "ImgSeeder CLI project file",
-      "type": "csproj",
-      "replacements": [
-        {
-          "description": "ImgSeeder Version",
-          "pattern": "<Version>\\d+\\.\\d+\\.\\d+</Version>",
-          "replacement": "<Version>{version}</Version>"
-        },
-        {
-          "description": "JsonPitPackageVersion fallback",
-          "pattern": "<JsonPitPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</JsonPitPackageVersion>",
-          "replacement": "<JsonPitPackageVersion Condition=\"'$(JsonPitPackageVersion)' == ''\">{version}</JsonPitPackageVersion>"
-        },
-        {
-          "description": "OsLibPackageVersion fallback",
-          "pattern": "<OsLibPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</OsLibPackageVersion>",
-          "replacement": "<OsLibPackageVersion Condition=\"'$(OsLibPackageVersion)' == ''\">{version}</OsLibPackageVersion>"
-        },
-        {
-          "description": "RaiUtilsPackageVersion fallback",
-          "pattern": "<RaiUtilsPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</RaiUtilsPackageVersion>",
-          "replacement": "<RaiUtilsPackageVersion Condition=\"'$(RaiUtilsPackageVersion)' == ''\">{version}</RaiUtilsPackageVersion>"
-        },
-        {
-          "description": "RaiImagePackageVersion fallback",
-          "pattern": "<RaiImagePackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</RaiImagePackageVersion>",
-          "replacement": "<RaiImagePackageVersion Condition=\"'$(RaiImagePackageVersion)' == ''\">{version}</RaiImagePackageVersion>"
-        }
-      ]
-    },
-    {
-      "path": "PitSeeder/pits/pits.csproj",
-      "description": "PitSeeder CLI project file",
-      "type": "csproj",
-      "replacements": [
-        {
-          "description": "PitSeeder Version",
-          "pattern": "<Version>\\d+\\.\\d+\\.\\d+</Version>",
-          "replacement": "<Version>{version}</Version>"
-        },
-        {
-          "description": "JsonPitPackageVersion fallback",
-          "pattern": "<JsonPitPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</JsonPitPackageVersion>",
-          "replacement": "<JsonPitPackageVersion Condition=\"'$(JsonPitPackageVersion)' == ''\">{version}</JsonPitPackageVersion>"
-        },
-        {
-          "description": "OsLibPackageVersion fallback",
-          "pattern": "<OsLibPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</OsLibPackageVersion>",
-          "replacement": "<OsLibPackageVersion Condition=\"'$(OsLibPackageVersion)' == ''\">{version}</OsLibPackageVersion>"
-        }
-      ]
-    },
-    {
-      "path": "Amafu/amafu/VersionInfo.cs",
-      "description": "Amafu VersionInfo.cs constant",
-      "type": "csharp",
-      "replacements": [
-        {
-          "description": "Current version constant",
-          "pattern": "Current = \"\\d+\\.\\d+\\.\\d+\";",
-          "replacement": "Current = \"{version}\";"
-        }
-      ]
-    },
-    {
-      "path": "Amafu/amafu.Tests/AmafuApplicationTests.cs",
-      "description": "Amafu CLI version test",
-      "type": "test",
-      "replacements": [
-        {
-          "description": "Amafu CLI test assertion (existing output format)",
-          "pattern": "Assert\\.Equal\\(\"amafu v?\\d+\\.\\d+\\.\\d+\",",
-          "replacement": "Assert.Equal(\"amafu {version}\","
-        }
-      ]
-    },
-    {
-      "path": "Amafu/amafu/AmafuApplication.cs",
-      "description": "Amafu CLI version output prefix",
-      "type": "source",
-      "replacements": [
-        {
-          "description": "Amafu CLI version output prefix",
-          "pattern": "WriteLine\\(\\$\"amafu (v?)\\{VersionInfo\\.Current\\}\"\\);",
-          "replacement": "WriteLine($\"amafu {{VersionInfo.Current}}\");"
-        }
-      ]
-    },
-    {
-      "path": "RaidSeeder/raid.Tests/RaidSeederTests.cs",
-      "description": "Raid CLI version test",
-      "type": "test",
-      "replacements": [
-        {
-          "description": "Raid CLI test assertion",
-          "pattern": "Assert\\.Equal\\(\"raid v\\d+\\.\\d+\\.\\d+\",",
-          "replacement": "Assert.Equal(\"raid v{version}\","
-        }
-      ]
-    },
-    {
-      "path": "ImgSeeder/ImgSeeder.Tests/CliSubcommandTests.cs",
-      "description": "ImgSeeder CLI version test",
-      "type": "test",
-      "replacements": [
-        {
-          "description": "ImgSeeder CLI test assertion",
-          "pattern": "Assert\\.Equal\\(\"iorg v\\d+\\.\\d+\\.\\d+\",",
-          "replacement": "Assert.Equal(\"iorg v{version}\","
-        }
-      ]
-    },
-    {
-      "path": "PitSeeder/pits.Tests/CliSubcommandTests.cs",
-      "description": "PitSeeder CLI version test",
-      "type": "test",
-      "replacements": [
-        {
-          "description": "PitSeeder CLI test assertion",
-          "pattern": "Assert\\.Equal\\(\"pits v\\d+\\.\\d+\\.\\d+\",",
-          "replacement": "Assert.Equal(\"pits v{version}\","
-        }
-      ]
-    },
-    {
-      "path": "RaidSeeder/API.md",
-      "description": "RaidSeeder API reference",
-      "type": "doc",
-      "replacements": [
-        {
-          "description": "API header",
-          "pattern": "# RaidSeeder command reference \\d+\\.\\d+\\.\\d+",
-          "replacement": "# RaidSeeder command reference {version}"
-        },
-        {
-          "description": "CLI version mention",
-          "pattern": "prints `raid v\\d+\\.\\d+\\.\\d+`",
-          "replacement": "prints `raid v{version}`"
-        }
-      ]
-    },
-    {
-      "path": "JsonPit/API.md",
-      "description": "JsonPit API reference",
-      "type": "doc",
-      "replacements": [
-        {
-          "description": "API overview",
-          "pattern": "public JsonPit \\d+\\.\\d+\\.\\d+ API",
-          "replacement": "public JsonPit {version} API"
-        }
-      ]
-    },
-    {
-      "path": "OsLib/API.md",
-      "description": "OsLib API reference",
-      "type": "doc",
-      "replacements": [
-        {
-          "description": "API overview",
-          "pattern": "`OsLibCore \\d+\\.\\d+\\.\\d+`",
-          "replacement": "`OsLibCore {version}`"
-        },
-        {
-          "description": "Dependency line",
-          "pattern": "synchronized \\d+\\.\\d+\\.\\d+ dependency line",
-          "replacement": "synchronized {version} dependency line"
-        }
-      ]
-    },
-    {
-      "path": "RaiDiagram/API.md",
-      "description": "RaiDiagram API reference",
-      "type": "doc",
-      "replacements": [
-        {
-          "description": "API overview",
-          "pattern": "public RaiDiagram \\d+\\.\\d+\\.\\d+ API",
-          "replacement": "public RaiDiagram {version} API"
-        },
-        {
-          "description": "Dependency line",
-          "pattern": "synchronized \\d+\\.\\d+\\.\\d+ line",
-          "replacement": "synchronized {version} line"
-        }
-      ]
-    },
-    {
-      "path": "RaiUtils/API.md",
-      "description": "RaiUtils API reference",
-      "type": "doc",
-      "replacements": [
-        {
-          "description": "Scope note heading",
-          "pattern": "## \\d+\\.\\d+\\.\\d+ scope note",
-          "replacement": "## {version} scope note"
-        },
-        {
-          "description": "Package line",
-          "pattern": "nine-package `\\d+\\.\\d+\\.\\d+` line",
-          "replacement": "nine-package `{version}` line"
-        }
-      ]
-    },
-    {
-      "path": "RaiImage/API.md",
-      "description": "RaiImage API reference",
-      "type": "doc",
-      "replacements": [
-        {
-          "description": "Scope note heading",
-          "pattern": "## \\d+\\.\\d+\\.\\d+ scope note",
-          "replacement": "## {version} scope note"
-        },
-        {
-          "description": "Package release line",
-          "pattern": "(four|nine)-package \\d+\\.\\d+\\.\\d+ release",
-          "replacement": "nine-package {version} release"
-        },
-        {
-          "description": "OsLibCore reference",
-          "pattern": "OsLibCore \\d+\\.\\d+\\.\\d+",
-          "replacement": "OsLibCore {version}"
-        },
-        {
-          "description": "RaiUtils reference",
-          "pattern": "RaiUtils \\d+\\.\\d+\\.\\d+",
-          "replacement": "RaiUtils {version}"
-        },
-        {
-          "description": "Dependency line",
-          "pattern": "synchronized v\\d+\\.\\d+\\.\\d+ dependency line",
-          "replacement": "synchronized v{version} dependency line"
-        }
-      ]
-    },
-    {
-      "path": "Amafu/README.md",
-      "description": "Amafu README",
-      "type": "readme",
-      "replacements": [
-        {
-          "description": "AMAFU_VERSION variable",
-          "pattern": "AMAFU_VERSION=\\d+\\.\\d+\\.\\d+",
-          "replacement": "AMAFU_VERSION={version}"
-        },
-        {
-          "description": "Platform support heading",
-          "pattern": "## Platform support in \\d+\\.\\d+\\.\\d+",
-          "replacement": "## Platform support in {version}"
-        },
-        {
-          "description": "dotnet tool install",
-          "pattern": "dotnet tool install --global Amafu --version \\d+\\.\\d+\\.\\d+",
-          "replacement": "dotnet tool install --global Amafu --version {version}"
-        },
-        {
-          "description": "dotnet tool update",
-          "pattern": "dotnet tool update --global Amafu --version \\d+\\.\\d+\\.\\d+",
-          "replacement": "dotnet tool update --global Amafu --version {version}"
-        },
-        {
-          "description": "tool update version flags",
-          "pattern": "--version \\d+\\.\\d+\\.\\d+",
-          "replacement": "--version {version}"
-        },
-        {
-          "description": "macOS support line",
-          "pattern": "macOS in \\d+\\.\\d+\\.\\d+;",
-          "replacement": "macOS in {version};"
-        },
-        {
-          "description": "Latest release notes link",
-          "pattern": "Latest release notes: \\[Amafu_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
-          "replacement": "Latest release notes: [Amafu_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/Amafu_RELEASE_NOTES_{version}.md)"
-        }
-      ]
-    },
-    {
-      "path": "OsLib/README.md",
-      "description": "OsLib README",
-      "type": "readme",
-      "replacements": [
-        {
-          "description": "Latest release notes link",
-          "pattern": "Latest release notes: \\[OsLib_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
-          "replacement": "Latest release notes: [OsLib_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_{version}.md)"
-        },
-        {
-          "description": "release-chain invocation",
-          "pattern": "scripts/release-chain\\.sh \\d+\\.\\d+\\.\\d+",
-          "replacement": "scripts/release-chain.sh {version}"
-        }
-      ]
-    },
-    {
-      "path": "RaiUtils/README.md",
-      "description": "RaiUtils README",
-      "type": "readme",
-      "replacements": [
-        {
-          "description": "Latest release notes link",
-          "pattern": "Latest release notes: \\[RaiUtils_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
-          "replacement": "Latest release notes: [RaiUtils_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_{version}.md)"
-        }
-      ]
-    },
-    {
-      "path": "RaiImage/README.md",
-      "description": "RaiImage README",
-      "type": "readme",
-      "replacements": [
-        {
-          "description": "Latest release notes link",
-          "pattern": "Latest release notes: \\[RaiImage_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
-          "replacement": "Latest release notes: [RaiImage_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_{version}.md)"
-        }
-      ]
-    },
-    {
-      "path": "RaiDiagram/README.md",
-      "description": "RaiDiagram README",
-      "type": "readme",
-      "replacements": [
-        {
-          "description": "Latest release notes link",
-          "pattern": "Latest release notes: \\[RaiDiagram_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
-          "replacement": "Latest release notes: [RaiDiagram_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_{version}.md)"
-        }
-      ]
-    },
-    {
-      "path": "RaidSeeder/README.md",
-      "description": "RaidSeeder README",
-      "type": "readme",
-      "replacements": [
-        {
-          "description": "Latest release notes link",
-          "pattern": "Latest release notes: \\[RaidSeeder_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
-          "replacement": "Latest release notes: [RaidSeeder_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaidSeeder_RELEASE_NOTES_{version}.md)"
-        },
-        {
-          "description": "dotnet tool install",
-          "pattern": "dotnet tool install --global RaidSeeder --version \\d+\\.\\d+\\.\\d+",
-          "replacement": "dotnet tool install --global RaidSeeder --version {version}"
-        }
-      ]
-    },
-    {
-      "path": "JsonPit/README.md",
-      "description": "JsonPit README",
-      "type": "readme",
-      "replacements": [
-        {
-          "description": "Latest release notes link",
-          "pattern": "Latest release notes: \\[JsonPit_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
-          "replacement": "Latest release notes: [JsonPit_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_{version}.md)"
-        },
-        {
-          "description": "live reference link text",
-          "pattern": "For the \\d+\\.\\d+\\.\\d+ live-reference behavior",
-          "replacement": "For the {version} live-reference behavior"
-        },
-        {
-          "description": "nuget mention",
-          "pattern": "use JsonPit \\d+\\.\\d+\\.\\d+ from NuGet",
-          "replacement": "use JsonPit {version} from NuGet"
-        }
-      ]
-    },
-    {
-      "path": "ImgSeeder/README.md",
-      "description": "ImgSeeder README",
-      "type": "readme",
-      "replacements": [
-        {
-          "description": "Latest release notes link",
-          "pattern": "Latest release notes: \\[ImgSeeder_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
-          "replacement": "Latest release notes: [ImgSeeder_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_{version}.md)"
-        }
-      ]
-    },
-    {
-      "path": "PitSeeder/README.md",
-      "description": "PitSeeder README",
-      "type": "readme",
-      "replacements": [
-        {
-          "description": "Latest release notes link",
-          "pattern": "Latest release notes: \\[PitSeeder_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
-          "replacement": "Latest release notes: [PitSeeder_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_{version}.md)"
-        }
-      ]
-    },
-    {
-      "path": "RunReleaseChain.md",
-      "description": "Release chain instructions",
-      "type": "doc",
-      "replacements": [
-        {
-          "description": "release-chain invocation",
-          "pattern": "(?:\\./)?scripts/release-chain\\.sh \\d+\\.\\d+\\.\\d+",
-          "replacement": "scripts/release-chain.sh {version}"
-        },
-        {
-          "pattern": "scripts/bump-version\\.py \\d+\\.\\d+\\.\\d+",
-          "replacement": "scripts/bump-version.py {version}"
-        },
-        {
-          "pattern": "`v\\d+\\.\\d+\\.\\d+`(?=\\))",
-          "replacement": "`v{version}`"
-        }
-      ]
-    },
-    {
-      "path": "JsonPit/GettingStarted.md",
-      "description": "JsonPit Getting Started guide",
-      "type": "doc",
-      "replacements": [
-        {
-          "description": "Getting Started header",
-          "pattern": "# Getting Started with JsonPit \\d+\\.\\d+\\.\\d+",
-          "replacement": "# Getting Started with JsonPit {version}"
-        },
-        {
-          "description": "Current code version text",
-          "pattern": "current JsonPit \\d+\\.\\d+\\.\\d+ code",
-          "replacement": "current JsonPit {version} code"
-        },
-        {
-          "description": "NuGet packages version note",
-          "pattern": "coordinated NuGet package ids at version `\\d+\\.\\d+\\.\\d+`",
-          "replacement": "coordinated NuGet package ids at version `{version}`"
-        },
-        {
-          "description": "dotnet add package JsonPit",
-          "pattern": "dotnet add package JsonPit --version \\d+\\.\\d+\\.\\d+",
-          "replacement": "dotnet add package JsonPit --version {version}"
-        },
-        {
-          "description": "dotnet add package RaiUtils",
-          "pattern": "dotnet add package RaiUtils --version \\d+\\.\\d+\\.\\d+",
-          "replacement": "dotnet add package RaiUtils --version {version}"
-        },
-        {
-          "description": "dotnet add package OsLibCore",
-          "pattern": "dotnet add package OsLibCore --version \\d+\\.\\d+\\.\\d+",
-          "replacement": "dotnet add package OsLibCore --version {version}"
-        }
-      ]
-    },
-    {
-      "path": "scripts/install-clis.sh",
-      "description": "Installer default release",
-      "type": "source",
-      "replacements": [
-        {
-          "pattern": "DEFAULT_VERSION=\"\\$\\{DEFAULT_VERSION:-\\d+\\.\\d+\\.\\d+\\}\"",
-          "replacement": "DEFAULT_VERSION=\"${{DEFAULT_VERSION:-{version}}}\""
-        }
-      ]
-    }
-  ]
+	"$schema": "./release-manifest.schema.json",
+	"current_version": "4.5.4",
+	"release_notes": [
+		"doc/RAIkeep_RELEASE_NOTES_{version}.md",
+		"doc/Amafu_RELEASE_NOTES_{version}.md",
+		"Amafu/Amafu_RELEASE_NOTES_{version}.md",
+		"doc/OsLib_RELEASE_NOTES_{version}.md",
+		"doc/RaiUtils_RELEASE_NOTES_{version}.md",
+		"doc/RaiImage_RELEASE_NOTES_{version}.md",
+		"doc/RaiDiagram_RELEASE_NOTES_{version}.md",
+		"doc/RaidSeeder_RELEASE_NOTES_{version}.md",
+		"doc/JsonPit_RELEASE_NOTES_{version}.md",
+		"doc/ImgSeeder_RELEASE_NOTES_{version}.md",
+		"doc/PitSeeder_RELEASE_NOTES_{version}.md"
+	],
+	"targets": [
+		{
+			"path": "Amafu/amafu/amafu.csproj",
+			"description": "Amafu CLI project file",
+			"type": "csproj",
+			"replacements": [
+				{
+					"description": "Amafu Version",
+					"pattern": "<Version>\\d+\\.\\d+\\.\\d+</Version>",
+					"replacement": "<Version>{version}</Version>"
+				}
+			]
+		},
+		{
+			"path": "OsLib/OsLib.csproj",
+			"description": "OsLib library project file",
+			"type": "csproj",
+			"replacements": [
+				{
+					"description": "OsLib Version",
+					"pattern": "<Version>\\d+\\.\\d+\\.\\d+</Version>",
+					"replacement": "<Version>{version}</Version>"
+				}
+			]
+		},
+		{
+			"path": "RaiUtils/RaiUtils.csproj",
+			"description": "RaiUtils library project file",
+			"type": "csproj",
+			"replacements": [
+				{
+					"description": "RaiUtils Version",
+					"pattern": "<Version>\\d+\\.\\d+\\.\\d+</Version>",
+					"replacement": "<Version>{version}</Version>"
+				}
+			]
+		},
+		{
+			"path": "RaiImage/RaiImage.csproj",
+			"description": "RaiImage library project file",
+			"type": "csproj",
+			"replacements": [
+				{
+					"description": "RaiImage Version",
+					"pattern": "<Version>\\d+\\.\\d+\\.\\d+</Version>",
+					"replacement": "<Version>{version}</Version>"
+				},
+				{
+					"description": "OsLibPackageVersion fallback",
+					"pattern": "<OsLibPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</OsLibPackageVersion>",
+					"replacement": "<OsLibPackageVersion Condition=\"'$(OsLibPackageVersion)' == ''\">{version}</OsLibPackageVersion>"
+				},
+				{
+					"description": "RaiUtilsPackageVersion fallback",
+					"pattern": "<RaiUtilsPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</RaiUtilsPackageVersion>",
+					"replacement": "<RaiUtilsPackageVersion Condition=\"'$(RaiUtilsPackageVersion)' == ''\">{version}</RaiUtilsPackageVersion>"
+				}
+			]
+		},
+		{
+			"path": "RaiDiagram/RaiDiagram.csproj",
+			"description": "RaiDiagram library project file",
+			"type": "csproj",
+			"replacements": [
+				{
+					"description": "RaiDiagram Version",
+					"pattern": "<Version>\\d+\\.\\d+\\.\\d+</Version>",
+					"replacement": "<Version>{version}</Version>"
+				},
+				{
+					"description": "OsLibPackageVersion fallback",
+					"pattern": "<OsLibPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</OsLibPackageVersion>",
+					"replacement": "<OsLibPackageVersion Condition=\"'$(OsLibPackageVersion)' == ''\">{version}</OsLibPackageVersion>"
+				},
+				{
+					"description": "RaiUtilsPackageVersion fallback",
+					"pattern": "<RaiUtilsPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</RaiUtilsPackageVersion>",
+					"replacement": "<RaiUtilsPackageVersion Condition=\"'$(RaiUtilsPackageVersion)' == ''\">{version}</RaiUtilsPackageVersion>"
+				},
+				{
+					"description": "RaiImagePackageVersion fallback",
+					"pattern": "<RaiImagePackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</RaiImagePackageVersion>",
+					"replacement": "<RaiImagePackageVersion Condition=\"'$(RaiImagePackageVersion)' == ''\">{version}</RaiImagePackageVersion>"
+				}
+			]
+		},
+		{
+			"path": "RaidSeeder/raid/raid.csproj",
+			"description": "RaidSeeder CLI project file",
+			"type": "csproj",
+			"replacements": [
+				{
+					"description": "RaidSeeder Version",
+					"pattern": "<Version>\\d+\\.\\d+\\.\\d+</Version>",
+					"replacement": "<Version>{version}</Version>"
+				},
+				{
+					"description": "RaiDiagramPackageVersion fallback",
+					"pattern": "<RaiDiagramPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</RaiDiagramPackageVersion>",
+					"replacement": "<RaiDiagramPackageVersion Condition=\"'$(RaiDiagramPackageVersion)' == ''\">{version}</RaiDiagramPackageVersion>"
+				}
+			]
+		},
+		{
+			"path": "JsonPit/JsonPit.csproj",
+			"description": "JsonPit storage engine project file",
+			"type": "csproj",
+			"replacements": [
+				{
+					"description": "JsonPit Version",
+					"pattern": "<Version>\\d+\\.\\d+\\.\\d+</Version>",
+					"replacement": "<Version>{version}</Version>"
+				},
+				{
+					"description": "OsLibPackageVersion fallback",
+					"pattern": "<OsLibPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</OsLibPackageVersion>",
+					"replacement": "<OsLibPackageVersion Condition=\"'$(OsLibPackageVersion)' == ''\">{version}</OsLibPackageVersion>"
+				},
+				{
+					"description": "RaiUtilsPackageVersion fallback",
+					"pattern": "<RaiUtilsPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</RaiUtilsPackageVersion>",
+					"replacement": "<RaiUtilsPackageVersion Condition=\"'$(RaiUtilsPackageVersion)' == ''\">{version}</RaiUtilsPackageVersion>"
+				}
+			]
+		},
+		{
+			"path": "ImgSeeder/ImgSeeder.csproj",
+			"description": "ImgSeeder CLI project file",
+			"type": "csproj",
+			"replacements": [
+				{
+					"description": "ImgSeeder Version",
+					"pattern": "<Version>\\d+\\.\\d+\\.\\d+</Version>",
+					"replacement": "<Version>{version}</Version>"
+				},
+				{
+					"description": "JsonPitPackageVersion fallback",
+					"pattern": "<JsonPitPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</JsonPitPackageVersion>",
+					"replacement": "<JsonPitPackageVersion Condition=\"'$(JsonPitPackageVersion)' == ''\">{version}</JsonPitPackageVersion>"
+				},
+				{
+					"description": "OsLibPackageVersion fallback",
+					"pattern": "<OsLibPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</OsLibPackageVersion>",
+					"replacement": "<OsLibPackageVersion Condition=\"'$(OsLibPackageVersion)' == ''\">{version}</OsLibPackageVersion>"
+				},
+				{
+					"description": "RaiUtilsPackageVersion fallback",
+					"pattern": "<RaiUtilsPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</RaiUtilsPackageVersion>",
+					"replacement": "<RaiUtilsPackageVersion Condition=\"'$(RaiUtilsPackageVersion)' == ''\">{version}</RaiUtilsPackageVersion>"
+				},
+				{
+					"description": "RaiImagePackageVersion fallback",
+					"pattern": "<RaiImagePackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</RaiImagePackageVersion>",
+					"replacement": "<RaiImagePackageVersion Condition=\"'$(RaiImagePackageVersion)' == ''\">{version}</RaiImagePackageVersion>"
+				}
+			]
+		},
+		{
+			"path": "PitSeeder/pits/pits.csproj",
+			"description": "PitSeeder CLI project file",
+			"type": "csproj",
+			"replacements": [
+				{
+					"description": "PitSeeder Version",
+					"pattern": "<Version>\\d+\\.\\d+\\.\\d+</Version>",
+					"replacement": "<Version>{version}</Version>"
+				},
+				{
+					"description": "JsonPitPackageVersion fallback",
+					"pattern": "<JsonPitPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</JsonPitPackageVersion>",
+					"replacement": "<JsonPitPackageVersion Condition=\"'$(JsonPitPackageVersion)' == ''\">{version}</JsonPitPackageVersion>"
+				},
+				{
+					"description": "OsLibPackageVersion fallback",
+					"pattern": "<OsLibPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</OsLibPackageVersion>",
+					"replacement": "<OsLibPackageVersion Condition=\"'$(OsLibPackageVersion)' == ''\">{version}</OsLibPackageVersion>"
+				}
+			]
+		},
+		{
+			"path": "Amafu/amafu.Tests/AmafuApplicationTests.cs",
+			"description": "Amafu CLI version test",
+			"type": "test",
+			"replacements": [
+				{
+					"description": "Amafu CLI test assertion (existing output format)",
+					"pattern": "Assert\\.Equal\\(\"amafu v?\\d+\\.\\d+\\.\\d+\",",
+					"replacement": "Assert.Equal(\"amafu v{version}\","
+				}
+			]
+		},
+		{
+			"path": "RaidSeeder/raid.Tests/RaidSeederTests.cs",
+			"description": "Raid CLI version test",
+			"type": "test",
+			"replacements": [
+				{
+					"description": "Raid CLI test assertion",
+					"pattern": "Assert\\.Equal\\(\"raid v\\d+\\.\\d+\\.\\d+\",",
+					"replacement": "Assert.Equal(\"raid v{version}\","
+				}
+			]
+		},
+		{
+			"path": "ImgSeeder/ImgSeeder.Tests/CliSubcommandTests.cs",
+			"description": "ImgSeeder CLI version test",
+			"type": "test",
+			"replacements": [
+				{
+					"description": "ImgSeeder CLI test assertion",
+					"pattern": "Assert\\.Equal\\(\"iorg v\\d+\\.\\d+\\.\\d+\",",
+					"replacement": "Assert.Equal(\"iorg v{version}\","
+				}
+			]
+		},
+		{
+			"path": "PitSeeder/pits.Tests/CliSubcommandTests.cs",
+			"description": "PitSeeder CLI version test",
+			"type": "test",
+			"replacements": [
+				{
+					"description": "PitSeeder CLI test assertion",
+					"pattern": "Assert\\.Equal\\(\"pits v\\d+\\.\\d+\\.\\d+\",",
+					"replacement": "Assert.Equal(\"pits v{version}\","
+				}
+			]
+		},
+		{
+			"path": "RaidSeeder/API.md",
+			"description": "RaidSeeder API reference",
+			"type": "doc",
+			"replacements": [
+				{
+					"description": "API header",
+					"pattern": "# RaidSeeder command reference \\d+\\.\\d+\\.\\d+",
+					"replacement": "# RaidSeeder command reference {version}"
+				},
+				{
+					"description": "CLI version mention",
+					"pattern": "prints `raid v\\d+\\.\\d+\\.\\d+`",
+					"replacement": "prints `raid v{version}`"
+				}
+			]
+		},
+		{
+			"path": "JsonPit/API.md",
+			"description": "JsonPit API reference",
+			"type": "doc",
+			"replacements": [
+				{
+					"description": "API overview",
+					"pattern": "public JsonPit \\d+\\.\\d+\\.\\d+ API",
+					"replacement": "public JsonPit {version} API"
+				}
+			]
+		},
+		{
+			"path": "OsLib/API.md",
+			"description": "OsLib API reference",
+			"type": "doc",
+			"replacements": [
+				{
+					"description": "API overview",
+					"pattern": "`OsLibCore \\d+\\.\\d+\\.\\d+`",
+					"replacement": "`OsLibCore {version}`"
+				},
+				{
+					"description": "Dependency line",
+					"pattern": "synchronized \\d+\\.\\d+\\.\\d+ dependency line",
+					"replacement": "synchronized {version} dependency line"
+				}
+			]
+		},
+		{
+			"path": "RaiDiagram/API.md",
+			"description": "RaiDiagram API reference",
+			"type": "doc",
+			"replacements": [
+				{
+					"description": "API overview",
+					"pattern": "public RaiDiagram \\d+\\.\\d+\\.\\d+ API",
+					"replacement": "public RaiDiagram {version} API"
+				},
+				{
+					"description": "Dependency line",
+					"pattern": "synchronized \\d+\\.\\d+\\.\\d+ line",
+					"replacement": "synchronized {version} line"
+				}
+			]
+		},
+		{
+			"path": "RaiUtils/API.md",
+			"description": "RaiUtils API reference",
+			"type": "doc",
+			"replacements": [
+				{
+					"description": "Scope note heading",
+					"pattern": "## \\d+\\.\\d+\\.\\d+ scope note",
+					"replacement": "## {version} scope note"
+				},
+				{
+					"description": "Package line",
+					"pattern": "nine-package `\\d+\\.\\d+\\.\\d+` line",
+					"replacement": "nine-package `{version}` line"
+				}
+			]
+		},
+		{
+			"path": "RaiImage/API.md",
+			"description": "RaiImage API reference",
+			"type": "doc",
+			"replacements": [
+				{
+					"description": "Scope note heading",
+					"pattern": "## \\d+\\.\\d+\\.\\d+ scope note",
+					"replacement": "## {version} scope note"
+				},
+				{
+					"description": "Package release line",
+					"pattern": "(four|nine)-package \\d+\\.\\d+\\.\\d+ release",
+					"replacement": "nine-package {version} release"
+				},
+				{
+					"description": "OsLibCore reference",
+					"pattern": "OsLibCore \\d+\\.\\d+\\.\\d+",
+					"replacement": "OsLibCore {version}"
+				},
+				{
+					"description": "RaiUtils reference",
+					"pattern": "RaiUtils \\d+\\.\\d+\\.\\d+",
+					"replacement": "RaiUtils {version}"
+				},
+				{
+					"description": "Dependency line",
+					"pattern": "synchronized v\\d+\\.\\d+\\.\\d+ dependency line",
+					"replacement": "synchronized v{version} dependency line"
+				}
+			]
+		},
+		{
+			"path": "Amafu/README.md",
+			"description": "Amafu README",
+			"type": "readme",
+			"replacements": [
+				{
+					"description": "AMAFU_VERSION variable",
+					"pattern": "AMAFU_VERSION=\\d+\\.\\d+\\.\\d+",
+					"replacement": "AMAFU_VERSION={version}"
+				},
+				{
+					"description": "Platform support heading",
+					"pattern": "## Platform support in \\d+\\.\\d+\\.\\d+",
+					"replacement": "## Platform support in {version}"
+				},
+				{
+					"description": "dotnet tool install",
+					"pattern": "dotnet tool install --global Amafu --version \\d+\\.\\d+\\.\\d+",
+					"replacement": "dotnet tool install --global Amafu --version {version}"
+				},
+				{
+					"description": "dotnet tool update",
+					"pattern": "dotnet tool update --global Amafu --version \\d+\\.\\d+\\.\\d+",
+					"replacement": "dotnet tool update --global Amafu --version {version}"
+				},
+				{
+					"description": "tool update version flags",
+					"pattern": "--version \\d+\\.\\d+\\.\\d+",
+					"replacement": "--version {version}"
+				},
+				{
+					"description": "macOS support line",
+					"pattern": "macOS in \\d+\\.\\d+\\.\\d+;",
+					"replacement": "macOS in {version};"
+				},
+				{
+					"description": "Latest release notes link",
+					"pattern": "Latest release notes: \\[Amafu_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
+					"replacement": "Latest release notes: [Amafu_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/Amafu_RELEASE_NOTES_{version}.md)"
+				}
+			]
+		},
+		{
+			"path": "OsLib/README.md",
+			"description": "OsLib README",
+			"type": "readme",
+			"replacements": [
+				{
+					"description": "Latest release notes link",
+					"pattern": "Latest release notes: \\[OsLib_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
+					"replacement": "Latest release notes: [OsLib_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_{version}.md)"
+				},
+				{
+					"description": "release-chain invocation",
+					"pattern": "scripts/release-chain\\.sh \\d+\\.\\d+\\.\\d+",
+					"replacement": "scripts/release-chain.sh {version}"
+				}
+			]
+		},
+		{
+			"path": "RaiUtils/README.md",
+			"description": "RaiUtils README",
+			"type": "readme",
+			"replacements": [
+				{
+					"description": "Latest release notes link",
+					"pattern": "Latest release notes: \\[RaiUtils_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
+					"replacement": "Latest release notes: [RaiUtils_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_{version}.md)"
+				}
+			]
+		},
+		{
+			"path": "RaiImage/README.md",
+			"description": "RaiImage README",
+			"type": "readme",
+			"replacements": [
+				{
+					"description": "Latest release notes link",
+					"pattern": "Latest release notes: \\[RaiImage_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
+					"replacement": "Latest release notes: [RaiImage_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_{version}.md)"
+				}
+			]
+		},
+		{
+			"path": "RaiDiagram/README.md",
+			"description": "RaiDiagram README",
+			"type": "readme",
+			"replacements": [
+				{
+					"description": "Latest release notes link",
+					"pattern": "Latest release notes: \\[RaiDiagram_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
+					"replacement": "Latest release notes: [RaiDiagram_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_{version}.md)"
+				}
+			]
+		},
+		{
+			"path": "RaidSeeder/README.md",
+			"description": "RaidSeeder README",
+			"type": "readme",
+			"replacements": [
+				{
+					"description": "Latest release notes link",
+					"pattern": "Latest release notes: \\[RaidSeeder_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
+					"replacement": "Latest release notes: [RaidSeeder_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaidSeeder_RELEASE_NOTES_{version}.md)"
+				},
+				{
+					"description": "dotnet tool install",
+					"pattern": "dotnet tool install --global RaidSeeder --version \\d+\\.\\d+\\.\\d+",
+					"replacement": "dotnet tool install --global RaidSeeder --version {version}"
+				}
+			]
+		},
+		{
+			"path": "JsonPit/README.md",
+			"description": "JsonPit README",
+			"type": "readme",
+			"replacements": [
+				{
+					"description": "Latest release notes link",
+					"pattern": "Latest release notes: \\[JsonPit_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
+					"replacement": "Latest release notes: [JsonPit_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_{version}.md)"
+				},
+				{
+					"description": "live reference link text",
+					"pattern": "For the \\d+\\.\\d+\\.\\d+ live-reference behavior",
+					"replacement": "For the {version} live-reference behavior"
+				},
+				{
+					"description": "nuget mention",
+					"pattern": "use JsonPit \\d+\\.\\d+\\.\\d+ from NuGet",
+					"replacement": "use JsonPit {version} from NuGet"
+				}
+			]
+		},
+		{
+			"path": "ImgSeeder/README.md",
+			"description": "ImgSeeder README",
+			"type": "readme",
+			"replacements": [
+				{
+					"description": "Latest release notes link",
+					"pattern": "Latest release notes: \\[ImgSeeder_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
+					"replacement": "Latest release notes: [ImgSeeder_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_{version}.md)"
+				}
+			]
+		},
+		{
+			"path": "PitSeeder/README.md",
+			"description": "PitSeeder README",
+			"type": "readme",
+			"replacements": [
+				{
+					"description": "Latest release notes link",
+					"pattern": "Latest release notes: \\[PitSeeder_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
+					"replacement": "Latest release notes: [PitSeeder_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_{version}.md)"
+				}
+			]
+		},
+		{
+			"path": "RunReleaseChain.md",
+			"description": "Release chain instructions",
+			"type": "doc",
+			"replacements": [
+				{
+					"description": "release-chain invocation",
+					"pattern": "(?:\\./)?scripts/release-chain\\.sh \\d+\\.\\d+\\.\\d+",
+					"replacement": "scripts/release-chain.sh {version}"
+				},
+				{
+					"pattern": "scripts/bump-version\\.py \\d+\\.\\d+\\.\\d+",
+					"replacement": "scripts/bump-version.py {version}"
+				},
+				{
+					"pattern": "`v\\d+\\.\\d+\\.\\d+`(?=\\))",
+					"replacement": "`v{version}`"
+				}
+			]
+		},
+		{
+			"path": "JsonPit/GettingStarted.md",
+			"description": "JsonPit Getting Started guide",
+			"type": "doc",
+			"replacements": [
+				{
+					"description": "Getting Started header",
+					"pattern": "# Getting Started with JsonPit \\d+\\.\\d+\\.\\d+",
+					"replacement": "# Getting Started with JsonPit {version}"
+				},
+				{
+					"description": "Current code version text",
+					"pattern": "current JsonPit \\d+\\.\\d+\\.\\d+ code",
+					"replacement": "current JsonPit {version} code"
+				},
+				{
+					"description": "NuGet packages version note",
+					"pattern": "coordinated NuGet package ids at version `\\d+\\.\\d+\\.\\d+`",
+					"replacement": "coordinated NuGet package ids at version `{version}`"
+				},
+				{
+					"description": "dotnet add package JsonPit",
+					"pattern": "dotnet add package JsonPit --version \\d+\\.\\d+\\.\\d+",
+					"replacement": "dotnet add package JsonPit --version {version}"
+				},
+				{
+					"description": "dotnet add package RaiUtils",
+					"pattern": "dotnet add package RaiUtils --version \\d+\\.\\d+\\.\\d+",
+					"replacement": "dotnet add package RaiUtils --version {version}"
+				},
+				{
+					"description": "dotnet add package OsLibCore",
+					"pattern": "dotnet add package OsLibCore --version \\d+\\.\\d+\\.\\d+",
+					"replacement": "dotnet add package OsLibCore --version {version}"
+				}
+			]
+		},
+		{
+			"path": "scripts/install-clis.sh",
+			"description": "Installer default release",
+			"type": "source",
+			"replacements": [
+				{
+					"pattern": "DEFAULT_VERSION=\"\\$\\{DEFAULT_VERSION:-\\d+\\.\\d+\\.\\d+\\}\"",
+					"replacement": "DEFAULT_VERSION=\"${{DEFAULT_VERSION:-{version}}}\""
+				}
+			]
+		}
+	]
 }
