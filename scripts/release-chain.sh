@@ -470,6 +470,7 @@ main() {
 	require_cmd dotnet
 	require_cmd sed
 	require_cmd sleep
+	require_cmd python3
 
 	[[ $# -le 2 ]] || die "Usage: scripts/release-chain.sh [version] [--resume-after-amafu|--resume-after-oslib|--resume-after-raidiagram]"
 	if [[ -n "$MODE" && "$MODE" != "--resume-after-amafu" && "$MODE" != "--resume-after-oslib" && "$MODE" != "--resume-after-raidiagram" ]]; then
@@ -482,6 +483,8 @@ main() {
 		VER="$(derive_next_patch_version)"
 	fi
 	TAG="v${VER}"
+	log "Executing automated release consistency validation for $VER..."
+	python3 "$ROOT_DIR/scripts/validate-release.py" "$VER" || die "Release validation failed. Correct errors before running release chain."
 	if [[ "$MODE" == "--resume-after-amafu" ]]; then
 		resume_after_amafu
 		return
