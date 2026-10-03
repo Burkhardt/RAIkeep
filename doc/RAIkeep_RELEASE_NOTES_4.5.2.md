@@ -30,7 +30,15 @@ mutation behavior are unchanged.
 
 ## Verification and handoff
 
-Verification results will be recorded after the full preflight completes.
+- Complete Release solution run: **844 passed, 0 failed, 0 skipped**, including
+  JsonPit SSH/cloud synchronization scenarios.
+- Release-tool regression tests: **2 passed**; release validator: **81 checks passed**.
+- macOS ARM64 native Amafu publish and CLI version/dry-run smoke checks passed.
+- Shell syntax checks passed for installer and release-chain scripts.
+- Compiler/analyzer warnings remain; there were no build or test errors.
+
+CR050 multi-account discovery is a separate draft for review, not implemented
+in this release. Amafu still selects the first existing root per provider.
 Rainer runs `scripts/release-chain.sh 4.5.2` after preparation. No publication is
 performed by version preparation or tests. The script publishes the C# stack;
 Adele owns jsonpit-python/jpit 4.5.2 publication and parity verification separately.
