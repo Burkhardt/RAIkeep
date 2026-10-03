@@ -35,10 +35,22 @@ DEFAULT_VERSION="${DEFAULT_VERSION:-4.5.2}"
 
 # ==============================================================================
 # Fleet Definition
-# - LOCAL_TARGET: Machine name for local execution (alias "local" also matches)
+# - detect_machine_name: dynamically detects macOS ComputerName/LocalHostName or hostname
 # - FLEET_TARGETS: The coordinated cluster. Can specify plain host or user@host.
 # ==============================================================================
-LOCAL_TARGET="Nkosikazi"
+detect_machine_name() {
+	if command -v scutil >/dev/null 2>&1; then
+		local name
+		name="$(scutil --get LocalHostName 2>/dev/null || scutil --get ComputerName 2>/dev/null || true)"
+		if [[ -n "$name" ]]; then
+			echo "$name"
+			return 0
+		fi
+	fi
+	hostname -s 2>/dev/null || hostname 2>/dev/null || echo "localhost"
+}
+
+CURRENT_HOST="$(detect_machine_name)"
 FLEET_TARGETS=("Nkosikazi" "Mzansi" "umshadisi@Mdlaka" "Neo")
 
 # Resolves a CLI token (case-insensitively) against the fleet
@@ -46,8 +58,8 @@ resolve_target() {
 	local val="$1"
 	local lower="$(echo "$val" | tr '[:upper:]' '[:lower:]')"
 
-	if [[ "$lower" == "local" || "$lower" == "$(echo "$LOCAL_TARGET" | tr '[:upper:]' '[:lower:]')" ]]; then
-		echo "$LOCAL_TARGET"
+	if [[ "$lower" == "local" || "$lower" == "$(echo "$CURRENT_HOST" | tr '[:upper:]' '[:lower:]')" ]]; then
+		echo "$CURRENT_HOST"
 		return 0
 	fi
 	if [[ "$lower" == "all" ]]; then
@@ -124,7 +136,7 @@ VERSION="$1"
 
 export PATH="$HOME/.local/bin:$HOME/.dotnet/tools:$HOME/.dotnet:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/share/dotnet:/opt/dotnet:/usr/local/bin:$PATH"
 
-echo "  [1/3] Checking environment..."
+echo "  [1/4] Checking environment..."
 if command -v dotnet >/dev/null 2>&1; then
 	echo "    ✔️ dotnet found: $(dotnet --version)"
 else
@@ -132,7 +144,7 @@ else
 	exit 1
 fi
 
-echo "  [2/3] Installing/Updating .NET global tools..."
+echo "  [2/4] Installing/Updating .NET global tools..."
 install_dotnet_tool() {
 	local pkg="$1"
 	local v="$2"
@@ -155,7 +167,7 @@ install_dotnet_tool "RaidSeeder" "$VERSION"
 install_dotnet_tool "ImgSeeder" "$VERSION"
 install_dotnet_tool "PitSeeder" "$VERSION"
 
-echo "  [3/3] Installing/Updating Python jsonpit (jpit CLI)..."
+echo "  [3/4] Installing/Updating Python jsonpit (jpit CLI)..."
 install_jpit() {
 	local py_spec="jsonpit==$VERSION"
 	if [[ "$VERSION" == "4.5.0" ]]; then
@@ -191,6 +203,19 @@ install_jpit() {
 		fi
 	done
 
+	# Unify Python tools into ~/.local/bin as well (including pip --user and macOS Library/Python)
+	local py_user_base
+	py_user_base="$(python3 -m site --user-base 2>/dev/null)/bin"
+	for p_dir in "$py_user_base" "$HOME/Library/Python/"*/bin; do
+		if [[ -d "$p_dir" ]]; then
+			for tool_name in jpit jsonpit; do
+				if [[ -f "$p_dir/$tool_name" ]]; then
+					ln -sf "$p_dir/$tool_name" "$HOME/.local/bin/$tool_name"
+				fi
+			done
+		fi
+	done
+
 	# zsh reads .zshenv for non-interactive SSH and .zprofile for login shells.
 	# Keep the managed tools ahead of older /usr/local/bin copies after path_helper.
 	local path_line='export PATH="$HOME/.local/bin:$HOME/.dotnet/tools:$PATH"'
@@ -206,6 +231,15 @@ install_jpit() {
 }
 install_jpit
 
+echo "  [4/4] Setting up Cloud Storage shortcuts via amafu..."
+if command -v amafu >/dev/null 2>&1; then
+	if [[ ! -f "$HOME/.config/RAIkeep.json5" ]]; then
+		amafu init --create-links 2>&1 | sed 's/^/      /' || true
+	else
+		amafu detect --create-links 2>&1 | sed 's/^/      /' || true
+	fi
+fi
+
 echo -e "\n  🔍 Verification results on $(hostname):"
 for cmd in amafu raid iorg pits jpit; do
 	if command -v "$cmd" >/dev/null 2>&1; then
@@ -215,9 +249,23 @@ for cmd in amafu raid iorg pits jpit; do
 		printf "    ❌ %-8s : NOT FOUND in PATH\n" "$cmd"
 	fi
 done
+
+python3 -c '
+from pathlib import Path
+p = Path.home() / ".CloudStorage"
+if p.is_dir():
+    links = [item for item in sorted(p.iterdir()) if item.is_symlink()]
+    if links:
+        print("\n  ☁️ Cloud Storage shortcuts in ~/.CloudStorage:")
+        for item in links:
+            print(f"    🔗 {item.name:<12} -> {item.resolve()}")
+' 2>/dev/null || true
 EOF
 
-	if [[ "$target_machine" == "$LOCAL_TARGET" || "$target_machine" == "local" ]]; then
+	local host_only="${target_machine##*@}"
+	local t_lower="$(echo "$host_only" | tr '[:upper:]' '[:lower:]')"
+	local c_lower="$(echo "$CURRENT_HOST" | tr '[:upper:]' '[:lower:]')"
+	if [[ "$t_lower" == "local" || "$t_lower" == "$c_lower" ]]; then
 		# Run locally
 		bash -s -- "$ver" <<< "$PAYLOAD_SCRIPT"
 	else
