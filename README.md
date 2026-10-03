@@ -8,15 +8,15 @@ Amafu (`amafu`), RaidSeeder (`raid`), ImgSeeder (`iorg`), and PitSeeder (`pits`)
 
 | Order | Repository | Package / command | Current or upcoming role |
 |---:|---|---|---|
-| 1 | `Amafu` | `Amafu` / `amafu` | 4.5.2 synchronized cloud configuration tool |
-| 2 | `OsLib` | `OsLibCore` | 4.5.2 synchronized immutable configuration consumer |
-| 3 | `RaiUtils` | `RaiUtils` | 4.5.2 synchronized dependency line |
-| 4 | `RaiImage` | `RaiImage` | 4.5.2 synchronized dependency line |
-| 5 | `RaiDiagram` | `RaiDiagram` | 4.5.2 synchronized diagram line |
-| 6 | `RaidSeeder` | `RaidSeeder` / `raid` | 4.5.2 synchronized diagram artifact manager |
-| 7 | `JsonPit` | `JsonPit` | 4.5.2 synchronized persistence line |
-| 8 | `ImgSeeder` | `ImgSeeder` / `iorg` | 4.5.2 synchronized image-management line |
-| 9 | `PitSeeder` | `PitSeeder` / `pits` | 4.5.2 live-ID preflight and stdin ingestion |
+| 1 | `Amafu` | `Amafu` / `amafu` | 4.5.3 synchronized cloud configuration tool |
+| 2 | `OsLib` | `OsLibCore` | 4.5.3 synchronized immutable configuration consumer |
+| 3 | `RaiUtils` | `RaiUtils` | 4.5.3 synchronized dependency line |
+| 4 | `RaiImage` | `RaiImage` | 4.5.3 synchronized dependency line |
+| 5 | `RaiDiagram` | `RaiDiagram` | 4.5.3 synchronized diagram line |
+| 6 | `RaidSeeder` | `RaidSeeder` / `raid` | 4.5.3 synchronized diagram artifact manager |
+| 7 | `JsonPit` | `JsonPit` | 4.5.3 synchronized persistence line |
+| 8 | `ImgSeeder` | `ImgSeeder` / `iorg` | 4.5.3 synchronized image-management line |
+| 9 | `PitSeeder` | `PitSeeder` / `pits` | 4.5.3 live-ID preflight and stdin ingestion |
 
 Each child remains its own Git repository, package, solution, and release
 workflow. The umbrella workspace supplies local project wiring, coordinated
@@ -24,17 +24,17 @@ validation, dependency-order documentation, and sequential release automation.
 
 ## Current release line
 
-The prepared coordinated release is `4.5.2`. RAI starts the release chain
+The prepared coordinated release is `4.5.3`. RAI starts the release chain
 manually after reviewing the prepared commits and verification results.
 
-RAIkeep 4.5.2 adds optional cloud shortcuts and improves first-time cloud setup.
+RAIkeep 4.5.3 adds multiple cloud accounts, named shortcuts, deterministic personal OneDrive selection, noninteractive reconciliation, and OsLib consumer recognition of named roots.
 
-- `amafu detect --create-links` creates `~/.CloudStorage/<provider>` symbolic links; ordinary detection remains read-only.
-- `amafu init --create-links` creates the shortcuts alongside a new configuration. Existing paths are preserved, and dry runs write nothing.
-- The installer puts managed CLI paths first in interactive, login, and non-interactive zsh sessions.
-- GettingStarted and the new FirstSteps_pits guide cover cloud setup and importing weather JSON.
+- Amafu discovers multiple Google Drive accounts and corporate OneDrive roots, and provides noninteractive reconciliation (`amafu reconcile [--apply|--dry-run]`).
+- Exactly one personal OneDrive root is selected under the `OneDrive` key; corporate accounts retain qualified keys.
+- OsLib recognizes all configured string roots in `Cloud` and classifies symbolic shortcuts and existing ancestors.
+- PitSeeder CLI accepts any configured cloud account key present in `Cloud` and `DefaultCloudOrder`.
 - Release preparation validates internal dependency versions as well as package versions.
-- All four C# CLI tools report `4.5.2`. Adele coordinates `jsonpit-python`/`jpit` 4.5.2 separately; the C# release chain does not publish Python packages.
+- All four C# CLI tools report `4.5.3`. Adele coordinates `jsonpit-python`/`jpit` 4.5.3 separately; the C# release chain does not publish Python packages.
 
 All nine packages participate in the coordinated line so fallback package dependencies remain aligned throughout the release order.
 
@@ -48,18 +48,18 @@ The [RAIkeep Manifesto](https://github.com/Burkhardt/RAIkeep/blob/main/MANIFESTO
 explains why transparent, historical JSON matters for agentic engineering and
 defines JsonPit's asynchronous persistence and eventual-durability model.
 
-Current coordinated 4.5.2 release notes:
+Current coordinated 4.5.3 release notes:
 
-- [Amafu 4.5.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/Amafu_RELEASE_NOTES_4.5.2.md)
-- [OsLibCore 4.5.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.5.2.md)
-- [RaiUtils 4.5.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.5.2.md)
-- [RaiImage 4.5.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.5.2.md)
-- [RaiDiagram 4.5.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.5.2.md)
-- [RaidSeeder 4.5.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaidSeeder_RELEASE_NOTES_4.5.2.md)
-- [JsonPit 4.5.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.5.2.md)
-- [ImgSeeder 4.5.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.5.2.md)
-- [PitSeeder 4.5.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.5.2.md)
-- [RAIkeep 4.5.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.5.2.md)
+- [Amafu 4.5.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/Amafu_RELEASE_NOTES_4.5.3.md)
+- [OsLibCore 4.5.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.5.3.md)
+- [RaiUtils 4.5.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.5.3.md)
+- [RaiImage 4.5.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.5.3.md)
+- [RaiDiagram 4.5.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.5.3.md)
+- [RaidSeeder 4.5.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaidSeeder_RELEASE_NOTES_4.5.3.md)
+- [JsonPit 4.5.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.5.3.md)
+- [ImgSeeder 4.5.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.5.3.md)
+- [PitSeeder 4.5.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.5.3.md)
+- [RAIkeep 4.5.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.5.3.md)
 
 The prior coordinated line remains documented in [RAIkeep 4.1.0 release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.1.0.md).
 
@@ -92,7 +92,7 @@ After approval, use one release mechanism for the chain. The established local o
 
 ```bash
 cd /Users/RSB/Projects/GitHub/RAIkeep
-scripts/release-chain.sh 4.5.2
+scripts/release-chain.sh 4.5.3
 ```
 
 Before publication begins, all nine child release commits and their exact submodule pointers must already be committed on the umbrella `main`. The script preflights that state, pushes the prepared umbrella `main`, and applies the passed version as its tag first. The umbrella tag publishes no NuGet package; it creates and verifies the synchronized GitHub Release before package tagging begins.

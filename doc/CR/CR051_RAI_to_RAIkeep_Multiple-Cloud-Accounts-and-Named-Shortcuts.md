@@ -167,3 +167,29 @@ Adele should ratify or revise:
 After formal submission, implement and verify in Amafu first, coordinate Python
 consumer parity with Adele, and choose the next shared release version. This
 file is a draft only and does not expand the 4.5.2 feature set.
+
+## 8. Rainer's implementation clarifications (2026-10-03)
+
+These subsequent instructions supersede conflicting draft language above:
+
+- Amafu takes the lead: generated `RAIkeep.json5` must be consumable by Os.Config.
+  OsLib reads all configured string roots, independent of provider-label names,
+  and recognizes shortcut paths as cloud-backed storage.
+- Dropbox and iCloud discovery retain their existing logic in this delivery.
+- One personal OneDrive root is selected under the compatible `OneDrive` key;
+  all discovered corporate accounts retain their own qualified keys.
+- Commands must work without interactive prompts. Explicit personal selection
+  from the command line takes precedence; an existing valid configured choice
+  is otherwise retained. With no valid prior choice, the longest personal
+  folder name wins, then the highest numeric suffix; ordinal path order breaks
+  any remaining tie. This is a name-based heuristic, not an age measurement.
+- A reconciliation mode previews newly discovered drives and migration to
+  `~/.CloudStorage` paths. An explicit apply option creates a backup and updates
+  configuration while preserving unrelated settings and existing default order.
+- Case-insensitive account-name collisions fail with both roots identified.
+  No interactive mapping prompt or automatic numeric account renaming is added.
+
+Implemented command spelling: `amafu reconcile [--apply|--dry-run]` and
+`--onedrive-personal <folder-name-or-path>` on detect, init, and reconcile.
+Explicit personal selection plus apply may repoint only the OneDrive shortcut
+that matches the previously configured root. Other conflicts are preserved.

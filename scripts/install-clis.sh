@@ -31,7 +31,7 @@ except Exception:
 }
 
 DEFAULT_VERSION="$(resolve_default_version)"
-DEFAULT_VERSION="${DEFAULT_VERSION:-4.5.2}"
+DEFAULT_VERSION="${DEFAULT_VERSION:-4.5.3}"
 
 # ==============================================================================
 # Fleet Definition

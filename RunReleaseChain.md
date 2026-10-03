@@ -3,7 +3,7 @@
 As preprocessing, prepare the release using the automated bumping engine:
 
 <code>cd /Users/RSB/Projects/GitHub/RAIkeep
-./scripts/bump-version.py 4.5.2</code>
+./scripts/bump-version.py 4.5.3</code>
 
 This uses [`scripts/release-manifest.json`](scripts/release-manifest.json) to deterministically update all project files, code constants, CLI tests, and documentation, and scaffolds the 10 release note files. If any new version-tracked file is introduced, simply add its path and replacement rule to `scripts/release-manifest.json`.
 
@@ -12,9 +12,9 @@ After bumping, author the narrative highlights in the scaffolded release note do
 # How to run next time:
 
 <code>cd /Users/RSB/Projects/GitHub/RAIkeep
-scripts/release-chain.sh 4.5.2</code>
+scripts/release-chain.sh 4.5.3</code>
 
-The script first preflights all ten repositories: the umbrella and nine package repositories. It then pushes the prepared RAIkeep umbrella `main` if needed and applies the passed version as the umbrella tag (for example `v4.5.2`). The umbrella tag is applied before any child repository is pushed or tagged. It does not publish a NuGet package because the umbrella workflow creates the coordinated GitHub Release only.
+The script first preflights all ten repositories: the umbrella and nine package repositories. It then pushes the prepared RAIkeep umbrella `main` if needed and applies the passed version as the umbrella tag (for example `v4.5.3`). The umbrella tag is applied before any child repository is pushed or tagged. It does not publish a NuGet package because the umbrella workflow creates the coordinated GitHub Release only.
 
 The enforced package order after that umbrella label is:
 
@@ -55,7 +55,7 @@ If the chain stops after RaiDiagram has already been tagged, repair and dispatch
 the immutable RaiDiagram release workflow as documented for that incident, then
 resume only through:
 
-<code>scripts/release-chain.sh 4.5.2 --resume-after-raidiagram</code>
+<code>scripts/release-chain.sh 4.5.3 --resume-after-raidiagram</code>
 
 Recovery mode preserves all existing tags, pushes a clean reviewed umbrella
 recovery commit when necessary, waits until the RaiDiagram package and
@@ -66,14 +66,14 @@ start the remaining package workflows independently.
 If the inaugural Amafu publication needs recovery after its immutable tag was
 created, resume the remaining chain through:
 
-<code>scripts/release-chain.sh 4.5.2 --resume-after-amafu</code>
+<code>scripts/release-chain.sh 4.5.3 --resume-after-amafu</code>
 
 This waits for Amafu's NuGet visibility before releasing OsLibCore and the
 remaining dependency chain.
 
 If the chain stops after OsLibCore has already been published, resume the remaining chain through:
 
-<code>scripts/release-chain.sh 4.5.2 --resume-after-oslib</code>
+<code>scripts/release-chain.sh 4.5.3 --resume-after-oslib</code>
 
 This verifies that Amafu and OsLibCore are both available on NuGet before releasing RaiUtils and the remaining dependency chain.
 
