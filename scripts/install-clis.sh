@@ -142,7 +142,7 @@ run_installation_payload() {
 set -euo pipefail
 VERSION="$1"
 
-export PATH="$HOME/.dotnet/tools:$HOME/.dotnet:$HOME/.local/bin:/usr/local/share/dotnet:/opt/dotnet:/usr/local/bin:$PATH"
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$HOME/.dotnet/tools:$HOME/.dotnet:$HOME/.local/bin:/usr/local/share/dotnet:/opt/dotnet:/usr/local/bin:$PATH"
 
 echo "  [1/3] Checking environment..."
 if command -v dotnet >/dev/null 2>&1; then
@@ -179,7 +179,7 @@ echo "  [3/3] Installing/Updating Python jsonpit (jpit CLI)..."
 install_jpit() {
 	local py_spec="jsonpit==$VERSION"
 	if [[ "$VERSION" == "4.5.0" ]]; then
-		py_spec="jsonpit>=4.5.0,<4.6.0"
+		py_spec="jsonpit==4.5.1"
 	fi
 
 	local venv_dir="$HOME/.local/share/jsonpit-venv"
