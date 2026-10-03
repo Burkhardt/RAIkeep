@@ -156,14 +156,17 @@ echo "  [2/3] Installing/Updating .NET global tools..."
 install_dotnet_tool() {
 	local pkg="$1"
 	local v="$2"
-	if dotnet tool list -g | grep -qi "^${pkg}[[:space:]]"; then
-		dotnet tool update -g "$pkg" --version "$v" --no-cache 2>&1 | sed 's/^/      /' || {
-			dotnet tool install -g "$pkg" --version "$v" --no-cache 2>&1 | sed 's/^/      /'
-		}
+	if dotnet tool update -g "$pkg" --version "$v" --no-cache 2>&1 | sed 's/^/      /'; then
+		return 0
+	elif dotnet tool install -g "$pkg" --version "$v" --no-cache 2>&1 | sed 's/^/      /'; then
+		return 0
+	elif dotnet tool update -g "$pkg" --no-cache 2>&1 | sed 's/^/      /'; then
+		return 0
+	elif dotnet tool install -g "$pkg" --no-cache 2>&1 | sed 's/^/      /'; then
+		return 0
 	else
-		dotnet tool install -g "$pkg" --version "$v" --no-cache 2>&1 | sed 's/^/      /' || {
-			dotnet tool update -g "$pkg" --version "$v" --no-cache 2>&1 | sed 's/^/      /'
-		}
+		echo "      ⚠️ Warning: Failed to install/update $pkg."
+		return 1
 	fi
 }
 
@@ -174,24 +177,29 @@ install_dotnet_tool "PitSeeder" "$VERSION"
 
 echo "  [3/3] Installing/Updating Python jsonpit (jpit CLI)..."
 install_jpit() {
+	local py_spec="jsonpit==$VERSION"
+	if [[ "$VERSION" == "4.5.0" ]]; then
+		py_spec="jsonpit>=4.5.0,<4.6.0"
+	fi
+
 	local venv_dir="$HOME/.local/share/jsonpit-venv"
 	if python3 -m venv "$venv_dir" 2>/dev/null; then
-		"$venv_dir/bin/pip" install --upgrade --no-cache-dir "jsonpit==$VERSION" 2>&1 | sed 's/^/      /'
+		"$venv_dir/bin/pip" install --upgrade --no-cache-dir "$py_spec" 2>&1 | sed 's/^/      /'
 		mkdir -p "$HOME/.local/bin"
 		ln -sf "$venv_dir/bin/jpit" "$HOME/.local/bin/jpit"
 		ln -sf "$venv_dir/bin/jsonpit" "$HOME/.local/bin/jsonpit"
 	elif command -v uv >/dev/null 2>&1; then
-		uv tool install "jsonpit==$VERSION" --force --refresh 2>&1 | sed 's/^/      /'
+		uv tool install "$py_spec" --force --refresh 2>&1 | sed 's/^/      /'
 	elif command -v pipx >/dev/null 2>&1; then
-		pipx install "jsonpit==$VERSION" --force 2>&1 | sed 's/^/      /' || pipx upgrade jsonpit 2>&1 | sed 's/^/      /'
+		pipx install "$py_spec" --force 2>&1 | sed 's/^/      /' || pipx upgrade jsonpit 2>&1 | sed 's/^/      /'
 	elif command -v pip3 >/dev/null 2>&1; then
 		if pip3 install --help 2>&1 | grep -q -- '--break-system-packages'; then
-			pip3 install --user --upgrade --break-system-packages "jsonpit==$VERSION" 2>&1 | sed 's/^/      /'
+			pip3 install --user --upgrade --break-system-packages "$py_spec" 2>&1 | sed 's/^/      /'
 		else
-			pip3 install --user --upgrade "jsonpit==$VERSION" 2>&1 | sed 's/^/      /'
+			pip3 install --user --upgrade "$py_spec" 2>&1 | sed 's/^/      /'
 		fi
 	elif command -v pip >/dev/null 2>&1; then
-		pip install --user --upgrade "jsonpit==$VERSION" 2>&1 | sed 's/^/      /'
+		pip install --user --upgrade "$py_spec" 2>&1 | sed 's/^/      /'
 	else
 		echo "      ⚠️ Warning: No python3 venv, uv, pipx, pip3 or pip found. Skipping jpit."
 	fi
