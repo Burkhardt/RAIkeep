@@ -211,9 +211,21 @@
       "type": "test",
       "replacements": [
         {
-          "description": "Amafu CLI test assertion",
-          "pattern": "Assert\\.Equal\\(\"amafu \\d+\\.\\d+\\.\\d+\",",
-          "replacement": "Assert.Equal(\"amafu {version}\","
+          "description": "Amafu CLI test assertion (harmonized v-prefix)",
+          "pattern": "Assert\\.Equal\\(\"amafu v?\\d+\\.\\d+\\.\\d+\",",
+          "replacement": "Assert.Equal(\"amafu v{version}\","
+        }
+      ]
+    },
+    {
+      "path": "Amafu/amafu/AmafuApplication.cs",
+      "description": "Amafu CLI version output prefix",
+      "type": "source",
+      "replacements": [
+        {
+          "description": "Amafu CLI version output prefix",
+          "pattern": "WriteLine\\(\\$\"amafu (v?)\\{VersionInfo\\.Current\\}\"\\);",
+          "replacement": "WriteLine($\"amafu v{VersionInfo.Current}\");"
         }
       ]
     },
@@ -532,6 +544,48 @@
           "description": "release-chain invocation",
           "pattern": "(?:\\./)?scripts/release-chain\\.sh \\d+\\.\\d+\\.\\d+",
           "replacement": "scripts/release-chain.sh {version}"
+        }
+      ]
+    },
+    {
+      "path": "JsonPit/GettingStarted.md",
+      "description": "JsonPit Getting Started guide",
+      "type": "doc",
+      "replacements": [
+        {
+          "description": "Getting Started header",
+          "pattern": "# Getting Started with JsonPit \\d+\\.\\d+\\.\\d+",
+          "replacement": "# Getting Started with JsonPit {version}"
+        },
+        {
+          "description": "Current code version text",
+          "pattern": "current JsonPit \\d+\\.\\d+\\.\\d+ code",
+          "replacement": "current JsonPit {version} code"
+        },
+        {
+          "description": "NuGet packages version note",
+          "pattern": "coordinated NuGet package ids at version `\\d+\\.\\d+\\.\\d+`",
+          "replacement": "coordinated NuGet package ids at version `{version}`"
+        },
+        {
+          "description": "dotnet add package JsonPit",
+          "pattern": "dotnet add package JsonPit --version \\d+\\.\\d+\\.\\d+",
+          "replacement": "dotnet add package JsonPit --version {version}"
+        },
+        {
+          "description": "dotnet add package RaiUtils",
+          "pattern": "dotnet add package RaiUtils --version \\d+\\.\\d+\\.\\d+",
+          "replacement": "dotnet add package RaiUtils --version {version}"
+        },
+        {
+          "description": "dotnet add package OsLibCore",
+          "pattern": "dotnet add package OsLibCore --version \\d+\\.\\d+\\.\\d+",
+          "replacement": "dotnet add package OsLibCore --version {version}"
+        },
+        {
+          "description": "Behavior introduced version",
+          "pattern": "This behavior is introduced in \\d+\\.\\d+\\.\\d+",
+          "replacement": "This behavior is introduced in {version}"
         }
       ]
     }
