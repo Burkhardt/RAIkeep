@@ -215,7 +215,7 @@ install_jpit() {
 	local path_line='export PATH="$HOME/.local/bin:$HOME/.dotnet/tools:$PATH"'
 	for rc in "$HOME/.zshrc" "$HOME/.bashrc"; do
 		if [[ -f "$rc" ]]; then
-			if ! grep -q "local/bin" "$rc" 2>/dev/null; then
+			if ! grep -q '\.local/bin' "$rc" 2>/dev/null; then
 				printf "\n# RAIkeep & jsonpit CLI paths\n%s\n" "$path_line" >> "$rc"
 				echo "    ✔️ Configured PATH in $rc"
 			fi
