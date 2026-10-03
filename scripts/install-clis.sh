@@ -39,7 +39,7 @@ is_target() {
 	local lower
 	lower="$(echo "$val" | tr '[:upper:]' '[:lower:]')"
 	case "$lower" in
-		nkosikazi|local|mzansi|mdlaka|mhlaka|all) return 0 ;;
+		nkosikazi|local|mzansi|mdlaka|mhlaka|mlaka|all|*@*) return 0 ;;
 		*) return 1 ;;
 	esac
 }
@@ -51,16 +51,39 @@ normalize_target() {
 	case "$lower" in
 		nkosikazi|local) echo "Nkosikazi" ;;
 		mzansi) echo "Mzansi" ;;
-		mdlaka|mhlaka) echo "Mdlaka" ;;
+		mdlaka|mhlaka|mlaka) echo "Mdlaka" ;;
 		all) echo "all" ;;
+		*@*)
+			local user="${val%%@*}"
+			local host="${val##*@}"
+			local host_lower="$(echo "$host" | tr '[:upper:]' '[:lower:]')"
+			case "$host_lower" in
+				mdlaka|mhlaka|mlaka) echo "${user}@Mdlaka" ;;
+				mzansi) echo "${user}@Mzansi" ;;
+				*) echo "$val" ;;
+			esac
+			;;
 		*) echo "$val" ;;
 	esac
 }
 
 resolve_ssh_target() {
 	local machine="$1"
-	case "$machine" in
-		Mdlaka|Mhlaka)
+	if [[ "$machine" == *"@"* ]]; then
+		local user="${machine%%@*}"
+		local host="${machine##*@}"
+		local host_lower="$(echo "$host" | tr '[:upper:]' '[:lower:]')"
+		case "$host_lower" in
+			mdlaka|mhlaka|mlaka) echo "${user}@Mdlaka" ;;
+			mzansi) echo "${user}@Mzansi" ;;
+			*) echo "$machine" ;;
+		esac
+		return
+	fi
+
+	local lower="$(echo "$machine" | tr '[:upper:]' '[:lower:]')"
+	case "$lower" in
+		mdlaka|mhlaka|mlaka)
 			local u="${MDLAKA_SSH_USER:-umshadisi}"
 			echo "${u}@Mdlaka"
 			;;
@@ -119,7 +142,7 @@ run_installation_payload() {
 set -euo pipefail
 VERSION="$1"
 
-export PATH="$HOME/.dotnet/tools:$HOME/.local/bin:$PATH"
+export PATH="$HOME/.dotnet/tools:$HOME/.dotnet:$HOME/.local/bin:/usr/local/share/dotnet:/opt/dotnet:/usr/local/bin:$PATH"
 
 echo "  [1/3] Checking environment..."
 if command -v dotnet >/dev/null 2>&1; then
@@ -151,10 +174,16 @@ install_dotnet_tool "PitSeeder" "$VERSION"
 
 echo "  [3/3] Installing/Updating Python jsonpit (jpit CLI)..."
 install_jpit() {
-	if command -v pipx >/dev/null 2>&1; then
-		pipx install "jsonpit==$VERSION" --force 2>&1 | sed 's/^/      /' || pipx upgrade jsonpit 2>&1 | sed 's/^/      /'
+	local venv_dir="$HOME/.local/share/jsonpit-venv"
+	if python3 -m venv "$venv_dir" 2>/dev/null; then
+		"$venv_dir/bin/pip" install --upgrade --no-cache-dir "jsonpit==$VERSION" 2>&1 | sed 's/^/      /'
+		mkdir -p "$HOME/.local/bin"
+		ln -sf "$venv_dir/bin/jpit" "$HOME/.local/bin/jpit"
+		ln -sf "$venv_dir/bin/jsonpit" "$HOME/.local/bin/jsonpit"
 	elif command -v uv >/dev/null 2>&1; then
 		uv tool install "jsonpit==$VERSION" --force --refresh 2>&1 | sed 's/^/      /'
+	elif command -v pipx >/dev/null 2>&1; then
+		pipx install "jsonpit==$VERSION" --force 2>&1 | sed 's/^/      /' || pipx upgrade jsonpit 2>&1 | sed 's/^/      /'
 	elif command -v pip3 >/dev/null 2>&1; then
 		if pip3 install --help 2>&1 | grep -q -- '--break-system-packages'; then
 			pip3 install --user --upgrade --break-system-packages "jsonpit==$VERSION" 2>&1 | sed 's/^/      /'
@@ -164,7 +193,7 @@ install_jpit() {
 	elif command -v pip >/dev/null 2>&1; then
 		pip install --user --upgrade "jsonpit==$VERSION" 2>&1 | sed 's/^/      /'
 	else
-		echo "      ⚠️ Warning: No pipx, uv, pip3 or pip found. Skipping jpit."
+		echo "      ⚠️ Warning: No python3 venv, uv, pipx, pip3 or pip found. Skipping jpit."
 	fi
 }
 install_jpit
