@@ -28,80 +28,55 @@ except Exception:
 DEFAULT_VERSION="$(resolve_default_version)"
 DEFAULT_VERSION="${DEFAULT_VERSION:-4.5.2}"
 
+# ==============================================================================
+# Fleet Definition
+# - LOCAL_TARGET: Machine name for local execution (alias "local" also matches)
+# - FLEET_TARGETS: The coordinated cluster. Can specify plain host or user@host.
+# ==============================================================================
+LOCAL_TARGET="Nkosikazi"
+FLEET_TARGETS=("Nkosikazi" "Mzansi" "umshadisi@Mdlaka" "Neo")
+
+# Resolves a CLI token (case-insensitively) against the fleet
+resolve_target() {
+	local val="$1"
+	local lower="$(echo "$val" | tr '[:upper:]' '[:lower:]')"
+
+	if [[ "$lower" == "local" || "$lower" == "$(echo "$LOCAL_TARGET" | tr '[:upper:]' '[:lower:]')" ]]; then
+		echo "$LOCAL_TARGET"
+		return 0
+	fi
+	if [[ "$lower" == "all" ]]; then
+		echo "all"
+		return 0
+	fi
+
+	for t in "${FLEET_TARGETS[@]}"; do
+		local host="${t##*@}"
+		local t_lower="$(echo "$t" | tr '[:upper:]' '[:lower:]')"
+		local h_lower="$(echo "$host" | tr '[:upper:]' '[:lower:]')"
+		if [[ "$lower" == "$t_lower" || "$lower" == "$h_lower" ]]; then
+			echo "$t"
+			return 0
+		fi
+	done
+
+	# Fallback for ad-hoc user@host or custom host
+	echo "$val"
+}
+
 # Parse arguments: version and targets
 VERSION=""
 TARGETS=()
 
-ALL_KNOWN_TARGETS=("Nkosikazi" "Mzansi" "Mdlaka")
-
-is_target() {
-	local val="$1"
-	local lower
-	lower="$(echo "$val" | tr '[:upper:]' '[:lower:]')"
-	case "$lower" in
-		nkosikazi|local|mzansi|mdlaka|mhlaka|mlaka|all|*@*) return 0 ;;
-		*) return 1 ;;
-	esac
-}
-
-normalize_target() {
-	local val="$1"
-	local lower
-	lower="$(echo "$val" | tr '[:upper:]' '[:lower:]')"
-	case "$lower" in
-		nkosikazi|local) echo "Nkosikazi" ;;
-		mzansi) echo "Mzansi" ;;
-		mdlaka|mhlaka|mlaka) echo "Mdlaka" ;;
-		all) echo "all" ;;
-		*@*)
-			local user="${val%%@*}"
-			local host="${val##*@}"
-			local host_lower="$(echo "$host" | tr '[:upper:]' '[:lower:]')"
-			case "$host_lower" in
-				mdlaka|mhlaka|mlaka) echo "${user}@Mdlaka" ;;
-				mzansi) echo "${user}@Mzansi" ;;
-				*) echo "$val" ;;
-			esac
-			;;
-		*) echo "$val" ;;
-	esac
-}
-
-resolve_ssh_target() {
-	local machine="$1"
-	if [[ "$machine" == *"@"* ]]; then
-		local user="${machine%%@*}"
-		local host="${machine##*@}"
-		local host_lower="$(echo "$host" | tr '[:upper:]' '[:lower:]')"
-		case "$host_lower" in
-			mdlaka|mhlaka|mlaka) echo "${user}@Mdlaka" ;;
-			mzansi) echo "${user}@Mzansi" ;;
-			*) echo "$machine" ;;
-		esac
-		return
-	fi
-
-	local lower="$(echo "$machine" | tr '[:upper:]' '[:lower:]')"
-	case "$lower" in
-		mdlaka|mhlaka|mlaka)
-			local u="${MDLAKA_SSH_USER:-umshadisi}"
-			echo "${u}@Mdlaka"
-			;;
-		*)
-			echo "$machine"
-			;;
-	esac
-}
-
 for arg in "$@"; do
-	if [[ -z "$VERSION" ]] && [[ "$arg" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+	if [[ "$arg" == "-h" || "$arg" == "--help" ]]; then
+		fleet_pipe="$(IFS=\|; echo "${FLEET_TARGETS[*]}")"
+		echo "Usage: $0 [VERSION] [all|$fleet_pipe]"
+		exit 0
+	elif [[ -z "$VERSION" ]] && [[ "$arg" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
 		VERSION="${arg#v}"
-	elif is_target "$arg"; then
-		TARGETS+=("$(normalize_target "$arg")")
 	else
-		echo "Unknown argument or invalid version: $arg" >&2
-		echo "Usage: $0 [VERSION] [Nkosikazi|Mzansi|Mdlaka|all]" >&2
-		exit 1
+		TARGETS+=("$(resolve_target "$arg")")
 	fi
 done
 
@@ -110,11 +85,11 @@ VERSION="${VERSION:-$DEFAULT_VERSION}"
 # Expand "all" or default to all if no targets specified
 FINAL_TARGETS=()
 if [[ ${#TARGETS[@]} -eq 0 ]]; then
-	FINAL_TARGETS=("${ALL_KNOWN_TARGETS[@]}")
+	FINAL_TARGETS=("${FLEET_TARGETS[@]}")
 else
 	for t in "${TARGETS[@]}"; do
 		if [[ "$t" == "all" ]]; then
-			FINAL_TARGETS=("${ALL_KNOWN_TARGETS[@]}")
+			FINAL_TARGETS=("${FLEET_TARGETS[@]}")
 			break
 		else
 			FINAL_TARGETS+=("$t")
@@ -237,18 +212,16 @@ for cmd in amafu raid iorg pits jpit; do
 done
 EOF
 
-	if [[ "$target_machine" == "Nkosikazi" ]]; then
+	if [[ "$target_machine" == "$LOCAL_TARGET" || "$target_machine" == "local" ]]; then
 		# Run locally
 		bash -s -- "$ver" <<< "$PAYLOAD_SCRIPT"
 	else
 		# Run remotely via SSH
-		local ssh_target
-		ssh_target="$(resolve_ssh_target "$target_machine")"
-		if ! ssh -o ConnectTimeout=8 -o BatchMode=yes "$ssh_target" exit 2>/dev/null; then
-			echo "  ⚠️ Warning: Cannot connect via SSH to $ssh_target (timed out or key auth needed). Skipping."
+		if ! ssh -o ConnectTimeout=8 -o BatchMode=yes "$target_machine" exit 2>/dev/null; then
+			echo "  ⚠️ Warning: Cannot connect via SSH to $target_machine (timed out or key auth needed). Skipping."
 			return 1
 		fi
-		ssh -o ConnectTimeout=15 -T "$ssh_target" "bash -s -- $ver" <<< "$PAYLOAD_SCRIPT"
+		ssh -o ConnectTimeout=15 -T "$target_machine" "bash -s -- $ver" <<< "$PAYLOAD_SCRIPT"
 	fi
 }
 
