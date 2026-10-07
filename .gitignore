@@ -30,3 +30,6 @@ bld/
 msbuild.log
 msbuild.err
 msbuild.wrn
+
+# Machine-local private corpus inventory; never publish source paths.
+doc/CR/CR052_Nkosikazi_Puml_Origins.txt
