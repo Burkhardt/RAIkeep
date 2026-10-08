@@ -31,6 +31,27 @@ die() {
 	exit 1
 }
 
+setup_release_python() {
+	local venv_dir="$HOME/.venvs/raikeep-release"
+	local module
+	[[ -f "$venv_dir/pyvenv.cfg" ]] || die "Release virtual environment is missing or invalid: $venv_dir. Create it with Python 3.12 or newer: python3 -m venv \"$venv_dir\""
+	RELEASE_PYTHON="$venv_dir/bin/python3"
+	[[ -x "$RELEASE_PYTHON" ]] || die "Release Python is missing or not executable: $RELEASE_PYTHON. Recreate $venv_dir on this machine."
+
+	# Child Python commands in validate-release.py must use this environment too.
+	# These changes apply only to this script and its children, not the caller.
+	export VIRTUAL_ENV="$venv_dir"
+	export PATH="$venv_dir/bin:$PATH"
+	unset PYTHONHOME
+	"$RELEASE_PYTHON" -c 'import sys; sys.exit(0 if sys.prefix != sys.base_prefix and sys.version_info >= (3, 12) else 1)' >/dev/null 2>&1 \
+		|| die "Release Python cannot run as a Python 3.12+ virtual environment: $RELEASE_PYTHON. Recreate $venv_dir on this machine."
+	for module in pytest build twine; do
+		"$RELEASE_PYTHON" -c "import $module" >/dev/null 2>&1 \
+			|| die "Python module '$module' is missing or cannot be imported in $venv_dir. Install release tools with: \"$RELEASE_PYTHON\" -m pip install --upgrade pip pytest build twine"
+	done
+	log "Using release Python: $RELEASE_PYTHON"
+}
+
 csproj_version() {
 	local repo_dir="$1"
 	local csproj_rel="$2"
@@ -373,7 +394,7 @@ release_python_package() {
 
 	dist_dir="$(mktemp -d "${TMPDIR:-/tmp}/raikeep-${PYTHON_PACKAGE}-${VER}.XXXXXX")"
 	log "$PYTHON_REPO: building source and wheel distributions"
-	python3 -m build --outdir "$dist_dir" "$repo_dir"
+	"$RELEASE_PYTHON" -m build --outdir "$dist_dir" "$repo_dir"
 	artifacts=("$dist_dir/${PYTHON_PACKAGE}-${VER}"*)
 	[[ -e "${artifacts[0]}" ]] || die "$PYTHON_REPO build did not produce ${PYTHON_PACKAGE}-${VER} artifacts."
 
@@ -381,7 +402,7 @@ release_python_package() {
 	ensure_tag_on_head "$repo_dir" "$PYTHON_REPO" "$TAG"
 	[[ -n "${PYPI_TOKEN:-}" ]] || die "PYPI_TOKEN is required to publish $PYTHON_PACKAGE $VER to PyPI."
 	TWINE_USERNAME=__token__ TWINE_PASSWORD="$PYPI_TOKEN" \
-		python3 -m twine upload --non-interactive "${artifacts[@]}"
+		"$RELEASE_PYTHON" -m twine upload --non-interactive "${artifacts[@]}"
 	hold_and_check_pypi
 	rm -rf "$dist_dir"
 }
@@ -562,16 +583,14 @@ resume_after_raidiagram() {
 }
 
 main() {
+	setup_release_python
 	require_cmd git
 	require_cmd gh
 	require_cmd curl
 	require_cmd dotnet
 	require_cmd sed
 	require_cmd sleep
-	require_cmd python3
 	require_cmd mktemp
-	python3 -c 'import build' >/dev/null 2>&1 || die "Python module 'build' is required (install with: python3 -m pip install build)."
-	python3 -c 'import twine' >/dev/null 2>&1 || die "Python module 'twine' is required (install with: python3 -m pip install twine)."
 	[[ -n "${PYPI_TOKEN:-}" ]] || die "PYPI_TOKEN is required for coordinated PyPI publication."
 
 	[[ $# -le 2 ]] || die "Usage: scripts/release-chain.sh [version] [--resume-after-amafu|--resume-after-oslib|--resume-after-raidiagram]"
@@ -586,7 +605,7 @@ main() {
 	fi
 	TAG="v${VER}"
 	log "Executing automated release consistency validation for $VER..."
-	python3 "$ROOT_DIR/scripts/validate-release.py" "$VER" || die "Release validation failed. Correct errors before running release chain."
+	"$RELEASE_PYTHON" "$ROOT_DIR/scripts/validate-release.py" "$VER" || die "Release validation failed. Correct errors before running release chain."
 	if [[ "$MODE" == "--resume-after-amafu" ]]; then
 		resume_after_amafu
 		return

@@ -52,6 +52,13 @@ In the JsonPit persistence model:
 - **There is no such thing as "Path Combination".** Never use or simulate `Path.Combine`.
 - Paths are composed strictly using the division operator `/` on `RaiPath`:
   ```csharp
+  // Relative or rooted paths using operator /:
+  var myPath = new RaiPath("~") / ".config";
+
+  // Fluent chaining from framework roots:
+  workspace ??= Os.TempDir / "RAIkeep" / "image-import" / Guid.NewGuid().ToString("N");
+
+  // Navigating tenant directories:
   var tenantDir = cloudRoot / tenant;
   var pitDir    = tenantDir / pitName;
   var pitFile   = new PitFile(pitDir, pitName);
@@ -97,3 +104,45 @@ Established cloud pathnames represent durable synchronization identities:
    Append strictly the modified attribute using `new PitItem(id)`.
 3. **Deletion is an Audited Lifecycle Event:**  
    Never simulate deletions with payload flags (`Deleted = true`). Use `pit.Delete(id, by)` or the CLI `pits delete-item`.
+
+---
+
+## 7. Working with Text Files: `TextFile` and `RaiFile` Idioms
+
+When working with loose text files or configuration documents outside JsonPit change streams:
+
+1. **Create from String & Save Immediately:**
+   ```csharp
+   // Constructor appends content and writes to disk in place:
+   new TextFile(filename, "this is the first line of a new textfile\nsecond line");
+   ```
+
+2. **Read from Disk Directly into Memory:**
+   ```csharp
+   // Reads directly from disk into memory (no need for ReadAllText — it's a text file, we know it's text):
+   var tf = new TextFile(filename).Read();
+   ```
+
+3. **Incremental In-Place Mutation:**
+   ```csharp
+   var tf = new TextFile(filename);
+   tf.Append("additional line");
+   tf.Save(); // In-place non-destructive write (CR003)
+   ```
+
+4. **Object-Oriented Content Mutation vs. File Removal:**
+   `TextFile` provides a clean in-memory buffer model with change tracking:
+   ```csharp
+   // Manipulate lines in memory with change tracking:
+   tf.Delete(0);          // Removes the first line in memory and registers Changed = true
+   tf.Save();             // Persists the updated lines to disk
+
+   // Truncate/empty a file cleanly by chaining:
+   tf.DeleteAll().Save(); // Clears all lines in memory and commits the empty file to disk
+
+   // Remove the physical file entirely from disk:
+   tf.rm();               // TextFile inherits POSIX rm() from RaiFile
+   new RaiFile(path).rm();
+   ```
+
+
