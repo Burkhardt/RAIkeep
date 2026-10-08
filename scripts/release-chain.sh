@@ -137,7 +137,7 @@ ensure_tag_on_head() {
 		fi
 		log "$name: creating and pushing tag $tag"
 		if [[ -z "$local_tag_sha" ]]; then
-			git -C "$repo_dir" tag "$tag"
+			git -C "$repo_dir" tag -a "$tag" -m "$name $tag"
 		fi
 		git -C "$repo_dir" push origin "refs/tags/$tag"
 		return

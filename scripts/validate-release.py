@@ -157,6 +157,82 @@ class ReleaseValidator:
 				return
 			self.pass_check()
 
+	def validate_cli_help_parity(self) -> None:
+		"""Exercises the conditional WWWA help block of both public CLIs."""
+		with tempfile.TemporaryDirectory(prefix="raikeep-help-parity-") as temporary:
+			fixture = Path(temporary)
+			tenant = fixture / "Tenant"
+			tenant.mkdir()
+			source = fixture / "seed.json"
+			source.write_text('[{"Id":"ParitySample"}]', encoding="utf-8")
+			shared_env = os.environ.copy()
+			shared_env["NO_COLOR"] = "1"
+			python_env = shared_env.copy()
+			python_env["PYTHONPATH"] = str(self.root_dir / "JsonPit.Python")
+
+			seed = self.validate_command(
+				"pits WWWA help parity fixture seed",
+				[
+					"dotnet", "run", "--project", "PitSeeder/pits/pits.csproj", "--no-restore", "--",
+					"seed", "Person", "--source", str(source), "-r", str(tenant), "-n",
+				],
+				env=shared_env,
+			)
+			if not seed:
+				return
+
+			def run_help(command: list[str], env: dict[str, str], description: str) -> str | None:
+				try:
+					result = subprocess.run(
+						command,
+						cwd=self.root_dir,
+						env=env,
+						text=True,
+						capture_output=True,
+						check=False,
+					)
+				except OSError as ex:
+					self.error(description, None, f"Could not execute {' '.join(command)}: {ex}")
+					return None
+				if result.returncode != 0:
+					self.error(description, None, f"Command failed ({result.returncode}): {(result.stdout + result.stderr).strip()[-1000:]}")
+					return None
+				return self.normalize_parity_output(result.stdout)
+
+			pits = ["dotnet", "run", "--project", "PitSeeder/pits/pits.csproj", "--no-restore", "--"]
+			jpit = ["python3", "-m", "jsonpit.cli"]
+			bare_csharp = run_help([*pits, "--help", "-n"], shared_env, "pits default help")
+			bare_python = run_help([*jpit, "--help", "-n"], python_env, "jpit default help")
+			contextual_csharp = run_help([*pits, "--help", "-r", str(tenant), "-n"], shared_env, "pits contextual WWWA help")
+			contextual_python = run_help([*jpit, "--help", "-r", str(tenant), "-n"], python_env, "jpit contextual WWWA help")
+			explicit_csharp = run_help([*pits, "--help", "--wwwa", "-n"], shared_env, "pits explicit WWWA help")
+			explicit_python = run_help([*jpit, "--help", "--wwwa", "-n"], python_env, "jpit explicit WWWA help")
+			if any(output is None for output in [bare_csharp, bare_python, contextual_csharp, contextual_python, explicit_csharp, explicit_python]):
+				return
+
+			quartet_files = [f"{name}.pit" for name in ("Person", "Object", "Place", "Activity")]
+			if any(name in bare_csharp or name in bare_python for name in quartet_files):
+				self.error("pits/jpit default help parity", None, "Default help must omit the WWWA status block.")
+				return
+
+			def status_lines(output: str) -> list[str]:
+				return [line for line in output.split("\n") if line.startswith("\uea74 ") and ".pit" in line]
+
+			contextual_csharp_lines = status_lines(contextual_csharp)
+			contextual_python_lines = status_lines(contextual_python)
+			explicit_csharp_lines = status_lines(explicit_csharp)
+			explicit_python_lines = status_lines(explicit_python)
+			if contextual_csharp_lines != contextual_python_lines:
+				self.error("pits/jpit contextual WWWA help parity", None, f"status lines differ: pits={contextual_csharp_lines!r}; jpit={contextual_python_lines!r}")
+				return
+			if explicit_csharp_lines != explicit_python_lines:
+				self.error("pits/jpit explicit WWWA help parity", None, f"status lines differ: pits={explicit_csharp_lines!r}; jpit={explicit_python_lines!r}")
+				return
+			if len(contextual_csharp_lines) != 4 or len(explicit_csharp_lines) != 4:
+				self.error("pits/jpit WWWA help parity", None, "Expected exactly four WWWA status lines for contextual and explicit help.")
+				return
+			self.pass_check()
+
 	def validate_file_exists(self, rel_path: str) -> bool:
 		p = self.root_dir / rel_path
 		if not p.is_file():
@@ -274,8 +350,8 @@ class ReleaseValidator:
 			"PitSeeder CLI --version unit test",
 		)
 
-		# 3. Python tests and cross-runtime CLI discovery parity
-		print("\n[3/7] Running Python tests and pits/jpit list parity...")
+		# 3. Python tests and cross-runtime CLI discovery/help parity
+		print("\n[3/7] Running Python tests and pits/jpit list/help parity...")
 		python_env = os.environ.copy()
 		python_env["PYTHONPATH"] = str(self.root_dir / PYTHON_REPO[0])
 		self.validate_command(
@@ -284,6 +360,7 @@ class ReleaseValidator:
 			env=python_env,
 		)
 		self.validate_cli_list_parity()
+		self.validate_cli_help_parity()
 
 		# 4. Release Notes Existence
 		print("\n[4/7] Checking Release Notes files...")
