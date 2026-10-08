@@ -9,6 +9,14 @@ This uses [`scripts/release-manifest.json`](scripts/release-manifest.json) to de
 
 After bumping, author the narrative highlights in the scaffolded release note documents (`doc/*_RELEASE_NOTES_<ver>.md`). Commit all changes in subprojects and the umbrella before starting the release chain.
 
+## Release commit subjects
+
+The GitHub commit list is part of the release record. Use a short, plain-English
+subject that names the delivered behavior, such as `Clean EventFile naming and
+legacy hash validation` or `Add strict pits seed request`. Do not prefix a
+subject with `feat:`, `chore:`, `release:`, or `Prepare`. If a commit only
+synchronizes the coordinated line, use `Coordinated X.Y.Z release`.
+
 # How to run next time:
 
 <code>cd /Users/RSB/Projects/GitHub/RAIkeep
