@@ -12,7 +12,9 @@ from __future__ import annotations
 
 import os
 import re
+import subprocess
 import sys
+import tempfile
 from pathlib import Path
 from typing import List, Tuple
 
@@ -29,6 +31,8 @@ PACKAGE_REPOS = [
 	("PitSeeder", "PitSeeder", "pits/pits.csproj"),
 ]
 
+PYTHON_REPO = ("JsonPit.Python", "pyproject.toml")
+
 
 class ReleaseValidator:
 	def __init__(self, root_dir: Path, target_version: str):
@@ -44,6 +48,115 @@ class ReleaseValidator:
 
 	def pass_check(self) -> None:
 		self.checks_passed += 1
+
+	def validate_command(
+		self,
+		description: str,
+		command: List[str],
+		*,
+		env: dict[str, str] | None = None,
+	) -> bool:
+		"""Runs a release gate command and reports its concise diagnostics."""
+		try:
+			result = subprocess.run(
+				command,
+				cwd=self.root_dir,
+				env=env,
+				text=True,
+				capture_output=True,
+				check=False,
+			)
+		except OSError as ex:
+			self.error(description, None, f"Could not execute {' '.join(command)}: {ex}")
+			return False
+		if result.returncode == 0:
+			self.pass_check()
+			return True
+		output = (result.stdout + result.stderr).strip().replace("\n", " ")
+		self.error(description, None, f"Command failed ({result.returncode}): {output[-1000:]}")
+		return False
+
+	@staticmethod
+	def normalize_parity_output(output: str) -> str:
+		"""Normalizes only line endings for cross-runtime CLI parity."""
+		return output.replace("\r\n", "\n").strip()
+
+	def validate_cli_list_parity(self) -> None:
+		"""Exercises the public local-root list --all contract of both CLIs."""
+		with tempfile.TemporaryDirectory(prefix="raikeep-cli-parity-") as temporary:
+			fixture = Path(temporary)
+			home = fixture / "home"
+			cloud_root = fixture / "cloud-root"
+			temp_root = fixture / "temp"
+			tenant = cloud_root / "Tenant"
+			tenant.mkdir(parents=True)
+			temp_root.mkdir()
+			configuration = home / ".config" / "RAIkeep.json5"
+			configuration.parent.mkdir(parents=True)
+			configuration.write_text(
+				"{\n"
+				f'  TempDir: "{temp_root}",\n'
+				'  DefaultCloudOrder: ["ParityCloud"],\n'
+				f'  Cloud: {{ "ParityCloud": "{cloud_root}" }}\n'
+				"}\n",
+				encoding="utf-8",
+			)
+			source = Path(temporary) / "seed.json"
+			source.write_text('[{"Id":"ParitySample"}]', encoding="utf-8")
+			shared_env = os.environ.copy()
+			shared_env["HOME"] = str(home)
+
+			seed = self.validate_command(
+				"pits local parity fixture seed",
+				[
+					"dotnet", "run", "--project", "PitSeeder/pits/pits.csproj", "--no-restore", "--",
+					"seed", "Activity", "--source", str(source), "-r", str(tenant), "-n",
+				],
+				env=shared_env,
+			)
+			if not seed:
+				return
+
+			csharp = subprocess.run(
+				[
+					"dotnet", "run", "--project", "PitSeeder/pits/pits.csproj", "--no-restore", "--",
+					"list", "-r", "Tenant", "--all", "-n",
+				],
+				cwd=self.root_dir,
+				env=shared_env,
+				text=True,
+				capture_output=True,
+				check=False,
+			)
+			python_env = shared_env.copy()
+			python_env["PYTHONPATH"] = str(self.root_dir / "JsonPit.Python")
+			python = subprocess.run(
+				["python3", "-m", "jsonpit.cli", "list", "-r", "Tenant", "--all", "-n"],
+				cwd=self.root_dir,
+				env=python_env,
+				text=True,
+				capture_output=True,
+				check=False,
+			)
+			if csharp.returncode != python.returncode:
+				self.error(
+					"pits/jpit list --all parity",
+					None,
+					f"exit codes differ: pits={csharp.returncode}, jpit={python.returncode}; "
+					f"jpit: {(python.stdout + python.stderr).strip()[-500:]}",
+				)
+				return
+			csharp_output = self.normalize_parity_output(csharp.stdout)
+			python_output = self.normalize_parity_output(python.stdout)
+			if csharp_output != python_output:
+				self.error(
+					"pits/jpit list --all parity",
+					None,
+					"formatted output differs: "
+					f"pits={csharp_output!r}; jpit={python_output!r}",
+				)
+				return
+			self.pass_check()
 
 	def validate_file_exists(self, rel_path: str) -> bool:
 		p = self.root_dir / rel_path
@@ -100,8 +213,8 @@ class ReleaseValidator:
 		print(f"🔍 Validating RAIkeep Toolchain for Release {v}")
 		print(f"============================================================")
 
-		# 1. Project file versions (.csproj)
-		print("\n[1/6] Checking .csproj versions & dependencies...")
+		# 1. Project file versions (.csproj and Python package metadata)
+		print("\n[1/7] Checking package versions & dependencies...")
 		for name, repo_rel, csproj_rel in PACKAGE_REPOS:
 			rel = f"{repo_rel}/{csproj_rel}"
 			self.validate_file_contains(
@@ -132,9 +245,15 @@ class ReleaseValidator:
 							)
 						else:
 							self.pass_check()
+		self.validate_file_contains(
+			f"{PYTHON_REPO[0]}/{PYTHON_REPO[1]}",
+			rf'^version\s*=\s*"{re.escape(v)}"\s*$',
+			"jsonpit Python project version",
+			flags=re.MULTILINE,
+		)
 
 		# 2. CLI version tests
-		print("\n[2/6] Checking CLI unit tests...")
+		print("\n[2/7] Checking CLI unit tests...")
 		self.validate_file_contains(
 			"Amafu/amafu.Tests/AmafuApplicationTests.cs",
 			rf'Assert\.Equal\("amafu v{re.escape(v)}",',
@@ -156,8 +275,16 @@ class ReleaseValidator:
 			"PitSeeder CLI --version unit test",
 		)
 
-		# 3. Release Notes Existence
-		print("\n[3/6] Checking Release Notes files...")
+		# 3. Python tests and cross-runtime CLI discovery parity
+		print("\n[3/7] Running Python tests and pits/jpit list parity...")
+		self.validate_command(
+			"JsonPit.Python pytest",
+			["python3", "-m", "pytest", "JsonPit.Python/tests"],
+		)
+		self.validate_cli_list_parity()
+
+		# 4. Release Notes Existence
+		print("\n[4/7] Checking Release Notes files...")
 		# Umbrella release notes
 		self.validate_file_exists(f"doc/RAIkeep_RELEASE_NOTES_{v}.md")
 		# All child release notes
@@ -166,8 +293,8 @@ class ReleaseValidator:
 		# Amafu local release notes required by its native GitHub release workflow
 		self.validate_file_exists(f"Amafu/Amafu_RELEASE_NOTES_{v}.md")
 
-		# 4. Documentation Headers, Overviews & Scope Notes
-		print("\n[4/6] Checking documentation headers & scope notes...")
+		# 5. Documentation Headers, Overviews & Scope Notes
+		print("\n[5/7] Checking documentation headers & scope notes...")
 		self.validate_file_contains(
 			"RaidSeeder/API.md",
 			rf"# RaidSeeder command reference {re.escape(v)}",
@@ -204,8 +331,8 @@ class ReleaseValidator:
 			"RaiImage API.md scope note",
 		)
 
-		# 5. README Files, Install Snippets, and Links
-		print("\n[5/6] Checking README headings, install commands & release links...")
+		# 6. README Files, Install Snippets, and Links
+		print("\n[6/7] Checking README headings, install commands & release links...")
 		# Amafu README install snippets and platform heading
 		self.validate_file_contains(
 			"Amafu/README.md",
@@ -269,8 +396,8 @@ class ReleaseValidator:
 			"RunReleaseChain.md recommended invocation",
 		)
 
-		# 6. Scan for Stale Version Leaks in Active Install / Current Lines
-		print("\n[6/6] Scanning for stale version leaks...")
+		# 7. Scan for Stale Version Leaks in Active Install / Current Lines
+		print("\n[7/7] Scanning for stale version leaks...")
 		for name, repo_rel, _ in PACKAGE_REPOS:
 			readme_rel = f"{repo_rel}/README.md"
 			self.validate_no_stale_versions(
@@ -436,6 +563,10 @@ class ReleaseBumper:
 
 
 def main():
+	if len(sys.argv) == 2 and sys.argv[1] in {"-h", "--help"}:
+		print("Usage: python3 scripts/validate-release.py <version> [stale_version_1 stale_version_2 ...]")
+		print("   or: python3 scripts/validate-release.py --bump <new_version>")
+		return
 	if len(sys.argv) < 2:
 		print(
 			"Usage: python3 scripts/validate-release.py <version> [stale_version_1 stale_version_2 ...]"

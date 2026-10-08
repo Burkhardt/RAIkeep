@@ -194,6 +194,18 @@
 			]
 		},
 		{
+			"path": "JsonPit.Python/pyproject.toml",
+			"description": "jsonpit Python package metadata",
+			"type": "pyproject",
+			"replacements": [
+				{
+					"description": "jsonpit Python version",
+					"pattern": "(?m)^version\\s*=\\s*\"\\d+\\.\\d+\\.\\d+\"$",
+					"replacement": "version = \"{version}\""
+				}
+			]
+		},
+		{
 			"path": "Amafu/amafu.Tests/AmafuApplicationTests.cs",
 			"description": "Amafu CLI version test",
 			"type": "test",

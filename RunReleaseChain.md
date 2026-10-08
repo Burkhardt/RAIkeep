@@ -14,7 +14,7 @@ After bumping, author the narrative highlights in the scaffolded release note do
 <code>cd /Users/RSB/Projects/GitHub/RAIkeep
 scripts/release-chain.sh 4.5.5</code>
 
-The script first preflights all ten repositories: the umbrella and nine package repositories. It then pushes the prepared RAIkeep umbrella `main` if needed and applies the passed version as the umbrella tag (for example `v4.5.5`). The umbrella tag is applied before any child repository is pushed or tagged. It does not publish a NuGet package because the umbrella workflow creates the coordinated GitHub Release only.
+The script first preflights all eleven repositories: the umbrella, nine NuGet package repositories, and `JsonPit.Python`. It then pushes the prepared RAIkeep umbrella `main` if needed and applies the passed version as the umbrella tag (for example `v4.5.5`). The umbrella tag is applied before any child repository is pushed or tagged. It does not publish a NuGet package because the umbrella workflow creates the coordinated GitHub Release only.
 
 The enforced package order after that umbrella label is:
 
@@ -25,15 +25,17 @@ The enforced package order after that umbrella label is:
 - `RaiDiagram`
 - `RaidSeeder`
 - `JsonPit`
+- `JsonPit.Python`
 - `ImgSeeder`
 - `PitSeeder`
 
 ## Python coordination
 
-The release chain publishes only the C# stack. Adele owns jsonpit-python/jpit
-publication and parity checks. C# tag-based automatic version selection does
-not inspect Python releases. Before using the installer for a fully aligned
-4.5.5 setup, verify that Adele has published Python 4.5.5 as well.
+The release chain builds the `jsonpit` source distribution and wheel after C#
+`JsonPit`, uploads them to PyPI using `PYPI_TOKEN`, and waits until the exact
+PyPI version is visible before continuing with ImgSeeder and PitSeeder. It also
+validates the Python test suite and `pits list` / `jpit list` formatting before
+it creates the release labels.
 
 ## One-time Amafu publishing bootstrap
 
@@ -59,7 +61,7 @@ resume only through:
 Recovery mode preserves all existing tags, pushes a clean reviewed umbrella
 recovery commit when necessary, waits until the RaiDiagram package and
 registration endpoints both return HTTP `200`, and only then releases RaidSeeder,
-JsonPit, ImgSeeder, and PitSeeder in order. Do not manually time NuGet propagation or
+JsonPit, JsonPit.Python, ImgSeeder, and PitSeeder in order. Do not manually time NuGet propagation or
 start the remaining package workflows independently.
 
 If the inaugural Amafu publication needs recovery after its immutable tag was

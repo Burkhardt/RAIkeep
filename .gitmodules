@@ -25,3 +25,6 @@
 [submodule "RaidSeeder"]
 	path = RaidSeeder
 	url = https://github.com/Burkhardt/RaidSeeder.git
+[submodule "JsonPit.Python"]
+	path = JsonPit.Python
+	url = https://github.com/Burkhardt/jsonpit-python.git

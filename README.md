@@ -32,10 +32,12 @@ and PascalCase/D3 filename generation. CR052 adds object-slot and deployment
 PlantUML import with structured preflight diagnostics. The bounded legacy XMI
 deployment importer is retained without further expansion.
 
-All four C# CLI tools report `4.5.5`. Python/jpit releases remain separately
-coordinated with Adele; this release chain publishes only the C# stack.
+All four C# CLI tools and the Python `jpit` CLI are coordinated through this
+umbrella. The release chain validates the `jsonpit` Python test suite, checks
+`pits list` / `jpit list` parity, and publishes the matching PyPI distribution
+beside the NuGet packages.
 
-All nine packages participate in the coordinated line so fallback package dependencies remain aligned throughout the release order.
+All ten packages participate in the coordinated line so fallback package dependencies remain aligned throughout the release order.
 
 ## Documentation
 
@@ -94,13 +96,18 @@ cd /Users/RSB/Projects/GitHub/RAIkeep
 scripts/release-chain.sh 4.5.5
 ```
 
-Before publication begins, all nine child release commits and their exact submodule pointers must already be committed on the umbrella `main`. The script preflights that state, pushes the prepared umbrella `main`, and applies the passed version as its tag first. The umbrella tag publishes no NuGet package; it creates and verifies the synchronized GitHub Release before package tagging begins.
+Before publication begins, all ten child release commits and their exact submodule pointers must already be committed on the umbrella `main`. The script preflights that state, pushes the prepared umbrella `main`, and applies the passed version as its tag first. The umbrella tag publishes no NuGet package; it creates and verifies the synchronized GitHub Release before package tagging begins.
 
 It then processes packages in this exact order:
 
 ```text
-Amafu → OsLibCore → RaiUtils → RaiImage → RaiDiagram → RaidSeeder → JsonPit → ImgSeeder → PitSeeder
+Amafu → OsLibCore → RaiUtils → RaiImage → RaiDiagram → RaidSeeder → JsonPit → JsonPit.Python → ImgSeeder → PitSeeder
 ```
+
+The Python `jsonpit` distribution follows C# `JsonPit` and is published to
+PyPI before ImgSeeder and PitSeeder. Set `PYPI_TOKEN` in the release
+environment; the chain supplies it to Twine without placing it on the command
+line.
 
 For every package before the next repository is pushed/tagged:
 

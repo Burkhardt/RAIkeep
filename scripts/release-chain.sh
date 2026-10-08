@@ -9,7 +9,11 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VER="${1:-}"
 MODE="${2:-}"
+# NuGet package repositories, in dependency order. JsonPit.Python joins the
+# coordinated release separately because it builds and publishes a PyPI wheel.
 PACKAGE_REPOS=(Amafu OsLib RaiUtils RaiImage RaiDiagram RaidSeeder JsonPit ImgSeeder PitSeeder)
+PYTHON_REPO="JsonPit.Python"
+PYTHON_PACKAGE="jsonpit"
 
 require_cmd() {
 	command -v "$1" >/dev/null 2>&1 || {
@@ -33,6 +37,11 @@ csproj_version() {
 	sed -n 's:.*<Version>\([^<]*\)</Version>.*:\1:p' "$repo_dir/$csproj_rel" | head -n 1
 }
 
+python_project_version() {
+	local repo_dir="$1"
+	sed -n 's/^version[[:space:]]*=[[:space:]]*"\([^"]*\)"/\1/p' "$repo_dir/pyproject.toml" | head -n 1
+}
+
 latest_remote_tag() {
 	local repo_dir="$1"
 	git -C "$repo_dir" ls-remote --tags origin 'v[0-9]*.[0-9]*.[0-9]*' \
@@ -53,6 +62,9 @@ derive_next_patch_version() {
 			die "Remote tag mismatch: $repo latest is $latest, expected $common"
 		fi
 	done
+	latest="$(latest_remote_tag "$ROOT_DIR/$PYTHON_REPO")"
+	[[ -n "$latest" ]] || die "$PYTHON_REPO has no remote vX.Y.Z tag"
+	[[ "$latest" == "$common" ]] || die "Remote tag mismatch: $PYTHON_REPO latest is $latest, expected $common"
 
 	version="${common#v}"
 	IFS=. read -r major minor patch <<<"$version"
@@ -141,6 +153,28 @@ preflight_submodule() {
 	[[ "$recorded_sha" == "$head_sha" ]] || die "RAIkeep HEAD records $name at $recorded_sha, but its prepared HEAD is $head_sha. Commit the updated submodule pointer in RAIkeep first."
 
 	log "$name: preflight passed at $head_sha ($ahead commit(s) ahead of origin/main)"
+}
+
+preflight_python_submodule() {
+	local repo_dir="$ROOT_DIR/$PYTHON_REPO"
+	local branch current_ver recorded_sha head_sha behind ahead
+
+	assert_clean "$repo_dir" "$PYTHON_REPO"
+	branch="$(git -C "$repo_dir" branch --show-current)"
+	[[ "$branch" == "main" ]] || die "$PYTHON_REPO must be on main, but is on '$branch'."
+
+	git -C "$repo_dir" fetch origin --prune
+	read -r behind ahead <<<"$(git -C "$repo_dir" rev-list --left-right --count origin/main...HEAD)"
+	[[ "$behind" == "0" ]] || die "$PYTHON_REPO main is behind or diverged from origin/main. Synchronize it before release."
+
+	current_ver="$(python_project_version "$repo_dir")"
+	[[ "$current_ver" == "$VER" ]] || die "$PYTHON_REPO version mismatch in pyproject.toml (found $current_ver, expected $VER)"
+
+	recorded_sha="$(git -C "$ROOT_DIR" rev-parse "HEAD:$PYTHON_REPO")"
+	head_sha="$(git -C "$repo_dir" rev-parse HEAD)"
+	[[ "$recorded_sha" == "$head_sha" ]] || die "RAIkeep HEAD records $PYTHON_REPO at $recorded_sha, but its prepared HEAD is $head_sha. Commit the updated submodule pointer in RAIkeep first."
+
+	log "$PYTHON_REPO: preflight passed at $head_sha ($ahead commit(s) ahead of origin/main)"
 }
 
 release_umbrella() {
@@ -302,17 +336,67 @@ release_submodule() {
 	hold_and_check_flatcontainer "$package_id" "$VER"
 }
 
+hold_and_check_pypi() {
+	local start_e now_e elapsed code ts
+	start_e="$(date -u +%s)"
+	while true; do
+		now_e="$(date -u +%s)"
+		elapsed=$((now_e - start_e))
+		ts="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+		code="$(curl -sS -o /dev/null -w "%{http_code}\n" "https://pypi.org/pypi/${PYTHON_PACKAGE}/${VER}/json")"
+		echo "$ts package=${PYTHON_PACKAGE} elapsed=${elapsed}s pypi=${code}"
+		if [[ "$code" == "200" ]]; then
+			log "$PYTHON_PACKAGE $VER is available from PyPI"
+			return
+		fi
+		sleep 10
+	done
+}
+
+release_python_package() {
+	local repo_dir="$ROOT_DIR/$PYTHON_REPO"
+	local branch recorded_sha head_sha behind ahead current_ver dist_dir
+	local -a artifacts
+
+	log "===== $PYTHON_REPO ($TAG) ====="
+	assert_clean "$repo_dir" "$PYTHON_REPO"
+	branch="$(git -C "$repo_dir" branch --show-current)"
+	[[ "$branch" == "main" ]] || die "$PYTHON_REPO moved off main after preflight."
+	git -C "$repo_dir" fetch origin --prune
+	read -r behind ahead <<<"$(git -C "$repo_dir" rev-list --left-right --count origin/main...HEAD)"
+	[[ "$behind" == "0" ]] || die "$PYTHON_REPO origin/main advanced after preflight. Stop before tagging an unexpected state."
+	recorded_sha="$(git -C "$ROOT_DIR" rev-parse "HEAD:$PYTHON_REPO")"
+	head_sha="$(git -C "$repo_dir" rev-parse HEAD)"
+	[[ "$recorded_sha" == "$head_sha" ]] || die "$PYTHON_REPO HEAD changed after the umbrella label was created."
+	current_ver="$(python_project_version "$repo_dir")"
+	[[ "$current_ver" == "$VER" ]] || die "$PYTHON_REPO version mismatch in pyproject.toml (found $current_ver, expected $VER)"
+
+	dist_dir="$(mktemp -d "${TMPDIR:-/tmp}/raikeep-${PYTHON_PACKAGE}-${VER}.XXXXXX")"
+	log "$PYTHON_REPO: building source and wheel distributions"
+	python3 -m build --outdir "$dist_dir" "$repo_dir"
+	artifacts=("$dist_dir/${PYTHON_PACKAGE}-${VER}"*)
+	[[ -e "${artifacts[0]}" ]] || die "$PYTHON_REPO build did not produce ${PYTHON_PACKAGE}-${VER} artifacts."
+
+	push_main_if_needed "$repo_dir" "$PYTHON_REPO"
+	ensure_tag_on_head "$repo_dir" "$PYTHON_REPO" "$TAG"
+	[[ -n "${PYPI_TOKEN:-}" ]] || die "PYPI_TOKEN is required to publish $PYTHON_PACKAGE $VER to PyPI."
+	TWINE_USERNAME=__token__ TWINE_PASSWORD="$PYPI_TOKEN" \
+		python3 -m twine upload --non-interactive "${artifacts[@]}"
+	hold_and_check_pypi
+	rm -rf "$dist_dir"
+}
+
 verify_parent_pointers_unchanged() {
 	local parent_dir="$ROOT_DIR"
 	local changed
 
-	changed="$(git -C "$parent_dir" status --porcelain --untracked-files=no -- Amafu OsLib RaiUtils RaiImage RaiDiagram RaidSeeder JsonPit ImgSeeder PitSeeder || true)"
+	changed="$(git -C "$parent_dir" status --porcelain --untracked-files=no -- Amafu OsLib RaiUtils RaiImage RaiDiagram RaidSeeder JsonPit JsonPit.Python ImgSeeder PitSeeder || true)"
 	[[ -z "$changed" ]] || die "RAIkeep submodule pointers changed after umbrella label $TAG was created. Stop and investigate; the label must describe the exact released commits."
 	log "RAIkeep: submodule pointers still match umbrella label $TAG"
 }
 
 final_visibility_summary() {
-	log "===== Final NuGet visibility checks ====="
+	log "===== Final package visibility checks ====="
 
 	local check_url package_code registration_code
 	check_url() {
@@ -333,6 +417,10 @@ final_visibility_summary() {
 	check_url jsonpit
 	check_url imgseeder
 	check_url pitseeder
+	local pypi_code
+	pypi_code="$(curl -sS -o /dev/null -w "%{http_code}\n" "https://pypi.org/pypi/${PYTHON_PACKAGE}/${VER}/json")"
+	echo "$PYTHON_PACKAGE pypi=$pypi_code"
+	[[ "$pypi_code" == "200" ]] || die "$PYTHON_PACKAGE $VER is not fully visible at the final release gate."
 }
 
 prepare_recovery() {
@@ -364,16 +452,18 @@ resume_after_amafu() {
 	assert_tagged_submodule_pointer "RaiDiagram" "RaiDiagram"
 	assert_tagged_submodule_pointer "RaidSeeder" "RaidSeeder"
 	assert_tagged_submodule_pointer "JsonPit" "JsonPit"
+	assert_tagged_submodule_pointer "$PYTHON_REPO" "$PYTHON_REPO"
 	assert_tagged_submodule_pointer "ImgSeeder" "ImgSeeder"
 	assert_tagged_submodule_pointer "PitSeeder" "PitSeeder"
 
-	log "Preflighting the eight unpublished packages"
+	log "Preflighting the nine unpublished packages"
 	preflight_submodule "OsLib" "OsLib" "OsLib.csproj"
 	preflight_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj"
 	preflight_submodule "RaiImage" "RaiImage" "RaiImage.csproj"
 	preflight_submodule "RaiDiagram" "RaiDiagram" "RaiDiagram.csproj"
 	preflight_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj"
 	preflight_submodule "JsonPit" "JsonPit" "JsonPit.csproj"
+	preflight_python_submodule
 	preflight_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj"
 	preflight_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj"
 
@@ -383,6 +473,7 @@ resume_after_amafu() {
 	release_submodule "RaiDiagram" "RaiDiagram" "RaiDiagram.csproj" "RaiDiagram.slnx" "raidiagram" "publish-nuget.yaml"
 	release_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj" "RaidSeeder.slnx" "raidseeder" "publish-nuget.yaml"
 	release_submodule "JsonPit" "JsonPit" "JsonPit.csproj" "JsonPit.slnx" "jsonpit" "publish-nuget.yml"
+	release_python_package
 	release_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj" "ImgSeeder.slnx" "imgseeder" "publish-nuget.yaml"
 	release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "PitSeeder.slnx" "pitseeder" "publish-nuget.yaml"
 
@@ -403,15 +494,17 @@ resume_after_oslib() {
 	assert_tagged_submodule_pointer "RaiDiagram" "RaiDiagram"
 	assert_tagged_submodule_pointer "RaidSeeder" "RaidSeeder"
 	assert_tagged_submodule_pointer "JsonPit" "JsonPit"
+	assert_tagged_submodule_pointer "$PYTHON_REPO" "$PYTHON_REPO"
 	assert_tagged_submodule_pointer "ImgSeeder" "ImgSeeder"
 	assert_tagged_submodule_pointer "PitSeeder" "PitSeeder"
 
-	log "Preflighting the seven unpublished packages"
+	log "Preflighting the eight unpublished packages"
 	preflight_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj"
 	preflight_submodule "RaiImage" "RaiImage" "RaiImage.csproj"
 	preflight_submodule "RaiDiagram" "RaiDiagram" "RaiDiagram.csproj"
 	preflight_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj"
 	preflight_submodule "JsonPit" "JsonPit" "JsonPit.csproj"
+	preflight_python_submodule
 	preflight_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj"
 	preflight_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj"
 
@@ -420,6 +513,7 @@ resume_after_oslib() {
 	release_submodule "RaiDiagram" "RaiDiagram" "RaiDiagram.csproj" "RaiDiagram.slnx" "raidiagram" "publish-nuget.yaml"
 	release_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj" "RaidSeeder.slnx" "raidseeder" "publish-nuget.yaml"
 	release_submodule "JsonPit" "JsonPit" "JsonPit.csproj" "JsonPit.slnx" "jsonpit" "publish-nuget.yml"
+	release_python_package
 	release_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj" "ImgSeeder.slnx" "imgseeder" "publish-nuget.yaml"
 	release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "PitSeeder.slnx" "pitseeder" "publish-nuget.yaml"
 
@@ -441,22 +535,26 @@ resume_after_raidiagram() {
 
 	assert_tagged_submodule_pointer "RaidSeeder" "RaidSeeder"
 	assert_tagged_submodule_pointer "JsonPit" "JsonPit"
+	assert_tagged_submodule_pointer "$PYTHON_REPO" "$PYTHON_REPO"
 	assert_tagged_submodule_pointer "ImgSeeder" "ImgSeeder"
 	assert_tagged_submodule_pointer "PitSeeder" "PitSeeder"
 
-	log "Preflighting the four unpublished packages"
+	log "Preflighting the five unpublished packages"
 	preflight_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj"
 	preflight_submodule "JsonPit" "JsonPit" "JsonPit.csproj"
+	preflight_python_submodule
 	preflight_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj"
 	preflight_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj"
 
 	release_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj" "RaidSeeder.slnx" "raidseeder" "publish-nuget.yaml"
 	release_submodule "JsonPit" "JsonPit" "JsonPit.csproj" "JsonPit.slnx" "jsonpit" "publish-nuget.yml"
+	release_python_package
 	release_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj" "ImgSeeder.slnx" "imgseeder" "publish-nuget.yaml"
 	release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "PitSeeder.slnx" "pitseeder" "publish-nuget.yaml"
 
 	assert_tagged_submodule_pointer "RaidSeeder" "RaidSeeder"
 	assert_tagged_submodule_pointer "JsonPit" "JsonPit"
+	assert_tagged_submodule_pointer "$PYTHON_REPO" "$PYTHON_REPO"
 	assert_tagged_submodule_pointer "ImgSeeder" "ImgSeeder"
 	assert_tagged_submodule_pointer "PitSeeder" "PitSeeder"
 	final_visibility_summary
@@ -471,6 +569,10 @@ main() {
 	require_cmd sed
 	require_cmd sleep
 	require_cmd python3
+	require_cmd mktemp
+	python3 -c 'import build' >/dev/null 2>&1 || die "Python module 'build' is required (install with: python3 -m pip install build)."
+	python3 -c 'import twine' >/dev/null 2>&1 || die "Python module 'twine' is required (install with: python3 -m pip install twine)."
+	[[ -n "${PYPI_TOKEN:-}" ]] || die "PYPI_TOKEN is required for coordinated PyPI publication."
 
 	[[ $# -le 2 ]] || die "Usage: scripts/release-chain.sh [version] [--resume-after-amafu|--resume-after-oslib|--resume-after-raidiagram]"
 	if [[ -n "$MODE" && "$MODE" != "--resume-after-amafu" && "$MODE" != "--resume-after-oslib" && "$MODE" != "--resume-after-raidiagram" ]]; then
@@ -497,9 +599,9 @@ main() {
 	fi
 
 	log "Release chain start for $VER"
-	log "Order: RAIkeep umbrella release -> Amafu -> OsLib -> RaiUtils -> RaiImage -> RaiDiagram -> RaidSeeder -> JsonPit -> ImgSeeder -> PitSeeder"
+	log "Order: RAIkeep umbrella release -> Amafu -> OsLib -> RaiUtils -> RaiImage -> RaiDiagram -> RaidSeeder -> JsonPit -> JsonPit.Python -> ImgSeeder -> PitSeeder"
 
-	log "Preflighting all nine packages before labeling RAIkeep"
+	log "Preflighting all ten packages before labeling RAIkeep"
 	preflight_submodule "Amafu" "Amafu" "amafu/amafu.csproj"
 	preflight_submodule "OsLib" "OsLib" "OsLib.csproj"
 	preflight_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj"
@@ -507,6 +609,7 @@ main() {
 	preflight_submodule "RaiDiagram" "RaiDiagram" "RaiDiagram.csproj"
 	preflight_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj"
 	preflight_submodule "JsonPit" "JsonPit" "JsonPit.csproj"
+	preflight_python_submodule
 	preflight_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj"
 	preflight_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj"
 
@@ -519,6 +622,7 @@ main() {
 	release_submodule "RaiDiagram" "RaiDiagram" "RaiDiagram.csproj" "RaiDiagram.slnx" "raidiagram" "publish-nuget.yaml"
 	release_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj" "RaidSeeder.slnx" "raidseeder" "publish-nuget.yaml"
 	release_submodule "JsonPit" "JsonPit" "JsonPit.csproj" "JsonPit.slnx" "jsonpit" "publish-nuget.yml"
+	release_python_package
 	release_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj" "ImgSeeder.slnx" "imgseeder" "publish-nuget.yaml"
 	release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "PitSeeder.slnx" "pitseeder" "publish-nuget.yaml"
 
