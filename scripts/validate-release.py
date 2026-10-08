@@ -112,7 +112,6 @@ class ReleaseValidator:
 					"dotnet", "run", "--project", "PitSeeder/pits/pits.csproj", "--no-restore", "--",
 					"seed", "Activity", "--source", str(source), "-r", str(tenant), "-n",
 				],
-				env=shared_env,
 			)
 			if not seed:
 				return
@@ -277,9 +276,12 @@ class ReleaseValidator:
 
 		# 3. Python tests and cross-runtime CLI discovery parity
 		print("\n[3/7] Running Python tests and pits/jpit list parity...")
+		python_env = os.environ.copy()
+		python_env["PYTHONPATH"] = str(self.root_dir / PYTHON_REPO[0])
 		self.validate_command(
 			"JsonPit.Python pytest",
 			["python3", "-m", "pytest", "JsonPit.Python/tests"],
+			env=python_env,
 		)
 		self.validate_cli_list_parity()
 
