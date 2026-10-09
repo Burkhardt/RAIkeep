@@ -326,6 +326,12 @@ class ReleaseValidator:
 			"jsonpit Python project version",
 			flags=re.MULTILINE,
 		)
+		self.validate_file_contains(
+			f"{PYTHON_REPO[0]}/jsonpit/__init__.py",
+			rf'^__version__\s*=\s*"{re.escape(v)}"\s*$',
+			"jsonpit Python package __version__",
+			flags=re.MULTILINE,
+		)
 
 		# 2. CLI version tests
 		print("\n[2/7] Checking CLI unit tests...")
