@@ -24,13 +24,13 @@ validation, dependency-order documentation, and sequential release automation.
 
 ## Current release line
 
-The prepared coordinated release is `4.5.5`. RAI starts the release chain
+The prepared coordinated release is `4.5.7`. RAI starts the release chain
 manually after reviewing the prepared commits and verification results.
 
-RAIkeep 4.5.6 implements CR058 help parity and WWWA status block parity,
-and PascalCase/D3 filename generation. CR052 adds object-slot and deployment
-PlantUML import with structured preflight diagnostics. The bounded legacy XMI
-deployment importer is retained without further expansion.
+RAIkeep 4.5.7 implements CR059: native SSH dispatch for the typed fleet
+wrappers, sandboxed Deno execution requests, and typed Amafu, raid, and jpit
+command composition. RaiImage exposes the same fluent SSH path for ImageMagick
+workloads.
 
 All four C# CLI tools and the Python `jpit` CLI are coordinated through this
 umbrella. The release chain validates the `jsonpit` Python test suite, checks
@@ -49,18 +49,18 @@ The [RAIkeep Manifesto](https://github.com/Burkhardt/RAIkeep/blob/main/MANIFESTO
 explains why transparent, historical JSON matters for agentic engineering and
 defines JsonPit's asynchronous persistence and eventual-durability model.
 
-Current coordinated 4.5.5 release notes:
+Current coordinated 4.5.7 release notes:
 
-- [Amafu 4.5.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/Amafu_RELEASE_NOTES_4.5.5.md)
-- [OsLibCore 4.5.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.5.5.md)
-- [RaiUtils 4.5.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.5.5.md)
-- [RaiImage 4.5.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.5.5.md)
-- [RaiDiagram 4.5.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.5.5.md)
-- [RaidSeeder 4.5.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaidSeeder_RELEASE_NOTES_4.5.5.md)
-- [JsonPit 4.5.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.5.5.md)
-- [ImgSeeder 4.5.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.5.5.md)
-- [PitSeeder 4.5.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.5.5.md)
-- [RAIkeep 4.5.6](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.5.6.md)
+- [Amafu 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/Amafu_RELEASE_NOTES_4.5.7.md)
+- [OsLibCore 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.5.7.md)
+- [RaiUtils 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.5.7.md)
+- [RaiImage 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_4.5.7.md)
+- [RaiDiagram 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_4.5.7.md)
+- [RaidSeeder 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaidSeeder_RELEASE_NOTES_4.5.7.md)
+- [JsonPit 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.5.7.md)
+- [ImgSeeder 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.5.7.md)
+- [PitSeeder 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.5.7.md)
+- [RAIkeep 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.5.7.md)
 
 The prior coordinated line remains documented in [RAIkeep 4.1.0 release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.1.0.md).
 
@@ -93,7 +93,7 @@ After approval, use one release mechanism for the chain. The established local o
 
 ```bash
 cd /Users/RSB/Projects/GitHub/RAIkeep
-scripts/release-chain.sh 4.5.5
+scripts/release-chain.sh 4.5.7
 ```
 
 Before publication begins, all ten child release commits and their exact submodule pointers must already be committed on the umbrella `main`. The script preflights that state, pushes the prepared umbrella `main`, and applies the passed version as its tag first. The umbrella tag publishes no NuGet package; it creates and verifies the synchronized GitHub Release before package tagging begins.
