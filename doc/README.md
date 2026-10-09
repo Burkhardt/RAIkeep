@@ -11,7 +11,7 @@ Do not add `RELEASE_NOTES*.md` or `CR_*.md` files to child-project directories. 
 
 ## Current coordinated release notes
 
-- [RAIkeep 4.5.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.5.5.md)
+- [RAIkeep 4.5.6](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.5.6.md)
 - [Amafu 4.5.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/Amafu_RELEASE_NOTES_4.5.5.md)
 - [OsLibCore 4.5.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_4.5.5.md)
 - [RaiUtils 4.5.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_4.5.5.md)

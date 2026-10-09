@@ -27,7 +27,7 @@ validation, dependency-order documentation, and sequential release automation.
 The prepared coordinated release is `4.5.5`. RAI starts the release chain
 manually after reviewing the prepared commits and verification results.
 
-RAIkeep 4.5.5 implements CR054 compact image range receipts, explicit EXIF details,
+RAIkeep 4.5.6 implements CR058 help parity and WWWA status block parity,
 and PascalCase/D3 filename generation. CR052 adds object-slot and deployment
 PlantUML import with structured preflight diagnostics. The bounded legacy XMI
 deployment importer is retained without further expansion.
@@ -60,7 +60,7 @@ Current coordinated 4.5.5 release notes:
 - [JsonPit 4.5.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.5.5.md)
 - [ImgSeeder 4.5.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.5.5.md)
 - [PitSeeder 4.5.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.5.5.md)
-- [RAIkeep 4.5.5](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.5.5.md)
+- [RAIkeep 4.5.6](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.5.6.md)
 
 The prior coordinated line remains documented in [RAIkeep 4.1.0 release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.1.0.md).
 
