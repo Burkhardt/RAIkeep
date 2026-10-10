@@ -4,7 +4,7 @@
 - Coordination tag: `v4.5.8`
 
 ## Highlights
-<!-- LLM / Author: summarize key architectural highlights and changes here -->
+- Coordinated release aligned with the 4.5.8 synchronized platform line.
 
 ## Coordinated Dependencies
 - Aligned with RAIkeep synchronized `4.5.8` line.
