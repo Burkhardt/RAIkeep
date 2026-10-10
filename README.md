@@ -2,9 +2,9 @@
 
 ## Terminal font for RAIkeep CLIs
 
-Amafu (`amafu`), RaidSeeder (`raid`), ImgSeeder (`iorg`), and PitSeeder (`pits`) use embedded Nerd Font provider and numbered-option glyphs in their help output. Installation instructions for Blink on iPadOS, macOS, and Ubuntu—including the Blink CSS font-family stylesheet URL—are in [TERMINAL_FONTS.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/TERMINAL_FONTS.md).
+Amafu (`amafu`), RaidSeeder (`raid`), ImgSeeder (`iorg`), PitSeeder (`pits`), and RaiGuard (`rail`) use embedded Nerd Font provider and numbered-option glyphs in their help output. Installation instructions for Blink on iPadOS, macOS, and Ubuntu—including the Blink CSS font-family stylesheet URL—are in [TERMINAL_FONTS.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/TERMINAL_FONTS.md).
 
-`RAIkeep` is the umbrella workspace for five related .NET libraries and four command-line packages:
+`RAIkeep` is the umbrella workspace for shared .NET libraries and six command-line tools:
 
 | Order | Repository | Package / command | Current or upcoming role |
 |---:|---|---|---|
@@ -17,6 +17,7 @@ Amafu (`amafu`), RaidSeeder (`raid`), ImgSeeder (`iorg`), and PitSeeder (`pits`)
 | 7 | `JsonPit` | `JsonPit` | 4.5.5 synchronized persistence line |
 | 8 | `ImgSeeder` | `ImgSeeder` / `iorg` | 4.5.5 synchronized image-management line |
 | 9 | `PitSeeder` | `PitSeeder` / `pits` | 4.5.5 live-ID preflight and stdin ingestion |
+| 10 | `RaiGuard` | `RaiGuard` / `rail` | 4.5.8 Roslyn guardrails and source refactoring tool |
 
 Each child remains its own Git repository, package, solution, and release
 workflow. The umbrella workspace supplies local project wiring, coordinated
@@ -32,12 +33,12 @@ wrappers, sandboxed Deno execution requests, and typed Amafu, raid, and jpit
 command composition. RaiImage exposes the same fluent SSH path for ImageMagick
 workloads.
 
-All four C# CLI tools and the Python `jpit` CLI are coordinated through this
+All five C# CLI tools and the Python `jpit` CLI are coordinated through this
 umbrella. The release chain validates the `jsonpit` Python test suite, checks
 `pits list` / `jpit list` parity, and publishes the matching PyPI distribution
 beside the NuGet packages.
 
-All ten packages participate in the coordinated line so fallback package dependencies remain aligned throughout the release order.
+All eleven packages participate in the coordinated line so fallback package dependencies remain aligned throughout the release order.
 
 ## Documentation
 
@@ -60,6 +61,7 @@ Current coordinated 4.5.7 release notes:
 - [JsonPit 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.5.7.md)
 - [ImgSeeder 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.5.7.md)
 - [PitSeeder 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.5.7.md)
+- [RaiGuard 4.5.8](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiGuard_RELEASE_NOTES_4.5.8.md)
 - [RAIkeep 4.5.8](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.5.8.md)
 
 The prior coordinated line remains documented in [RAIkeep 4.1.0 release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.1.0.md).
@@ -96,7 +98,7 @@ cd /Users/RSB/Projects/GitHub/RAIkeep
 scripts/release-chain.sh 4.5.7
 ```
 
-Before publication begins, all ten child release commits and their exact submodule pointers must already be committed on the umbrella `main`. The script preflights that state, pushes the prepared umbrella `main`, and applies the passed version as its tag first. The umbrella tag publishes no NuGet package; it creates and verifies the synchronized GitHub Release before package tagging begins.
+Before publication begins, all eleven child release commits and their exact submodule pointers must already be committed on the umbrella `main`. The script preflights that state, pushes the prepared umbrella `main`, and applies the passed version as its tag first. The umbrella tag publishes no NuGet package; it creates and verifies the synchronized GitHub Release before package tagging begins.
 
 It then processes packages in this exact order:
 

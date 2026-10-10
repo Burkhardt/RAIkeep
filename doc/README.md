@@ -21,6 +21,7 @@ Do not add `RELEASE_NOTES*.md` or `CR_*.md` files to child-project directories. 
 - [JsonPit 4.5.8](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.5.8.md)
 - [ImgSeeder 4.5.8](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.5.8.md)
 - [PitSeeder 4.5.8](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.5.8.md)
+- [RaiGuard 4.5.8](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiGuard_RELEASE_NOTES_4.5.8.md)
 
 - [CR051](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR/CR051_RAI_to_RAIkeep_Multiple-Cloud-Accounts-and-Named-Shortcuts.md) — multiple cloud accounts, named shortcuts, personal OneDrive selection, and noninteractive reconciliation.
 - [CR049](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR/CR049_AIA_and_jsonpit_to_RAIkeep_Live-ID-Validation_and_Zip-Image-Import.md) — live-ID validation, ZIP image import, stdin receipts, and EXIF clarifications.

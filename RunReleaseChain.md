@@ -5,7 +5,7 @@ As preprocessing, prepare the release using the automated bumping engine:
 <code>cd /Users/RSB/Projects/GitHub/RAIkeep
 ./scripts/bump-version.py 4.5.8</code>
 
-This uses [`scripts/release-manifest.json`](scripts/release-manifest.json) to deterministically update all project files, code constants, CLI tests, and documentation, and scaffolds the 10 release note files. If any new version-tracked file is introduced, simply add its path and replacement rule to `scripts/release-manifest.json`.
+This uses [`scripts/release-manifest.json`](scripts/release-manifest.json) to deterministically update all project files, code constants, CLI tests, and documentation, and scaffolds the 11 release note files. If any new version-tracked file is introduced, simply add its path and replacement rule to `scripts/release-manifest.json`.
 
 After bumping, author the narrative highlights in the scaffolded release note documents (`doc/*_RELEASE_NOTES_<ver>.md`). Commit all changes in subprojects and the umbrella before starting the release chain.
 
@@ -22,7 +22,7 @@ synchronizes the coordinated line, use `Coordinated X.Y.Z release`.
 <code>cd /Users/RSB/Projects/GitHub/RAIkeep
 scripts/release-chain.sh 4.5.8</code>
 
-The script first preflights all eleven repositories: the umbrella, nine NuGet package repositories, and `JsonPit.Python`. It then pushes the prepared RAIkeep umbrella `main` if needed and applies the passed version as the umbrella tag (for example `v4.5.8`). The umbrella tag is applied before any child repository is pushed or tagged. It does not publish a NuGet package because the umbrella workflow creates the coordinated GitHub Release only.
+The script first preflights all twelve repositories: the umbrella, ten NuGet package repositories, and `JsonPit.Python`. It then pushes the prepared RAIkeep umbrella `main` if needed and applies the passed version as the umbrella tag (for example `v4.5.8`). The umbrella tag is applied before any child repository is pushed or tagged. It does not publish a NuGet package because the umbrella workflow creates the coordinated GitHub Release only.
 
 The enforced package order after that umbrella label is:
 
@@ -36,6 +36,7 @@ The enforced package order after that umbrella label is:
 - `JsonPit.Python`
 - `ImgSeeder`
 - `PitSeeder`
+- `RaiGuard`
 
 ## Python coordination
 
@@ -69,7 +70,7 @@ resume only through:
 Recovery mode preserves all existing tags, pushes a clean reviewed umbrella
 recovery commit when necessary, waits until the RaiDiagram package and
 registration endpoints both return HTTP `200`, and only then releases RaidSeeder,
-JsonPit, JsonPit.Python, ImgSeeder, and PitSeeder in order. Do not manually time NuGet propagation or
+JsonPit, JsonPit.Python, ImgSeeder, PitSeeder, and RaiGuard in order. Do not manually time NuGet propagation or
 start the remaining package workflows independently.
 
 If the inaugural Amafu publication needs recovery after its immutable tag was

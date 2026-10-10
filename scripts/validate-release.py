@@ -18,7 +18,7 @@ import tempfile
 from pathlib import Path
 from typing import List, Tuple
 
-# All 9 coordinated child repositories in dependency order
+# All 10 coordinated .NET child repositories in dependency order
 PACKAGE_REPOS = [
 	("Amafu", "Amafu", "amafu/amafu.csproj"),
 	("OsLib", "OsLib", "OsLib.csproj"),
@@ -29,9 +29,11 @@ PACKAGE_REPOS = [
 	("JsonPit", "JsonPit", "JsonPit.csproj"),
 	("ImgSeeder", "ImgSeeder", "ImgSeeder.csproj"),
 	("PitSeeder", "PitSeeder", "pits/pits.csproj"),
+	("RaiGuard", "RaiGuard", "rail/rail.csproj"),
 ]
 
 PYTHON_REPO = ("JsonPit.Python", "pyproject.toml")
+CENTRAL_RELEASE_NOTES_ONLY = {"RaiGuard"}
 
 
 class ReleaseValidator:
@@ -453,16 +455,17 @@ class ReleaseValidator:
 				rf"## {re.escape(v)}",
 				f"{name} README ## {v} section",
 			)
-			self.validate_file_contains(
-				readme_rel,
-				rf"{name}_RELEASE_NOTES_{re.escape(v)}\.md",
-				f"{name} README release notes link",
-			)
-			self.validate_file_contains(
-				readme_rel,
-				rf"Latest release notes:.*{name}_RELEASE_NOTES_{re.escape(v)}\.md",
-				f"{name} README Latest release notes link",
-			)
+			if name not in CENTRAL_RELEASE_NOTES_ONLY:
+				self.validate_file_contains(
+					readme_rel,
+					rf"{name}_RELEASE_NOTES_{re.escape(v)}\.md",
+					f"{name} README release notes link",
+				)
+				self.validate_file_contains(
+					readme_rel,
+					rf"Latest release notes:.*{name}_RELEASE_NOTES_{re.escape(v)}\.md",
+					f"{name} README Latest release notes link",
+				)
 
 		# Umbrella README.md and doc/README.md
 		self.validate_file_contains(

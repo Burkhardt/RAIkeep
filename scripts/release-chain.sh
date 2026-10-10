@@ -11,7 +11,7 @@ VER="${1:-}"
 MODE="${2:-}"
 # NuGet package repositories, in dependency order. JsonPit.Python joins the
 # coordinated release separately because it builds and publishes a PyPI wheel.
-PACKAGE_REPOS=(Amafu OsLib RaiUtils RaiImage RaiDiagram RaidSeeder JsonPit ImgSeeder PitSeeder)
+PACKAGE_REPOS=(Amafu OsLib RaiUtils RaiImage RaiDiagram RaidSeeder JsonPit ImgSeeder PitSeeder RaiGuard)
 PYTHON_REPO="JsonPit.Python"
 PYTHON_PACKAGE="jsonpit"
 
@@ -357,6 +357,11 @@ release_submodule() {
 	hold_and_check_flatcontainer "$package_id" "$VER"
 }
 
+release_raiguard() {
+	release_submodule "RaiGuard" "RaiGuard" "rail/rail.csproj" "RaiGuard.slnx" "raiguard" "publish.yaml"
+	hold_and_check_flatcontainer "raiguard.analyzer" "$VER"
+}
+
 hold_and_check_pypi() {
 	local start_e now_e elapsed code ts
 	start_e="$(date -u +%s)"
@@ -411,7 +416,7 @@ verify_parent_pointers_unchanged() {
 	local parent_dir="$ROOT_DIR"
 	local changed
 
-	changed="$(git -C "$parent_dir" status --porcelain --untracked-files=no -- Amafu OsLib RaiUtils RaiImage RaiDiagram RaidSeeder JsonPit JsonPit.Python ImgSeeder PitSeeder || true)"
+	changed="$(git -C "$parent_dir" status --porcelain --untracked-files=no -- Amafu OsLib RaiUtils RaiImage RaiDiagram RaidSeeder JsonPit JsonPit.Python ImgSeeder PitSeeder RaiGuard || true)"
 	[[ -z "$changed" ]] || die "RAIkeep submodule pointers changed after umbrella label $TAG was created. Stop and investigate; the label must describe the exact released commits."
 	log "RAIkeep: submodule pointers still match umbrella label $TAG"
 }
@@ -438,6 +443,8 @@ final_visibility_summary() {
 	check_url jsonpit
 	check_url imgseeder
 	check_url pitseeder
+	check_url raiguard
+	check_url raiguard.analyzer
 	local pypi_code
 	pypi_code="$(curl -sS -o /dev/null -w "%{http_code}\n" "https://pypi.org/pypi/${PYTHON_PACKAGE}/${VER}/json")"
 	echo "$PYTHON_PACKAGE pypi=$pypi_code"
@@ -476,8 +483,9 @@ resume_after_amafu() {
 	assert_tagged_submodule_pointer "$PYTHON_REPO" "$PYTHON_REPO"
 	assert_tagged_submodule_pointer "ImgSeeder" "ImgSeeder"
 	assert_tagged_submodule_pointer "PitSeeder" "PitSeeder"
+	assert_tagged_submodule_pointer "RaiGuard" "RaiGuard"
 
-	log "Preflighting the nine unpublished packages"
+	log "Preflighting the ten unpublished packages"
 	preflight_submodule "OsLib" "OsLib" "OsLib.csproj"
 	preflight_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj"
 	preflight_submodule "RaiImage" "RaiImage" "RaiImage.csproj"
@@ -487,6 +495,7 @@ resume_after_amafu() {
 	preflight_python_submodule
 	preflight_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj"
 	preflight_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj"
+	preflight_submodule "RaiGuard" "RaiGuard" "rail/rail.csproj"
 
 	release_submodule "OsLib" "OsLib" "OsLib.csproj" "OsLib.slnx" "oslibcore" "publish-nuget.yml"
 	release_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj" "RaiUtils.slnx" "raiutils" "publish-nuget.yml"
@@ -497,6 +506,7 @@ resume_after_amafu() {
 	release_python_package
 	release_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj" "ImgSeeder.slnx" "imgseeder" "publish-nuget.yaml"
 	release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "PitSeeder.slnx" "pitseeder" "publish-nuget.yaml"
+	release_raiguard
 
 	verify_parent_pointers_unchanged
 	final_visibility_summary
@@ -518,8 +528,9 @@ resume_after_oslib() {
 	assert_tagged_submodule_pointer "$PYTHON_REPO" "$PYTHON_REPO"
 	assert_tagged_submodule_pointer "ImgSeeder" "ImgSeeder"
 	assert_tagged_submodule_pointer "PitSeeder" "PitSeeder"
+	assert_tagged_submodule_pointer "RaiGuard" "RaiGuard"
 
-	log "Preflighting the eight unpublished packages"
+	log "Preflighting the nine unpublished packages"
 	preflight_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj"
 	preflight_submodule "RaiImage" "RaiImage" "RaiImage.csproj"
 	preflight_submodule "RaiDiagram" "RaiDiagram" "RaiDiagram.csproj"
@@ -528,6 +539,7 @@ resume_after_oslib() {
 	preflight_python_submodule
 	preflight_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj"
 	preflight_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj"
+	preflight_submodule "RaiGuard" "RaiGuard" "rail/rail.csproj"
 
 	release_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj" "RaiUtils.slnx" "raiutils" "publish-nuget.yml"
 	release_submodule "RaiImage" "RaiImage" "RaiImage.csproj" "RaiImage.slnx" "raiimage" "publish-nuget.yml"
@@ -537,6 +549,7 @@ resume_after_oslib() {
 	release_python_package
 	release_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj" "ImgSeeder.slnx" "imgseeder" "publish-nuget.yaml"
 	release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "PitSeeder.slnx" "pitseeder" "publish-nuget.yaml"
+	release_raiguard
 
 	verify_parent_pointers_unchanged
 	final_visibility_summary
@@ -559,25 +572,29 @@ resume_after_raidiagram() {
 	assert_tagged_submodule_pointer "$PYTHON_REPO" "$PYTHON_REPO"
 	assert_tagged_submodule_pointer "ImgSeeder" "ImgSeeder"
 	assert_tagged_submodule_pointer "PitSeeder" "PitSeeder"
+	assert_tagged_submodule_pointer "RaiGuard" "RaiGuard"
 
-	log "Preflighting the five unpublished packages"
+	log "Preflighting the six unpublished packages"
 	preflight_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj"
 	preflight_submodule "JsonPit" "JsonPit" "JsonPit.csproj"
 	preflight_python_submodule
 	preflight_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj"
 	preflight_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj"
+	preflight_submodule "RaiGuard" "RaiGuard" "rail/rail.csproj"
 
 	release_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj" "RaidSeeder.slnx" "raidseeder" "publish-nuget.yaml"
 	release_submodule "JsonPit" "JsonPit" "JsonPit.csproj" "JsonPit.slnx" "jsonpit" "publish-nuget.yml"
 	release_python_package
 	release_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj" "ImgSeeder.slnx" "imgseeder" "publish-nuget.yaml"
 	release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "PitSeeder.slnx" "pitseeder" "publish-nuget.yaml"
+	release_raiguard
 
 	assert_tagged_submodule_pointer "RaidSeeder" "RaidSeeder"
 	assert_tagged_submodule_pointer "JsonPit" "JsonPit"
 	assert_tagged_submodule_pointer "$PYTHON_REPO" "$PYTHON_REPO"
 	assert_tagged_submodule_pointer "ImgSeeder" "ImgSeeder"
 	assert_tagged_submodule_pointer "PitSeeder" "PitSeeder"
+	assert_tagged_submodule_pointer "RaiGuard" "RaiGuard"
 	final_visibility_summary
 	log "Release chain recovery completed for $VER"
 }
@@ -618,9 +635,9 @@ main() {
 	fi
 
 	log "Release chain start for $VER"
-	log "Order: RAIkeep umbrella release -> Amafu -> OsLib -> RaiUtils -> RaiImage -> RaiDiagram -> RaidSeeder -> JsonPit -> JsonPit.Python -> ImgSeeder -> PitSeeder"
+	log "Order: RAIkeep umbrella release -> Amafu -> OsLib -> RaiUtils -> RaiImage -> RaiDiagram -> RaidSeeder -> JsonPit -> JsonPit.Python -> ImgSeeder -> PitSeeder -> RaiGuard"
 
-	log "Preflighting all ten packages before labeling RAIkeep"
+	log "Preflighting all eleven packages before labeling RAIkeep"
 	preflight_submodule "Amafu" "Amafu" "amafu/amafu.csproj"
 	preflight_submodule "OsLib" "OsLib" "OsLib.csproj"
 	preflight_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj"
@@ -631,6 +648,7 @@ main() {
 	preflight_python_submodule
 	preflight_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj"
 	preflight_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj"
+	preflight_submodule "RaiGuard" "RaiGuard" "rail/rail.csproj"
 
 	release_umbrella
 
@@ -644,6 +662,7 @@ main() {
 	release_python_package
 	release_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj" "ImgSeeder.slnx" "imgseeder" "publish-nuget.yaml"
 	release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "PitSeeder.slnx" "pitseeder" "publish-nuget.yaml"
+	release_raiguard
 
 	verify_parent_pointers_unchanged
 	final_visibility_summary

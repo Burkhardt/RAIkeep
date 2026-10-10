@@ -2,8 +2,8 @@
 set -euo pipefail
 
 # ==============================================================================
-# RAIkeep Fleet CLI Installer: provisions all 5 CLIs across Nkosikazi, Mzansi, Mdlaka
-# CLIs: amafu, raid, iorg, pits, and jpit (Python jsonpit)
+# RAIkeep Fleet CLI Installer: provisions all 6 CLIs across Nkosikazi, Mzansi, Mdlaka
+# CLIs: amafu, raid, iorg, pits, rail, and jpit (Python jsonpit)
 # ==============================================================================
 
 SCRIPT_SOURCE="${BASH_SOURCE[0]:-}"
@@ -166,6 +166,7 @@ install_dotnet_tool "Amafu" "$VERSION"
 install_dotnet_tool "RaidSeeder" "$VERSION"
 install_dotnet_tool "ImgSeeder" "$VERSION"
 install_dotnet_tool "PitSeeder" "$VERSION"
+install_dotnet_tool "RaiGuard" "$VERSION"
 
 echo "  [3/4] Installing/Updating Python jsonpit (jpit CLI)..."
 install_jpit() {
@@ -197,7 +198,7 @@ install_jpit() {
 	fi
 
 	# Unify all .NET tools into ~/.local/bin as well
-	for tool_name in amafu raid iorg pits; do
+	for tool_name in amafu raid iorg pits rail; do
 		if [[ -f "$HOME/.dotnet/tools/$tool_name" ]]; then
 			ln -sf "$HOME/.dotnet/tools/$tool_name" "$HOME/.local/bin/$tool_name"
 		fi
@@ -242,7 +243,7 @@ fi
 
 CURRENT_USER="${USER:-$(id -un 2>/dev/null || whoami 2>/dev/null || echo 'user')}"
 echo -e "\n  🔍 Verification results for ${CURRENT_USER} on $(hostname):"
-for cmd in amafu raid iorg pits jpit; do
+for cmd in amafu raid iorg pits rail jpit; do
 	if command -v "$cmd" >/dev/null 2>&1; then
 		out="$("$cmd" --version 2>&1 | head -n 1 || true)"
 		printf "    ✅ %-8s : %s\n" "$cmd" "$out"

@@ -12,7 +12,8 @@
 		"doc/RaidSeeder_RELEASE_NOTES_{version}.md",
 		"doc/JsonPit_RELEASE_NOTES_{version}.md",
 		"doc/ImgSeeder_RELEASE_NOTES_{version}.md",
-		"doc/PitSeeder_RELEASE_NOTES_{version}.md"
+		"doc/PitSeeder_RELEASE_NOTES_{version}.md",
+		"doc/RaiGuard_RELEASE_NOTES_{version}.md"
 	],
 	"targets": [
 		{
@@ -589,6 +590,55 @@
 					"description": "dotnet add package OsLibCore",
 					"pattern": "dotnet add package OsLibCore --version \\d+\\.\\d+\\.\\d+",
 					"replacement": "dotnet add package OsLibCore --version {version}"
+				}
+			]
+		},
+		{
+			"path": "RaiGuard/rail/rail.csproj",
+			"description": "RaiGuard CLI project file",
+			"type": "csproj",
+			"replacements": [
+				{
+					"description": "RaiGuard CLI Version",
+					"pattern": "<Version>\\d+\\.\\d+\\.\\d+</Version>",
+					"replacement": "<Version>{version}</Version>"
+				},
+				{
+					"description": "JsonPitPackageVersion fallback",
+					"pattern": "<JsonPitPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</JsonPitPackageVersion>",
+					"replacement": "<JsonPitPackageVersion Condition=\"'$(JsonPitPackageVersion)' == ''\">{version}</JsonPitPackageVersion>"
+				},
+				{
+					"description": "OsLibPackageVersion fallback",
+					"pattern": "<OsLibPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</OsLibPackageVersion>",
+					"replacement": "<OsLibPackageVersion Condition=\"'$(OsLibPackageVersion)' == ''\">{version}</OsLibPackageVersion>"
+				},
+				{
+					"description": "RaiUtilsPackageVersion fallback",
+					"pattern": "<RaiUtilsPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</RaiUtilsPackageVersion>",
+					"replacement": "<RaiUtilsPackageVersion Condition=\"'$(RaiUtilsPackageVersion)' == ''\">{version}</RaiUtilsPackageVersion>"
+				},
+				{
+					"description": "RaiImagePackageVersion fallback",
+					"pattern": "<RaiImagePackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</RaiImagePackageVersion>",
+					"replacement": "<RaiImagePackageVersion Condition=\"'$(RaiImagePackageVersion)' == ''\">{version}</RaiImagePackageVersion>"
+				},
+				{
+					"description": "RaiDiagramPackageVersion fallback",
+					"pattern": "<RaiDiagramPackageVersion Condition=\"[^\"]*\">\\d+\\.\\d+\\.\\d+</RaiDiagramPackageVersion>",
+					"replacement": "<RaiDiagramPackageVersion Condition=\"'$(RaiDiagramPackageVersion)' == ''\">{version}</RaiDiagramPackageVersion>"
+				}
+			]
+		},
+		{
+			"path": "RaiGuard/src/RaiGuard.Package/RaiGuard.Package.csproj",
+			"description": "RaiGuard Analyzer Package project file",
+			"type": "csproj",
+			"replacements": [
+				{
+					"description": "RaiGuard Analyzer Package Version",
+					"pattern": "<Version>\\d+\\.\\d+\\.\\d+</Version>",
+					"replacement": "<Version>{version}</Version>"
 				}
 			]
 		},

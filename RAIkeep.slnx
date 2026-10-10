@@ -27,6 +27,14 @@
 		<Project Path="RaidSeeder/raid/raid.csproj" />
 		<Project Path="RaidSeeder/raid.Tests/raid.Tests.csproj" />
 	</Folder>
+	<Folder Name="/RaiGuard/">
+		<Project Path="RaiGuard/rail/rail.csproj" />
+		<Project Path="RaiGuard/rail.Tests/rail.Tests.csproj" />
+		<Project Path="RaiGuard/src/RaiGuard.Core/RaiGuard.Core.csproj" />
+		<Project Path="RaiGuard/src/RaiGuard.CodeFixes/RaiGuard.CodeFixes.csproj" />
+		<Project Path="RaiGuard/src/RaiGuard.Package/RaiGuard.Package.csproj" />
+		<Project Path="RaiGuard/tests/RaiGuard.Tests/RaiGuard.Tests.csproj" />
+	</Folder>
 	<Folder Name="/RaiUtils/">
 		<Project Path="RaiUtils/tests/RaiUtils.Tests/RaiUtils.Tests.csproj" />
 	</Folder>

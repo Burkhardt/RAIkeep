@@ -28,3 +28,6 @@
 [submodule "JsonPit.Python"]
 	path = JsonPit.Python
 	url = https://github.com/Burkhardt/jsonpit-python.git
+[submodule "RaiGuard"]
+	path = RaiGuard
+	url = https://github.com/Burkhardt/RaiGuard.git
