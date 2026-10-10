@@ -27,7 +27,7 @@ validation, dependency-order documentation, and sequential release automation.
 The prepared coordinated release is `4.5.7`. RAI starts the release chain
 manually after reviewing the prepared commits and verification results.
 
-RAIkeep 4.5.7 implements CR059: native SSH dispatch for the typed fleet
+RAIkeep 4.5.8 implements CR060: SSH fleet provisioning and parity sync
 wrappers, sandboxed Deno execution requests, and typed Amafu, raid, and jpit
 command composition. RaiImage exposes the same fluent SSH path for ImageMagick
 workloads.
@@ -60,7 +60,7 @@ Current coordinated 4.5.7 release notes:
 - [JsonPit 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_4.5.7.md)
 - [ImgSeeder 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_4.5.7.md)
 - [PitSeeder 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_4.5.7.md)
-- [RAIkeep 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.5.7.md)
+- [RAIkeep 4.5.8](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.5.8.md)
 
 The prior coordinated line remains documented in [RAIkeep 4.1.0 release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_4.1.0.md).
 
