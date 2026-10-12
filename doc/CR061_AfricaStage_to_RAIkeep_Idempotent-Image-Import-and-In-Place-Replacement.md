@@ -1,8 +1,9 @@
 # CR061 — Idempotent Image Import, In-Place Replacement & Derivative Cache Invalidation
 
 **Origin:** AfricaStage Tenant (`MondayShow` archive) & AIA Platform to `RAIkeep` Platform (`ImgSeeder`, `RaiImage`)  
-**Status:** Submitted & Active for Sprint 2642 (RAIkeep 4.5.10 / v4.6.0)  
-**Primary References:** [`doc/CR060_AfricaStage_to_RAIkeep_Image-Stem-Numeric-Tokens-and-Iorg-Ergonomics.md`](CR060_AfricaStage_to_RAIkeep_Image-Stem-Numeric-Tokens-and-Iorg-Ergonomics.md) · `ImgSeeder/ImageImport.cs` · `ImgSeeder/Program.cs` · [`doc/sprints/Sprint_2642_Living_Stage_Execution_and_Operational_Ingestion.md`](sprints/Sprint_2642_Living_Stage_Execution_and_Operational_Ingestion.md) · [`doc/AdeleBoard.md`](AdeleBoard.md)
+**Status:** Accepted for RAIkeep 4.5.10  
+**Target Release:** RAIkeep `v4.5.10`  
+**Primary References:** [`doc/CR060_AfricaStage_to_RAIkeep_Image-Stem-Numeric-Tokens-and-Iorg-Ergonomics.md`](CR060_AfricaStage_to_RAIkeep_Image-Stem-Numeric-Tokens-and-Iorg-Ergonomics.md) · [`doc/CR022_RAI_to_RAIkeep_Cloud_Safe_In_Place_Filesystem_Invariant.md`](CR022_RAI_to_RAIkeep_Cloud_Safe_In_Place_Filesystem_Invariant.md) · `ImgSeeder/ImageImport.cs` · `ImgSeeder/Program.cs` · [`doc/sprints/Sprint_2642_Living_Stage_Execution_and_Operational_Ingestion.md`](sprints/Sprint_2642_Living_Stage_Execution_and_Operational_Ingestion.md) · [`doc/AdeleBoard.md`](AdeleBoard.md)
 
 ---
 
@@ -75,37 +76,38 @@ The receipt summary currently tracks only `Copied`, `Unchanged`, `Skipped`, and 
    - **Case A — Brand New Image (`Copied`):**
      If destination does not exist: write from stream $\rightarrow$ verify checksum $\rightarrow$ set `candidate.Entry.Status = "Copied"`.
    - **Case B — Identical Image (`Unchanged`):**
-     If destination exists and SHA-256 matches: bypass writing (zero disk I/O, zero cloud sync churn) $\rightarrow$ set `candidate.Entry.Status = "Unchanged"`.
+     If destination exists and SHA-256 matches: bypass writing (zero write I/O, zero cloud sync churn; destination read & hash verification performed) $\rightarrow$ set `candidate.Entry.Status = "Unchanged"`.
    - **Case C — Modified Image (`Updated`):**
      If destination exists and SHA-256 differs:
-     - Write new content atomically (e.g. via temporary file or direct overwrite stream).
-     - Verify checksum against incoming hash.
-     - Surgically invalidate the derivative cache for that specific `(ItemId, ImageNumber)`.
+     - Perform **in-place, verified replacement** adhering to the CR022 Cloud-Safe In-Place Filesystem Invariant (write directly to existing path/stream, flush, verify checksum against incoming hash; never replace by temp-file move/rename across cloud sync boundaries).
+     - Surgically invalidate rendered derivative cache entries in the image's ItemTree bucket (`*_{ImageNumber}_*.webp`, `*_{ImageNumber}_*.jpg`).
+     - If derivative invalidation encounters an error, record error diagnostics on the entry while retaining `Status = "Updated"`, and elevate overall receipt status to `"Partial"`.
      - Set `candidate.Entry.Status = "Updated"`.
    - **Case D — Write Failure (`Failed`):**
-     If an I/O or permissions error occurs: record error $\rightarrow$ set `candidate.Entry.Status = "Failed"`.
+     If an I/O or permissions error occurs writing the source: record error $\rightarrow$ set `candidate.Entry.Status = "Failed"`.
 
-### 2.2 Surgical Derivative Cache Invalidation (`ImgSeeder` / `RaiImage`)
-1. When an entry transitions to `"Updated"`:
-   - Identify and purge all cached derivatives matching that `ItemId` and `ImageNumber` (e.g. under the tenant's `.cache/` or `/cache/` hierarchy: `*_{ImageNumber}_*.webp`, `*_{ImageNumber}_*.jpg`).
-   - Untouched images must keep their cached derivatives intact.
+### 2.2 Surgical Derivative Cache Invalidation Scope (`ImgSeeder` / `RaiImage`)
+1. Invalidation is confined exclusively to derivatives managed in the image's **ItemTree bucket** (where rendered variants like `_Large`, `_Small`, `_Thumb` reside alongside the source or in the item directory). There are no secondary cache locations.
+2. Untouched images retain all existing cached derivatives without churn.
+3. If derivative deletion fails, the receipt marks the entry `Updated`, notes the cache failure in diagnostics, and marks the overall receipt `Partial`.
 
-### 2.3 Receipt Schema Evolution (`ReceiptVersion 2` Additive / `3`)
-1. In `ImageImportSummary`:
-   - Add integer property `Updated`:
-     ```json
-     "Summary": {
-       "Copied": 5,
-       "Updated": 2,
-       "Unchanged": 186,
-       "Failed": 0
-     }
-     ```
-   - Total processed count remains `Copied + Updated + Unchanged + Failed`.
-2. Overall import status logic:
-   - `"Completed"`: `Failed == 0`
-   - `"Partial"`: `Failed > 0` and `(Copied + Updated + Unchanged) > 0`
-   - `"Failed"`: `(Copied + Updated + Unchanged) == 0` and `Failed > 0`
+### 2.3 Receipt Schema Evolution (`ReceiptVersion: 3`)
+1. Increment schema to `ReceiptVersion: 3`.
+2. Retain `Skipped`, and add `Updated` to `Summary` and compact `Ranges`:
+   ```json
+   "Summary": {
+     "Copied": 5,
+     "Updated": 2,
+     "Unchanged": 186,
+     "Skipped": 0,
+     "Failed": 0
+   }
+   ```
+   Total processed count remains `Copied + Updated + Unchanged + Skipped + Failed`.
+3. Overall import status logic:
+   - `"Completed"`: `Failed == 0` and no derivative cleanup failures.
+   - `"Partial"`: Either `Failed > 0` and `(Copied + Updated + Unchanged) > 0`, or successful image updates with derivative cleanup errors.
+   - `"Failed"`: `(Copied + Updated + Unchanged) == 0` and `Failed > 0`.
 
 ### 2.4 CLI Ergonomics & Flag Support
 1. **Default Behavior:** `iorg organize` operates in **Upsert mode** by default.
