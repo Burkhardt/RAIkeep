@@ -1,5 +1,18 @@
 # RAIkeep Release Notes 4.x
 
+## 4.5.10
+
+- Release version: `4.5.10`
+- Coordination tag: `v4.5.10`
+
+### Highlights
+- CR061 establishes idempotent image upsert semantics in `iorg organize` and `RaiImage`: existing images with matching content are unchanged, existing images with differing content are replaced in-place adhering to the CR022 cloud-storage invariant, matching derivative files are invalidated, and `ReceiptVersion: 3` reports `Updated` counts and ranges.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.10` line.
+
+---
+
 ## 4.5.9
 
 - Release version: `4.5.9`

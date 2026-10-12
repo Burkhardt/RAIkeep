@@ -843,8 +843,31 @@ class ReleaseBumper:
 			)
 		if updated_index != index:
 			index_path.write_text(updated_index, encoding="utf-8")
-			print("  📝 Updated doc/README.md current release links")
-			changed_count += 1
+		umbrella_readme_path = self.root_dir / "README.md"
+		if umbrella_readme_path.is_file():
+			u_readme = umbrella_readme_path.read_text(encoding="utf-8")
+			updated_u = re.sub(
+				r"(?m)^The prepared coordinated release is `\d+\.\d+\.\d+`\.",
+				f"The prepared coordinated release is `{v}`.",
+				u_readme,
+				count=1,
+			)
+			for name in ["RAIkeep", *(package for package, _, _ in PACKAGE_REPOS)]:
+				label = "OsLibCore" if name == "OsLib" else name
+				link = (
+					f"- [{label} {v}](https://github.com/Burkhardt/RAIkeep/blob/main/"
+					f"{release_note_path(name, v)}#{anchor})"
+				)
+				updated_u = re.sub(
+					rf"(?m)^- \[{label} \d+\.\d+\.\d+\]\([^)]+\)$",
+					link,
+					updated_u,
+					count=1,
+				)
+			if updated_u != u_readme:
+				umbrella_readme_path.write_text(updated_u, encoding="utf-8")
+				print("  📝 Updated README.md current release links")
+				changed_count += 1
 
 		# 4. Update current_version in manifest itself
 		print("\n[4/4] Updating release manifest version...")

@@ -1,6 +1,6 @@
 {
 	"$schema": "./release-manifest.schema.json",
-	"current_version": "4.5.9",
+	"current_version": "4.5.10",
 	"release_notes": [
 		"doc/releases/v{major}.x/RAIkeep_RELEASE_NOTES_{major}.x.md",
 		"doc/releases/v{major}.x/Amafu_RELEASE_NOTES_{major}.x.md",
@@ -520,6 +520,18 @@
 					"description": "Latest release notes link",
 					"pattern": "Latest release notes: \\[[^\\]\\n]+\\]\\([^)]+\\)",
 					"replacement": "Latest release notes: [ImgSeeder {version} release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v{major}.x/ImgSeeder_RELEASE_NOTES_{major}.x.md#{anchor})"
+				}
+			]
+		},
+		{
+			"path": "ImgSeeder/GettingStarted.md",
+			"description": "ImgSeeder Getting Started guide",
+			"type": "doc",
+			"replacements": [
+				{
+					"description": "Guide version introduction",
+					"pattern": "(?m)^This guide covers ImgSeeder \\d+\\.\\d+\\.\\d+,",
+					"replacement": "This guide covers ImgSeeder {version},"
 				}
 			]
 		},

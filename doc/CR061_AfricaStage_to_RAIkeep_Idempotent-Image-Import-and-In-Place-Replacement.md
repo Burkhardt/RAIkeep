@@ -3,7 +3,7 @@
 **Origin:** AfricaStage Tenant (`MondayShow` archive) & AIA Platform to `RAIkeep` Platform (`ImgSeeder`, `RaiImage`)  
 **Status:** Accepted for RAIkeep 4.5.10  
 **Target Release:** RAIkeep `v4.5.10`  
-**Primary References:** [`doc/CR060_AfricaStage_to_RAIkeep_Image-Stem-Numeric-Tokens-and-Iorg-Ergonomics.md`](CR060_AfricaStage_to_RAIkeep_Image-Stem-Numeric-Tokens-and-Iorg-Ergonomics.md) · [`doc/CR022_RAI_to_RAIkeep_Cloud_Safe_In_Place_Filesystem_Invariant.md`](CR022_RAI_to_RAIkeep_Cloud_Safe_In_Place_Filesystem_Invariant.md) · `ImgSeeder/ImageImport.cs` · `ImgSeeder/Program.cs` · [`doc/sprints/Sprint_2642_Living_Stage_Execution_and_Operational_Ingestion.md`](sprints/Sprint_2642_Living_Stage_Execution_and_Operational_Ingestion.md) · [`doc/AdeleBoard.md`](AdeleBoard.md)
+**Primary References:** `CR060_AfricaStage_to_RAIkeep_Image-Stem-Numeric-Tokens-and-Iorg-Ergonomics.md` · `CR022_RAI_to_RAIkeep_Cloud_Safe_In_Place_Filesystem_Invariant.md` · `ImgSeeder/ImageImport.cs` · `ImgSeeder/Program.cs` · `AIA/Sprint_2642` · `AIA/AdeleBoard`
 
 ---
 

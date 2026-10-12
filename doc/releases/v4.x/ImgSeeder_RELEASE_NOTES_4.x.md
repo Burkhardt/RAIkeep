@@ -1,5 +1,18 @@
 # ImgSeeder Release Notes 4.x
 
+## 4.5.10
+
+- Release version: `4.5.10`
+- Coordination tag: `v4.5.10`
+
+### Highlights
+- CR061 implements idempotent image import semantics for `iorg organize`: unchanged destination files are skipped without rewrite, existing images with differing content are replaced in-place, exact derivative cache entries are invalidated, and `ReceiptVersion: 3` tracks `Updated` counts and compact ranges. Collision errors are preserved for intra-archive stem/number collisions.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.10` line.
+
+---
+
 ## 4.5.9
 
 - Release version: `4.5.9`

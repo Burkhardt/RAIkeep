@@ -1,5 +1,18 @@
 # RaiImage Release Notes 4.x
 
+## 4.5.10
+
+- Release version: `4.5.10`
+- Coordination tag: `v4.5.10`
+
+### Highlights
+- CR061 adds `ItemTreePath.EnumerateDerivativeFiles` to locate exact derivative files (`*_{ImageNumber}_*.*`) for a given item and image number while preventing prefix overlap into multidigit sequences.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.10` line.
+
+---
+
 ## 4.5.9
 
 - Release version: `4.5.9`
