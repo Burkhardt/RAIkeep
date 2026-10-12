@@ -892,6 +892,9 @@ def main():
 			)
 			sys.exit(1)
 		new_version = sys.argv[2].lstrip("v")
+		if not re.match(r"^\d+\.\d+\.\d+", new_version):
+			print(f"Error: Invalid version format '{new_version}'. Expected semantic version like '4.5.10'")
+			sys.exit(1)
 		bumper = ReleaseBumper(root_dir, manifest_path, new_version)
 		success = bumper.bump()
 		sys.exit(0 if success else 1)

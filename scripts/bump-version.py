@@ -10,9 +10,9 @@ from pathlib import Path
 
 
 def main():
-	if len(sys.argv) < 2:
+	if len(sys.argv) < 2 or sys.argv[1] in {"-h", "--help", "help"}:
 		print("Usage: python3 scripts/bump-version.py <new_version>")
-		sys.exit(1)
+		sys.exit(0 if len(sys.argv) >= 2 and sys.argv[1] in {"-h", "--help", "help"} else 1)
 
 	version = sys.argv[1].lstrip("v")
 	script = Path(__file__).resolve().parent / "validate-release.py"
