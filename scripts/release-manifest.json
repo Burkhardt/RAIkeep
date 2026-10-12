@@ -384,6 +384,11 @@
 			"type": "readme",
 			"replacements": [
 				{
+					"description": "Latest Version heading",
+					"pattern": "(?m)^## Latest Version \\d+\\.\\d+\\.\\d+$",
+					"replacement": "## Latest Version {version}"
+				},
+				{
 					"description": "AMAFU_VERSION variable",
 					"pattern": "AMAFU_VERSION=\\d+\\.\\d+\\.\\d+",
 					"replacement": "AMAFU_VERSION={version}"
@@ -479,6 +484,11 @@
 			"type": "readme",
 			"replacements": [
 				{
+					"description": "Latest Version heading",
+					"pattern": "(?m)^## Latest Version \\d+\\.\\d+\\.\\d+$",
+					"replacement": "## Latest Version {version}"
+				},
+				{
 					"description": "Latest release notes link",
 					"pattern": "Latest release notes: \\[RaidSeeder_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
 					"replacement": "Latest release notes: [RaidSeeder_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaidSeeder_RELEASE_NOTES_{version}.md)"
@@ -518,6 +528,11 @@
 			"type": "readme",
 			"replacements": [
 				{
+					"description": "Latest Version heading",
+					"pattern": "(?m)^## Latest Version \\d+\\.\\d+\\.\\d+$",
+					"replacement": "## Latest Version {version}"
+				},
+				{
 					"description": "Latest release notes link",
 					"pattern": "Latest release notes: \\[ImgSeeder_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
 					"replacement": "Latest release notes: [ImgSeeder_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_{version}.md)"
@@ -529,6 +544,11 @@
 			"description": "PitSeeder README",
 			"type": "readme",
 			"replacements": [
+				{
+					"description": "Latest Version heading",
+					"pattern": "(?m)^## Latest Version \\d+\\.\\d+\\.\\d+$",
+					"replacement": "## Latest Version {version}"
+				},
 				{
 					"description": "Latest release notes link",
 					"pattern": "Latest release notes: \\[PitSeeder_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",

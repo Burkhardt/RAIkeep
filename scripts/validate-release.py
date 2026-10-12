@@ -114,6 +114,7 @@ class ReleaseValidator:
 					"dotnet", "run", "--project", "PitSeeder/pits/pits.csproj", "--no-restore", "--",
 					"seed", "Activity", "--source", str(source), "-r", str(tenant), "-n",
 				],
+				env=shared_env,
 			)
 			if not seed:
 				return
@@ -163,11 +164,24 @@ class ReleaseValidator:
 		"""Exercises the conditional WWWA help block of both public CLIs."""
 		with tempfile.TemporaryDirectory(prefix="raikeep-help-parity-") as temporary:
 			fixture = Path(temporary)
+			home = fixture / "home"
+			temp_root = fixture / "temp"
 			tenant = fixture / "Tenant"
 			tenant.mkdir()
+			temp_root.mkdir()
+			configuration = home / ".config" / "RAIkeep.json5"
+			configuration.parent.mkdir(parents=True)
+			configuration.write_text(
+				"{\n"
+				f'  TempDir: "{temp_root}",\n'
+				"  Cloud: {}\n"
+				"}\n",
+				encoding="utf-8",
+			)
 			source = fixture / "seed.json"
 			source.write_text('[{"Id":"ParitySample"}]', encoding="utf-8")
 			shared_env = os.environ.copy()
+			shared_env["HOME"] = str(home)
 			shared_env["NO_COLOR"] = "1"
 			python_env = shared_env.copy()
 			python_env["PYTHONPATH"] = str(self.root_dir / "JsonPit.Python")
@@ -447,15 +461,18 @@ class ReleaseValidator:
 			"Amafu README sudo dotnet tool version",
 		)
 
-		# Each submodule README must have ## <VER> section and link to its notes
+		# Each package README identifies the current release once. Both the newer
+		# "Latest Version" layout and legacy numeric headings remain valid while
+		# READMEs are migrated.
 		for name, repo_rel, _ in PACKAGE_REPOS:
 			readme_rel = f"{repo_rel}/README.md"
-			self.validate_file_contains(
-				readme_rel,
-				rf"## {re.escape(v)}",
-				f"{name} README ## {v} section",
-			)
 			if name not in CENTRAL_RELEASE_NOTES_ONLY:
+				self.validate_file_contains(
+					readme_rel,
+					rf"^## (?:Latest Version )?{re.escape(v)}$",
+					f"{name} README current-version heading",
+					flags=re.MULTILINE,
+				)
 				self.validate_file_contains(
 					readme_rel,
 					rf"{name}_RELEASE_NOTES_{re.escape(v)}\.md",
@@ -580,28 +597,40 @@ class ReleaseBumper:
 			else:
 				print(f"  ✔️ Up to date: {rel_path}")
 
-		# 2. Prepend version headers in submodule READMEs if needed
-		print("\n[2/4] Ensuring version history headers in submodule READMEs...")
+		# 2. Ensure each submodule README identifies the current release. Preserve a
+		# concise Latest Version heading when a README has adopted that layout.
+		print("\n[2/4] Ensuring current-version headers in submodule READMEs...")
 		for name, repo_rel, _ in PACKAGE_REPOS:
+			if name in CENTRAL_RELEASE_NOTES_ONLY:
+				continue
 			readme_rel = f"{repo_rel}/README.md"
 			readme_path = self.root_dir / readme_rel
 			if not readme_path.is_file():
 				continue
 			text = readme_path.read_text(encoding="utf-8")
-			if not re.search(rf"^## {re.escape(v)}\b", text, re.MULTILINE):
-				# Find the first existing ## section to prepend before it
-				match = re.search(r"^## \d+\.\d+\.\d+", text, re.MULTILINE)
-				if match:
-					header = (
-						f"## {v}\n\n"
-						f"Coordinated {v} release; public behavior is aligned with the synchronized platform.\n\n"
-						f"Release notes: [{name}_RELEASE_NOTES_{v}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/{name}_RELEASE_NOTES_{v}.md).\n\n"
-					)
-					idx = match.start()
-					new_text = text[:idx] + header + text[idx:]
-					readme_path.write_text(new_text, encoding="utf-8")
-					print(f"  📝 Prepended ## {v} section to {readme_rel}")
-					changed_count += 1
+			if re.search(rf"^## (?:Latest Version )?{re.escape(v)}$", text, re.MULTILINE):
+				continue
+
+			latest_match = re.search(r"^## Latest Version \d+\.\d+\.\d+$", text, re.MULTILINE)
+			if latest_match:
+				updated = text[:latest_match.start()] + f"## Latest Version {v}" + text[latest_match.end():]
+				readme_path.write_text(updated, encoding="utf-8")
+				print(f"  📝 Updated Latest Version header in {readme_rel}")
+				changed_count += 1
+				continue
+
+			# Legacy READMEs retain their historical numeric heading layout.
+			match = re.search(r"^## \d+\.\d+\.\d+", text, re.MULTILINE)
+			if match:
+				header = (
+					f"## {v}\n\n"
+					f"Coordinated {v} release; public behavior is aligned with the synchronized platform.\n\n"
+					f"Latest release notes: [{name}_RELEASE_NOTES_{v}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/{name}_RELEASE_NOTES_{v}.md).\n\n"
+				)
+				idx = match.start()
+				readme_path.write_text(text[:idx] + header + text[idx:], encoding="utf-8")
+				print(f"  📝 Prepended ## {v} section to {readme_rel}")
+				changed_count += 1
 
 		# 3. Scaffold missing release note markdown files
 		print("\n[3/4] Scaffolding release notes templates...")
