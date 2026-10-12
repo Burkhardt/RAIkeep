@@ -20,6 +20,7 @@ _local_pre_github_backup_*/
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
+!doc/releases/
 [Pp]ublish/
 x64/
 x86/
