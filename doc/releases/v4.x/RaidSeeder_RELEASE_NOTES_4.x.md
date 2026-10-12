@@ -1,5 +1,18 @@
 # RaidSeeder Release Notes 4.x
 
+## 4.5.9
+
+- Release version: `4.5.9`
+- Coordination tag: `v4.5.9`
+
+### Highlights
+- Coordinated 4.5.9 version alignment; no package-local behavior change.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.9` line.
+
+---
+
 ## 4.5.8
 
 - Release version: `4.5.8`

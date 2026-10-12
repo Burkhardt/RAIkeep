@@ -1,5 +1,19 @@
 # RAIkeep Release Notes 4.x
 
+## 4.5.9
+
+- Release version: `4.5.9`
+- Coordination tag: `v4.5.9`
+
+### Highlights
+- CR060 preserves intermediate numeric image-stem tokens and adds iorg receipt output, source alias, and image-number filters.
+- The coordinated package line and Option B release-history links are prepared for 4.5.9; publication remains a separate manual step.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.9` line.
+
+---
+
 ## 4.5.8
 
 - Release version: `4.5.8`

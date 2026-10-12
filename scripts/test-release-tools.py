@@ -103,17 +103,20 @@ class ReleaseToolsTests(unittest.TestCase):
 
 	def test_new_release_is_prepended_once(self):
 		note = self.root / "doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md"
-		self.assertTrue(tools.ReleaseBumper.prepend_release_section(note, "4.5.9"))
+		major, minor, patch = map(int, self.version.split("."))
+		next_version = f"{major}.{minor}.{patch + 1}"
+		self.assertTrue(tools.ReleaseBumper.prepend_release_section(note, next_version))
 		text = note.read_text()
-		self.assertLess(text.index("## 4.5.9"), text.index("## 4.5.8"))
-		self.assertFalse(tools.ReleaseBumper.prepend_release_section(note, "4.5.9"))
-		self.assertEqual(1, len(re.findall(r"^## 4\.5\.9$", note.read_text(), re.MULTILINE)))
+		self.assertLess(text.index(f"## {next_version}"), text.index(f"## {self.version}"))
+		self.assertFalse(tools.ReleaseBumper.prepend_release_section(note, next_version))
+		self.assertEqual(1, len(re.findall(rf"^## {re.escape(next_version)}$", note.read_text(), re.MULTILINE)))
 
 	def test_release_body_contains_only_requested_version(self):
 		note = self.root / "doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md"
-		body = extractor.extract(note, "4.5.8")
-		self.assertTrue(body.startswith("## 4.5.8\n"))
-		self.assertNotIn("## 4.5.7", body)
+		body = extractor.extract(note, self.version)
+		self.assertTrue(body.startswith(f"## {self.version}\n"))
+		major, minor, patch = map(int, self.version.split("."))
+		self.assertNotIn(f"## {major}.{minor}.{patch - 1}", body)
 		with self.assertRaisesRegex(ValueError, "Expected exactly one"):
 			extractor.extract(note, "4.9.9")
 

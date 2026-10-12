@@ -1,6 +1,6 @@
 {
 	"$schema": "./release-manifest.schema.json",
-	"current_version": "4.5.8",
+	"current_version": "4.5.9",
 	"release_notes": [
 		"doc/releases/v{major}.x/RAIkeep_RELEASE_NOTES_{major}.x.md",
 		"doc/releases/v{major}.x/Amafu_RELEASE_NOTES_{major}.x.md",
@@ -606,6 +606,11 @@
 					"description": "RaiGuard CLI Version",
 					"pattern": "<Version>\\d+\\.\\d+\\.\\d+</Version>",
 					"replacement": "<Version>{version}</Version>"
+				},
+				{
+					"description": "RaiGuard CLI package release notes",
+					"pattern": "<PackageReleaseNotes>Coordinated \\d+\\.\\d+\\.\\d+ release;[^<]*</PackageReleaseNotes>",
+					"replacement": "<PackageReleaseNotes>Coordinated {version} release; no package-local behavior change.</PackageReleaseNotes>"
 				},
 				{
 					"description": "JsonPitPackageVersion fallback",

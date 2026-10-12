@@ -1,5 +1,19 @@
 # ImgSeeder Release Notes 4.x
 
+## 4.5.9
+
+- Release version: `4.5.9`
+- Coordination tag: `v4.5.9`
+
+### Highlights
+- CR060 adds optional import IDs, `-s` for source, `-o`/`--out`/`--receipt` for receipt files, and `-i`/`--image` filtering for list and clean.
+- GettingStarted.md documents the image import workflow independently of pits and jpit.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.9` line.
+
+---
+
 ## 4.5.8
 
 - Release version: `4.5.8`

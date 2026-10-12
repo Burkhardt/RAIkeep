@@ -1,4 +1,4 @@
-> Superseded by [ratified CR049](CR049_AIA_and_jsonpit_to_RAIkeep_Live-ID-Validation_and_Zip-Image-Import.md), including Rainer's subsequent implementation clarifications. Retained as proposal history; not the active specification.
+> Superseded by [ratified CR049](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR/CR049_AIA_and_jsonpit_to_RAIkeep_Live-ID-Validation_and_Zip-Image-Import.md), including Rainer's subsequent implementation clarifications. Retained as proposal history; not the active specification.
 
 # Draft CR — Live ID Validation and ZIP Image Import Receipts
 
@@ -206,10 +206,10 @@ Delivery order: ratify the contract and assign its CR number; implement shared C
 
 Related contracts:
 
-- [CR043 — seed payload shapes and preflight](../CR043_AfricaStage_to_RAIkeep_Improve-pits-seed-array-error-message.md)
-- [CR047 — existing-entity patch mode](CR047_jsonpit_and_pits_Require-Existing-Patch-Flag-and-Seed-Commit-Count.md)
-- [CR040 — lifecycle fields and live mutation](../CR040_AIA_to_RAIkeep_and_jsonpit_Prohibit-Read-Modify-Write.md)
-- [CR022 — cloud-safe storage](../CR022_RAI_to_RAIkeep_Cloud_Safe_In_Place_Filesystem_Invariant.md)
-- [Current iorg operation contract](../IORG-OPERATIONS.md)
+- [CR043 — seed payload shapes and preflight](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR043_AfricaStage_to_RAIkeep_Improve-pits-seed-array-error-message.md)
+- [CR047 — existing-entity patch mode](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR/CR047_jsonpit_and_pits_Require-Existing-Patch-Flag-and-Seed-Commit-Count.md)
+- [CR040 — lifecycle fields and live mutation](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR040_AIA_to_RAIkeep_and_jsonpit_Prohibit-Read-Modify-Write.md)
+- [CR022 — cloud-safe storage](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR022_RAI_to_RAIkeep_Cloud_Safe_In_Place_Filesystem_Invariant.md)
+- [Current iorg operation contract](https://github.com/Burkhardt/RAIkeep/blob/main/doc/IORG-OPERATIONS.md)
 
 Draft design choices for ratification: direct HTTPS ZIP input in the first release; explicit import IDs and receipt field names; preserving conflicting existing images; archive resource-limit defaults. No CR number or release version is reserved by this draft.

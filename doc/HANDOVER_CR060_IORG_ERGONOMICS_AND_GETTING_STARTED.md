@@ -90,7 +90,7 @@ AfricaStage testing on Mdlaka identified several functional and ergonomic improv
 1. In `ImgSeeder/README.md`:
    - Remove lines 59–68 (`pits seed Object ...` and `jpit seed Object ...`).
    - Replace with pure ImageTree verification using `jq` and `iorg list`.
-   - Add link: `For an end-to-end walkthrough, see [GettingStarted.md](GettingStarted.md).`
+   - Add link: `For an end-to-end walkthrough, see [GettingStarted.md](https://github.com/Burkhardt/ImgSeeder/blob/main/GettingStarted.md).`
 2. `ImgSeeder/GettingStarted.md` is already authored in the working tree. Stage it.
 
 ---

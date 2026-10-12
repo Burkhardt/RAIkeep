@@ -1,5 +1,18 @@
 # RaiImage Release Notes 4.x
 
+## 4.5.9
+
+- Release version: `4.5.9`
+- Coordination tag: `v4.5.9`
+
+### Highlights
+- CR060 keeps preceding numeric tokens in the PascalCase image stem and uses only the final separated number as ImageNumber.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.9` line.
+
+---
+
 ## 4.5.8
 
 - Release version: `4.5.8`

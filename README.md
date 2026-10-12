@@ -8,16 +8,16 @@ Amafu (`amafu`), RaidSeeder (`raid`), ImgSeeder (`iorg`), PitSeeder (`pits`), an
 
 | Order | Repository | Package / command | Current or upcoming role |
 |---:|---|---|---|
-| 1 | `Amafu` | `Amafu` / `amafu` | 4.5.5 synchronized cloud configuration tool |
-| 2 | `OsLib` | `OsLibCore` | 4.5.5 synchronized immutable configuration consumer |
-| 3 | `RaiUtils` | `RaiUtils` | 4.5.5 synchronized dependency line |
-| 4 | `RaiImage` | `RaiImage` | 4.5.5 synchronized dependency line |
-| 5 | `RaiDiagram` | `RaiDiagram` | 4.5.5 synchronized diagram line |
-| 6 | `RaidSeeder` | `RaidSeeder` / `raid` | 4.5.5 synchronized diagram artifact manager |
-| 7 | `JsonPit` | `JsonPit` | 4.5.5 synchronized persistence line |
-| 8 | `ImgSeeder` | `ImgSeeder` / `iorg` | 4.5.5 synchronized image-management line |
-| 9 | `PitSeeder` | `PitSeeder` / `pits` | 4.5.5 live-ID preflight and stdin ingestion |
-| 10 | `RaiGuard` | `RaiGuard` / `rail` | 4.5.8 Roslyn guardrails and source refactoring tool |
+| 1 | `Amafu` | `Amafu` / `amafu` | Cloud configuration |
+| 2 | `OsLib` | `OsLibCore` | Filesystem and system abstractions |
+| 3 | `RaiUtils` | `RaiUtils` | Shared utilities |
+| 4 | `RaiImage` | `RaiImage` | Image naming and tree paths |
+| 5 | `RaiDiagram` | `RaiDiagram` | Diagram models and rendering |
+| 6 | `RaidSeeder` | `RaidSeeder` / `raid` | Diagram artifact commands |
+| 7 | `JsonPit` | `JsonPit` | Historical JSON persistence |
+| 8 | `ImgSeeder` | `ImgSeeder` / `iorg` | Image organization and import |
+| 9 | `PitSeeder` | `PitSeeder` / `pits` | Pit commands |
+| 10 | `RaiGuard` | `RaiGuard` / `rail` | Roslyn analysis and source refactoring |
 
 Each child remains its own Git repository, package, solution, and release
 workflow. The umbrella workspace supplies local project wiring, coordinated
@@ -25,13 +25,12 @@ validation, dependency-order documentation, and sequential release automation.
 
 ## Current release line
 
-The prepared coordinated release is `4.5.7`. RAI starts the release chain
+The prepared coordinated release is `4.5.9`. RAI starts the release chain
 manually after reviewing the prepared commits and verification results.
 
-RAIkeep 4.5.8 implements CR060: SSH fleet provisioning and parity sync
-wrappers, sandboxed Deno execution requests, and typed Amafu, raid, and jpit
-command composition. RaiImage exposes the same fluent SSH path for ImageMagick
-workloads.
+RAIkeep 4.5.9 includes CR060: RaiImage preserves intermediate numeric tokens
+in image stems, and `iorg` adds receipt-file output, short source syntax, and
+an image-number filter for listing and cleanup.
 
 All five C# CLI tools and the Python `jpit` CLI are coordinated through this
 umbrella. The release chain validates the `jsonpit` Python test suite, checks
@@ -50,19 +49,19 @@ The [RAIkeep Manifesto](https://github.com/Burkhardt/RAIkeep/blob/main/MANIFESTO
 explains why transparent, historical JSON matters for agentic engineering and
 defines JsonPit's asynchronous persistence and eventual-durability model.
 
-Current coordinated 4.5.7 release notes:
+Prepared coordinated 4.5.9 release notes:
 
-- [Amafu 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/Amafu_RELEASE_NOTES_4.x.md#457)
-- [OsLibCore 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/OsLib_RELEASE_NOTES_4.x.md#457)
-- [RaiUtils 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiUtils_RELEASE_NOTES_4.x.md#457)
-- [RaiImage 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiImage_RELEASE_NOTES_4.x.md#457)
-- [RaiDiagram 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiDiagram_RELEASE_NOTES_4.x.md#457)
-- [RaidSeeder 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaidSeeder_RELEASE_NOTES_4.x.md#457)
-- [JsonPit 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit_RELEASE_NOTES_4.x.md#457)
-- [ImgSeeder 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/ImgSeeder_RELEASE_NOTES_4.x.md#457)
-- [PitSeeder 4.5.7](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/PitSeeder_RELEASE_NOTES_4.x.md#457)
-- [RaiGuard 4.5.8](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiGuard_RELEASE_NOTES_4.x.md#458)
-- [RAIkeep 4.5.8](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#458)
+- [Amafu 4.5.9](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/Amafu_RELEASE_NOTES_4.x.md#459)
+- [OsLibCore 4.5.9](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/OsLib_RELEASE_NOTES_4.x.md#459)
+- [RaiUtils 4.5.9](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiUtils_RELEASE_NOTES_4.x.md#459)
+- [RaiImage 4.5.9](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiImage_RELEASE_NOTES_4.x.md#459)
+- [RaiDiagram 4.5.9](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiDiagram_RELEASE_NOTES_4.x.md#459)
+- [RaidSeeder 4.5.9](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaidSeeder_RELEASE_NOTES_4.x.md#459)
+- [JsonPit 4.5.9](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit_RELEASE_NOTES_4.x.md#459)
+- [ImgSeeder 4.5.9](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/ImgSeeder_RELEASE_NOTES_4.x.md#459)
+- [PitSeeder 4.5.9](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/PitSeeder_RELEASE_NOTES_4.x.md#459)
+- [RaiGuard 4.5.9](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiGuard_RELEASE_NOTES_4.x.md#459)
+- [RAIkeep 4.5.9](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#459)
 
 The prior coordinated line remains documented in [RAIkeep 4.1.0 release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#410).
 
@@ -95,7 +94,7 @@ After approval, use one release mechanism for the chain. The established local o
 
 ```bash
 cd /Users/RSB/Projects/GitHub/RAIkeep
-scripts/release-chain.sh 4.5.7
+scripts/release-chain.sh 4.5.9
 ```
 
 Before publication begins, all eleven child release commits and their exact submodule pointers must already be committed on the umbrella `main`. The script preflights that state, pushes the prepared umbrella `main`, and applies the passed version as its tag first. The umbrella tag publishes no NuGet package; it creates and verifies the synchronized GitHub Release before package tagging begins.

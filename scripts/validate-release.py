@@ -359,6 +359,11 @@ class ReleaseValidator:
 			"jsonpit Python package __version__",
 			flags=re.MULTILINE,
 		)
+		self.validate_file_contains(
+			"RaiGuard/rail/rail.csproj",
+			rf"<PackageReleaseNotes>Coordinated {re.escape(v)} release;",
+			"RaiGuard CLI package release notes",
+		)
 
 		# 2. CLI version tests
 		print("\n[2/7] Checking CLI unit tests...")
@@ -717,6 +722,24 @@ class ReleaseBumper:
 			if not readme_path.is_file():
 				continue
 			text = readme_path.read_text(encoding="utf-8")
+			if name in {"OsLib", "RaiUtils", "RaiImage", "RaiDiagram", "JsonPit"}:
+				# Option B keeps one current section. Keep its install snippets in
+				# step with the coordinated package version.
+				updated = re.sub(
+					r"(dotnet add package \S+ --version )\d+\.\d+\.\d+",
+					lambda match: match.group(1) + v,
+					text,
+				)
+				updated = re.sub(
+					r'(<PackageReference Include="[^"]+" Version=")\d+\.\d+\.\d+("\s*/>)',
+					lambda match: match.group(1) + v + match.group(2),
+					updated,
+				)
+				if updated != text:
+					readme_path.write_text(updated, encoding="utf-8")
+					print(f"  📝 Updated install version in {readme_rel}")
+					changed_count += 1
+					text = updated
 			current_heading = (
 				rf"^## Amafu v{re.escape(v)}$"
 				if name == "Amafu"
@@ -742,6 +765,21 @@ class ReleaseBumper:
 				changed_count += 1
 				continue
 
+			if name in {"OsLib", "RaiUtils", "RaiImage", "RaiDiagram", "JsonPit"} and "## Previous Versions" in text:
+				match = re.search(r"^## \d+\.\d+\.\d+$", text, re.MULTILINE)
+				if match and match.start() < text.index("## Previous Versions"):
+					updated = text[:match.start()] + f"## {v}" + text[match.end():]
+					updated = re.sub(
+						r"Coordinated \d+\.\d+\.\d+ release; public behavior is aligned with the synchronized platform\.",
+						f"Coordinated {v} release; public behavior is aligned with the synchronized platform.",
+						updated,
+						count=1,
+					)
+					readme_path.write_text(updated, encoding="utf-8")
+					print(f"  📝 Updated current release section in {readme_rel}")
+					changed_count += 1
+					continue
+
 			# Legacy READMEs retain their historical numeric heading layout.
 			match = re.search(r"^## \d+\.\d+\.\d+", text, re.MULTILINE)
 			if match:
@@ -753,6 +791,28 @@ class ReleaseBumper:
 				idx = match.start()
 				readme_path.write_text(text[:idx] + header + text[idx:], encoding="utf-8")
 				print(f"  📝 Prepended ## {v} section to {readme_rel}")
+				changed_count += 1
+
+		# RaiGuard keeps its release notes only in the umbrella, but its own
+		# README still describes the current tool and analyzer packages.
+		raiguard_readme = self.root_dir / "RaiGuard/README.md"
+		if raiguard_readme.is_file():
+			readme = raiguard_readme.read_text(encoding="utf-8")
+			updated = re.sub(r"(?m)^## Latest Version \d+\.\d+\.\d+$", f"## Latest Version {v}", readme, count=1)
+			updated = re.sub(
+				r"Latest release notes: \[[^\]\n]+\]\([^)]+\)",
+				f"Latest release notes: [RaiGuard {v} release notes](https://github.com/Burkhardt/RAIkeep/blob/main/{release_note_path('RaiGuard', v)}#{anchor})",
+				updated,
+				count=1,
+			)
+			updated = re.sub(
+				r'(<PackageReference Include="RaiGuard\.Analyzer" Version=")\d+\.\d+\.\d+("\s*>)',
+				lambda match: match.group(1) + v + match.group(2),
+				updated,
+			)
+			if updated != readme:
+				raiguard_readme.write_text(updated, encoding="utf-8")
+				print("  📝 Updated RaiGuard/README.md current release")
 				changed_count += 1
 
 		# 3. Prepend one section to each major-version release history.
