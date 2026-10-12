@@ -2,18 +2,17 @@
 	"$schema": "./release-manifest.schema.json",
 	"current_version": "4.5.8",
 	"release_notes": [
-		"doc/RAIkeep_RELEASE_NOTES_{version}.md",
-		"doc/Amafu_RELEASE_NOTES_{version}.md",
-		"Amafu/Amafu_RELEASE_NOTES_{version}.md",
-		"doc/OsLib_RELEASE_NOTES_{version}.md",
-		"doc/RaiUtils_RELEASE_NOTES_{version}.md",
-		"doc/RaiImage_RELEASE_NOTES_{version}.md",
-		"doc/RaiDiagram_RELEASE_NOTES_{version}.md",
-		"doc/RaidSeeder_RELEASE_NOTES_{version}.md",
-		"doc/JsonPit_RELEASE_NOTES_{version}.md",
-		"doc/ImgSeeder_RELEASE_NOTES_{version}.md",
-		"doc/PitSeeder_RELEASE_NOTES_{version}.md",
-		"doc/RaiGuard_RELEASE_NOTES_{version}.md"
+		"doc/releases/v{major}.x/RAIkeep_RELEASE_NOTES_{major}.x.md",
+		"doc/releases/v{major}.x/Amafu_RELEASE_NOTES_{major}.x.md",
+		"doc/releases/v{major}.x/OsLib_RELEASE_NOTES_{major}.x.md",
+		"doc/releases/v{major}.x/RaiUtils_RELEASE_NOTES_{major}.x.md",
+		"doc/releases/v{major}.x/RaiImage_RELEASE_NOTES_{major}.x.md",
+		"doc/releases/v{major}.x/RaiDiagram_RELEASE_NOTES_{major}.x.md",
+		"doc/releases/v{major}.x/RaidSeeder_RELEASE_NOTES_{major}.x.md",
+		"doc/releases/v{major}.x/JsonPit_RELEASE_NOTES_{major}.x.md",
+		"doc/releases/v{major}.x/ImgSeeder_RELEASE_NOTES_{major}.x.md",
+		"doc/releases/v{major}.x/PitSeeder_RELEASE_NOTES_{major}.x.md",
+		"doc/releases/v{major}.x/RaiGuard_RELEASE_NOTES_{major}.x.md"
 	],
 	"targets": [
 		{
@@ -405,40 +404,8 @@
 				},
 				{
 					"description": "Latest release notes link",
-					"pattern": "Latest release notes: \\[Amafu_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
-					"replacement": "Latest release notes: [Amafu_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/Amafu_RELEASE_NOTES_{version}.md)"
-				}
-			]
-		},
-		{
-			"path": "Amafu/README.NuGet.md",
-			"description": "Amafu package README",
-			"type": "readme",
-			"replacements": [
-				{
-					"description": "Amafu current-version heading",
-					"pattern": "(?m)^## Amafu v\\d+\\.\\d+\\.\\d+$",
-					"replacement": "## Amafu v{version}"
-				},
-				{
-					"description": "Native installer version",
-					"pattern": "InstallAmafu\\.sh \\| sudo bash -s -- native \\d+\\.\\d+\\.\\d+",
-					"replacement": "InstallAmafu.sh | sudo bash -s -- native {version}"
-				},
-				{
-					"description": "Global installer version",
-					"pattern": "InstallAmafu\\.sh \\| bash -s -- global \\d+\\.\\d+\\.\\d+",
-					"replacement": "InstallAmafu.sh | bash -s -- global {version}"
-				},
-				{
-					"description": "System installer version",
-					"pattern": "InstallAmafu\\.sh \\| sudo bash -s -- system \\d+\\.\\d+\\.\\d+",
-					"replacement": "InstallAmafu.sh | sudo bash -s -- system {version}"
-				},
-				{
-					"description": "Latest release notes link",
-					"pattern": "Latest release notes: \\[Amafu_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
-					"replacement": "Latest release notes: [Amafu_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/Amafu_RELEASE_NOTES_{version}.md)"
+					"pattern": "Latest release notes: \\[[^\\]\\n]+\\]\\([^)]+\\)",
+					"replacement": "Latest release notes: [Amafu {version} release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v{major}.x/Amafu_RELEASE_NOTES_{major}.x.md#{anchor})"
 				}
 			]
 		},
@@ -449,8 +416,8 @@
 			"replacements": [
 				{
 					"description": "Latest release notes link",
-					"pattern": "Latest release notes: \\[OsLib_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
-					"replacement": "Latest release notes: [OsLib_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_{version}.md)"
+					"pattern": "Latest release notes: \\[[^\\]\\n]+\\]\\([^)]+\\)",
+					"replacement": "Latest release notes: [OsLib {version} release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v{major}.x/OsLib_RELEASE_NOTES_{major}.x.md#{anchor})"
 				},
 				{
 					"description": "release-chain invocation",
@@ -466,8 +433,8 @@
 			"replacements": [
 				{
 					"description": "Latest release notes link",
-					"pattern": "Latest release notes: \\[RaiUtils_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
-					"replacement": "Latest release notes: [RaiUtils_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_{version}.md)"
+					"pattern": "Latest release notes: \\[[^\\]\\n]+\\]\\([^)]+\\)",
+					"replacement": "Latest release notes: [RaiUtils {version} release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v{major}.x/RaiUtils_RELEASE_NOTES_{major}.x.md#{anchor})"
 				}
 			]
 		},
@@ -478,8 +445,8 @@
 			"replacements": [
 				{
 					"description": "Latest release notes link",
-					"pattern": "Latest release notes: \\[RaiImage_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
-					"replacement": "Latest release notes: [RaiImage_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_{version}.md)"
+					"pattern": "Latest release notes: \\[[^\\]\\n]+\\]\\([^)]+\\)",
+					"replacement": "Latest release notes: [RaiImage {version} release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v{major}.x/RaiImage_RELEASE_NOTES_{major}.x.md#{anchor})"
 				}
 			]
 		},
@@ -490,8 +457,8 @@
 			"replacements": [
 				{
 					"description": "Latest release notes link",
-					"pattern": "Latest release notes: \\[RaiDiagram_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
-					"replacement": "Latest release notes: [RaiDiagram_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiDiagram_RELEASE_NOTES_{version}.md)"
+					"pattern": "Latest release notes: \\[[^\\]\\n]+\\]\\([^)]+\\)",
+					"replacement": "Latest release notes: [RaiDiagram {version} release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v{major}.x/RaiDiagram_RELEASE_NOTES_{major}.x.md#{anchor})"
 				}
 			]
 		},
@@ -507,8 +474,8 @@
 				},
 				{
 					"description": "Latest release notes link",
-					"pattern": "Latest release notes: \\[RaidSeeder_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
-					"replacement": "Latest release notes: [RaidSeeder_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaidSeeder_RELEASE_NOTES_{version}.md)"
+					"pattern": "Latest release notes: \\[[^\\]\\n]+\\]\\([^)]+\\)",
+					"replacement": "Latest release notes: [RaidSeeder {version} release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v{major}.x/RaidSeeder_RELEASE_NOTES_{major}.x.md#{anchor})"
 				},
 				{
 					"description": "dotnet tool install",
@@ -524,8 +491,8 @@
 			"replacements": [
 				{
 					"description": "Latest release notes link",
-					"pattern": "Latest release notes: \\[JsonPit_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
-					"replacement": "Latest release notes: [JsonPit_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_{version}.md)"
+					"pattern": "Latest release notes: \\[[^\\]\\n]+\\]\\([^)]+\\)",
+					"replacement": "Latest release notes: [JsonPit {version} release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v{major}.x/JsonPit_RELEASE_NOTES_{major}.x.md#{anchor})"
 				},
 				{
 					"description": "live reference link text",
@@ -551,8 +518,8 @@
 				},
 				{
 					"description": "Latest release notes link",
-					"pattern": "Latest release notes: \\[ImgSeeder_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
-					"replacement": "Latest release notes: [ImgSeeder_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ImgSeeder_RELEASE_NOTES_{version}.md)"
+					"pattern": "Latest release notes: \\[[^\\]\\n]+\\]\\([^)]+\\)",
+					"replacement": "Latest release notes: [ImgSeeder {version} release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v{major}.x/ImgSeeder_RELEASE_NOTES_{major}.x.md#{anchor})"
 				}
 			]
 		},
@@ -568,8 +535,8 @@
 				},
 				{
 					"description": "Latest release notes link",
-					"pattern": "Latest release notes: \\[PitSeeder_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
-					"replacement": "Latest release notes: [PitSeeder_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_{version}.md)"
+					"pattern": "Latest release notes: \\[[^\\]\\n]+\\]\\([^)]+\\)",
+					"replacement": "Latest release notes: [PitSeeder {version} release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v{major}.x/PitSeeder_RELEASE_NOTES_{major}.x.md#{anchor})"
 				}
 			]
 		},

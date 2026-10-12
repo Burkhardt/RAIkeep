@@ -7,7 +7,7 @@ As preprocessing, prepare the release using the automated bumping engine:
 
 This uses [`scripts/release-manifest.json`](scripts/release-manifest.json) to deterministically update all project files, code constants, CLI tests, and documentation, and scaffolds the 11 release note files. If any new version-tracked file is introduced, simply add its path and replacement rule to `scripts/release-manifest.json`.
 
-After bumping, author the narrative highlights in the scaffolded release note documents (`doc/*_RELEASE_NOTES_<ver>.md`). Commit all changes in subprojects and the umbrella before starting the release chain.
+After bumping, author the new `## <version>` sections prepended to the consolidated package histories in `doc/releases/v<major>.x/<Package>_RELEASE_NOTES_<major>.x.md`. Commit all changes in subprojects and the umbrella before starting the release chain.
 
 ## Release commit subjects
 

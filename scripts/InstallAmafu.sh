@@ -11,9 +11,9 @@ usage() {
 	cat <<'USAGE'
 Usage: InstallAmafu.sh <native|global|system> [VERSION]
 
-  native  Install the runtime-independent release binary in /usr/local/bin.
-  global  Install the Amafu .NET tool in the current user's global tool directory.
-  system  Install the Amafu .NET tool in /usr/local/bin.
+	native  Install the runtime-independent release binary in /usr/local/bin.
+	global  Install the Amafu .NET tool in the current user's global tool directory.
+	system  Install the Amafu .NET tool in /usr/local/bin.
 
 Use sudo for native and system modes. VERSION defaults to the current coordinated release.
 USAGE

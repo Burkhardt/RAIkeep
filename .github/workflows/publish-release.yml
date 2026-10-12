@@ -22,7 +22,9 @@ jobs:
         run: |
           TAG="${GITHUB_REF_NAME}"
           VERSION="${TAG#v}"
-          NOTES="doc/RAIkeep_RELEASE_NOTES_${VERSION}.md"
+          MAJOR="${VERSION%%.*}"
+          NOTES="doc/releases/v${MAJOR}.x/RAIkeep_RELEASE_NOTES_${MAJOR}.x.md"
+          RELEASE_BODY="${RUNNER_TEMP}/RAIkeep-${VERSION}-release-notes.md"
           TITLE="RAIkeep ${TAG}"
           if [[ ! "${TAG}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "Expected a vX.Y.Z tag, found ${TAG}."
@@ -32,6 +34,7 @@ jobs:
             echo "Missing synchronized release notes: ${NOTES}"
             exit 1
           fi
+          python3 scripts/extract-release-notes.py "${NOTES}" "${VERSION}" "${RELEASE_BODY}"
           if gh release view "${TAG}" >/dev/null 2>&1; then
             EXISTING_TITLE="$(gh release view "${TAG}" --json name --jq '.name')"
             if [[ "${EXISTING_TITLE}" != "${TITLE}" ]]; then
@@ -40,5 +43,5 @@ jobs:
             fi
             echo "Verified existing synchronized GitHub Release ${TITLE}."
           else
-            gh release create "${TAG}" --title "${TITLE}" --notes-file "${NOTES}"
+            gh release create "${TAG}" --title "${TITLE}" --notes-file "${RELEASE_BODY}"
           fi

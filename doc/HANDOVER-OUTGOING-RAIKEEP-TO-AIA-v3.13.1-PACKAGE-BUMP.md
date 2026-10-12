@@ -164,11 +164,11 @@ AIA may link directly to this file from its incoming handover and subsequent con
 
 ## 8. Authoritative supporting documents
 
-- [`OsLib_RELEASE_NOTES_3.13.1.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_3.13.1.md)
-- [`RaiUtils_RELEASE_NOTES_3.13.1.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiUtils_RELEASE_NOTES_3.13.1.md)
-- [`RaiImage_RELEASE_NOTES_3.13.1.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiImage_RELEASE_NOTES_3.13.1.md)
-- [`JsonPit_RELEASE_NOTES_3.13.1.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit_RELEASE_NOTES_3.13.1.md)
-- [`PitSeeder_RELEASE_NOTES_3.13.1.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_RELEASE_NOTES_3.13.1.md)
+- [`OsLib_RELEASE_NOTES_3.13.1.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v3.x/OsLib_RELEASE_NOTES_3.x.md#3131)
+- [`RaiUtils_RELEASE_NOTES_3.13.1.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v3.x/RaiUtils_RELEASE_NOTES_3.x.md#3131)
+- [`RaiImage_RELEASE_NOTES_3.13.1.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v3.x/RaiImage_RELEASE_NOTES_3.x.md#3131)
+- [`JsonPit_RELEASE_NOTES_3.13.1.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v3.x/JsonPit_RELEASE_NOTES_3.x.md#3131)
+- [`PitSeeder_RELEASE_NOTES_3.13.1.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v3.x/PitSeeder_RELEASE_NOTES_3.x.md#3131)
 - [`PitSeeder_CR_release_for_cli-resolved-in-v3.13.1.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/PitSeeder_CR_release_for_cli-resolved-in-v3.13.1.md)
 - [`JsonPit-FlagFiles-And-Concurrency.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit-FlagFiles-And-Concurrency.md)
 

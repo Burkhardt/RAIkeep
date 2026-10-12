@@ -19,7 +19,7 @@ Documentation-only update for OsLib: move the OsLib docs from 3.5.2 to 3.5.3, re
 
 2. Add a new OsLib 3.5.3 release-notes document and repoint the OsLib docs to it.
    Reference template:
-   [OsLib/RELEASE_NOTES_3.5.2.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/OsLib_RELEASE_NOTES_3.5.2.md)
+   [OsLib/RELEASE_NOTES_3.5.2.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v3.x/OsLib_RELEASE_NOTES_3.x.md#352)
    Planned new file:
    OsLib/RELEASE_NOTES_3.5.3.md
 

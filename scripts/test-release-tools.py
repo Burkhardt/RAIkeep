@@ -6,6 +6,7 @@ import importlib.util
 import io
 import json
 from pathlib import Path
+import re
 import shutil
 import sys
 import tempfile
@@ -18,6 +19,11 @@ spec = importlib.util.spec_from_file_location(
 )
 tools = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(tools)
+extract_spec = importlib.util.spec_from_file_location(
+	"release_note_extractor", ROOT / "scripts/extract-release-notes.py"
+)
+extractor = importlib.util.module_from_spec(extract_spec)
+extract_spec.loader.exec_module(extractor)
 
 
 class ReleaseToolsTests(unittest.TestCase):
@@ -30,7 +36,8 @@ class ReleaseToolsTests(unittest.TestCase):
 		self.version = self.manifest["current_version"]
 		paths = {target["path"] for target in self.manifest["targets"]}
 		paths.update(
-			note.format(version=self.version) for note in self.manifest["release_notes"]
+			note.format(version=self.version, major=self.version.split(".", 1)[0])
+			for note in self.manifest["release_notes"]
 		)
 		paths.update(f"{repo}/README.md" for _, repo, _ in tools.PACKAGE_REPOS)
 		paths.update(
@@ -87,12 +94,28 @@ class ReleaseToolsTests(unittest.TestCase):
 		self.assertIn("fallback property <OsLibPackageVersion> is 0.0.1", errors[0])
 
 	def test_amafu_package_readme_rejects_html_folding(self):
-		readme = self.root / "Amafu/README.NuGet.md"
+		readme = self.root / "Amafu/README.md"
 		readme.write_text(readme.read_text().replace("## Previous Versions", "<details>\n## Previous Versions"))
 		success, errors = self.validate()
 		self.assertFalse(success)
 		self.assertEqual(1, len(errors))
-		self.assertIn("NuGet does not render collapsible HTML tags", errors[0])
+		self.assertIn("Amafu README contains collapsible HTML tags not supported by NuGet", errors[0])
+
+	def test_new_release_is_prepended_once(self):
+		note = self.root / "doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md"
+		self.assertTrue(tools.ReleaseBumper.prepend_release_section(note, "4.5.9"))
+		text = note.read_text()
+		self.assertLess(text.index("## 4.5.9"), text.index("## 4.5.8"))
+		self.assertFalse(tools.ReleaseBumper.prepend_release_section(note, "4.5.9"))
+		self.assertEqual(1, len(re.findall(r"^## 4\.5\.9$", note.read_text(), re.MULTILINE)))
+
+	def test_release_body_contains_only_requested_version(self):
+		note = self.root / "doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md"
+		body = extractor.extract(note, "4.5.8")
+		self.assertTrue(body.startswith("## 4.5.8\n"))
+		self.assertNotIn("## 4.5.7", body)
+		with self.assertRaisesRegex(ValueError, "Expected exactly one"):
+			extractor.extract(note, "4.9.9")
 
 
 if __name__ == "__main__":

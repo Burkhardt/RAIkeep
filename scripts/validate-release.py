@@ -36,6 +36,15 @@ PYTHON_REPO = ("JsonPit.Python", "pyproject.toml")
 CENTRAL_RELEASE_NOTES_ONLY = {"RaiGuard"}
 
 
+def release_note_path(name: str, version: str) -> str:
+	major = version.split(".", 1)[0]
+	return f"doc/releases/v{major}.x/{name}_RELEASE_NOTES_{major}.x.md"
+
+
+def release_note_anchor(version: str) -> str:
+	return version.replace(".", "")
+
+
 class ReleaseValidator:
 	def __init__(
 		self, root_dir: Path, target_version: str, *, run_external_checks: bool = True
@@ -303,6 +312,8 @@ class ReleaseValidator:
 
 	def run_all_validations(self, prior_versions: List[str]) -> bool:
 		v = self.version
+		major = v.split(".", 1)[0]
+		anchor = release_note_anchor(v)
 		print(f"============================================================")
 		print(f"🔍 Validating RAIkeep Toolchain for Release {v}")
 		print(f"============================================================")
@@ -380,9 +391,14 @@ class ReleaseValidator:
 			print("\n[3/7] Running Python tests and pits/jpit list/help parity...")
 			python_env = os.environ.copy()
 			python_env["PYTHONPATH"] = str(self.root_dir / PYTHON_REPO[0])
+			python_cmd = (
+				["python3", "-m", "pytest", "JsonPit.Python/tests"]
+				if subprocess.run(["python3", "-m", "pytest", "--version"], capture_output=True).returncode == 0
+				else ["python3", "JsonPit.Python/tests/run_all.py"]
+			)
 			self.validate_command(
-				"JsonPit.Python pytest",
-				["python3", "-m", "pytest", "JsonPit.Python/tests"],
+				"JsonPit.Python tests",
+				python_cmd,
 				env=python_env,
 			)
 			self.validate_cli_list_parity()
@@ -392,13 +408,24 @@ class ReleaseValidator:
 
 		# 4. Release Notes Existence
 		print("\n[4/7] Checking Release Notes files...")
-		# Umbrella release notes
-		self.validate_file_exists(f"doc/RAIkeep_RELEASE_NOTES_{v}.md")
-		# All child release notes
-		for name, _, _ in PACKAGE_REPOS:
-			self.validate_file_exists(f"doc/{name}_RELEASE_NOTES_{v}.md")
-		# Amafu local release notes required by its native GitHub release workflow
-		self.validate_file_exists(f"Amafu/Amafu_RELEASE_NOTES_{v}.md")
+		for name in ["RAIkeep", *(package for package, _, _ in PACKAGE_REPOS)]:
+			rel_path = release_note_path(name, v)
+			if not self.validate_file_exists(rel_path):
+				continue
+			headings = re.findall(
+				r"^## (\d+(?:\.\d+)+)$",
+				(self.root_dir / rel_path).read_text(encoding="utf-8"),
+				re.MULTILINE,
+			)
+			if headings and headings[0] == v and headings.count(v) == 1:
+				self.pass_check()
+			else:
+				self.error(rel_path, None, f"Expected exactly one leading '## {v}' section; found {headings[:3]}.")
+		legacy_notes = list((self.root_dir / "doc").glob("*_RELEASE_NOTES_[34].*.md"))
+		if legacy_notes:
+			self.error("doc", None, f"Flat 3.x/4.x release notes remain: {len(legacy_notes)} file(s).")
+		else:
+			self.pass_check()
 
 		# 5. Documentation Headers, Overviews & Scope Notes
 		print("\n[5/7] Checking documentation headers & scope notes...")
@@ -456,35 +483,18 @@ class ReleaseValidator:
 			)
 		self.validate_file_contains(
 			"Amafu/README.md",
-			rf"Latest release notes:.*Amafu_RELEASE_NOTES_{re.escape(v)}\.md",
+			rf"Latest release notes:.*releases/v{major}\.x/Amafu_RELEASE_NOTES_{major}\.x\.md#{anchor}",
 			"Amafu README Latest release notes link",
 		)
 		self.validate_file_contains(
 			"Amafu/amafu/amafu.csproj",
-			r'<None Include="\.\./README\.NuGet\.md" Pack="true" PackagePath="README\.md" />',
-			"Amafu package uses the NuGet-compatible README",
+			r'<None Include="\.\./README\.md" Pack="true"',
+			"Amafu package uses the repository README",
 		)
-		self.validate_file_contains(
-			"Amafu/README.NuGet.md",
-			rf"^## Amafu v{re.escape(v)}$",
-			"Amafu package README current-version heading",
-			flags=re.MULTILINE,
-		)
-		self.validate_file_contains(
-			"Amafu/README.NuGet.md",
-			rf"Latest release notes:.*Amafu_RELEASE_NOTES_{re.escape(v)}\.md",
-			"Amafu package README release notes link",
-		)
-		self.validate_file_contains(
-			"Amafu/README.NuGet.md",
-			r"^## Previous Versions$[\s\S]*?https://github\.com/Burkhardt/Amafu/blob/main/README\.md",
-			"Amafu package README history link",
-			flags=re.MULTILINE,
-		)
-		package_readme = self.root_dir / "Amafu/README.NuGet.md"
-		if package_readme.is_file():
-			if re.search(r"</?(?:details|summary)\b", package_readme.read_text(encoding="utf-8"), re.IGNORECASE):
-				self.error("Amafu/README.NuGet.md", None, "NuGet does not render collapsible HTML tags.")
+		amafu_readme = self.root_dir / "Amafu/README.md"
+		if amafu_readme.is_file():
+			if re.search(r"</?(?:details|summary)\b", amafu_readme.read_text(encoding="utf-8"), re.IGNORECASE):
+				self.error("Amafu/README.md", None, "Amafu README contains collapsible HTML tags not supported by NuGet.")
 			else:
 				self.pass_check()
 		self.validate_file_contains(
@@ -513,12 +523,12 @@ class ReleaseValidator:
 				)
 				self.validate_file_contains(
 					readme_rel,
-					rf"{name}_RELEASE_NOTES_{re.escape(v)}\.md",
+					rf"releases/v{major}\.x/{name}_RELEASE_NOTES_{major}\.x\.md#{anchor}",
 					f"{name} README release notes link",
 				)
 				self.validate_file_contains(
 					readme_rel,
-					rf"Latest release notes:.*{name}_RELEASE_NOTES_{re.escape(v)}\.md",
+					rf"Latest release notes:.*releases/v{major}\.x/{name}_RELEASE_NOTES_{major}\.x\.md#{anchor}",
 					f"{name} README Latest release notes link",
 				)
 
@@ -533,6 +543,13 @@ class ReleaseValidator:
 			rf"RAIkeep {re.escape(v)}",
 			"doc/README.md current release notes list",
 		)
+		for name in ["RAIkeep", *(package for package, _, _ in PACKAGE_REPOS)]:
+			label = "OsLibCore" if name == "OsLib" else name
+			self.validate_file_contains(
+				"doc/README.md",
+				rf"(?m)^- \[{label} {re.escape(v)}\]\(https://github\.com/Burkhardt/RAIkeep/blob/main/{re.escape(release_note_path(name, v))}#{anchor}\)$",
+				f"doc/README.md {name} release link",
+			)
 		self.validate_file_contains(
 			"RunReleaseChain.md",
 			rf"scripts/release-chain\.sh {re.escape(v)}",
@@ -596,8 +613,38 @@ class ReleaseBumper:
 			raise FileNotFoundError(f"Manifest not found: {self.manifest_path}")
 		return json.loads(self.manifest_path.read_text(encoding="utf-8"))
 
+	@staticmethod
+	def prepend_release_section(path: Path, version: str) -> bool:
+		"""Add one new version at the top of a package's major-version history."""
+		major = version.split(".", 1)[0]
+		name = path.name.split("_RELEASE_NOTES_", 1)[0]
+		section = (
+			f"## {version}\n\n"
+			f"- Release version: `{version}`\n"
+			f"- Coordination tag: `v{version}`\n\n"
+			"### Highlights\n"
+			"<!-- LLM / Author: summarize key architectural highlights and changes here -->\n\n"
+			"### Coordinated Dependencies\n"
+			f"- Aligned with RAIkeep synchronized `{version}` line."
+		)
+		if not path.is_file():
+			path.parent.mkdir(parents=True, exist_ok=True)
+			path.write_text(f"# {name} Release Notes {major}.x\n\n{section}\n", encoding="utf-8")
+			return True
+		content = path.read_text(encoding="utf-8")
+		if re.search(rf"^## {re.escape(version)}$", content, re.MULTILINE):
+			return False
+		header = re.match(r"(#[^\n]+\n)\n*", content)
+		if not header:
+			raise ValueError(f"Release history has no top-level heading: {path}")
+		updated = content[:header.end()].rstrip() + "\n\n" + section + "\n\n---\n\n" + content[header.end():].lstrip()
+		path.write_text(updated, encoding="utf-8")
+		return True
+
 	def bump(self) -> bool:
 		v = self.target_version
+		major = v.split(".", 1)[0]
+		anchor = release_note_anchor(v)
 		old_v = self.manifest.get("current_version", "")
 		print(f"============================================================")
 		print(f"🚀 Bumping RAIkeep Platform from {old_v} -> {v}")
@@ -620,7 +667,7 @@ class ReleaseBumper:
 			# Apply explicit replacement rules
 			for rule in target.get("replacements", []):
 				pattern = rule["pattern"]
-				replacement = rule["replacement"].format(version=v)
+				replacement = rule["replacement"].format(version=v, major=major, anchor=anchor)
 				updated = re.sub(pattern, replacement, updated)
 
 			# Also apply @latestVersion line markers if present
@@ -685,35 +732,43 @@ class ReleaseBumper:
 				header = (
 					f"## {v}\n\n"
 					f"Coordinated {v} release; public behavior is aligned with the synchronized platform.\n\n"
-					f"Latest release notes: [{name}_RELEASE_NOTES_{v}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/{name}_RELEASE_NOTES_{v}.md).\n\n"
+					f"Latest release notes: [{name} {v} release notes](https://github.com/Burkhardt/RAIkeep/blob/main/{release_note_path(name, v)}#{anchor}).\n\n"
 				)
 				idx = match.start()
 				readme_path.write_text(text[:idx] + header + text[idx:], encoding="utf-8")
 				print(f"  📝 Prepended ## {v} section to {readme_rel}")
 				changed_count += 1
 
-		# 3. Scaffold missing release note markdown files
-		print("\n[3/4] Scaffolding release notes templates...")
+		# 3. Prepend one section to each major-version release history.
+		print("\n[3/4] Updating consolidated release histories...")
 		for note_pattern in self.manifest.get("release_notes", []):
-			rel_note = note_pattern.format(version=v)
+			rel_note = note_pattern.format(version=v, major=major, anchor=anchor)
 			note_path = self.root_dir / rel_note
-			if not note_path.is_file():
-				note_path.parent.mkdir(parents=True, exist_ok=True)
-				title = Path(rel_note).stem.replace(f"_{v}", f" {v}").replace("_", " ")
-				template = (
-					f"# {title}\n\n"
-					f"- Release version: `{v}`\n"
-					f"- Coordination tag: `v{v}`\n\n"
-					f"## Highlights\n"
-					f"<!-- LLM / Author: summarize key architectural highlights and changes here -->\n\n"
-					f"## Coordinated Dependencies\n"
-					f"- Aligned with RAIkeep synchronized `{v}` line.\n"
-				)
-				note_path.write_text(template, encoding="utf-8")
-				print(f"  📄 Scaffolding created: {rel_note}")
+			if self.prepend_release_section(note_path, v):
+				print(f"  📝 Prepended {v}: {rel_note}")
 				changed_count += 1
 			else:
-				print(f"  ✔️ Exists: {rel_note}")
+				print(f"  ✔️ Contains {v}: {rel_note}")
+
+		index_path = self.root_dir / "doc/README.md"
+		index = index_path.read_text(encoding="utf-8")
+		updated_index = index
+		for name in ["RAIkeep", *(package for package, _, _ in PACKAGE_REPOS)]:
+			label = "OsLibCore" if name == "OsLib" else name
+			link = (
+				f"- [{label} {v}](https://github.com/Burkhardt/RAIkeep/blob/main/"
+				f"{release_note_path(name, v)}#{anchor})"
+			)
+			updated_index = re.sub(
+				rf"(?m)^- \[{label} \d+\.\d+\.\d+\]\([^)]+\)$",
+				link,
+				updated_index,
+				count=1,
+			)
+		if updated_index != index:
+			index_path.write_text(updated_index, encoding="utf-8")
+			print("  📝 Updated doc/README.md current release links")
+			changed_count += 1
 
 		# 4. Update current_version in manifest itself
 		print("\n[4/4] Updating release manifest version...")

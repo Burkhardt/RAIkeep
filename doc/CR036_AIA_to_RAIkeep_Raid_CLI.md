@@ -83,7 +83,7 @@ raid validate <path-to-file>
 
 ### 2.5 Permanent Tag & Release Synchronization
 - `RAIkeep v4.4.0` is the inaugural release establishing the permanent synchronization lock between Git tags and official GitHub Releases.
-- Pushing tag `v4.4.0` to GitHub must simultaneously create an official GitHub Release titled `RAIkeep v4.4.0` populated with `doc/RAIkeep_RELEASE_NOTES_4.4.0.md`.
+- Pushing tag `v4.4.0` to GitHub must simultaneously create an official GitHub Release titled `RAIkeep v4.4.0` populated with `doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#440`.
 
 ---
 
@@ -107,7 +107,7 @@ raid validate <path-to-file>
 - Must hydrate without XML `<parsererror>` or NaN bounding box coordinates.
 
 ### Test 4: Release Notes & Tag Alignment
-- `doc/RAIkeep_RELEASE_NOTES_4.4.0.md` published in `Burkhardt/RAIkeep`.
+- `doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#440` published in `Burkhardt/RAIkeep`.
 - Tag `v4.4.0` matches the GitHub Release `RAIkeep v4.4.0`.
 
 ---
