@@ -47,7 +47,7 @@ class ReleaseToolsTests(unittest.TestCase):
 			shutil.copyfile(ROOT / relative, destination)
 
 	def validate(self):
-		validator = tools.ReleaseValidator(self.root, self.version)
+		validator = tools.ReleaseValidator(self.root, self.version, run_external_checks=False)
 		with contextlib.redirect_stdout(io.StringIO()):
 			success = validator.run_all_validations([])
 		return success, validator.errors
@@ -56,7 +56,10 @@ class ReleaseToolsTests(unittest.TestCase):
 		self.assertEqual((True, []), self.validate())
 		before = {p: p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
 		bumper = tools.ReleaseBumper(
-			self.root, self.root / "scripts/release-manifest.json", self.version
+			self.root,
+			self.root / "scripts/release-manifest.json",
+			self.version,
+			run_external_checks=False,
 		)
 		with contextlib.redirect_stdout(io.StringIO()):
 			self.assertTrue(bumper.bump())

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-REPOSITORIES=(. OsLib RaiUtils RaiImage RaiDiagram JsonPit ImgSeeder PitSeeder RaiGuard)
+REPOSITORIES=(. Amafu OsLib RaiUtils RaiImage RaiDiagram JsonPit ImgSeeder PitSeeder RaiGuard)
 PATTERN='\[[^]\n]+\]\((?!<?(?:https?://|mailto:|#|/))<?[^)\n>]+\.md(?:#[^)\n>]*)?>?\)'
 failed=0
 

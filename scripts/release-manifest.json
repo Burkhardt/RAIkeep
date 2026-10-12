@@ -384,39 +384,24 @@
 			"type": "readme",
 			"replacements": [
 				{
-					"description": "Latest Version heading",
-					"pattern": "(?m)^## Latest Version \\d+\\.\\d+\\.\\d+$",
-					"replacement": "## Latest Version {version}"
+					"description": "Amafu current-version heading",
+					"pattern": "(?m)^## Amafu v\\d+\\.\\d+\\.\\d+$",
+					"replacement": "## Amafu v{version}"
 				},
 				{
-					"description": "AMAFU_VERSION variable",
-					"pattern": "AMAFU_VERSION=\\d+\\.\\d+\\.\\d+",
-					"replacement": "AMAFU_VERSION={version}"
+					"description": "Native installer version",
+					"pattern": "InstallAmafu\\.sh \\| sudo bash -s -- native \\d+\\.\\d+\\.\\d+",
+					"replacement": "InstallAmafu.sh | sudo bash -s -- native {version}"
 				},
 				{
-					"description": "Platform support heading",
-					"pattern": "## Platform support in \\d+\\.\\d+\\.\\d+",
-					"replacement": "## Platform support in {version}"
+					"description": "Global installer version",
+					"pattern": "InstallAmafu\\.sh \\| bash -s -- global \\d+\\.\\d+\\.\\d+",
+					"replacement": "InstallAmafu.sh | bash -s -- global {version}"
 				},
 				{
-					"description": "dotnet tool install",
-					"pattern": "dotnet tool install --global Amafu --version \\d+\\.\\d+\\.\\d+",
-					"replacement": "dotnet tool install --global Amafu --version {version}"
-				},
-				{
-					"description": "dotnet tool update",
-					"pattern": "dotnet tool update --global Amafu --version \\d+\\.\\d+\\.\\d+",
-					"replacement": "dotnet tool update --global Amafu --version {version}"
-				},
-				{
-					"description": "tool update version flags",
-					"pattern": "--version \\d+\\.\\d+\\.\\d+",
-					"replacement": "--version {version}"
-				},
-				{
-					"description": "macOS support line",
-					"pattern": "macOS in \\d+\\.\\d+\\.\\d+;",
-					"replacement": "macOS in {version};"
+					"description": "System installer version",
+					"pattern": "InstallAmafu\\.sh \\| sudo bash -s -- system \\d+\\.\\d+\\.\\d+",
+					"replacement": "InstallAmafu.sh | sudo bash -s -- system {version}"
 				},
 				{
 					"description": "Latest release notes link",
@@ -670,6 +655,18 @@
 				{
 					"pattern": "DEFAULT_VERSION=\"\\$\\{DEFAULT_VERSION:-\\d+\\.\\d+\\.\\d+\\}\"",
 					"replacement": "DEFAULT_VERSION=\"${{DEFAULT_VERSION:-{version}}}\""
+				}
+			]
+		},
+		{
+			"path": "scripts/InstallAmafu.sh",
+			"description": "Amafu-only installer default release",
+			"type": "source",
+			"replacements": [
+				{
+					"description": "Default version",
+					"pattern": "DEFAULT_VERSION=\"\\d+\\.\\d+\\.\\d+\"",
+					"replacement": "DEFAULT_VERSION=\"{version}\""
 				}
 			]
 		}

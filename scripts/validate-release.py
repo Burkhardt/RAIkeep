@@ -37,9 +37,12 @@ CENTRAL_RELEASE_NOTES_ONLY = {"RaiGuard"}
 
 
 class ReleaseValidator:
-	def __init__(self, root_dir: Path, target_version: str):
+	def __init__(
+		self, root_dir: Path, target_version: str, *, run_external_checks: bool = True
+	):
 		self.root_dir = root_dir.resolve()
 		self.version = target_version
+		self.run_external_checks = run_external_checks
 		self.tag = f"v{target_version}"
 		self.errors: List[str] = []
 		self.checks_passed = 0
@@ -373,16 +376,19 @@ class ReleaseValidator:
 		)
 
 		# 3. Python tests and cross-runtime CLI discovery/help parity
-		print("\n[3/7] Running Python tests and pits/jpit list/help parity...")
-		python_env = os.environ.copy()
-		python_env["PYTHONPATH"] = str(self.root_dir / PYTHON_REPO[0])
-		self.validate_command(
-			"JsonPit.Python pytest",
-			["python3", "-m", "pytest", "JsonPit.Python/tests"],
-			env=python_env,
-		)
-		self.validate_cli_list_parity()
-		self.validate_cli_help_parity()
+		if self.run_external_checks:
+			print("\n[3/7] Running Python tests and pits/jpit list/help parity...")
+			python_env = os.environ.copy()
+			python_env["PYTHONPATH"] = str(self.root_dir / PYTHON_REPO[0])
+			self.validate_command(
+				"JsonPit.Python pytest",
+				["python3", "-m", "pytest", "JsonPit.Python/tests"],
+				env=python_env,
+			)
+			self.validate_cli_list_parity()
+			self.validate_cli_help_parity()
+		else:
+			print("\n[3/7] Skipping external checks for isolated release-tool test.")
 
 		# 4. Release Notes Existence
 		print("\n[4/7] Checking Release Notes files...")
@@ -434,31 +440,30 @@ class ReleaseValidator:
 
 		# 6. README Files, Install Snippets, and Links
 		print("\n[6/7] Checking README headings, install commands & release links...")
-		# Amafu README install snippets and platform heading
+		# Amafu uses an explicit, product-named current-version heading and three
+		# installer entry points. The script is the single executable install contract.
 		self.validate_file_contains(
 			"Amafu/README.md",
-			rf"AMAFU_VERSION={re.escape(v)}",
-			"Amafu README AMAFU_VERSION",
+			rf"^## Amafu v{re.escape(v)}$",
+			"Amafu README current-version heading",
+			flags=re.MULTILINE,
+		)
+		for mode, privilege in (("native", "sudo "), ("global", ""), ("system", "sudo ")):
+			self.validate_file_contains(
+				"Amafu/README.md",
+				rf"InstallAmafu\.sh \| {privilege}bash -s -- {mode} {re.escape(v)}",
+				f"Amafu README {mode} installer command",
+			)
+		self.validate_file_contains(
+			"Amafu/README.md",
+			rf"Latest release notes:.*Amafu_RELEASE_NOTES_{re.escape(v)}\.md",
+			"Amafu README Latest release notes link",
 		)
 		self.validate_file_contains(
-			"Amafu/README.md",
-			rf"## Platform support in {re.escape(v)}",
-			"Amafu README platform support heading",
-		)
-		self.validate_file_contains(
-			"Amafu/README.md",
-			rf"dotnet tool install --global Amafu --version {re.escape(v)}",
-			"Amafu README dotnet tool install",
-		)
-		self.validate_file_contains(
-			"Amafu/README.md",
-			rf"dotnet tool update --global Amafu --version {re.escape(v)}",
-			"Amafu README dotnet tool update",
-		)
-		self.validate_file_contains(
-			"Amafu/README.md",
-			rf"--version {re.escape(v)}",
-			"Amafu README sudo dotnet tool version",
+			"scripts/InstallAmafu.sh",
+			rf'^DEFAULT_VERSION="{re.escape(v)}"$',
+			"Amafu-only installer default version",
+			flags=re.MULTILINE,
 		)
 
 		# Each package README identifies the current release once. Both the newer
@@ -467,9 +472,14 @@ class ReleaseValidator:
 		for name, repo_rel, _ in PACKAGE_REPOS:
 			readme_rel = f"{repo_rel}/README.md"
 			if name not in CENTRAL_RELEASE_NOTES_ONLY:
+				heading_pattern = (
+					rf"^## Amafu v{re.escape(v)}$"
+					if name == "Amafu"
+					else rf"^## (?:Latest Version )?{re.escape(v)}$"
+				)
 				self.validate_file_contains(
 					readme_rel,
-					rf"^## (?:Latest Version )?{re.escape(v)}$",
+					heading_pattern,
 					f"{name} README current-version heading",
 					flags=re.MULTILINE,
 				)
@@ -537,10 +547,18 @@ class ReleaseBumper:
 	Touches only explicitly registered targets without filesystem crawling.
 	"""
 
-	def __init__(self, root_dir: Path, manifest_path: Path, target_version: str):
+	def __init__(
+		self,
+		root_dir: Path,
+		manifest_path: Path,
+		target_version: str,
+		*,
+		run_external_checks: bool = True,
+	):
 		self.root_dir = root_dir.resolve()
 		self.manifest_path = manifest_path.resolve()
 		self.target_version = target_version
+		self.run_external_checks = run_external_checks
 		self.manifest = self._load_manifest()
 
 	def _load_manifest(self) -> dict:
@@ -608,8 +626,22 @@ class ReleaseBumper:
 			if not readme_path.is_file():
 				continue
 			text = readme_path.read_text(encoding="utf-8")
-			if re.search(rf"^## (?:Latest Version )?{re.escape(v)}$", text, re.MULTILINE):
+			current_heading = (
+				rf"^## Amafu v{re.escape(v)}$"
+				if name == "Amafu"
+				else rf"^## (?:Latest Version )?{re.escape(v)}$"
+			)
+			if re.search(current_heading, text, re.MULTILINE):
 				continue
+
+			if name == "Amafu":
+				amafu_match = re.search(r"^## Amafu v\d+\.\d+\.\d+$", text, re.MULTILINE)
+				if amafu_match:
+					updated = text[:amafu_match.start()] + f"## Amafu v{v}" + text[amafu_match.end():]
+					readme_path.write_text(updated, encoding="utf-8")
+					print(f"  📝 Updated Amafu current-version header in {readme_rel}")
+					changed_count += 1
+					continue
 
 			latest_match = re.search(r"^## Latest Version \d+\.\d+\.\d+$", text, re.MULTILINE)
 			if latest_match:
@@ -674,7 +706,7 @@ class ReleaseBumper:
 		print(f"\n✨ Bump complete! ({changed_count} files touched/scaffolded)")
 		print("Now running release validation suite...\n")
 
-		validator = ReleaseValidator(self.root_dir, v)
+		validator = ReleaseValidator(self.root_dir, v, run_external_checks=self.run_external_checks)
 		stale = [old_v] if old_v and old_v != v else ["4.4.5", "4.4.6", "4.4.8"]
 		return validator.run_all_validations(stale)
 
