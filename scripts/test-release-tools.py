@@ -86,6 +86,14 @@ class ReleaseToolsTests(unittest.TestCase):
 		self.assertEqual(1, len(errors))
 		self.assertIn("fallback property <OsLibPackageVersion> is 0.0.1", errors[0])
 
+	def test_amafu_package_readme_rejects_html_folding(self):
+		readme = self.root / "Amafu/README.NuGet.md"
+		readme.write_text(readme.read_text().replace("## Previous Versions", "<details>\n## Previous Versions"))
+		success, errors = self.validate()
+		self.assertFalse(success)
+		self.assertEqual(1, len(errors))
+		self.assertIn("NuGet does not render collapsible HTML tags", errors[0])
+
 
 if __name__ == "__main__":
 	unittest.main()

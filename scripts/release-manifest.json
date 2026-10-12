@@ -411,6 +411,38 @@
 			]
 		},
 		{
+			"path": "Amafu/README.NuGet.md",
+			"description": "Amafu package README",
+			"type": "readme",
+			"replacements": [
+				{
+					"description": "Amafu current-version heading",
+					"pattern": "(?m)^## Amafu v\\d+\\.\\d+\\.\\d+$",
+					"replacement": "## Amafu v{version}"
+				},
+				{
+					"description": "Native installer version",
+					"pattern": "InstallAmafu\\.sh \\| sudo bash -s -- native \\d+\\.\\d+\\.\\d+",
+					"replacement": "InstallAmafu.sh | sudo bash -s -- native {version}"
+				},
+				{
+					"description": "Global installer version",
+					"pattern": "InstallAmafu\\.sh \\| bash -s -- global \\d+\\.\\d+\\.\\d+",
+					"replacement": "InstallAmafu.sh | bash -s -- global {version}"
+				},
+				{
+					"description": "System installer version",
+					"pattern": "InstallAmafu\\.sh \\| sudo bash -s -- system \\d+\\.\\d+\\.\\d+",
+					"replacement": "InstallAmafu.sh | sudo bash -s -- system {version}"
+				},
+				{
+					"description": "Latest release notes link",
+					"pattern": "Latest release notes: \\[Amafu_RELEASE_NOTES_\\d+\\.\\d+\\.\\d+\\.md\\]\\([^)]+\\)",
+					"replacement": "Latest release notes: [Amafu_RELEASE_NOTES_{version}.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/Amafu_RELEASE_NOTES_{version}.md)"
+				}
+			]
+		},
+		{
 			"path": "OsLib/README.md",
 			"description": "OsLib README",
 			"type": "readme",

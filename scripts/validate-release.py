@@ -460,6 +460,34 @@ class ReleaseValidator:
 			"Amafu README Latest release notes link",
 		)
 		self.validate_file_contains(
+			"Amafu/amafu/amafu.csproj",
+			r'<None Include="\.\./README\.NuGet\.md" Pack="true" PackagePath="README\.md" />',
+			"Amafu package uses the NuGet-compatible README",
+		)
+		self.validate_file_contains(
+			"Amafu/README.NuGet.md",
+			rf"^## Amafu v{re.escape(v)}$",
+			"Amafu package README current-version heading",
+			flags=re.MULTILINE,
+		)
+		self.validate_file_contains(
+			"Amafu/README.NuGet.md",
+			rf"Latest release notes:.*Amafu_RELEASE_NOTES_{re.escape(v)}\.md",
+			"Amafu package README release notes link",
+		)
+		self.validate_file_contains(
+			"Amafu/README.NuGet.md",
+			r"^## Previous Versions$[\s\S]*?https://github\.com/Burkhardt/Amafu/blob/main/README\.md",
+			"Amafu package README history link",
+			flags=re.MULTILINE,
+		)
+		package_readme = self.root_dir / "Amafu/README.NuGet.md"
+		if package_readme.is_file():
+			if re.search(r"</?(?:details|summary)\b", package_readme.read_text(encoding="utf-8"), re.IGNORECASE):
+				self.error("Amafu/README.NuGet.md", None, "NuGet does not render collapsible HTML tags.")
+			else:
+				self.pass_check()
+		self.validate_file_contains(
 			"scripts/InstallAmafu.sh",
 			rf'^DEFAULT_VERSION="{re.escape(v)}"$',
 			"Amafu-only installer default version",
