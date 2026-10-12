@@ -65,7 +65,7 @@ install_native() {
 	archive="amafu-v${VERSION}-${rid}.zip"
 	url="https://github.com/Burkhardt/Amafu/releases/download/v${VERSION}/${archive}"
 	tmpdir="$(mktemp -d)"
-	trap 'rm -rf "$tmpdir"' EXIT
+	trap "rm -rf '$tmpdir'" EXIT
 	curl --fail --location "$url" --output "$tmpdir/$archive"
 	curl --fail --location "${url}.sha256" --output "$tmpdir/${archive}.sha256"
 	if command -v sha256sum >/dev/null 2>&1; then
@@ -75,6 +75,8 @@ install_native() {
 	fi
 	unzip -q "$tmpdir/$archive" -d "$tmpdir"
 	install -m 0755 "$tmpdir/amafu" /usr/local/bin/amafu
+	rm -rf "$tmpdir"
+	trap - EXIT
 	amafu --version
 }
 
