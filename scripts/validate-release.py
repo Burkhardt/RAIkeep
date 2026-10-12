@@ -11,6 +11,7 @@ release-chain.sh executes.
 from __future__ import annotations
 
 import os
+import json
 import re
 import subprocess
 import sys
@@ -95,6 +96,11 @@ class ReleaseValidator:
 		"""Normalizes only line endings for cross-runtime CLI parity."""
 		return output.replace("\r\n", "\n").strip()
 
+	@staticmethod
+	def pits_parity_command() -> list[str]:
+		"""Run the built CLI without rebuilding inside a temporary HOME."""
+		return ["dotnet", "PitSeeder/pits/bin/Debug/net10.0/pits.dll"]
+
 	def validate_cli_list_parity(self) -> None:
 		"""Exercises the public local-root list --all contract of both CLIs."""
 		with tempfile.TemporaryDirectory(prefix="raikeep-cli-parity-") as temporary:
@@ -122,20 +128,14 @@ class ReleaseValidator:
 
 			seed = self.validate_command(
 				"pits local parity fixture seed",
-				[
-					"dotnet", "run", "--project", "PitSeeder/pits/pits.csproj", "--no-restore", "--",
-					"seed", "Activity", "--source", str(source), "-r", str(tenant), "-n",
-				],
+				[*self.pits_parity_command(), "seed", "Activity", "--source", str(source), "-r", str(tenant), "-n"],
 				env=shared_env,
 			)
 			if not seed:
 				return
 
 			csharp = subprocess.run(
-				[
-					"dotnet", "run", "--project", "PitSeeder/pits/pits.csproj", "--no-restore", "--",
-					"list", "-r", "Tenant", "--all", "-n",
-				],
+				[*self.pits_parity_command(), "list", "-r", "Tenant", "--all", "-n"],
 				cwd=self.root_dir,
 				env=shared_env,
 				text=True,
@@ -200,10 +200,7 @@ class ReleaseValidator:
 
 			seed = self.validate_command(
 				"pits WWWA help parity fixture seed",
-				[
-					"dotnet", "run", "--project", "PitSeeder/pits/pits.csproj", "--no-restore", "--",
-					"seed", "Person", "--source", str(source), "-r", str(tenant), "-n",
-				],
+				[*self.pits_parity_command(), "seed", "Person", "--source", str(source), "-r", str(tenant), "-n"],
 				env=shared_env,
 			)
 			if not seed:
@@ -227,7 +224,7 @@ class ReleaseValidator:
 					return None
 				return self.normalize_parity_output(result.stdout)
 
-			pits = ["dotnet", "run", "--project", "PitSeeder/pits/pits.csproj", "--no-restore", "--"]
+			pits = self.pits_parity_command()
 			jpit = ["python3", "-m", "jsonpit.cli"]
 			bare_csharp = run_help([*pits, "--help", "-n"], shared_env, "pits default help")
 			bare_python = run_help([*jpit, "--help", "-n"], python_env, "jpit default help")
@@ -389,20 +386,39 @@ class ReleaseValidator:
 		# 3. Python tests and cross-runtime CLI discovery/help parity
 		if self.run_external_checks:
 			print("\n[3/7] Running Python tests and pits/jpit list/help parity...")
-			python_env = os.environ.copy()
-			python_env["PYTHONPATH"] = str(self.root_dir / PYTHON_REPO[0])
+			pits_built = self.validate_command(
+				"pits parity build",
+				["dotnet", "build", "PitSeeder/pits/pits.csproj", "--no-restore", "--nologo", "-v", "minimal", "-m:1", "-nodeReuse:false"],
+			)
 			python_cmd = (
 				["python3", "-m", "pytest", "JsonPit.Python/tests"]
 				if subprocess.run(["python3", "-m", "pytest", "--version"], capture_output=True).returncode == 0
 				else ["python3", "JsonPit.Python/tests/run_all.py"]
 			)
-			self.validate_command(
-				"JsonPit.Python tests",
-				python_cmd,
-				env=python_env,
-			)
-			self.validate_cli_list_parity()
-			self.validate_cli_help_parity()
+			with tempfile.TemporaryDirectory(prefix="raikeep-python-tests-") as temporary:
+				# Cross-engine tests invoke the installed pits CLI. Give it an isolated
+				# valid configuration rather than depending on the user's HOME.
+				home = Path(temporary) / "home"
+				config = home / ".config" / "RAIkeep.json5"
+				config.parent.mkdir(parents=True)
+				cloud_root = Path(temporary) / "cloud"
+				cloud_root.mkdir()
+				config.write_text(
+					json.dumps({"TempDir": str(Path(temporary) / "temp"),
+						"DefaultCloudOrder": ["OneDrive"], "Cloud": {"OneDrive": str(cloud_root)}}),
+					encoding="utf-8",
+				)
+				python_env = os.environ.copy()
+				python_env["HOME"] = str(home)
+				python_env["PYTHONPATH"] = str(self.root_dir / PYTHON_REPO[0])
+				self.validate_command(
+					"JsonPit.Python tests",
+					python_cmd,
+					env=python_env,
+				)
+			if pits_built:
+				self.validate_cli_list_parity()
+				self.validate_cli_help_parity()
 		else:
 			print("\n[3/7] Skipping external checks for isolated release-tool test.")
 
