@@ -37,7 +37,7 @@ include the bucket-sharing `AfricanBrigadine.png` sibling.
 
 | Command | Purpose | Filesystem effect |
 |---|---|---|
-| `iorg organize` | Normalize and copy source images into an ItemTree | Writes new destination files; source remains |
+| `iorg organize` | Normalize and upsert source images into an ItemTree | Copies new files and updates changed destinations in place; source remains |
 | `iorg list` | Discover managed images and diagram artifacts | Strictly read-only |
 | `iorg move` | Relocate and optionally rename one exact ItemId family | Moves files; no dry run |
 | `iorg clean <ItemId>` | Preview or delete one exact ItemId family | Dry run unless `--force` |
@@ -137,7 +137,7 @@ elements rather than raw UTF-16 code units.
 
 ## Naming conventions
 
-`iorg organize` requires a naming convention:
+`iorg organize` defaults to Structured naming; use `--nameconv` to select another convention:
 
 | Number | Name | Purpose |
 |---:|---|---|
@@ -171,9 +171,11 @@ Organize behavior:
 - enumerates supported image files directly in the source directory;
 - normalizes each filename through RaiImage naming rules;
 - calculates its ItemId and image number;
-- copies it directly to its final ItemTree pathname;
+- copies new images directly to their final ItemTree path, leaves identical images untouched, and rewrites changed images in place;
+- removes managed derivatives for an updated image number from that ItemTree bucket, preserving other image numbers;
 - leaves the source file untouched;
-- reports each success and per-file failure; and
+- reports `Copied`, `Updated`, `Unchanged`, `Skipped`, and `Failed` in a compact ReceiptVersion 3 result;
+- accepts `--no-overwrite` to reject a batch with any changed existing destination before writing source images; and
 - never stages output in `Os.TempDir` before moving it into a CloudDrive.
 
 Use `--debug` for full source/destination paths and resolution diagnostics.
