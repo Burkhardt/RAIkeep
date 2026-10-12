@@ -56,6 +56,7 @@ environment, push-new-packages-and-versions scope, and the exact package pattern
 the release script.
 
 After each successful publish workflow, the chain polls NuGet until both the exact flat-container `.nupkg` and exact-version registration document return HTTP `200`. Each package must finish its workflow and both visibility checks before the next repository push/tag begins; there is no fixed delay.
+Polling uses a HEAD request for the package and a bounded request for the registration document. A transient network timeout is logged and retried; a package that remains unavailable for 30 minutes stops the chain with a recovery message.
 
 The preflight refuses to start unless every child is clean, on `main`, not behind its remote, set to the requested version, and recorded at that exact commit by the umbrella. Existing version tags are accepted only when they already point to the expected commit; the script refuses to move a conflicting local or remote tag.
 
@@ -86,6 +87,15 @@ If the chain stops after OsLibCore has already been published, resume the remain
 <code>scripts/release-chain.sh 4.5.10 --resume-after-oslib</code>
 
 This verifies that Amafu and OsLibCore are both available on NuGet before releasing RaiUtils and the remaining dependency chain.
+
+If the chain stops after RaiImage has already been published, first verify that
+Amafu, OsLibCore, RaiUtils, and RaiImage are visible on NuGet. Then resume
+without republishing them:
+
+<code>scripts/release-chain.sh 4.5.10 --resume-after-raiimage</code>
+
+This checks the existing packages and immutable submodule pointers before
+releasing RaiDiagram and the remaining packages in order.
 
 Do not run this as part of version-prep work unless publication is explicitly requested.
 

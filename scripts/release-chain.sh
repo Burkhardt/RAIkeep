@@ -277,9 +277,10 @@ hold_and_check_flatcontainer() {
 	while true; do
 		now_e="$(date -u +%s)"
 		elapsed=$((now_e - start_e))
+		(( elapsed < 1800 )) || die "Timed out after ${elapsed}s waiting for $package_id $version on NuGet. Resume the release after checking its publish workflow and package visibility."
 		ts="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-		package_code="$(curl -sS -o /dev/null -w "%{http_code}\n" "$package_url")"
-		registration_code="$(curl -sS -o /dev/null -w "%{http_code}\n" "$registration_url")"
+		package_code="$(release_http_code "$package_url" HEAD)"
+		registration_code="$(release_http_code "$registration_url" GET)"
 
 		echo "$ts package=${package_id} elapsed=${elapsed}s nupkg=${package_code} registration=${registration_code}"
 
@@ -292,18 +293,33 @@ hold_and_check_flatcontainer() {
 	done
 }
 
+release_http_code() {
+	local url="$1"
+	local method="$2"
+	local -a options=(-sS -L -o /dev/null -w '%{http_code}' --connect-timeout 5 --max-time 15)
+	[[ "$method" == "HEAD" ]] && options+=(--head)
+	local code
+	if code="$(curl "${options[@]}" "$url")"; then
+		printf '%s\n' "$code"
+	else
+		# Network errors are transient during polling; 000 remains visible in the log.
+		printf '000\n'
+	fi
+}
+
 require_package_published() {
 	local package_id="$1"
 	local version="$2"
-	local package_code registration_code
+	local package_code registration_code attempt
 
-	package_code="$(curl -sS -o /dev/null -w "%{http_code}\n" \
-		"https://api.nuget.org/v3-flatcontainer/${package_id}/${version}/${package_id}.${version}.nupkg")"
-	registration_code="$(curl -sS -o /dev/null -w "%{http_code}\n" \
-		"https://api.nuget.org/v3/registration5-gz-semver2/${package_id}/${version}.json")"
-	log "Resume prerequisite: $package_id $version nupkg=$package_code registration=$registration_code"
-	[[ "$package_code" == "200" && "$registration_code" == "200" ]] \
-		|| die "Cannot resume: $package_id $version is not fully published."
+	for attempt in 1 2 3; do
+		package_code="$(release_http_code "https://api.nuget.org/v3-flatcontainer/${package_id}/${version}/${package_id}.${version}.nupkg" HEAD)"
+		registration_code="$(release_http_code "https://api.nuget.org/v3/registration5-gz-semver2/${package_id}/${version}.json" GET)"
+		log "Resume prerequisite: $package_id $version nupkg=$package_code registration=$registration_code"
+		[[ "$package_code" == "200" && "$registration_code" == "200" ]] && return
+		(( attempt == 3 )) || sleep 5
+	done
+	die "Cannot resume: $package_id $version is not fully published."
 }
 
 assert_tagged_submodule_pointer() {
@@ -368,8 +384,9 @@ hold_and_check_pypi() {
 	while true; do
 		now_e="$(date -u +%s)"
 		elapsed=$((now_e - start_e))
+		(( elapsed < 1800 )) || die "Timed out after ${elapsed}s waiting for $PYTHON_PACKAGE $VER on PyPI."
 		ts="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-		code="$(curl -sS -o /dev/null -w "%{http_code}\n" "https://pypi.org/pypi/${PYTHON_PACKAGE}/${VER}/json")"
+		code="$(release_http_code "https://pypi.org/pypi/${PYTHON_PACKAGE}/${VER}/json" GET)"
 		echo "$ts package=${PYTHON_PACKAGE} elapsed=${elapsed}s pypi=${code}"
 		if [[ "$code" == "200" ]]; then
 			log "$PYTHON_PACKAGE $VER is available from PyPI"
@@ -424,14 +441,9 @@ verify_parent_pointers_unchanged() {
 final_visibility_summary() {
 	log "===== Final package visibility checks ====="
 
-	local check_url package_code registration_code
+	local check_url
 	check_url() {
-		local pkg="$1"
-		package_code="$(curl -sS -o /dev/null -w "%{http_code}\n" "https://api.nuget.org/v3-flatcontainer/${pkg}/${VER}/${pkg}.${VER}.nupkg")"
-		registration_code="$(curl -sS -o /dev/null -w "%{http_code}\n" "https://api.nuget.org/v3/registration5-gz-semver2/${pkg}/${VER}.json")"
-		echo "$pkg nupkg=$package_code registration=$registration_code"
-		[[ "$package_code" == "200" && "$registration_code" == "200" ]] \
-			|| die "$pkg $VER is not fully visible at the final release gate."
+		hold_and_check_flatcontainer "$1" "$VER"
 	}
 
 	check_url amafu
@@ -445,10 +457,7 @@ final_visibility_summary() {
 	check_url pitseeder
 	check_url raiguard
 	check_url raiguard.analyzer
-	local pypi_code
-	pypi_code="$(curl -sS -o /dev/null -w "%{http_code}\n" "https://pypi.org/pypi/${PYTHON_PACKAGE}/${VER}/json")"
-	echo "$PYTHON_PACKAGE pypi=$pypi_code"
-	[[ "$pypi_code" == "200" ]] || die "$PYTHON_PACKAGE $VER is not fully visible at the final release gate."
+	hold_and_check_pypi
 }
 
 prepare_recovery() {
@@ -556,6 +565,49 @@ resume_after_oslib() {
 	log "Release chain recovery completed for $VER"
 }
 
+resume_after_raiimage() {
+	log "Recovery mode: preserve existing $TAG labels and resume after RaiImage"
+	prepare_recovery
+
+	assert_tagged_submodule_pointer "Amafu" "Amafu"
+	assert_tagged_submodule_pointer "OsLib" "OsLib"
+	assert_tagged_submodule_pointer "RaiUtils" "RaiUtils"
+	assert_tagged_submodule_pointer "RaiImage" "RaiImage"
+	require_package_published "amafu" "$VER"
+	require_package_published "oslibcore" "$VER"
+	require_package_published "raiutils" "$VER"
+	require_package_published "raiimage" "$VER"
+
+	assert_tagged_submodule_pointer "RaiDiagram" "RaiDiagram"
+	assert_tagged_submodule_pointer "RaidSeeder" "RaidSeeder"
+	assert_tagged_submodule_pointer "JsonPit" "JsonPit"
+	assert_tagged_submodule_pointer "$PYTHON_REPO" "$PYTHON_REPO"
+	assert_tagged_submodule_pointer "ImgSeeder" "ImgSeeder"
+	assert_tagged_submodule_pointer "PitSeeder" "PitSeeder"
+	assert_tagged_submodule_pointer "RaiGuard" "RaiGuard"
+
+	log "Preflighting the seven unpublished packages"
+	preflight_submodule "RaiDiagram" "RaiDiagram" "RaiDiagram.csproj"
+	preflight_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj"
+	preflight_submodule "JsonPit" "JsonPit" "JsonPit.csproj"
+	preflight_python_submodule
+	preflight_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj"
+	preflight_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj"
+	preflight_submodule "RaiGuard" "RaiGuard" "rail/rail.csproj"
+
+	release_submodule "RaiDiagram" "RaiDiagram" "RaiDiagram.csproj" "RaiDiagram.slnx" "raidiagram" "publish-nuget.yaml"
+	release_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj" "RaidSeeder.slnx" "raidseeder" "publish-nuget.yaml"
+	release_submodule "JsonPit" "JsonPit" "JsonPit.csproj" "JsonPit.slnx" "jsonpit" "publish-nuget.yml"
+	release_python_package
+	release_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj" "ImgSeeder.slnx" "imgseeder" "publish-nuget.yaml"
+	release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "PitSeeder.slnx" "pitseeder" "publish-nuget.yaml"
+	release_raiguard
+
+	verify_parent_pointers_unchanged
+	final_visibility_summary
+	log "Release chain recovery completed for $VER"
+}
+
 resume_after_raidiagram() {
 	log "Recovery mode: preserve existing $TAG labels and resume after RaiDiagram"
 	prepare_recovery
@@ -610,9 +662,9 @@ main() {
 	require_cmd mktemp
 	[[ -n "${PYPI_TOKEN:-}" ]] || die "PYPI_TOKEN is required for coordinated PyPI publication."
 
-	[[ $# -le 2 ]] || die "Usage: scripts/release-chain.sh [version] [--resume-after-amafu|--resume-after-oslib|--resume-after-raidiagram]"
-	if [[ -n "$MODE" && "$MODE" != "--resume-after-amafu" && "$MODE" != "--resume-after-oslib" && "$MODE" != "--resume-after-raidiagram" ]]; then
-		die "Unknown release mode '$MODE'. Expected --resume-after-amafu, --resume-after-oslib, or --resume-after-raidiagram."
+	[[ $# -le 2 ]] || die "Usage: scripts/release-chain.sh [version] [--resume-after-amafu|--resume-after-oslib|--resume-after-raiimage|--resume-after-raidiagram]"
+	if [[ -n "$MODE" && "$MODE" != "--resume-after-amafu" && "$MODE" != "--resume-after-oslib" && "$MODE" != "--resume-after-raiimage" && "$MODE" != "--resume-after-raidiagram" ]]; then
+		die "Unknown release mode '$MODE'. Expected --resume-after-amafu, --resume-after-oslib, --resume-after-raiimage, or --resume-after-raidiagram."
 	fi
 	if [[ -n "$MODE" && -z "$VER" ]]; then
 		die "Recovery mode requires the interrupted release version."
@@ -628,6 +680,9 @@ main() {
 		return
 	elif [[ "$MODE" == "--resume-after-oslib" ]]; then
 		resume_after_oslib
+		return
+	elif [[ "$MODE" == "--resume-after-raiimage" ]]; then
+		resume_after_raiimage
 		return
 	elif [[ "$MODE" == "--resume-after-raidiagram" ]]; then
 		resume_after_raidiagram
