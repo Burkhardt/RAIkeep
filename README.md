@@ -97,12 +97,12 @@ cd /Users/RSB/Projects/GitHub/RAIkeep
 scripts/release-chain.sh 4.5.9
 ```
 
-Before publication begins, all eleven child release commits and their exact submodule pointers must already be committed on the umbrella `main`. The script preflights that state, pushes the prepared umbrella `main`, and applies the passed version as its tag first. The umbrella tag publishes no NuGet package; it creates and verifies the synchronized GitHub Release before package tagging begins.
+Before publication begins, all eleven child release commits and their exact submodule pointers must already be committed on the umbrella `main`. The script preflights that state, then publishes each child in dependency order. Only after every child package is visible does it push and tag the umbrella commit. The umbrella tag creates the synchronized GitHub Release; it publishes no NuGet package.
 
 It then processes packages in this exact order:
 
 ```text
-Amafu → OsLibCore → RaiUtils → RaiImage → RaiDiagram → RaidSeeder → JsonPit → JsonPit.Python → ImgSeeder → PitSeeder
+Amafu → OsLibCore → RaiUtils → RaiImage → RaiDiagram → RaidSeeder → JsonPit → JsonPit.Python → ImgSeeder → PitSeeder → RaiGuard → RAIkeep umbrella
 ```
 
 The Python `jsonpit` distribution follows C# `JsonPit` and is published to
@@ -118,7 +118,7 @@ For every package before the next repository is pushed/tagged:
 4. Verify the exact `.nupkg` and exact-version registration document are both visible from NuGet with HTTP `200`.
 5. Only then continue to the next repository.
 
-The chain waits on observed NuGet availability rather than a fixed delay. Do not run multiple release mechanisms for the same version. The local script refuses to move an existing conflicting version tag and verifies at the end that the umbrella still records the exact released child commits.
+The chain waits on observed NuGet and PyPI availability rather than a fixed delay. Do not run multiple release mechanisms for the same version. The local script refuses to move an existing conflicting version tag and verifies the prepared submodule pointers before it tags the umbrella.
 
 Detailed operational guidance is in [RunReleaseChain.md](https://github.com/Burkhardt/RAIkeep/blob/main/RunReleaseChain.md).
 

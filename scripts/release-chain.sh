@@ -72,6 +72,13 @@ latest_remote_tag() {
 		| tail -1
 }
 
+remote_tag_commit() {
+	local repo_dir="$1"
+	local tag="$2"
+	git -C "$repo_dir" ls-remote --tags origin "refs/tags/$tag" "refs/tags/$tag^{}" \
+		| awk -v ref="refs/tags/$tag" '$2 == ref { raw = $1 } $2 == ref "^{}" { peeled = $1 } END { print (peeled != "" ? peeled : raw) }'
+}
+
 derive_next_patch_version() {
 	local common latest version major minor patch
 	for repo in "${PACKAGE_REPOS[@]}"; do
@@ -86,6 +93,9 @@ derive_next_patch_version() {
 	latest="$(latest_remote_tag "$ROOT_DIR/$PYTHON_REPO")"
 	[[ -n "$latest" ]] || die "$PYTHON_REPO has no remote vX.Y.Z tag"
 	[[ "$latest" == "$common" ]] || die "Remote tag mismatch: $PYTHON_REPO latest is $latest, expected $common"
+	latest="$(latest_remote_tag "$ROOT_DIR")"
+	[[ "$latest" == "$common" ]] \
+		|| die "Child tags are at $common but the RAIkeep umbrella is at $latest. Resume the unfinished release with an explicit version."
 
 	version="${common#v}"
 	IFS=. read -r major minor patch <<<"$version"
@@ -129,8 +139,7 @@ ensure_tag_on_head() {
 	local head_sha remote_tag_sha local_tag_sha local_tag_ref_sha
 	head_sha="$(git -C "$repo_dir" rev-parse HEAD)"
 	# Annotated tags have their own object SHA; compare the peeled commit instead.
-	remote_tag_sha="$(git -C "$repo_dir" ls-remote --tags origin "refs/tags/$tag" "refs/tags/$tag^{}" \
-		| awk -v ref="refs/tags/$tag" '$2 == ref { raw = $1 } $2 == ref "^{}" { peeled = $1 } END { print (peeled != "" ? peeled : raw) }')"
+	remote_tag_sha="$(remote_tag_commit "$repo_dir" "$tag")"
 	local_tag_ref_sha="$(git -C "$repo_dir" rev-parse -q --verify "refs/tags/$tag" 2>/dev/null || true)"
 	local_tag_sha="$(git -C "$repo_dir" rev-parse -q --verify "refs/tags/$tag^{commit}" 2>/dev/null || true)"
 	if [[ -n "$local_tag_ref_sha" && -z "$local_tag_sha" ]]; then
@@ -204,10 +213,9 @@ preflight_python_submodule() {
 	log "$PYTHON_REPO: preflight passed at $head_sha ($ahead commit(s) ahead of origin/main)"
 }
 
-release_umbrella() {
-	local branch behind ahead
+preflight_umbrella() {
+	local branch behind ahead head_sha local_tag_ref_sha local_tag_sha remote_tag_sha
 
-	log "===== RAIkeep umbrella ($TAG) ====="
 	assert_tracked_clean "$ROOT_DIR" "RAIkeep"
 	branch="$(git -C "$ROOT_DIR" branch --show-current)"
 	[[ "$branch" == "main" ]] || die "RAIkeep must be on main, but is on '$branch'."
@@ -215,7 +223,25 @@ release_umbrella() {
 	git -C "$ROOT_DIR" fetch origin --prune
 	read -r behind ahead <<<"$(git -C "$ROOT_DIR" rev-list --left-right --count origin/main...HEAD)"
 	[[ "$behind" == "0" ]] || die "RAIkeep main is behind or diverged from origin/main. Synchronize it before release."
+	head_sha="$(git -C "$ROOT_DIR" rev-parse HEAD)"
+	[[ -z "${PREPARED_UMBRELLA_SHA:-}" || "$PREPARED_UMBRELLA_SHA" == "$head_sha" ]] \
+		|| die "RAIkeep HEAD changed during the release from $PREPARED_UMBRELLA_SHA to $head_sha. Refusing to tag."
+	PREPARED_UMBRELLA_SHA="$head_sha"
+	local_tag_ref_sha="$(git -C "$ROOT_DIR" rev-parse -q --verify "refs/tags/$TAG" 2>/dev/null || true)"
+	local_tag_sha="$(git -C "$ROOT_DIR" rev-parse -q --verify "refs/tags/$TAG^{commit}" 2>/dev/null || true)"
+	remote_tag_sha="$(remote_tag_commit "$ROOT_DIR" "$TAG")"
+	[[ -z "$local_tag_ref_sha" || -n "$local_tag_sha" ]] \
+		|| die "RAIkeep local tag $TAG does not point to a commit."
+	[[ -z "$local_tag_sha" || "$local_tag_sha" == "$head_sha" ]] \
+		|| die "RAIkeep local tag $TAG points to $local_tag_sha, but prepared HEAD is $head_sha."
+	[[ -z "$remote_tag_sha" || "$remote_tag_sha" == "$head_sha" ]] \
+		|| die "RAIkeep remote tag $TAG points to $remote_tag_sha, but prepared HEAD is $head_sha."
+	log "RAIkeep: prepared umbrella commit $head_sha ($ahead commit(s) ahead of origin/main); tag remains the final release step"
+}
 
+release_umbrella() {
+	log "===== RAIkeep umbrella ($TAG) ====="
+	preflight_umbrella
 	push_main_if_needed "$ROOT_DIR" "RAIkeep"
 	ensure_tag_on_head "$ROOT_DIR" "RAIkeep" "$TAG"
 	wait_workflow_success "$ROOT_DIR" "publish-release.yml" "$TAG"
@@ -328,17 +354,27 @@ require_package_published() {
 	die "Cannot resume: $package_id $version is not fully published."
 }
 
-assert_tagged_submodule_pointer() {
+assert_prepared_submodule_pointer() {
 	local name="$1"
 	local repo_rel="$2"
-	local tagged_sha current_sha head_sha
+	local recorded_sha head_sha
 
-	tagged_sha="$(git -C "$ROOT_DIR" rev-parse "$TAG:$repo_rel")"
-	current_sha="$(git -C "$ROOT_DIR" rev-parse "HEAD:$repo_rel")"
+	recorded_sha="$(git -C "$ROOT_DIR" rev-parse "HEAD:$repo_rel")"
 	head_sha="$(git -C "$ROOT_DIR/$repo_rel" rev-parse HEAD)"
-	[[ "$tagged_sha" == "$current_sha" && "$current_sha" == "$head_sha" ]] \
-		|| die "$name does not match the immutable RAIkeep $TAG pointer (tag=$tagged_sha, main=$current_sha, checkout=$head_sha)."
-	log "$name: checkout and current umbrella pointer match immutable $TAG at $head_sha"
+	[[ "$recorded_sha" == "$head_sha" ]] \
+		|| die "$name checkout $head_sha does not match prepared RAIkeep pointer $recorded_sha."
+	log "$name: checkout matches prepared umbrella pointer at $head_sha"
+}
+
+assert_published_submodule_tag() {
+	local name="$1"
+	local repo_rel="$2"
+	local expected_sha remote_tag_sha
+	assert_prepared_submodule_pointer "$name" "$repo_rel"
+	expected_sha="$(git -C "$ROOT_DIR" rev-parse "HEAD:$repo_rel")"
+	remote_tag_sha="$(remote_tag_commit "$ROOT_DIR/$repo_rel" "$TAG")"
+	[[ "$remote_tag_sha" == "$expected_sha" ]] \
+		|| die "$name remote tag $TAG points to '${remote_tag_sha:-missing}', expected $expected_sha."
 }
 
 release_submodule() {
@@ -361,7 +397,7 @@ release_submodule() {
 	[[ "$behind" == "0" ]] || die "$name origin/main advanced after preflight. Stop before tagging an unexpected state."
 	recorded_sha="$(git -C "$ROOT_DIR" rev-parse "HEAD:$repo_rel")"
 	head_sha="$(git -C "$repo_dir" rev-parse HEAD)"
-	[[ "$recorded_sha" == "$head_sha" ]] || die "$name HEAD changed after the umbrella label was created."
+	[[ "$recorded_sha" == "$head_sha" ]] || die "$name HEAD changed after the umbrella commit was prepared."
 
 	local current_ver
 	current_ver="$(csproj_version "$repo_dir" "$csproj_rel")"
@@ -416,7 +452,7 @@ release_python_package() {
 	[[ "$behind" == "0" ]] || die "$PYTHON_REPO origin/main advanced after preflight. Stop before tagging an unexpected state."
 	recorded_sha="$(git -C "$ROOT_DIR" rev-parse "HEAD:$PYTHON_REPO")"
 	head_sha="$(git -C "$repo_dir" rev-parse HEAD)"
-	[[ "$recorded_sha" == "$head_sha" ]] || die "$PYTHON_REPO HEAD changed after the umbrella label was created."
+	[[ "$recorded_sha" == "$head_sha" ]] || die "$PYTHON_REPO HEAD changed after the umbrella commit was prepared."
 	current_ver="$(python_project_version "$repo_dir")"
 	[[ "$current_ver" == "$VER" ]] || die "$PYTHON_REPO version mismatch in pyproject.toml (found $current_ver, expected $VER)"
 
@@ -440,8 +476,8 @@ verify_parent_pointers_unchanged() {
 	local changed
 
 	changed="$(git -C "$parent_dir" status --porcelain --untracked-files=no -- Amafu OsLib RaiUtils RaiImage RaiDiagram RaidSeeder JsonPit JsonPit.Python ImgSeeder PitSeeder RaiGuard || true)"
-	[[ -z "$changed" ]] || die "RAIkeep submodule pointers changed after umbrella label $TAG was created. Stop and investigate; the label must describe the exact released commits."
-	log "RAIkeep: submodule pointers still match umbrella label $TAG"
+	[[ -z "$changed" ]] || die "RAIkeep submodule pointers changed after the umbrella commit was prepared. Stop and investigate; the final label must describe the exact released commits."
+	log "RAIkeep: submodule pointers still match the prepared umbrella commit"
 }
 
 final_visibility_summary() {
@@ -467,19 +503,7 @@ final_visibility_summary() {
 }
 
 prepare_recovery() {
-	local umbrella_behind
-
-	assert_tracked_clean "$ROOT_DIR" "RAIkeep"
-	[[ "$(git -C "$ROOT_DIR" branch --show-current)" == "main" ]] \
-		|| die "RAIkeep must be on main for recovery."
-	git -C "$ROOT_DIR" fetch origin --prune
-	read -r umbrella_behind _ \
-		<<<"$(git -C "$ROOT_DIR" rev-list --left-right --count origin/main...HEAD)"
-	[[ "$umbrella_behind" == "0" ]] \
-		|| die "RAIkeep main is behind or diverged from origin/main."
-	git -C "$ROOT_DIR" rev-parse --verify "refs/tags/$TAG" >/dev/null \
-		|| die "RAIkeep does not have the required immutable $TAG label."
-	push_main_if_needed "$ROOT_DIR" "RAIkeep recovery"
+	preflight_umbrella
 }
 
 resume_after_amafu() {
@@ -488,17 +512,18 @@ resume_after_amafu() {
 
 	log "Waiting for the recovered Amafu publication to become fully visible"
 	hold_and_check_flatcontainer "amafu" "$VER"
+	assert_published_submodule_tag "Amafu" "Amafu"
 
-	assert_tagged_submodule_pointer "OsLib" "OsLib"
-	assert_tagged_submodule_pointer "RaiUtils" "RaiUtils"
-	assert_tagged_submodule_pointer "RaiImage" "RaiImage"
-	assert_tagged_submodule_pointer "RaiDiagram" "RaiDiagram"
-	assert_tagged_submodule_pointer "RaidSeeder" "RaidSeeder"
-	assert_tagged_submodule_pointer "JsonPit" "JsonPit"
-	assert_tagged_submodule_pointer "$PYTHON_REPO" "$PYTHON_REPO"
-	assert_tagged_submodule_pointer "ImgSeeder" "ImgSeeder"
-	assert_tagged_submodule_pointer "PitSeeder" "PitSeeder"
-	assert_tagged_submodule_pointer "RaiGuard" "RaiGuard"
+	assert_prepared_submodule_pointer "OsLib" "OsLib"
+	assert_prepared_submodule_pointer "RaiUtils" "RaiUtils"
+	assert_prepared_submodule_pointer "RaiImage" "RaiImage"
+	assert_prepared_submodule_pointer "RaiDiagram" "RaiDiagram"
+	assert_prepared_submodule_pointer "RaidSeeder" "RaidSeeder"
+	assert_prepared_submodule_pointer "JsonPit" "JsonPit"
+	assert_prepared_submodule_pointer "$PYTHON_REPO" "$PYTHON_REPO"
+	assert_prepared_submodule_pointer "ImgSeeder" "ImgSeeder"
+	assert_prepared_submodule_pointer "PitSeeder" "PitSeeder"
+	assert_prepared_submodule_pointer "RaiGuard" "RaiGuard"
 
 	log "Preflighting the ten unpublished packages"
 	preflight_submodule "OsLib" "OsLib" "OsLib.csproj"
@@ -525,6 +550,7 @@ resume_after_amafu() {
 
 	verify_parent_pointers_unchanged
 	final_visibility_summary
+	release_umbrella
 	log "Release chain recovery completed for $VER"
 }
 
@@ -534,16 +560,18 @@ resume_after_oslib() {
 
 	require_package_published "amafu" "$VER"
 	require_package_published "oslibcore" "$VER"
+	assert_published_submodule_tag "Amafu" "Amafu"
+	assert_published_submodule_tag "OsLib" "OsLib"
 
-	assert_tagged_submodule_pointer "RaiUtils" "RaiUtils"
-	assert_tagged_submodule_pointer "RaiImage" "RaiImage"
-	assert_tagged_submodule_pointer "RaiDiagram" "RaiDiagram"
-	assert_tagged_submodule_pointer "RaidSeeder" "RaidSeeder"
-	assert_tagged_submodule_pointer "JsonPit" "JsonPit"
-	assert_tagged_submodule_pointer "$PYTHON_REPO" "$PYTHON_REPO"
-	assert_tagged_submodule_pointer "ImgSeeder" "ImgSeeder"
-	assert_tagged_submodule_pointer "PitSeeder" "PitSeeder"
-	assert_tagged_submodule_pointer "RaiGuard" "RaiGuard"
+	assert_prepared_submodule_pointer "RaiUtils" "RaiUtils"
+	assert_prepared_submodule_pointer "RaiImage" "RaiImage"
+	assert_prepared_submodule_pointer "RaiDiagram" "RaiDiagram"
+	assert_prepared_submodule_pointer "RaidSeeder" "RaidSeeder"
+	assert_prepared_submodule_pointer "JsonPit" "JsonPit"
+	assert_prepared_submodule_pointer "$PYTHON_REPO" "$PYTHON_REPO"
+	assert_prepared_submodule_pointer "ImgSeeder" "ImgSeeder"
+	assert_prepared_submodule_pointer "PitSeeder" "PitSeeder"
+	assert_prepared_submodule_pointer "RaiGuard" "RaiGuard"
 
 	log "Preflighting the nine unpublished packages"
 	preflight_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj"
@@ -568,6 +596,7 @@ resume_after_oslib() {
 
 	verify_parent_pointers_unchanged
 	final_visibility_summary
+	release_umbrella
 	log "Release chain recovery completed for $VER"
 }
 
@@ -575,22 +604,22 @@ resume_after_raiimage() {
 	log "Recovery mode: preserve existing $TAG labels and resume after RaiImage"
 	prepare_recovery
 
-	assert_tagged_submodule_pointer "Amafu" "Amafu"
-	assert_tagged_submodule_pointer "OsLib" "OsLib"
-	assert_tagged_submodule_pointer "RaiUtils" "RaiUtils"
-	assert_tagged_submodule_pointer "RaiImage" "RaiImage"
+	assert_published_submodule_tag "Amafu" "Amafu"
+	assert_published_submodule_tag "OsLib" "OsLib"
+	assert_published_submodule_tag "RaiUtils" "RaiUtils"
+	assert_published_submodule_tag "RaiImage" "RaiImage"
 	require_package_published "amafu" "$VER"
 	require_package_published "oslibcore" "$VER"
 	require_package_published "raiutils" "$VER"
 	require_package_published "raiimage" "$VER"
 
-	assert_tagged_submodule_pointer "RaiDiagram" "RaiDiagram"
-	assert_tagged_submodule_pointer "RaidSeeder" "RaidSeeder"
-	assert_tagged_submodule_pointer "JsonPit" "JsonPit"
-	assert_tagged_submodule_pointer "$PYTHON_REPO" "$PYTHON_REPO"
-	assert_tagged_submodule_pointer "ImgSeeder" "ImgSeeder"
-	assert_tagged_submodule_pointer "PitSeeder" "PitSeeder"
-	assert_tagged_submodule_pointer "RaiGuard" "RaiGuard"
+	assert_prepared_submodule_pointer "RaiDiagram" "RaiDiagram"
+	assert_prepared_submodule_pointer "RaidSeeder" "RaidSeeder"
+	assert_prepared_submodule_pointer "JsonPit" "JsonPit"
+	assert_prepared_submodule_pointer "$PYTHON_REPO" "$PYTHON_REPO"
+	assert_prepared_submodule_pointer "ImgSeeder" "ImgSeeder"
+	assert_prepared_submodule_pointer "PitSeeder" "PitSeeder"
+	assert_prepared_submodule_pointer "RaiGuard" "RaiGuard"
 
 	log "Preflighting the seven unpublished packages"
 	preflight_submodule "RaiDiagram" "RaiDiagram" "RaiDiagram.csproj"
@@ -611,6 +640,7 @@ resume_after_raiimage() {
 
 	verify_parent_pointers_unchanged
 	final_visibility_summary
+	release_umbrella
 	log "Release chain recovery completed for $VER"
 }
 
@@ -624,13 +654,18 @@ resume_after_raidiagram() {
 	require_package_published "raiimage" "$VER"
 	log "Waiting for the recovered RaiDiagram publication to become fully visible"
 	hold_and_check_flatcontainer "raidiagram" "$VER"
+	assert_published_submodule_tag "Amafu" "Amafu"
+	assert_published_submodule_tag "OsLib" "OsLib"
+	assert_published_submodule_tag "RaiUtils" "RaiUtils"
+	assert_published_submodule_tag "RaiImage" "RaiImage"
+	assert_published_submodule_tag "RaiDiagram" "RaiDiagram"
 
-	assert_tagged_submodule_pointer "RaidSeeder" "RaidSeeder"
-	assert_tagged_submodule_pointer "JsonPit" "JsonPit"
-	assert_tagged_submodule_pointer "$PYTHON_REPO" "$PYTHON_REPO"
-	assert_tagged_submodule_pointer "ImgSeeder" "ImgSeeder"
-	assert_tagged_submodule_pointer "PitSeeder" "PitSeeder"
-	assert_tagged_submodule_pointer "RaiGuard" "RaiGuard"
+	assert_prepared_submodule_pointer "RaidSeeder" "RaidSeeder"
+	assert_prepared_submodule_pointer "JsonPit" "JsonPit"
+	assert_prepared_submodule_pointer "$PYTHON_REPO" "$PYTHON_REPO"
+	assert_prepared_submodule_pointer "ImgSeeder" "ImgSeeder"
+	assert_prepared_submodule_pointer "PitSeeder" "PitSeeder"
+	assert_prepared_submodule_pointer "RaiGuard" "RaiGuard"
 
 	log "Preflighting the six unpublished packages"
 	preflight_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj"
@@ -647,13 +682,35 @@ resume_after_raidiagram() {
 	release_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj" "PitSeeder.slnx" "pitseeder" "publish-nuget.yaml"
 	release_raiguard
 
-	assert_tagged_submodule_pointer "RaidSeeder" "RaidSeeder"
-	assert_tagged_submodule_pointer "JsonPit" "JsonPit"
-	assert_tagged_submodule_pointer "$PYTHON_REPO" "$PYTHON_REPO"
-	assert_tagged_submodule_pointer "ImgSeeder" "ImgSeeder"
-	assert_tagged_submodule_pointer "PitSeeder" "PitSeeder"
-	assert_tagged_submodule_pointer "RaiGuard" "RaiGuard"
+	assert_prepared_submodule_pointer "RaidSeeder" "RaidSeeder"
+	assert_prepared_submodule_pointer "JsonPit" "JsonPit"
+	assert_prepared_submodule_pointer "$PYTHON_REPO" "$PYTHON_REPO"
+	assert_prepared_submodule_pointer "ImgSeeder" "ImgSeeder"
+	assert_prepared_submodule_pointer "PitSeeder" "PitSeeder"
+	assert_prepared_submodule_pointer "RaiGuard" "RaiGuard"
+	verify_parent_pointers_unchanged
 	final_visibility_summary
+	release_umbrella
+	log "Release chain recovery completed for $VER"
+}
+
+resume_after_raiguard() {
+	log "Recovery mode: verify all published children before finalizing RAIkeep $TAG"
+	prepare_recovery
+	assert_published_submodule_tag "Amafu" "Amafu"
+	assert_published_submodule_tag "OsLib" "OsLib"
+	assert_published_submodule_tag "RaiUtils" "RaiUtils"
+	assert_published_submodule_tag "RaiImage" "RaiImage"
+	assert_published_submodule_tag "RaiDiagram" "RaiDiagram"
+	assert_published_submodule_tag "RaidSeeder" "RaidSeeder"
+	assert_published_submodule_tag "JsonPit" "JsonPit"
+	assert_published_submodule_tag "$PYTHON_REPO" "$PYTHON_REPO"
+	assert_published_submodule_tag "ImgSeeder" "ImgSeeder"
+	assert_published_submodule_tag "PitSeeder" "PitSeeder"
+	assert_published_submodule_tag "RaiGuard" "RaiGuard"
+	verify_parent_pointers_unchanged
+	final_visibility_summary
+	release_umbrella
 	log "Release chain recovery completed for $VER"
 }
 
@@ -668,9 +725,9 @@ main() {
 	require_cmd mktemp
 	[[ -n "${PYPI_TOKEN:-}" ]] || die "PYPI_TOKEN is required for coordinated PyPI publication."
 
-	[[ $# -le 2 ]] || die "Usage: scripts/release-chain.sh [version] [--resume-after-amafu|--resume-after-oslib|--resume-after-raiimage|--resume-after-raidiagram]"
-	if [[ -n "$MODE" && "$MODE" != "--resume-after-amafu" && "$MODE" != "--resume-after-oslib" && "$MODE" != "--resume-after-raiimage" && "$MODE" != "--resume-after-raidiagram" ]]; then
-		die "Unknown release mode '$MODE'. Expected --resume-after-amafu, --resume-after-oslib, --resume-after-raiimage, or --resume-after-raidiagram."
+	[[ $# -le 2 ]] || die "Usage: scripts/release-chain.sh [version] [--resume-after-amafu|--resume-after-oslib|--resume-after-raiimage|--resume-after-raidiagram|--resume-after-raiguard]"
+	if [[ -n "$MODE" && "$MODE" != "--resume-after-amafu" && "$MODE" != "--resume-after-oslib" && "$MODE" != "--resume-after-raiimage" && "$MODE" != "--resume-after-raidiagram" && "$MODE" != "--resume-after-raiguard" ]]; then
+		die "Unknown release mode '$MODE'. Expected --resume-after-amafu, --resume-after-oslib, --resume-after-raiimage, --resume-after-raidiagram, or --resume-after-raiguard."
 	fi
 	if [[ -n "$MODE" && -z "$VER" ]]; then
 		die "Recovery mode requires the interrupted release version."
@@ -693,12 +750,16 @@ main() {
 	elif [[ "$MODE" == "--resume-after-raidiagram" ]]; then
 		resume_after_raidiagram
 		return
+	elif [[ "$MODE" == "--resume-after-raiguard" ]]; then
+		resume_after_raiguard
+		return
 	fi
 
 	log "Release chain start for $VER"
-	log "Order: RAIkeep umbrella release -> Amafu -> OsLib -> RaiUtils -> RaiImage -> RaiDiagram -> RaidSeeder -> JsonPit -> JsonPit.Python -> ImgSeeder -> PitSeeder -> RaiGuard"
+	log "Order: Amafu -> OsLib -> RaiUtils -> RaiImage -> RaiDiagram -> RaidSeeder -> JsonPit -> JsonPit.Python -> ImgSeeder -> PitSeeder -> RaiGuard -> RAIkeep umbrella release"
 
-	log "Preflighting all eleven packages before labeling RAIkeep"
+	log "Preflighting the umbrella and all eleven packages before publication"
+	preflight_umbrella
 	preflight_submodule "Amafu" "Amafu" "amafu/amafu.csproj"
 	preflight_submodule "OsLib" "OsLib" "OsLib.csproj"
 	preflight_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj"
@@ -710,8 +771,6 @@ main() {
 	preflight_submodule "ImgSeeder" "ImgSeeder" "ImgSeeder.csproj"
 	preflight_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj"
 	preflight_submodule "RaiGuard" "RaiGuard" "rail/rail.csproj"
-
-	release_umbrella
 
 	release_submodule "Amafu" "Amafu" "amafu/amafu.csproj" "Amafu.slnx" "amafu" "publish-nuget.yaml"
 	release_submodule "OsLib" "OsLib" "OsLib.csproj" "OsLib.slnx" "oslibcore" "publish-nuget.yml"
@@ -727,8 +786,11 @@ main() {
 
 	verify_parent_pointers_unchanged
 	final_visibility_summary
+	release_umbrella
 
 	log "Release chain completed for $VER"
 }
 
-main "$@"
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+	main "$@"
+fi
