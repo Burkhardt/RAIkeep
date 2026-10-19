@@ -9,6 +9,9 @@
 - CR064 adds first-class edge stereotypes to the authoritative .raid manifest, preserves their source spelling on PlantUML import, and renders them in PlantUML and hydratable SVG. Unmanaged imports require an explicit Domain; managed imports use their tenant.
 - RaiGuard expands to 16 architecture rules with updated code fixes, CLI rewrites, and documentation.
 - JsonPit's remote cloud test now checks the current change-file naming contract, removing a stale release-gate failure.
+- Amafu discovers Linux cloud roots from clean shortcuts, configured paths, and
+  `/srv/ServerData/*Data` mounts; its JSON dry run now reports Mzansi's four
+  configured providers.
 
 ### Coordinated Dependencies
 - Aligned with RAIkeep synchronized `4.5.11` line.

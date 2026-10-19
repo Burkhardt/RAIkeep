@@ -28,9 +28,9 @@ validation, dependency-order documentation, and sequential release automation.
 The prepared coordinated release is `4.5.11`. RAI starts the release chain
 manually after reviewing the prepared commits and verification results.
 
-RAIkeep 4.5.10 includes CR061: idempotent image import and in-place
-replacement in `iorg organize` adhering to the CR022 cloud-storage invariant,
-surgical derivative cache purging in RaiImage, and `ReceiptVersion: 3`.
+RAIkeep 4.5.11 adds first-class relationship stereotypes to `.raid`, extends
+RaiGuard's architecture rules, and lets Amafu discover configured and mounted
+cloud roots on Linux.
 
 All five C# CLI tools and the Python `jpit` CLI are coordinated through this
 umbrella. The release chain validates the `jsonpit` Python test suite, checks

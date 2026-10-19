@@ -6,7 +6,10 @@
 - Coordination tag: `v4.5.11`
 
 ### Highlights
-- Coordinated 4.5.11 version alignment; no Amafu behavior change.
+- Detect Linux cloud roots from existing `~/.CloudStorage` shortcuts, valid
+  `RAIkeep.json5` entries, and `/srv/ServerData/*Data` mounts.
+- `amafu detect --json --dry-run` reports available providers on Ubuntu without
+  changing the configuration or mount.
 
 ### Coordinated Dependencies
 - Aligned with RAIkeep synchronized `4.5.11` line.
