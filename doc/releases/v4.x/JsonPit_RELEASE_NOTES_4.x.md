@@ -1,5 +1,18 @@
 # JsonPit Release Notes 4.x
 
+## 4.5.12
+
+- Release version: `4.5.12`
+- Coordination tag: `v4.5.12`
+
+### Highlights
+- Publish the prepared cloud-test update and aligned package dependencies; no additional runtime behavior change.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.12` line.
+
+---
+
 ## 4.5.11
 
 - Release version: `4.5.11`

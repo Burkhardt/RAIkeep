@@ -1,5 +1,18 @@
 # RaidSeeder Release Notes 4.x
 
+## 4.5.12
+
+- Release version: `4.5.12`
+- Coordination tag: `v4.5.12`
+
+### Highlights
+- Supply the required `--domain Examples` argument in the publishing workflow’s PlantUML import so SVG hydration verification can complete before NuGet publication. CR064 edge stereotypes remain included.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.12` line.
+
+---
+
 ## 4.5.11
 
 - Release version: `4.5.11`

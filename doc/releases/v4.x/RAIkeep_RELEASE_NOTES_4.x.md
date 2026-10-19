@@ -1,9 +1,23 @@
 # RAIkeep Release Notes 4.x
 
+## 4.5.12
+
+- Release version: `4.5.12`
+- Coordination tag: `v4.5.12`
+
+### Highlights
+- Complete the coordinated release after the 4.5.11 chain stopped at RaidSeeder publication. This version includes the corrected RaidSeeder SVG verification command and aligns all NuGet and PyPI packages.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.12` line.
+
+---
+
 ## 4.5.11
 
 - Release version: `4.5.11`
 - Coordination tag: `v4.5.11`
+- Publication was partial: the release chain stopped in RaidSeeder before its NuGet package was published. Version 4.5.12 supersedes this line.
 
 ### Highlights
 - CR064 adds first-class edge stereotypes to the authoritative .raid manifest, preserves their source spelling on PlantUML import, and renders them in PlantUML and hydratable SVG. Unmanaged imports require an explicit Domain; managed imports use their tenant.

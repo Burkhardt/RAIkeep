@@ -1,5 +1,18 @@
 # PitSeeder Release Notes 4.x
 
+## 4.5.12
+
+- Release version: `4.5.12`
+- Coordination tag: `v4.5.12`
+
+### Highlights
+- Coordinated 4.5.12 publication of the prepared pit CLI behavior; no additional runtime behavior change.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.12` line.
+
+---
+
 ## 4.5.11
 
 - Release version: `4.5.11`

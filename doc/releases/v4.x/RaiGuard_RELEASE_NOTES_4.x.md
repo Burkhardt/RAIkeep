@@ -1,5 +1,18 @@
 # RaiGuard Release Notes 4.x
 
+## 4.5.12
+
+- Release version: `4.5.12`
+- Coordination tag: `v4.5.12`
+
+### Highlights
+- Publish the prepared 16-rule analyzer and CLI changes with coordinated 4.5.12 package versions.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.12` line.
+
+---
+
 ## 4.5.11
 
 - Release version: `4.5.11`
