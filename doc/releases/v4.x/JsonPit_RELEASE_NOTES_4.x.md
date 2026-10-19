@@ -1,5 +1,19 @@
 # JsonPit Release Notes 4.x
 
+## 4.5.11
+
+- Release version: `4.5.11`
+- Coordination tag: `v4.5.11`
+
+### Highlights
+- Coordinated 4.5.11 version alignment; no JsonPit runtime behavior change.
+- The remote cloud integration test now recognizes the current change-file identity and short-checksum naming format.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.11` line.
+
+---
+
 ## 4.5.10
 
 - Release version: `4.5.10`

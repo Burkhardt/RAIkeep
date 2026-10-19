@@ -1,5 +1,20 @@
 # RAIkeep Release Notes 4.x
 
+## 4.5.11
+
+- Release version: `4.5.11`
+- Coordination tag: `v4.5.11`
+
+### Highlights
+- CR064 adds first-class edge stereotypes to the authoritative .raid manifest, preserves their source spelling on PlantUML import, and renders them in PlantUML and hydratable SVG. Unmanaged imports require an explicit Domain; managed imports use their tenant.
+- RaiGuard expands to 16 architecture rules with updated code fixes, CLI rewrites, and documentation.
+- JsonPit's remote cloud test now checks the current change-file naming contract, removing a stale release-gate failure.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.11` line.
+
+---
+
 ## 4.5.10
 
 - Release version: `4.5.10`

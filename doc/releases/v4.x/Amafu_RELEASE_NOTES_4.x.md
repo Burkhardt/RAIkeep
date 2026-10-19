@@ -1,5 +1,18 @@
 # Amafu Release Notes 4.x
 
+## 4.5.11
+
+- Release version: `4.5.11`
+- Coordination tag: `v4.5.11`
+
+### Highlights
+- Coordinated 4.5.11 version alignment; no Amafu behavior change.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.11` line.
+
+---
+
 ## 4.5.10
 
 - Release version: `4.5.10`

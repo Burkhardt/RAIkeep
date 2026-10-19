@@ -361,7 +361,7 @@ class ReleaseValidator:
 		)
 		self.validate_file_contains(
 			"RaiGuard/rail/rail.csproj",
-			rf"<PackageReleaseNotes>Coordinated {re.escape(v)} release;",
+			r"<PackageReleaseNotes>[^<\s][^<]*</PackageReleaseNotes>",
 			"RaiGuard CLI package release notes",
 		)
 

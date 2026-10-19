@@ -1,5 +1,18 @@
 # RaiGuard Release Notes 4.x
 
+## 4.5.11
+
+- Release version: `4.5.11`
+- Coordination tag: `v4.5.11`
+
+### Highlights
+- Expand the analyzer and `rail` CLI from the earlier rule set to 16 numbered architecture rules. Add code fixes, CLI rewrites, architecture rule documentation, and updated tutorial guidance.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.11` line.
+
+---
+
 ## 4.5.10
 
 - Release version: `4.5.10`

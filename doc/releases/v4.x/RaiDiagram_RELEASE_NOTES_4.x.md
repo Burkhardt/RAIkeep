@@ -1,5 +1,18 @@
 # RaiDiagram Release Notes 4.x
 
+## 4.5.11
+
+- Release version: `4.5.11`
+- Coordination tag: `v4.5.11`
+
+### Highlights
+- CR064 stores edge stereotypes separately from labels in .raid and its semantic hash. Builders emit typed stereotypes; PlantUML import and export preserve them, and hydratable SVG exposes `aim-stereotype`. Existing manifests without stereotypes remain readable.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.11` line.
+
+---
+
 ## 4.5.10
 
 - Release version: `4.5.10`

@@ -1,5 +1,18 @@
 # RaidSeeder Release Notes 4.x
 
+## 4.5.11
+
+- Release version: `4.5.11`
+- Coordination tag: `v4.5.11`
+
+### Highlights
+- CR064 imports PlantUML edge stereotypes into typed .raid relationships. Unmanaged imports require `--domain`; managed imports use `--tenant`. The source spelling is preserved.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.11` line.
+
+---
+
 ## 4.5.10
 
 - Release version: `4.5.10`

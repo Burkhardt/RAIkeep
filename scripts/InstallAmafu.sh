@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Installs Amafu only. Usage: InstallAmafu.sh <native|global|system> [VERSION]
-DEFAULT_VERSION="4.5.10"
+DEFAULT_VERSION="4.5.11"
 MODE="${1:-}"
 VERSION="${2:-$DEFAULT_VERSION}"
 VERSION="${VERSION#v}"
