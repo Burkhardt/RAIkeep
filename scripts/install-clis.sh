@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # ==============================================================================
-# RAIkeep Fleet CLI Installer: provisions all 6 CLIs across Nkosikazi, Mzansi, Mdlaka
+# RAIkeep Fleet CLI Installer: provisions all 6 CLIs across Nkosikazi, Mzansi, Mdlaka, and Neo
 # CLIs: amafu, raid, iorg, pits, rail, and jpit (Python jsonpit)
 # ==============================================================================
 
@@ -84,12 +84,15 @@ resolve_target() {
 # Parse arguments: version and targets
 VERSION=""
 TARGETS=()
+SKIP_CLOUD_SETUP=0
 
 for arg in "$@"; do
 	if [[ "$arg" == "-h" || "$arg" == "--help" ]]; then
 		fleet_pipe="$(IFS=\|; echo "${FLEET_TARGETS[*]}")"
-		echo "Usage: $0 [VERSION] [all|$fleet_pipe]"
+		echo "Usage: $0 [VERSION] [all|$fleet_pipe] [--no-cloud-setup]"
 		exit 0
+	elif [[ "$arg" == "--no-cloud-setup" ]]; then
+		SKIP_CLOUD_SETUP=1
 	elif [[ -z "$VERSION" ]] && [[ "$arg" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
 		VERSION="${arg#v}"
 	else
@@ -133,6 +136,7 @@ run_installation_payload() {
 	read -r -d '' PAYLOAD_SCRIPT << 'EOF' || true
 set -euo pipefail
 VERSION="$1"
+SKIP_CLOUD_SETUP="$2"
 
 export PATH="$HOME/.local/bin:$HOME/.dotnet/tools:$HOME/.dotnet:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/share/dotnet:/opt/dotnet:/usr/local/bin:$PATH"
 
@@ -152,12 +156,8 @@ install_dotnet_tool() {
 		return 0
 	elif dotnet tool install -g "$pkg" --version "$v" --no-cache 2>&1 | sed 's/^/      /'; then
 		return 0
-	elif dotnet tool update -g "$pkg" --no-cache 2>&1 | sed 's/^/      /'; then
-		return 0
-	elif dotnet tool install -g "$pkg" --no-cache 2>&1 | sed 's/^/      /'; then
-		return 0
 	else
-		echo "      ⚠️ Warning: Failed to install/update $pkg."
+		echo "      ❌ Failed to install/update $pkg at exact version $v."
 		return 1
 	fi
 }
@@ -210,7 +210,7 @@ install_jpit() {
 	for p_dir in "$py_user_base" "$HOME/Library/Python/"*/bin; do
 		if [[ -d "$p_dir" ]]; then
 			for tool_name in jpit jsonpit; do
-				if [[ -f "$p_dir/$tool_name" ]]; then
+				if [[ -f "$p_dir/$tool_name" && ! -e "$HOME/.local/bin/$tool_name" ]]; then
 					ln -sf "$p_dir/$tool_name" "$HOME/.local/bin/$tool_name"
 				fi
 			done
@@ -232,8 +232,10 @@ install_jpit() {
 }
 install_jpit
 
-echo "  [4/4] Setting up Cloud Storage shortcuts via amafu..."
-if command -v amafu >/dev/null 2>&1; then
+echo "  [4/4] Cloud Storage setup..."
+if [[ "$SKIP_CLOUD_SETUP" == "1" ]]; then
+	echo "    Skipped for this tools-only installation."
+elif command -v amafu >/dev/null 2>&1; then
 	if [[ ! -f "$HOME/.config/RAIkeep.json5" ]]; then
 		amafu init --create-links 2>&1 | sed 's/^/      /' || true
 	else
@@ -243,12 +245,19 @@ fi
 
 CURRENT_USER="${USER:-$(id -un 2>/dev/null || whoami 2>/dev/null || echo 'user')}"
 echo -e "\n  🔍 Verification results for ${CURRENT_USER} on $(hostname):"
+verification_failed=0
 for cmd in amafu raid iorg pits rail jpit; do
 	if command -v "$cmd" >/dev/null 2>&1; then
 		out="$("$cmd" --version 2>&1 | head -n 1 || true)"
-		printf "    ✅ %-8s : %s\n" "$cmd" "$out"
+		if [[ "$out" == *"v$VERSION" ]]; then
+			printf "    ✅ %-8s : %s\n" "$cmd" "$out"
+		else
+			printf "    ❌ %-8s : %s (expected v%s)\n" "$cmd" "$out" "$VERSION"
+			verification_failed=1
+		fi
 	else
 		printf "    ❌ %-8s : NOT FOUND in PATH\n" "$cmd"
+		verification_failed=1
 	fi
 done
 
@@ -262,6 +271,7 @@ if p.is_dir():
 		for item in links:
 			print(f"    🔗 {item.name:<12} -> {item.resolve()}")
 ' 2>/dev/null || true
+(( verification_failed == 0 ))
 EOF
 
 	local host_only="${target_machine##*@}"
@@ -269,14 +279,14 @@ EOF
 	local c_lower="$(echo "$CURRENT_HOST" | tr '[:upper:]' '[:lower:]')"
 	if [[ "$t_lower" == "local" || "$t_lower" == "$c_lower" ]]; then
 		# Run locally
-		bash -s -- "$ver" <<< "$PAYLOAD_SCRIPT"
+		bash -s -- "$ver" "$SKIP_CLOUD_SETUP" <<< "$PAYLOAD_SCRIPT"
 	else
 		# Run remotely via SSH
 		if ! ssh -o ConnectTimeout=8 -o BatchMode=yes "$target_machine" exit 2>/dev/null; then
 			echo "  ⚠️ Warning: Cannot connect via SSH to $target_machine (timed out or key auth needed). Skipping."
 			return 1
 		fi
-		ssh -o ConnectTimeout=15 -T "$target_machine" "bash -s -- $ver" <<< "$PAYLOAD_SCRIPT"
+		ssh -o ConnectTimeout=15 -T "$target_machine" "bash -s -- $ver $SKIP_CLOUD_SETUP" <<< "$PAYLOAD_SCRIPT"
 	fi
 }
 
@@ -298,3 +308,4 @@ if [[ ${#FAILED_HOSTS[@]} -gt 0 ]]; then
 	echo "   Failed/Skipped : ${FAILED_HOSTS[*]}"
 fi
 echo "============================================================"
+[[ ${#FAILED_HOSTS[@]} -eq 0 ]]
