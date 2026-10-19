@@ -126,15 +126,21 @@ ensure_tag_on_head() {
 	local name="$2"
 	local tag="$3"
 
-	local head_sha remote_tag_sha local_tag_sha
+	local head_sha remote_tag_sha local_tag_sha local_tag_ref_sha
 	head_sha="$(git -C "$repo_dir" rev-parse HEAD)"
-	remote_tag_sha="$(git -C "$repo_dir" ls-remote --tags origin "refs/tags/$tag" | awk '{print $1}')"
-	local_tag_sha="$(git -C "$repo_dir" rev-parse -q --verify "refs/tags/$tag" 2>/dev/null || true)"
+	# Annotated tags have their own object SHA; compare the peeled commit instead.
+	remote_tag_sha="$(git -C "$repo_dir" ls-remote --tags origin "refs/tags/$tag" "refs/tags/$tag^{}" \
+		| awk -v ref="refs/tags/$tag" '$2 == ref { raw = $1 } $2 == ref "^{}" { peeled = $1 } END { print (peeled != "" ? peeled : raw) }')"
+	local_tag_ref_sha="$(git -C "$repo_dir" rev-parse -q --verify "refs/tags/$tag" 2>/dev/null || true)"
+	local_tag_sha="$(git -C "$repo_dir" rev-parse -q --verify "refs/tags/$tag^{commit}" 2>/dev/null || true)"
+	if [[ -n "$local_tag_ref_sha" && -z "$local_tag_sha" ]]; then
+		die "$name: local tag $tag does not point to a commit. Refusing to retag."
+	fi
+	if [[ -n "$local_tag_sha" && "$local_tag_sha" != "$head_sha" ]]; then
+		die "$name: local tag $tag points to $local_tag_sha, but HEAD is $head_sha. Refusing to retag."
+	fi
 
 	if [[ -z "$remote_tag_sha" ]]; then
-		if [[ -n "$local_tag_sha" && "$local_tag_sha" != "$head_sha" ]]; then
-			die "$name: local tag $tag exists at $local_tag_sha, but HEAD is $head_sha. Refusing to retag."
-		fi
 		log "$name: creating and pushing tag $tag"
 		if [[ -z "$local_tag_sha" ]]; then
 			git -C "$repo_dir" tag -a "$tag" -m "$name $tag"
