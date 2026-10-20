@@ -101,6 +101,35 @@ class ReleaseToolsTests(unittest.TestCase):
 		self.assertEqual(1, len(errors))
 		self.assertIn("Amafu README contains collapsible HTML tags not supported by NuGet", errors[0])
 
+	def test_amafu_local_release_notes_match_current_umbrella_section(self):
+		local_notes = self.root / "Amafu/RELEASE_NOTES.md"
+		workflow = self.root / "Amafu/.github/workflows/publish-nuget.yaml"
+		workflow.parent.mkdir(parents=True, exist_ok=True)
+		workflow.write_text('RELEASE_BODY="RELEASE_NOTES.md"\n', encoding="utf-8")
+		success, errors = self.validate()
+		self.assertFalse(success)
+		self.assertTrue(any("requires project-local release notes" in error for error in errors))
+
+		consolidated = self.root / tools.release_note_path("Amafu", self.version)
+		expected = tools.current_release_section(consolidated, self.version)
+		local_notes.write_text(expected, encoding="utf-8")
+		self.assertEqual((True, []), self.validate())
+
+		local_notes.write_text("## stale\n", encoding="utf-8")
+		success, errors = self.validate()
+		self.assertFalse(success)
+		self.assertTrue(any("Current notes differ" in error for error in errors))
+
+		bumper = tools.ReleaseBumper(
+			self.root,
+			self.root / "scripts/release-manifest.json",
+			self.version,
+			run_external_checks=False,
+		)
+		with contextlib.redirect_stdout(io.StringIO()):
+			self.assertTrue(bumper.bump())
+		self.assertEqual(expected, local_notes.read_text(encoding="utf-8"))
+
 	def test_new_release_is_prepended_once(self):
 		note = self.root / "doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md"
 		major, minor, patch = map(int, self.version.split("."))

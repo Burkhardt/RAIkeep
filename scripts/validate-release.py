@@ -46,6 +46,19 @@ def release_note_anchor(version: str) -> str:
 	return version.replace(".", "")
 
 
+def current_release_section(path: Path, version: str) -> str:
+	"""Return one version's notes for a self-contained package release."""
+	content = path.read_text(encoding="utf-8")
+	sections = list(re.finditer(r"^## (\d+(?:\.\d+)+)$", content, re.MULTILINE))
+	matches = [index for index, section in enumerate(sections) if section.group(1) == version]
+	if len(matches) != 1:
+		raise ValueError(f"Expected exactly one '## {version}' section in {path}.")
+	index = matches[0]
+	start = sections[index].start()
+	end = sections[index + 1].start() if index + 1 < len(sections) else len(content)
+	return re.sub(r"\n+---\s*$", "", content[start:end].strip()).rstrip() + "\n"
+
+
 class ReleaseValidator:
 	def __init__(
 		self, root_dir: Path, target_version: str, *, run_external_checks: bool = True
@@ -447,6 +460,23 @@ class ReleaseValidator:
 			self.error("doc", None, f"Flat 3.x/4.x release notes remain: {len(legacy_notes)} file(s).")
 		else:
 			self.pass_check()
+		amafu_local_notes = self.root_dir / "Amafu/RELEASE_NOTES.md"
+		amafu_workflow = self.root_dir / "Amafu/.github/workflows/publish-nuget.yaml"
+		local_notes_required = (
+			amafu_workflow.is_file()
+			and 'RELEASE_BODY="RELEASE_NOTES.md"' in amafu_workflow.read_text(encoding="utf-8")
+		)
+		if local_notes_required and not amafu_local_notes.is_file():
+			self.error("Amafu/RELEASE_NOTES.md", None, "Amafu's publish workflow requires project-local release notes.")
+		if amafu_local_notes.is_file():
+			try:
+				expected = current_release_section(self.root_dir / release_note_path("Amafu", v), v)
+				if amafu_local_notes.read_text(encoding="utf-8") == expected:
+					self.pass_check()
+				else:
+					self.error("Amafu/RELEASE_NOTES.md", None, f"Current notes differ from the umbrella's ## {v} section. Sync them before tagging Amafu.")
+			except (OSError, ValueError) as error:
+				self.error("Amafu/RELEASE_NOTES.md", None, str(error))
 
 		# 5. Documentation Headers, Overviews & Scope Notes
 		print("\n[5/7] Checking documentation headers & scope notes...")
@@ -825,6 +855,13 @@ class ReleaseBumper:
 				changed_count += 1
 			else:
 				print(f"  ✔️ Contains {v}: {rel_note}")
+		amafu_local_notes = self.root_dir / "Amafu/RELEASE_NOTES.md"
+		if amafu_local_notes.is_file():
+			latest_notes = current_release_section(self.root_dir / release_note_path("Amafu", v), v)
+			if amafu_local_notes.read_text(encoding="utf-8") != latest_notes:
+				amafu_local_notes.write_text(latest_notes, encoding="utf-8")
+				print("  📝 Updated Amafu/RELEASE_NOTES.md from the current release section")
+				changed_count += 1
 
 		index_path = self.root_dir / "doc/README.md"
 		index = index_path.read_text(encoding="utf-8")
