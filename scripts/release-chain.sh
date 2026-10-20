@@ -286,6 +286,11 @@ wait_workflow_success() {
 					--json databaseId,url,updatedAt,status,conclusion,displayTitle
 				return
 			fi
+			if [[ "$repo_dir" == "$ROOT_DIR/Amafu" && "$workflow_file" == "publish-nuget.yaml" ]]; then
+				if recover_amafu_native_release "$run_id" "$tag"; then
+					return
+				fi
+			fi
 			gh -R "$(git -C "$repo_dir" remote get-url origin)" run view "$run_id" --log-failed | tail -n 200 || true
 			die "Workflow failed: $workflow_file run $run_id"
 		fi
@@ -294,6 +299,70 @@ wait_workflow_success() {
 	done
 
 	die "Timed out waiting for workflow: $workflow_file @ $tag"
+}
+
+sha256_of_file() {
+	local file="$1"
+	if command -v shasum >/dev/null 2>&1; then
+		shasum -a 256 "$file" | awk '{print $1}'
+	elif command -v sha256sum >/dev/null 2>&1; then
+		sha256sum "$file" | awk '{print $1}'
+	else
+		die "Neither shasum nor sha256sum is available to verify native artifacts."
+	fi
+}
+
+recover_amafu_native_release() {
+	local run_id="$1"
+	local tag="$2"
+	local repo_url="$(git -C "$ROOT_DIR/Amafu" remote get-url origin)"
+	local jobs failed_step rid archive checksum expected actual temp_dir notes release_title
+	local -a assets=()
+	local -a rids=(osx-arm64 osx-x64 linux-x64 linux-arm64 win-x64)
+
+	# A missing umbrella tag is the one known failure of Amafu's immutable
+	# tagged workflow. Never recover a failed package publish or native build.
+	[[ -z "$(remote_tag_commit "$ROOT_DIR" "$tag")" ]] || return 1
+	jobs="$(gh -R "$repo_url" run view "$run_id" --json jobs \
+		--jq '[.jobs[] | {name, conclusion}]')" || return 1
+	[[ "$(printf '%s' "$jobs" | jq -r '[.[] | select(.name == "publish-nuget" and .conclusion == "success")] | length')" == "1" ]] || return 1
+	[[ "$(printf '%s' "$jobs" | jq -r '[.[] | select(.name == "publish-native-release" and .conclusion == "failure")] | length')" == "1" ]] || return 1
+	[[ "$(printf '%s' "$jobs" | jq -r '[.[] | select(.name | startswith("NativeAOT ")) | select(.conclusion == "success")] | length')" == "5" ]] || return 1
+	[[ "$(printf '%s' "$jobs" | jq -r 'length')" == "7" ]] || return 1
+	failed_step="$(gh -R "$repo_url" run view "$run_id" --json jobs \
+		--jq '[.jobs[] | select(.name == "publish-native-release") | .steps[] | select(.conclusion == "failure") | .name] | join(",")')" || return 1
+	[[ "$failed_step" == "Checkout synchronized release notes" ]] || return 1
+
+	log "Amafu: NuGet publish and five native builds succeeded; recovering the release-notes checkout failure without an early umbrella tag"
+	temp_dir="$(mktemp -d "${TMPDIR:-/tmp}/amafu-native-${VER}.XXXXXX")"
+	gh -R "$repo_url" run download "$run_id" --dir "$temp_dir" \
+		|| die "Amafu: could not download native artifacts from workflow run $run_id."
+	for rid in "${rids[@]}"; do
+		archive="$temp_dir/amafu-${rid}/amafu-${tag}-${rid}.zip"
+		checksum="$archive.sha256"
+		[[ -f "$archive" && -f "$checksum" ]] \
+			|| die "Amafu: missing native archive or checksum for $rid in workflow run $run_id."
+		expected="$(awk 'NR == 1 {print $1}' "$checksum")"
+		actual="$(sha256_of_file "$archive")"
+		[[ "$expected" == "$actual" ]] || die "Amafu: SHA-256 mismatch for $archive."
+		assets+=("$archive" "$checksum")
+	done
+
+	notes="$temp_dir/Amafu-${VER}-release-notes.md"
+	"$RELEASE_PYTHON" "$ROOT_DIR/scripts/extract-release-notes.py" \
+		"$ROOT_DIR/doc/releases/v${VER%%.*}.x/Amafu_RELEASE_NOTES_${VER%%.*}.x.md" "$VER" "$notes" \
+		|| die "Amafu: could not extract $VER release notes from the prepared umbrella."
+	if gh -R "$repo_url" release view "$tag" >/dev/null 2>&1; then
+		release_title="$(gh -R "$repo_url" release view "$tag" --json name --jq '.name')"
+		[[ "$release_title" == "Amafu $tag" ]] || die "Amafu GitHub Release has unexpected title '$release_title'."
+	else
+		gh -R "$repo_url" release create "$tag" --title "Amafu $tag" --notes-file "$notes" \
+			|| die "Amafu: could not create GitHub Release $tag."
+	fi
+	gh -R "$repo_url" release upload "$tag" "${assets[@]}" --clobber \
+		|| die "Amafu: could not upload native assets to GitHub Release $tag."
+	rm -rf "$temp_dir"
+	log "Amafu: recovered GitHub Release $tag with five verified native archives and checksums"
 }
 
 hold_and_check_flatcontainer() {
@@ -721,6 +790,7 @@ main() {
 	require_cmd curl
 	require_cmd dotnet
 	require_cmd sed
+	require_cmd jq
 	require_cmd sleep
 	require_cmd mktemp
 	[[ -n "${PYPI_TOKEN:-}" ]] || die "PYPI_TOKEN is required for coordinated PyPI publication."
