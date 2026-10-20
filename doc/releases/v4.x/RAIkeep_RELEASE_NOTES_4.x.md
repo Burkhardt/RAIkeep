@@ -1,5 +1,18 @@
 # RAIkeep Release Notes 4.x
 
+## 4.5.13
+
+- Release version: `4.5.13`
+- Coordination tag: `v4.5.13`
+
+### Highlights
+- CR067 adds video-container ingestion and single-file, verified ephemeral imports to the media toolchain. Other packages are version-aligned for the synchronized release.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.13` line.
+
+---
+
 ## 4.5.12
 
 - Release version: `4.5.12`

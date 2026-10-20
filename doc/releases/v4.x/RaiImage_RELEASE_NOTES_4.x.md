@@ -1,5 +1,18 @@
 # RaiImage Release Notes 4.x
 
+## 4.5.13
+
+- Release version: `4.5.13`
+- Coordination tag: `v4.5.13`
+
+### Highlights
+- Add a separate media-container registry for supported still and video formats while retaining still-only derivative selection.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.13` line.
+
+---
+
 ## 4.5.12
 
 - Release version: `4.5.12`

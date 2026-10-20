@@ -1,5 +1,18 @@
 # ImgSeeder Release Notes 4.x
 
+## 4.5.13
+
+- Release version: `4.5.13`
+- Coordination tag: `v4.5.13`
+
+### Highlights
+- Accept single media files and video containers in `iorg organize`; preserve SHA-256 upsert semantics, optionally remove a verified single-file source with `--move`, and include canonical `ItemTreePath` and byte size in detailed receipts.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.13` line.
+
+---
+
 ## 4.5.12
 
 - Release version: `4.5.12`
