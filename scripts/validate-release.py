@@ -16,6 +16,8 @@ import re
 import subprocess
 import sys
 import tempfile
+import tomllib
+import zipfile
 from pathlib import Path
 from typing import List, Tuple
 
@@ -320,6 +322,39 @@ class ReleaseValidator:
 						f"Found stale version '{stale}' in line: {line.strip()}",
 					)
 
+	def validate_python_distribution(self) -> None:
+		repo = self.root_dir / PYTHON_REPO[0]
+		for relative in ["pyproject.toml", "packages/jpit/pyproject.toml"]:
+			try:
+				project = tomllib.loads((repo / relative).read_text())["project"]
+				assert project["version"] == self.version, "package version differs from the coordinated release"
+				assert project["scripts"] == {"jpit": "jsonpit.cli:main", "jsonpit": "jsonpit.cli:main"}, "both CLI entry points are required"
+				if relative.startswith("packages/"):
+					assert project["dependencies"] == [f"jsonpit=={self.version}"], "companion must pin the exact jsonpit version"
+				self.pass_check()
+			except (OSError, ValueError, KeyError, AssertionError) as error:
+				self.error(f"{PYTHON_REPO[0]}/{relative}", None, str(error))
+		for relative in ["README.md", "API.md", "GettingStarted.md", "packages/jpit/README.md"]:
+			try:
+				text = (repo / relative).read_text()
+				if relative == "API.md":
+					text = text.splitlines()[0]
+				versions = set(re.findall(r"(?<!\d)\d+\.\d+\.\d+(?!\d)", text))
+				if versions != {self.version}:
+					raise ValueError(f"Current Python documentation must use {self.version}; found {sorted(versions)}.")
+				self.pass_check()
+			except (OSError, ValueError) as error:
+				self.error(f"{PYTHON_REPO[0]}/{relative}", None, str(error))
+		try:
+			with zipfile.ZipFile(repo / "bin/jpit") as archive:
+				expected = {f"jsonpit/{path.name}": path.read_bytes() for path in (repo / "jsonpit").glob("*.py")}
+				actual = {name: archive.read(name) for name in archive.namelist() if name.startswith("jsonpit/")}
+				if not expected or actual != expected or "__main__.py" not in archive.namelist():
+					raise ValueError("Standalone jpit contains stale or missing sources; run JsonPit.Python/scripts/build_standalone.py.")
+			self.pass_check()
+		except (OSError, ValueError, zipfile.BadZipFile) as error:
+			self.error(f"{PYTHON_REPO[0]}/bin/jpit", None, str(error))
+
 	def run_all_validations(self, prior_versions: List[str]) -> bool:
 		v = self.version
 		major = v.split(".", 1)[0]
@@ -372,6 +407,7 @@ class ReleaseValidator:
 			"jsonpit Python package __version__",
 			flags=re.MULTILINE,
 		)
+		self.validate_python_distribution()
 		self.validate_file_contains(
 			"RaiGuard/rail/rail.csproj",
 			r"<PackageReleaseNotes>[^<\s][^<]*</PackageReleaseNotes>",
@@ -442,7 +478,7 @@ class ReleaseValidator:
 
 		# 4. Release Notes Existence
 		print("\n[4/7] Checking Release Notes files...")
-		for name in ["RAIkeep", *(package for package, _, _ in PACKAGE_REPOS)]:
+		for name in ["RAIkeep", *(package for package, _, _ in PACKAGE_REPOS), "JsonPit.Python"]:
 			rel_path = release_note_path(name, v)
 			if not self.validate_file_exists(rel_path):
 				continue
@@ -594,7 +630,7 @@ class ReleaseValidator:
 			rf"RAIkeep {re.escape(v)}",
 			"doc/README.md current release notes list",
 		)
-		for name in ["RAIkeep", *(package for package, _, _ in PACKAGE_REPOS)]:
+		for name in ["RAIkeep", *(package for package, _, _ in PACKAGE_REPOS), "JsonPit.Python"]:
 			label = "OsLibCore" if name == "OsLib" else name
 			self.validate_file_contains(
 				"doc/README.md",
@@ -866,7 +902,7 @@ class ReleaseBumper:
 		index_path = self.root_dir / "doc/README.md"
 		index = index_path.read_text(encoding="utf-8")
 		updated_index = index
-		for name in ["RAIkeep", *(package for package, _, _ in PACKAGE_REPOS)]:
+		for name in ["RAIkeep", *(package for package, _, _ in PACKAGE_REPOS), "JsonPit.Python"]:
 			label = "OsLibCore" if name == "OsLib" else name
 			link = (
 				f"- [{label} {v}](https://github.com/Burkhardt/RAIkeep/blob/main/"
@@ -889,7 +925,7 @@ class ReleaseBumper:
 				u_readme,
 				count=1,
 			)
-			for name in ["RAIkeep", *(package for package, _, _ in PACKAGE_REPOS)]:
+			for name in ["RAIkeep", *(package for package, _, _ in PACKAGE_REPOS), "JsonPit.Python"]:
 				label = "OsLibCore" if name == "OsLib" else name
 				link = (
 					f"- [{label} {v}](https://github.com/Burkhardt/RAIkeep/blob/main/"
@@ -921,6 +957,9 @@ class ReleaseBumper:
 			print(f"  💾 Updated {self.manifest_path.name} current_version to {v}")
 		else:
 			print(f"  ✔️ {self.manifest_path.name} current_version is already {v}")
+		standalone_builder = self.root_dir / "JsonPit.Python/scripts/build_standalone.py"
+		if standalone_builder.is_file():
+			subprocess.run([sys.executable, str(standalone_builder)], check=True, capture_output=True)
 
 		print(f"\n✨ Bump complete! ({changed_count} files touched/scaffolded)")
 		print("Now running release validation suite...\n")

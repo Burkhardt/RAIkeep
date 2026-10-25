@@ -14,6 +14,7 @@ MODE="${2:-}"
 PACKAGE_REPOS=(Amafu OsLib RaiUtils RaiImage RaiDiagram RaidSeeder JsonPit ImgSeeder PitSeeder RaiGuard)
 PYTHON_REPO="JsonPit.Python"
 PYTHON_PACKAGE="jsonpit"
+PYTHON_PACKAGES=(jsonpit jpit)
 
 require_cmd() {
 	command -v "$1" >/dev/null 2>&1 || {
@@ -211,6 +212,15 @@ preflight_python_submodule() {
 	[[ "$recorded_sha" == "$head_sha" ]] || die "RAIkeep HEAD records $PYTHON_REPO at $recorded_sha, but its prepared HEAD is $head_sha. Commit the updated submodule pointer in RAIkeep first."
 
 	log "$PYTHON_REPO: preflight passed at $head_sha ($ahead commit(s) ahead of origin/main)"
+	build_python_distributions
+}
+
+build_python_distributions() {
+	if [[ -z "${PYTHON_DIST_DIR:-}" ]]; then
+		PYTHON_DIST_DIR="$(mktemp -d "${TMPDIR:-/tmp}/raikeep-python-${VER}.XXXXXX")"
+		log "Python preflight: building both distributions and verifying installed commands before any release tag"
+		"$RELEASE_PYTHON" "$ROOT_DIR/scripts/build-python-release.py" "$ROOT_DIR/$PYTHON_REPO" "$VER" "$PYTHON_DIST_DIR"
+	fi
 }
 
 preflight_umbrella() {
@@ -490,17 +500,21 @@ release_raiguard() {
 }
 
 hold_and_check_pypi() {
-	local start_e now_e elapsed code ts
+	local start_e now_e elapsed code ts package all_visible
 	start_e="$(date -u +%s)"
 	while true; do
 		now_e="$(date -u +%s)"
 		elapsed=$((now_e - start_e))
 		(( elapsed < 1800 )) || die "Timed out after ${elapsed}s waiting for $PYTHON_PACKAGE $VER on PyPI."
 		ts="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-		code="$(release_http_code "https://pypi.org/pypi/${PYTHON_PACKAGE}/${VER}/json" GET)"
-		echo "$ts package=${PYTHON_PACKAGE} elapsed=${elapsed}s pypi=${code}"
-		if [[ "$code" == "200" ]]; then
-			log "$PYTHON_PACKAGE $VER is available from PyPI"
+		all_visible=1
+		for package in "${PYTHON_PACKAGES[@]}"; do
+			code="$(release_http_code "https://pypi.org/pypi/${package}/${VER}/json" GET)"
+			echo "$ts package=${package} elapsed=${elapsed}s pypi=${code}"
+			[[ "$code" == "200" ]] || all_visible=0
+		done
+		if [[ "$all_visible" == 1 ]]; then
+			log "jsonpit and jpit $VER are available from PyPI"
 			return
 		fi
 		sleep 10
@@ -525,19 +539,29 @@ release_python_package() {
 	current_ver="$(python_project_version "$repo_dir")"
 	[[ "$current_ver" == "$VER" ]] || die "$PYTHON_REPO version mismatch in pyproject.toml (found $current_ver, expected $VER)"
 
-	dist_dir="$(mktemp -d "${TMPDIR:-/tmp}/raikeep-${PYTHON_PACKAGE}-${VER}.XXXXXX")"
-	log "$PYTHON_REPO: building source and wheel distributions"
-	"$RELEASE_PYTHON" -m build --outdir "$dist_dir" "$repo_dir"
-	artifacts=("$dist_dir/${PYTHON_PACKAGE}-${VER}"*)
-	[[ -e "${artifacts[0]}" ]] || die "$PYTHON_REPO build did not produce ${PYTHON_PACKAGE}-${VER} artifacts."
+	build_python_distributions
+	dist_dir="$PYTHON_DIST_DIR"
+	artifacts=("$dist_dir/jsonpit-${VER}"* "$dist_dir/jpit-${VER}"*)
+	[[ ${#artifacts[@]} == 4 && -e "${artifacts[0]}" ]] || die "Python release requires both wheels and source archives."
 
 	push_main_if_needed "$repo_dir" "$PYTHON_REPO"
 	ensure_tag_on_head "$repo_dir" "$PYTHON_REPO" "$TAG"
 	[[ -n "${PYPI_TOKEN:-}" ]] || die "PYPI_TOKEN is required to publish $PYTHON_PACKAGE $VER to PyPI."
 	TWINE_USERNAME=__token__ TWINE_PASSWORD="$PYPI_TOKEN" \
-		"$RELEASE_PYTHON" -m twine upload --non-interactive "${artifacts[@]}"
+		"$RELEASE_PYTHON" -m twine upload --non-interactive --skip-existing "${artifacts[@]}"
 	hold_and_check_pypi
+	local notes="$dist_dir/release-notes.md"
+	"$RELEASE_PYTHON" "$ROOT_DIR/scripts/extract-release-notes.py" \
+		"$ROOT_DIR/doc/releases/v${VER%%.*}.x/JsonPit.Python_RELEASE_NOTES_${VER%%.*}.x.md" "$VER" "$notes"
+	local repo_url="$(git -C "$repo_dir" remote get-url origin)"
+	if gh -R "$repo_url" release view "$TAG" >/dev/null 2>&1; then
+		gh -R "$repo_url" release edit "$TAG" --title "jsonpit-python $TAG" --notes-file "$notes" --latest
+	else
+		gh -R "$repo_url" release create "$TAG" --verify-tag --title "jsonpit-python $TAG" --notes-file "$notes" --latest
+	fi
+	gh -R "$repo_url" release upload "$TAG" "${artifacts[@]}" "$dist_dir/jpit" --clobber
 	rm -rf "$dist_dir"
+	unset PYTHON_DIST_DIR
 }
 
 verify_parent_pointers_unchanged() {

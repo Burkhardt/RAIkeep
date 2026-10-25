@@ -41,11 +41,25 @@ The enforced release order is:
 
 ## Python coordination
 
-The release chain builds the `jsonpit` source distribution and wheel after C#
-`JsonPit`, uploads them to PyPI using `PYPI_TOKEN`, and waits until the exact
-PyPI version is visible before continuing with ImgSeeder and PitSeeder. It also
-validates the Python test suite and `pits list` / `jpit list` formatting before
-it creates the release labels.
+Before any tag is created, Python preflight validates both distribution versions,
+the exact companion dependency, current documentation, and embedded standalone
+sources. It builds wheels and source archives for both `jsonpit` and `jpit`, then
+installs the wheels in a temporary virtual environment and checks `-v` and
+`--version` for both commands, including the `v` prefix.
+
+After C# `JsonPit`, the chain uploads both distributions with `PYPI_TOKEN`, waits
+for both exact versions on PyPI, and creates the Python GitHub Release with the
+standalone download and package assets. Release notes come from the prepared
+local checkout, so publishing does not depend on an umbrella tag created later.
+
+The fleet installer uses one managed `jsonpit` environment for both commands;
+it does not install a second pipx environment for the `jpit` companion or bypass
+system Python protection. To repair an existing duplicate pipx installation:
+
+```bash
+pipx uninstall jpit
+pipx install --force "jsonpit==4.5.13"
+```
 
 ## One-time Amafu publishing bootstrap
 

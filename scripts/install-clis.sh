@@ -171,31 +171,29 @@ install_dotnet_tool "RaiGuard" "$VERSION"
 echo "  [3/4] Installing/Updating Python jsonpit (jpit CLI)..."
 install_jpit() {
 	local py_spec="jsonpit==$VERSION"
-	if [[ "$VERSION" == "4.5.0" ]]; then
-		py_spec="jsonpit==4.5.1"
-	fi
-
 	mkdir -p "$HOME/.local/bin"
 	local venv_dir="$HOME/.local/share/jsonpit-venv"
-	if python3 -m venv "$venv_dir" 2>/dev/null; then
-		"$venv_dir/bin/pip" install --upgrade --no-cache-dir "$py_spec" 2>&1 | sed 's/^/      /'
+	# One managed environment owns both CLI names. Never bypass PEP 668.
+	if command -v pipx >/dev/null 2>&1; then
+		pipx install --force "$py_spec" 2>&1 | sed 's/^/      /' || return 1
+	elif python3 -m venv "$venv_dir" 2>/dev/null; then
+		"$venv_dir/bin/python" -m pip install --upgrade --no-cache-dir "$py_spec" 2>&1 | sed 's/^/      /' || return 1
 		ln -sf "$venv_dir/bin/jpit" "$HOME/.local/bin/jpit"
 		ln -sf "$venv_dir/bin/jsonpit" "$HOME/.local/bin/jsonpit"
 	elif command -v uv >/dev/null 2>&1; then
-		uv tool install "$py_spec" --force --refresh 2>&1 | sed 's/^/      /'
-	elif command -v pipx >/dev/null 2>&1; then
-		pipx install "$py_spec" --force 2>&1 | sed 's/^/      /' || pipx upgrade jsonpit 2>&1 | sed 's/^/      /'
-	elif command -v pip3 >/dev/null 2>&1; then
-		if pip3 install --help 2>&1 | grep -q -- '--break-system-packages'; then
-			pip3 install --user --upgrade --break-system-packages "$py_spec" 2>&1 | sed 's/^/      /'
-		else
-			pip3 install --user --upgrade "$py_spec" 2>&1 | sed 's/^/      /'
-		fi
-	elif command -v pip >/dev/null 2>&1; then
-		pip install --user --upgrade "$py_spec" 2>&1 | sed 's/^/      /'
+		uv tool install "$py_spec" --force --refresh 2>&1 | sed 's/^/      /' || return 1
 	else
-		echo "      ⚠️ Warning: No python3 venv, uv, pipx, pip3 or pip found. Skipping jpit."
+		echo "      ERROR: Install pipx or Python venv support (Ubuntu/Debian: sudo apt install pipx python3-venv)."
+		return 1
 	fi
+	local tool_name actual_version
+	for tool_name in jpit jsonpit; do
+		actual_version="$("$HOME/.local/bin/$tool_name" --version)" || return 1
+		if [[ "$actual_version" != "$tool_name v$VERSION" ]]; then
+			echo "      ERROR: $tool_name reports '$actual_version'; expected '$tool_name v$VERSION'."
+			return 1
+		fi
+	done
 
 	# Unify all .NET tools into ~/.local/bin as well
 	for tool_name in amafu raid iorg pits rail; do
@@ -246,7 +244,7 @@ fi
 CURRENT_USER="${USER:-$(id -un 2>/dev/null || whoami 2>/dev/null || echo 'user')}"
 echo -e "\n  🔍 Verification results for ${CURRENT_USER} on $(hostname):"
 verification_failed=0
-for cmd in amafu raid iorg pits rail jpit; do
+for cmd in amafu raid iorg pits rail jpit jsonpit; do
 	if command -v "$cmd" >/dev/null 2>&1; then
 		out="$("$cmd" --version 2>&1 | head -n 1 || true)"
 		if [[ "$out" == *"v$VERSION" ]]; then

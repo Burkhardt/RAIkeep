@@ -12,7 +12,8 @@
 		"doc/releases/v{major}.x/JsonPit_RELEASE_NOTES_{major}.x.md",
 		"doc/releases/v{major}.x/ImgSeeder_RELEASE_NOTES_{major}.x.md",
 		"doc/releases/v{major}.x/PitSeeder_RELEASE_NOTES_{major}.x.md",
-		"doc/releases/v{major}.x/RaiGuard_RELEASE_NOTES_{major}.x.md"
+		"doc/releases/v{major}.x/RaiGuard_RELEASE_NOTES_{major}.x.md",
+		"doc/releases/v{major}.x/JsonPit.Python_RELEASE_NOTES_{major}.x.md"
 	],
 	"targets": [
 		{
@@ -202,6 +203,146 @@
 					"description": "jsonpit Python version",
 					"pattern": "(?m)^version\\s*=\\s*\"\\d+\\.\\d+\\.\\d+\"$",
 					"replacement": "version = \"{version}\""
+				}
+			]
+		},
+		{
+			"path": "JsonPit.Python/README.md",
+			"description": "Python current release documentation",
+			"type": "documentation",
+			"replacements": [
+				{
+					"description": "Versioned documentation heading or reference",
+					"pattern": "(?<=v)\\d+\\.\\d+\\.\\d+",
+					"replacement": "{version}"
+				},
+				{
+					"description": "Latest version heading",
+					"pattern": "(## Latest Version )\\d+\\.\\d+\\.\\d+",
+					"replacement": "\\g<1>{version}"
+				},
+				{
+					"description": "Pinned Python install",
+					"pattern": "(?<=jsonpit==)\\d+\\.\\d+\\.\\d+",
+					"replacement": "{version}"
+				},
+				{
+					"description": "Fleet installer version",
+					"pattern": "(?<=bash -s -- )\\d+\\.\\d+\\.\\d+",
+					"replacement": "{version}"
+				},
+				{
+					"description": "Release notes label",
+					"pattern": "(?<=JsonPit )\\d+\\.\\d+\\.\\d+(?= release notes)",
+					"replacement": "{version}"
+				},
+				{
+					"description": "Release notes destination",
+					"pattern": "doc/releases/v\\d+\\.x/JsonPit_RELEASE_NOTES_\\d+\\.x\\.md#\\d+",
+					"replacement": "doc/releases/v{major}.x/JsonPit_RELEASE_NOTES_{major}.x.md#{anchor}"
+				}
+			]
+		},
+		{
+			"path": "JsonPit.Python/API.md",
+			"description": "Python current release documentation",
+			"type": "documentation",
+			"replacements": [
+				{
+					"description": "Current Python API heading",
+					"pattern": "(?m)^(# jsonpit API Reference \\(v)\\d+\\.\\d+\\.\\d+",
+					"replacement": "\\g<1>{version}"
+				}
+			]
+		},
+		{
+			"path": "JsonPit.Python/GettingStarted.md",
+			"description": "Python current release documentation",
+			"type": "documentation",
+			"replacements": [
+				{
+					"description": "Versioned documentation heading or reference",
+					"pattern": "(?<=v)\\d+\\.\\d+\\.\\d+",
+					"replacement": "{version}"
+				},
+				{
+					"description": "Latest version heading",
+					"pattern": "(## Latest Version )\\d+\\.\\d+\\.\\d+",
+					"replacement": "\\g<1>{version}"
+				},
+				{
+					"description": "Pinned Python install",
+					"pattern": "(?<=jsonpit==)\\d+\\.\\d+\\.\\d+",
+					"replacement": "{version}"
+				},
+				{
+					"description": "Fleet installer version",
+					"pattern": "(?<=bash -s -- )\\d+\\.\\d+\\.\\d+",
+					"replacement": "{version}"
+				},
+				{
+					"description": "Release notes label",
+					"pattern": "(?<=JsonPit )\\d+\\.\\d+\\.\\d+(?= release notes)",
+					"replacement": "{version}"
+				},
+				{
+					"description": "Release notes destination",
+					"pattern": "doc/releases/v\\d+\\.x/JsonPit_RELEASE_NOTES_\\d+\\.x\\.md#\\d+",
+					"replacement": "doc/releases/v{major}.x/JsonPit_RELEASE_NOTES_{major}.x.md#{anchor}"
+				}
+			]
+		},
+		{
+			"path": "JsonPit.Python/packages/jpit/README.md",
+			"description": "Python current release documentation",
+			"type": "documentation",
+			"replacements": [
+				{
+					"description": "Versioned documentation heading or reference",
+					"pattern": "(?<=v)\\d+\\.\\d+\\.\\d+",
+					"replacement": "{version}"
+				},
+				{
+					"description": "Latest version heading",
+					"pattern": "(## Latest Version )\\d+\\.\\d+\\.\\d+",
+					"replacement": "\\g<1>{version}"
+				},
+				{
+					"description": "Pinned Python install",
+					"pattern": "(?<=jsonpit==)\\d+\\.\\d+\\.\\d+",
+					"replacement": "{version}"
+				},
+				{
+					"description": "Fleet installer version",
+					"pattern": "(?<=bash -s -- )\\d+\\.\\d+\\.\\d+",
+					"replacement": "{version}"
+				},
+				{
+					"description": "Release notes label",
+					"pattern": "(?<=JsonPit )\\d+\\.\\d+\\.\\d+(?= release notes)",
+					"replacement": "{version}"
+				},
+				{
+					"description": "Release notes destination",
+					"pattern": "doc/releases/v\\d+\\.x/JsonPit_RELEASE_NOTES_\\d+\\.x\\.md#\\d+",
+					"replacement": "doc/releases/v{major}.x/JsonPit_RELEASE_NOTES_{major}.x.md#{anchor}"
+				}
+			]
+		},
+		{
+			"path": "JsonPit.Python/packages/jpit/pyproject.toml",
+			"description": "jpit companion distribution",
+			"type": "pyproject",
+			"replacements": [
+				{
+					"description": "Companion version",
+					"pattern": "(?m)^version\\s*=\\s*\"\\d+\\.\\d+\\.\\d+\"$",
+					"replacement": "version = \"{version}\""
+				},
+				{
+					"description": "Exact library dependency",
+					"pattern": "\"jsonpit(?:>=|==)\\d+\\.\\d+\\.\\d+\"",
+					"replacement": "\"jsonpit=={version}\""
 				}
 			]
 		},
@@ -569,6 +710,11 @@
 				{
 					"pattern": "`v\\d+\\.\\d+\\.\\d+`(?=\\))",
 					"replacement": "`v{version}`"
+				},
+				{
+					"description": "Pinned Python recovery install",
+					"pattern": "(?<=jsonpit==)\\d+\\.\\d+\\.\\d+",
+					"replacement": "{version}"
 				}
 			]
 		},

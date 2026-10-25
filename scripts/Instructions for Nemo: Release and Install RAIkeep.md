@@ -40,7 +40,7 @@ STEP 4: PREFLIGHT VALIDATION GATE (87 CHECKS)
 ======================================================================
 Run the master validation gate:
    python3 scripts/validate-release.py 4.5.7
-(Verify that all 87 validation checks pass 100% green: git cleanliness, submodules on main, version matches, and Python pytest for JsonPit.Python).
+(Verify that all validation checks pass 100% green: git cleanliness, submodules on main, version matches, and Python pytest for JsonPit.Python).
 
 ======================================================================
 STEP 5: EXECUTE RELEASE CHAIN ORCHESTRATION
@@ -52,7 +52,7 @@ This coordinates:
 - Pushing the umbrella main and tagging v4.5.7
 - Sequential tagging and publishing across all 9 NuGet packages:
   Amafu -> OsLibCore -> RaiUtils -> RaiImage -> RaiDiagram -> RaidSeeder -> JsonPit -> ImgSeeder -> PitSeeder
-- Building JsonPit.Python sdist/wheel and uploading to PyPI using PYPI_TOKEN
+- Building and smoke-testing jsonpit and jpit wheels/source archives in preflight; publishing both to PyPI using PYPI_TOKEN and creating the Python GitHub Release
 - Polling NuGet flat-container and PyPI registry until exact HTTP 200 visibility is confirmed before advancing.
 
 ======================================================================

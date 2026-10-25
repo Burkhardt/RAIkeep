@@ -43,4 +43,12 @@ check_order '--resume-after-raiimage' 'preflight RaiDiagram RaidSeeder JsonPit J
 check_order '--resume-after-raidiagram' 'preflight RaidSeeder JsonPit JsonPit.Python ImgSeeder PitSeeder RaiGuard pointers visibility umbrella'
 check_order '--resume-after-raiguard' 'preflight pointers visibility umbrella'
 
+# PyPI visibility must include the companion package, not only the core wheel.
+probe_log="$(mktemp)"
+trap 'rm -f "$probe_log"' EXIT
+release_http_code() { printf '%s\n' "$1" >> "$probe_log"; printf '200\n'; }
+hold_and_check_pypi >/dev/null
+grep -Fq '/pypi/jsonpit/4.5.13/json' "$probe_log"
+grep -Fq '/pypi/jpit/4.5.13/json' "$probe_log"
+
 printf 'Release order checks passed.\n'

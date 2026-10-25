@@ -34,7 +34,7 @@ It also corrects the RaidSeeder SVG check that stopped the 4.5.11 release chain.
 
 All five C# CLI tools and the Python `jpit` CLI are coordinated through this
 umbrella. The release chain validates the `jsonpit` Python test suite, checks
-`pits list` / `jpit list` parity, and publishes the matching PyPI distribution
+`pits list` / `jpit list` parity, and publishes both matching PyPI distributions
 beside the NuGet packages.
 
 All eleven packages participate in the coordinated line so fallback package dependencies remain aligned throughout the release order.
@@ -105,8 +105,10 @@ It then processes packages in this exact order:
 Amafu → OsLibCore → RaiUtils → RaiImage → RaiDiagram → RaidSeeder → JsonPit → JsonPit.Python → ImgSeeder → PitSeeder → RaiGuard → RAIkeep umbrella
 ```
 
-The Python `jsonpit` distribution follows C# `JsonPit` and is published to
-PyPI before ImgSeeder and PitSeeder. Set `PYPI_TOKEN` in the release
+The Python `jsonpit` and `jpit` distributions follow C# `JsonPit` and are published to
+PyPI before ImgSeeder and PitSeeder. Preflight builds both packages, checks their
+installed commands and standalone download, and validates their documentation.
+The chain also creates the Python GitHub Release. Set `PYPI_TOKEN` in the release
 environment; the chain supplies it to Twine without placing it on the command
 line.
 

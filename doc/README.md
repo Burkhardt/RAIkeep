@@ -14,6 +14,7 @@ Each `<Package>_RELEASE_NOTES_<major>.x.md` file lists releases newest first. Ad
 - [RaiDiagram 4.5.13](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiDiagram_RELEASE_NOTES_4.x.md#4513)
 - [RaidSeeder 4.5.13](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaidSeeder_RELEASE_NOTES_4.x.md#4513)
 - [JsonPit 4.5.13](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit_RELEASE_NOTES_4.x.md#4513)
+- [JsonPit.Python 4.5.13](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit.Python_RELEASE_NOTES_4.x.md#4513)
 - [ImgSeeder 4.5.13](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/ImgSeeder_RELEASE_NOTES_4.x.md#4513)
 - [PitSeeder 4.5.13](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/PitSeeder_RELEASE_NOTES_4.x.md#4513)
 - [RaiGuard 4.5.13](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiGuard_RELEASE_NOTES_4.x.md#4513)
