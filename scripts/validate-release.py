@@ -442,7 +442,7 @@ class ReleaseValidator:
 			print("\n[3/7] Running Python tests and pits/jpit list/help parity...")
 			pits_built = self.validate_command(
 				"pits parity build",
-				["dotnet", "build", "PitSeeder/pits/pits.csproj", "--no-restore", "--nologo", "-v", "minimal", "-m:1", "-nodeReuse:false"],
+				["dotnet", "build", "PitSeeder/pits/pits.csproj", "--nologo", "-v", "minimal", "-m:1", "-nodeReuse:false"],
 			)
 			python_cmd = (
 				["python3", "-m", "pytest", "JsonPit.Python/tests"]
@@ -471,6 +471,9 @@ class ReleaseValidator:
 					env=python_env,
 				)
 			if pits_built:
+				with tempfile.TemporaryDirectory(prefix="raikeep-oslib-contracts-") as temporary:
+					if self.validate_command("OsLibCore documentation pack", ["dotnet", "pack", "OsLib/OsLib.csproj", "--configuration", "Debug", "--no-build", "--no-restore", "--nologo", "--output", temporary]):
+						self.validate_command("OsLibCore packaged public pits contracts", [sys.executable, "scripts/verify-oslib-contracts.py", str(Path(temporary) / f"OsLibCore.{v}.nupkg")])
 				self.validate_cli_list_parity()
 				self.validate_cli_help_parity()
 		else:

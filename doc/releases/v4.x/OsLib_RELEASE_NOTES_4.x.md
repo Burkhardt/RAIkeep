@@ -1,5 +1,20 @@
 # OsLib Release Notes 4.x
 
+## 4.5.14
+
+- Release version: `4.5.14`
+- Coordination tag: `v4.5.14`
+
+### Highlights
+- Add PitsCommandOptions.Tenant without converting tenant names into filesystem paths; reject conflicting Tenant/PitRoot settings and unspecified mutation clouds.
+- Scope invocation gates by execution host, configured cloud, tenant or explicit filesystem root, and pit.
+- Ship public PitsCommand, PitsSeedRequest, PitsCommandOptions, and PitsTarget XML documentation; verify 49 contract entries inside the NuGet package.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.14` line.
+
+---
+
 ## 4.5.13
 
 - Release version: `4.5.13`

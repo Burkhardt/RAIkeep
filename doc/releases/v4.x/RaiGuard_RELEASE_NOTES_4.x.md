@@ -1,5 +1,20 @@
 # RaiGuard Release Notes 4.x
 
+## 4.5.14
+
+- Release version: `4.5.14`
+- Coordination tag: `v4.5.14`
+
+### Highlights
+- Add conservative RAI006 code fixes for immediately executed seed calls with recoverable constant tokens, plus canonical tenant-scoped factory guidance.
+- Include the existing RAI011 correction for freshly generated items, with underscore-prefixed Pit-field recognition and regression coverage for proven snapshots.
+- Include the current RAI017 media-URL composition diagnostic and code fix from the RaiGuard work.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.14` line.
+
+---
+
 ## 4.5.13
 
 - Release version: `4.5.13`

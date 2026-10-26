@@ -1,5 +1,20 @@
 # RAIkeep Release Notes 4.x
 
+## 4.5.14
+
+- Release version: `4.5.14`
+- Coordination tag: `v4.5.14`
+
+### Highlights
+- Deliver CR069: bare-tenant PitsCommand addressing, documented public request factories, and RAI006 migration guidance/code fixes.
+- Ship the existing RAI011 fresh-item fix and current RaiGuard improvements in the coordinated release.
+- Use project-local Amafu release notes and validate both Python distributions, standalone downloads, and installed CLI versions before publication.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.14` line.
+
+---
+
 ## 4.5.13
 
 - Release version: `4.5.13`

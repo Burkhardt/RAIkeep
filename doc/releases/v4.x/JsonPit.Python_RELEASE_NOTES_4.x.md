@@ -1,5 +1,20 @@
 # jsonpit-python Release Notes 4.x
 
+## 4.5.14
+
+- Release version: `4.5.14`
+- Coordination tag: `v4.5.14`
+
+### Highlights
+- Validate and build both jsonpit and jpit distributions, pin the companion to the matching core version, and verify both installed CLI names.
+- Refresh and validate the standalone executable and current documentation in the coordinated version bump.
+- Publish both distributions and create the Python GitHub Release through the release chain; use one managed environment for both installer commands.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.14` line.
+
+---
+
 ## 4.5.13
 
 - Release version: `4.5.13`

@@ -1,6 +1,6 @@
 {
 	"$schema": "./release-manifest.schema.json",
-	"current_version": "4.5.13",
+	"current_version": "4.5.14",
 	"release_notes": [
 		"doc/releases/v{major}.x/RAIkeep_RELEASE_NOTES_{major}.x.md",
 		"doc/releases/v{major}.x/Amafu_RELEASE_NOTES_{major}.x.md",
@@ -233,13 +233,13 @@
 				},
 				{
 					"description": "Release notes label",
-					"pattern": "(?<=JsonPit )\\d+\\.\\d+\\.\\d+(?= release notes)",
+					"pattern": "(?<=jsonpit-python )\\d+\\.\\d+\\.\\d+(?= release notes)",
 					"replacement": "{version}"
 				},
 				{
 					"description": "Release notes destination",
-					"pattern": "doc/releases/v\\d+\\.x/JsonPit_RELEASE_NOTES_\\d+\\.x\\.md#\\d+",
-					"replacement": "doc/releases/v{major}.x/JsonPit_RELEASE_NOTES_{major}.x.md#{anchor}"
+					"pattern": "doc/releases/v\\d+\\.x/JsonPit\\.Python_RELEASE_NOTES_\\d+\\.x\\.md#\\d+",
+					"replacement": "doc/releases/v{major}.x/JsonPit.Python_RELEASE_NOTES_{major}.x.md#{anchor}"
 				}
 			]
 		},
