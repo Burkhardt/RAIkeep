@@ -10,7 +10,7 @@ import unittest
 ROOT = Path(__file__).resolve().parent.parent
 INSTALLER = (ROOT / "scripts/install-clis.sh").read_text()
 START = INSTALLER.index("install_jpit() {")
-END = INSTALLER.index("\n}\ninstall_jpit", START) + 2
+END = INSTALLER.index("\n}\n", START) + 2
 FUNCTION = INSTALLER[START:END]
 
 

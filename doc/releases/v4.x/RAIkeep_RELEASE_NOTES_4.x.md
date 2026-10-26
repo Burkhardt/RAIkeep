@@ -2,6 +2,8 @@
 
 ## 4.5.14
 
+- Fleet installation now reads destinations and SSH logins from configured Observers, supports separate Windows/WSL targets, provides consistent `--dry-run` previews, and permits .NET-only installs with `--skip-python`.
+- Added live Amafu Windows/WSL integration coverage, including reads and writes as the Linux user across existing shell mount namespaces, plus setup and Engenho installer handover documentation.
 - Release version: `4.5.14`
 - Coordination tag: `v4.5.14`
 

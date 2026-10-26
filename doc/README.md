@@ -26,6 +26,8 @@ Each `<Package>_RELEASE_NOTES_<major>.x.md` file lists releases newest first. Ad
 
 ## Technical guides
 
+- [Engenho fleet installer handover for Rita](https://github.com/Burkhardt/RAIkeep/blob/main/doc/HANDOVER_TO_RITA_Engenho_Fleet-CLI-Installation.md) specifies the TypeScript port, configuration-driven destinations, optional Python tools, and dry runs.
+- [Installing CLIs across the fleet](https://github.com/Burkhardt/RAIkeep/blob/main/doc/Installing-CLIs.md) explains Windows and WSL targets, Observer logins, and prerequisite checks.
 - [Google Drive and OneDrive on Windows with WSL2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/SetupGoogleDriveAndOneDriveOnWindowsWSL.md) covers Windows drive mounts, stable Linux paths, and Amafu configuration.
 - [First steps with pits](https://github.com/Burkhardt/RAIkeep/blob/main/doc/FirstSteps_pits.md) creates a pit in iCloud Drive and saves weather JSON fetched with `curl`.
 - [`RAIkeep_BACKLOG.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_BACKLOG.md) records product-backlog designs and their implementation status, including the event archive delivered in 4.2.10.

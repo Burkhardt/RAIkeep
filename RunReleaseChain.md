@@ -1,4 +1,19 @@
-# Prep work
+# Resume the current 4.5.14 release
+
+Amafu 4.5.14 is already published and its tag must remain unchanged. The prepared
+child commits still match the umbrella pointers. Resume the remaining packages
+with this command; the umbrella remains the final publication step:
+
+```zsh
+cd /Users/RSB/Projects/GitHub/RAIkeep
+./scripts/release-chain.sh 4.5.14 --resume-after-amafu
+```
+
+Run it from a shell where `PYPI_TOKEN` is set. The script uses the existing
+`~/.venvs/raikeep-release` environment for Python build, test, and upload tools.
+Do not bump the version or recreate Amafu's tag to resume this release.
+
+# Prep work for a new release
 
 As preprocessing, prepare the release using the automated bumping engine:
 

@@ -5,8 +5,9 @@ Amafu to configure RAIkeep. Windows runs the cloud clients; WSL accesses their
 files through mounted paths. Amafu discovers directories and writes configuration;
 it does not mount Windows drives, download placeholders, or operate a sync client.
 
-The commands below describe a setup to verify on your Windows machine. They have
-not been exercised on Windows as part of this documentation review.
+The commands below describe a setup to verify on your Windows machine. The
+automated checks below exercise discovery and file access on an existing setup;
+they do not replay Windows client installation or configure mounts at startup.
 
 ## Prepare the Windows folders
 
@@ -80,6 +81,15 @@ ls -la /srv/ServerData/OneDriveData/
 The links provide stable application paths while files remain in their Windows
 cloud folders. They do not initiate synchronization.
 
+Use `G:\My Drive\GDriveData` in Windows applications and the Linux paths above in
+WSL. A WSL shortcut does not guarantee that Windows can browse the mounted drive
+again through `\\wsl.localhost\Ubuntu\mnt\g` or a Linux symlink to it. On Themba,
+native `G:` access and WSL access both worked while this UNC route failed, even
+for the same user. This is a separate access route from those covered by the
+file round-trip tests. Microsoft's
+[WSL interoperability reference](https://learn.microsoft.com/en-us/windows/dev-environment/wsl-interop)
+describes the Windows-drive and Linux-UNC paths separately.
+
 ## Detect and configure with Amafu
 
 Preview discovery and the proposed configuration:
@@ -116,6 +126,48 @@ Discovery establishes that directories exist. It does not certify that files are
 downloaded or that changes have reached another machine. Verify synchronization
 separately with a small test file before relying on the setup for shared Pits.
 
+## Run the Windows/WSL integration tests
+
+From the RAIkeep checkout on your development machine, run:
+
+```sh
+bash scripts/test-amafu-wsl.sh Themba
+```
+
+The name must identify a WSL Observer in `Os.Config.Observers` with working SSH
+access. The development machine needs the .NET 10 SDK and `tar`. The Observer
+needs the .NET 10 runtime, Python 3, `tar`, `nsenter`, `setpriv`, and Windows
+interoperability through `wslpath`, `powershell.exe`, and `wsl.exe`. The namespace
+check uses WSL's root-user command option to enter existing mount namespaces,
+then drops to the configured Linux user's IDs before accessing cloud files.
+Its cloud folders must already be mounted and configured.
+
+The runner builds Amafu from the current checkout and uploads that build to an
+isolated remote directory through `OsLib.SshSystem`. It leaves installed tools
+alone. The four tests check:
+
+- Discovery and `init --create-links --dry-run` produce the expected clean
+  configuration paths without changing the existing configuration or shortcuts.
+- Google Drive files written through WSL can be read and updated through Windows,
+  with the Windows response then readable through WSL.
+- The same round trip works for OneDrive.
+- Existing user shells in every discovered mount namespace can enumerate the
+  cloud directories and write, read, and remove a probe as the Linux user.
+
+Cloud paths come from the Observer's Amafu discovery. File probes use unique
+subdirectories inside those cloud trees and remove their files afterward. A
+missing provider fails its test explicitly. These tests establish local
+Windows/WSL access, not replication to another machine.
+
+A live run on Themba on 2026-10-26 passed all four checks using the current
+4.5.14 Amafu source build. Initially Google Drive was unavailable because WSL had
+two stale mounts at `/mnt/g`, although Windows exposed `G:`. Normally unmounting
+both entries and mounting the existing volume once restored SSH access, but
+interactive terminals had a separate stale mount namespace. That namespace also
+required a normal unmount and remount. The final checks verified cloud reads and
+writes as the Linux user in both views. These repairs changed running mounts
+only; startup configuration and installed tools were left unchanged.
+
 ## Troubleshooting
 
 - **Empty or unavailable mount:** check that the correct Windows account and
@@ -124,6 +176,17 @@ separately with a small test file before relying on the setup for shared Pits.
 - **Input/output error:** try reading the file in Windows, ensure it is available
   locally, and retry in WSL. The error alone does not identify a particular cloud
   driver or prove that remounting will fix it.
+- **Windows sees `G:` but WSL reports “No such device”:** inspect
+  `findmnt --mountpoint /mnt/g`. Stale or stacked mounts may need to be unmounted
+  before mounting the existing Windows volume again. Stop dependent work first;
+  do not stack another mount on top or force an unmount of an active filesystem.
+- **SSH works but an existing terminal fails:** compare
+  `readlink /proc/self/ns/mnt` in both sessions. The same username may be running
+  in different mount namespaces, so a repair in one view need not repair the
+  other. Verify actual directory enumeration and file access as the user in the
+  affected view; successful metadata access as root is insufficient. Microsoft's
+  [DrvFs architecture documentation](https://github.com/microsoft/WSL/blob/master/doc/docs/technical-documentation/drvfs.md)
+  explains WSL's separate elevated and non-elevated mount namespaces.
 - **Permission denied:** check Windows access rights and the mount's Linux user
   and group IDs. Do not assume every Ubuntu user has ID `1000`.
 - **Paths containing spaces:** quote them as shown above. Stable symlinks simplify

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # ==============================================================================
-# RAIkeep Fleet CLI Installer: provisions all 6 CLIs across Nkosikazi, Mzansi, Mdlaka, and Neo
+# RAIkeep Fleet CLI Installer: provisions Unix, Windows, and WSL environments.
 # CLIs: amafu, raid, iorg, pits, rail, and jpit (Python jsonpit)
 # ==============================================================================
 
@@ -33,33 +33,21 @@ except Exception:
 DEFAULT_VERSION="$(resolve_default_version)"
 DEFAULT_VERSION="${DEFAULT_VERSION:-4.5.14}"
 
-# ==============================================================================
-# Fleet Definition
-# - detect_machine_name: dynamically detects macOS ComputerName/LocalHostName or hostname
-# - FLEET_TARGETS: The coordinated cluster. Can specify plain host or user@host.
-# ==============================================================================
-detect_machine_name() {
-	if command -v scutil >/dev/null 2>&1; then
-		local name
-		name="$(scutil --get LocalHostName 2>/dev/null || scutil --get ComputerName 2>/dev/null || true)"
-		if [[ -n "$name" ]]; then
-			echo "$name"
-			return 0
-		fi
-	fi
-	hostname -s 2>/dev/null || hostname 2>/dev/null || echo "localhost"
-}
-
-CURRENT_HOST="$(detect_machine_name)"
-FLEET_TARGETS=("Nkosikazi" "Mzansi" "umshadisi@Mdlaka" "Neo")
+# No machine names or SSH accounts are embedded in the installer.
+CONFIG_FILE="${RAIKEEP_CONFIG:-$HOME/.config/RAIkeep.json5}"
+FLEET_TARGETS=()
 
 # Resolves a CLI token (case-insensitively) against the fleet
 resolve_target() {
 	local val="$1"
+	local suffix=""
+	case "$val" in
+		*:windows|*:wsl) suffix=":${val##*:}"; val="${val%:*}" ;;
+	esac
 	local lower="$(echo "$val" | tr '[:upper:]' '[:lower:]')"
 
-	if [[ "$lower" == "local" || "$lower" == "$(echo "$CURRENT_HOST" | tr '[:upper:]' '[:lower:]')" ]]; then
-		echo "$CURRENT_HOST"
+	if [[ "$lower" == "local" ]]; then
+		echo "local$suffix"
 		return 0
 	fi
 	if [[ "$lower" == "all" ]]; then
@@ -67,34 +55,40 @@ resolve_target() {
 		return 0
 	fi
 
-	for t in "${FLEET_TARGETS[@]}"; do
-		local host="${t##*@}"
-		local t_lower="$(echo "$t" | tr '[:upper:]' '[:lower:]')"
-		local h_lower="$(echo "$host" | tr '[:upper:]' '[:lower:]')"
-		if [[ "$lower" == "$t_lower" || "$lower" == "$h_lower" ]]; then
-			echo "$t"
-			return 0
-		fi
-	done
-
-	# Fallback for ad-hoc user@host or custom host
-	echo "$val"
+	# Observer names and explicit SSH endpoints are resolved at execution time.
+	echo "$val$suffix"
 }
 
 # Parse arguments: version and targets
 VERSION=""
 TARGETS=()
 SKIP_CLOUD_SETUP=0
+DRY_RUN=0
+SKIP_PYTHON=0
 
-for arg in "$@"; do
+while [[ $# -gt 0 ]]; do
+	arg="$1"; shift
 	if [[ "$arg" == "-h" || "$arg" == "--help" ]]; then
-		fleet_pipe="$(IFS=\|; echo "${FLEET_TARGETS[*]}")"
-		echo "Usage: $0 [VERSION] [all|$fleet_pipe] [--no-cloud-setup]"
+		echo "Usage: $0 [VERSION] [all|local|OBSERVER[:windows|:wsl] ...] [--config FILE] [--no-cloud-setup] [--skip-python] [--dry-run]"
+		echo "Default destinations and SSH logins come from Observers in ~/.config/RAIkeep.json5."
+		echo "Default: the environment exposed by SSH. Use HOST:windows or HOST:wsl explicitly."
+		echo "--skip-python omits jsonpit/jpit and their Python requirement on destinations."
+		echo "--dry-run previews the plan and checks prerequisites without installing anything."
+		echo "Examples: $0 all --dry-run; $0 ServerNode:windows --skip-python --dry-run"
 		exit 0
+	elif [[ "$arg" == "--config" ]]; then
+		[[ $# -gt 0 ]] || { echo "--config requires a filename" >&2; exit 2; }
+		CONFIG_FILE="$1"; shift
 	elif [[ "$arg" == "--no-cloud-setup" ]]; then
 		SKIP_CLOUD_SETUP=1
+	elif [[ "$arg" == "--skip-python" ]]; then
+		SKIP_PYTHON=1
+	elif [[ "$arg" == "--dry-run" || "$arg" == "--check" ]]; then
+		DRY_RUN=1
 	elif [[ -z "$VERSION" ]] && [[ "$arg" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
 		VERSION="${arg#v}"
+	elif [[ "$arg" == -* ]]; then
+		echo "Unknown option: $arg" >&2; exit 2
 	else
 		TARGETS+=("$(resolve_target "$arg")")
 	fi
@@ -102,7 +96,38 @@ done
 
 VERSION="${VERSION:-$DEFAULT_VERSION}"
 
+# Execute through argv, not a locally evaluated shell command. The only remote
+# strings below are fixed commands or encoded payloads with validated versions.
+run_target_command() {
+	if [[ "$INSTALL_LOCAL" == "1" ]]; then
+		bash -c "$1"
+	else
+		ssh -o ConnectTimeout=15 -o BatchMode=yes -T -- "$INSTALL_LOGIN" "$1"
+	fi
+}
+
+run_windows_payload() {
+	local encoded payload
+	payload="$(cat "$ROOT_DIR/scripts/install-clis-windows.ps1")" || return 1
+	# Windows OpenSSH may pass through cmd.exe's command-line length limit.
+	# Keep only a small bootstrap on the command line; send the script on stdin.
+	encoded="$(python3 - "$VERSION" "$DRY_RUN" "$SKIP_CLOUD_SETUP" "$SKIP_PYTHON" <<'PY'
+import base64, sys
+command = '& ([scriptblock]::Create([Console]::In.ReadToEnd())) -Version "' + sys.argv[1] + '"'
+if sys.argv[2] == '1': command += ' -DryRun'
+if sys.argv[3] == '1': command += ' -NoCloudSetup'
+if sys.argv[4] == '1': command += ' -SkipPython'
+print(base64.b64encode(command.encode('utf-16-le')).decode('ascii'))
+PY
+)" || return 1
+	run_target_command "powershell.exe -NoLogo -NoProfile -NonInteractive -EncodedCommand $encoded" <<< "$payload"
+}
+
 # Expand "all" or default to all if no targets specified
+if [[ ${#TARGETS[@]} -eq 0 || " ${TARGETS[*]} " == *" all "* ]]; then
+	fleet_names="$(python3 "$ROOT_DIR/scripts/resolve-install-observer.py" --config "$CONFIG_FILE" --list)" || exit 2
+	while IFS= read -r observer; do FLEET_TARGETS+=("$observer"); done <<< "$fleet_names"
+fi
 FINAL_TARGETS=()
 if [[ ${#TARGETS[@]} -eq 0 ]]; then
 	FINAL_TARGETS=("${FLEET_TARGETS[@]}")
@@ -127,16 +152,45 @@ echo "============================================================"
 run_installation_payload() {
 	local target_machine="$1"
 	local ver="$2"
+	local mode=auto
+	case "$target_machine" in
+		*:windows|*:wsl) mode="${target_machine##*:}"; target_machine="${target_machine%:*}" ;;
+	esac
+	local platform
+	INSTALL_LOCAL=0
+	if [[ "$target_machine" == "local" ]]; then INSTALL_LOCAL=1; fi
+	INSTALL_LOGIN="$target_machine"
+	if [[ "$INSTALL_LOCAL" != "1" ]]; then
+		INSTALL_LOGIN="$(python3 "$ROOT_DIR/scripts/resolve-install-observer.py" --config "$CONFIG_FILE" "$target_machine")" || return 1
+	fi
 
 	echo -e "\n------------------------------------------------------------"
-	echo "📦 Installing on [$target_machine] (Version: $ver)..."
+	if [[ "$DRY_RUN" == "1" ]]; then
+		echo "Checking [$target_machine] (Version: $ver; no installation)..."
+	else
+		echo "📦 Installing on [$target_machine] (Version: $ver)..."
+	fi
 	echo "------------------------------------------------------------"
+	if [[ "$mode" == "windows" ]]; then
+		run_windows_payload
+		return $?
+	fi
+	platform="$(run_target_command 'uname -s' 2>/dev/null)" || platform=Windows
+	case "$platform" in
+		Linux|Darwin) ;;
+		MINGW*|MSYS*|Windows)
+			platform=Windows
+			if [[ "$mode" != "wsl" ]]; then run_windows_payload; return $?; fi ;;
+		*) echo "Unsupported SSH environment: $platform" >&2; return 1 ;;
+	esac
 
 	local PAYLOAD_SCRIPT
 	read -r -d '' PAYLOAD_SCRIPT << 'EOF' || true
 set -euo pipefail
 VERSION="$1"
 SKIP_CLOUD_SETUP="$2"
+DRY_RUN="$3"
+SKIP_PYTHON="$4"
 
 export PATH="$HOME/.local/bin:$HOME/.dotnet/tools:$HOME/.dotnet:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/share/dotnet:/opt/dotnet:/usr/local/bin:$PATH"
 
@@ -146,6 +200,22 @@ if command -v dotnet >/dev/null 2>&1; then
 else
 	echo "    ❌ ERROR: dotnet is not installed or not in PATH."
 	exit 1
+fi
+if [[ "$SKIP_PYTHON" != "1" ]]; then
+	python3 -c 'import sys; sys.exit(0 if sys.version_info >= (3,12) else 1)' || {
+	echo "Python 3.12+ is required in this Linux/macOS environment. No tools were changed." >&2
+	exit 1
+	}
+fi
+if [[ "$DRY_RUN" == "1" ]]; then
+	echo "Plan: Amafu, RaidSeeder, ImgSeeder, PitSeeder, RaiGuard at $VERSION"
+	if [[ "$SKIP_PYTHON" == "1" ]]; then
+		echo "Python/jsonpit/jpit skipped; no Python is required on this destination."
+	else
+		echo "Plan: jsonpit==$VERSION (jpit and jsonpit); $(python3 --version)"
+	fi
+	echo "Environment ready: $(uname -s), $(dotnet --version). Dry run; no changes made."
+	exit 0
 fi
 
 echo "  [2/4] Installing/Updating .NET global tools..."
@@ -195,13 +265,6 @@ install_jpit() {
 		fi
 	done
 
-	# Unify all .NET tools into ~/.local/bin as well
-	for tool_name in amafu raid iorg pits rail; do
-		if [[ -f "$HOME/.dotnet/tools/$tool_name" ]]; then
-			ln -sf "$HOME/.dotnet/tools/$tool_name" "$HOME/.local/bin/$tool_name"
-		fi
-	done
-
 	# Unify Python tools into ~/.local/bin as well (including pip --user and macOS Library/Python)
 	local py_user_base
 	py_user_base="$(python3 -m site --user-base 2>/dev/null)/bin"
@@ -215,20 +278,33 @@ install_jpit() {
 		fi
 	done
 
-	# zsh reads .zshenv for non-interactive SSH and .zprofile for login shells.
-	# Keep the managed tools ahead of older /usr/local/bin copies after path_helper.
-	local path_line='export PATH="$HOME/.local/bin:$HOME/.dotnet/tools:$PATH"'
-	for rc in "$HOME/.zshenv" "$HOME/.zprofile" "$HOME/.zshrc" "$HOME/.bashrc"; do
-		if ! grep -Fqx -- "$path_line" "$rc" 2>/dev/null; then
-			if [[ -f "$rc" ]]; then
-				cp -p "$rc" "${rc}.before-raikeep-path-$(date -u +%Y%m%dT%H%M%SZ)"
-			fi
-			printf "\n# RAIkeep & jsonpit CLI paths\n%s\n" "$path_line" >> "$rc"
-			echo "    ✔️ Configured PATH in $rc"
-		fi
-	done
+
 }
-install_jpit
+if [[ "$SKIP_PYTHON" == "1" ]]; then
+	echo "Python/jsonpit/jpit skipped; existing Python tools are unchanged."
+else
+	install_jpit
+fi
+
+mkdir -p "$HOME/.local/bin"
+# Unify .NET commands and persist their PATH even when Python is skipped.
+for tool_name in amafu raid iorg pits rail; do
+    if [[ -f "$HOME/.dotnet/tools/$tool_name" ]]; then
+        ln -sf "$HOME/.dotnet/tools/$tool_name" "$HOME/.local/bin/$tool_name"
+    fi
+done
+
+# Keep managed commands ahead of older /usr/local/bin copies in future shells.
+path_line='export PATH="$HOME/.local/bin:$HOME/.dotnet/tools:$PATH"'
+for rc in "$HOME/.zshenv" "$HOME/.zprofile" "$HOME/.zshrc" "$HOME/.bashrc"; do
+    if ! grep -Fqx -- "$path_line" "$rc" 2>/dev/null; then
+        if [[ -f "$rc" ]]; then
+            cp -p "$rc" "${rc}.before-raikeep-path-$(date -u +%Y%m%dT%H%M%SZ)"
+        fi
+        printf "\n# RAIkeep CLI paths\n%s\n" "$path_line" >> "$rc"
+        echo "    Configured PATH in $rc"
+    fi
+done
 
 echo "  [4/4] Cloud Storage setup..."
 if [[ "$SKIP_CLOUD_SETUP" == "1" ]]; then
@@ -244,7 +320,9 @@ fi
 CURRENT_USER="${USER:-$(id -un 2>/dev/null || whoami 2>/dev/null || echo 'user')}"
 echo -e "\n  🔍 Verification results for ${CURRENT_USER} on $(hostname):"
 verification_failed=0
-for cmd in amafu raid iorg pits rail jpit jsonpit; do
+commands=(amafu raid iorg pits rail)
+if [[ "$SKIP_PYTHON" != "1" ]]; then commands+=(jpit jsonpit); fi
+for cmd in "${commands[@]}"; do
 	if command -v "$cmd" >/dev/null 2>&1; then
 		out="$("$cmd" --version 2>&1 | head -n 1 || true)"
 		if [[ "$out" == *"v$VERSION" ]]; then
@@ -259,32 +337,29 @@ for cmd in amafu raid iorg pits rail jpit jsonpit; do
 	fi
 done
 
-python3 -c '
-from pathlib import Path
-p = Path.home() / ".CloudStorage"
-if p.is_dir():
-	links = [item for item in sorted(p.iterdir()) if item.is_symlink()]
-	if links:
-		print("\n  ☁️ Cloud Storage shortcuts in ~/.CloudStorage:")
-		for item in links:
-			print(f"    🔗 {item.name:<12} -> {item.resolve()}")
-' 2>/dev/null || true
+if [[ -d "$HOME/.CloudStorage" ]]; then
+    for link in "$HOME/.CloudStorage/"*; do
+        if [[ -L "$link" ]]; then
+            printf '    %s -> %s\n' "${link##*/}" "$(readlink "$link")"
+        fi
+    done
+fi
 (( verification_failed == 0 ))
 EOF
 
-	local host_only="${target_machine##*@}"
-	local t_lower="$(echo "$host_only" | tr '[:upper:]' '[:lower:]')"
-	local c_lower="$(echo "$CURRENT_HOST" | tr '[:upper:]' '[:lower:]')"
-	if [[ "$t_lower" == "local" || "$t_lower" == "$c_lower" ]]; then
-		# Run locally
-		bash -s -- "$ver" "$SKIP_CLOUD_SETUP" <<< "$PAYLOAD_SCRIPT"
-	else
-		# Run remotely via SSH
-		if ! ssh -o ConnectTimeout=8 -o BatchMode=yes "$target_machine" exit 2>/dev/null; then
-			echo "  ⚠️ Warning: Cannot connect via SSH to $target_machine (timed out or key auth needed). Skipping."
+	if [[ "$mode" == "wsl" && "$platform" == "Darwin" ]]; then
+		echo "WSL is unavailable on macOS." >&2; return 1
+	elif [[ "$mode" == "wsl" && "$platform" == "Windows" ]]; then
+		# A native Windows SSH endpoint uses its already installed default distro.
+		# Failure never triggers WSL installation or distribution initialization.
+		if run_target_command "wsl.exe --exec /bin/bash -s -- $ver $SKIP_CLOUD_SETUP $DRY_RUN $SKIP_PYTHON" <<< "$PAYLOAD_SCRIPT"; then
+			return 0
+		else
+			echo "WSL target failed: verify that this Windows login has an operational default Linux distribution. No distribution was installed or initialized." >&2
 			return 1
 		fi
-		ssh -o ConnectTimeout=15 -T "$target_machine" "bash -s -- $ver $SKIP_CLOUD_SETUP" <<< "$PAYLOAD_SCRIPT"
+	else
+		run_target_command "bash -s -- $ver $SKIP_CLOUD_SETUP $DRY_RUN $SKIP_PYTHON" <<< "$PAYLOAD_SCRIPT"
 	fi
 }
 
@@ -300,7 +375,7 @@ for target in "${FINAL_TARGETS[@]}"; do
 done
 
 echo -e "\n============================================================"
-echo "🏁 Provisioning Complete"
+if [[ "$DRY_RUN" == "1" ]]; then echo "Prerequisite checks complete"; else echo "🏁 Provisioning Complete"; fi
 echo "   Successful : ${SUCCESS_HOSTS[*]:-None}"
 if [[ ${#FAILED_HOSTS[@]} -gt 0 ]]; then
 	echo "   Failed/Skipped : ${FAILED_HOSTS[*]}"
