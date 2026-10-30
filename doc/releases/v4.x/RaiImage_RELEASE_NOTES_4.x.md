@@ -1,5 +1,18 @@
 # RaiImage Release Notes 4.x
 
+## 4.5.15
+
+- Release version: `4.5.15`
+- Coordination tag: `v4.5.15`
+
+### Highlights
+- Align the coordinated dependency and package version; media naming, recognition, and storage behavior are unchanged.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.15` line.
+
+---
+
 ## 4.5.14
 
 - Release version: `4.5.14`

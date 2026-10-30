@@ -1,5 +1,21 @@
 # jsonpit-python Release Notes 4.x
 
+## 4.5.15
+
+- Release version: `4.5.15`
+- Coordination tag: `v4.5.15`
+
+### Highlights
+- Match the approved pits help theme, including provider badge colors, required/optional notation, italic values, bold headings, and plain redirected output.
+- Expose -w/--window and -x/--id-exists, retain compatibility spellings internally, and align shared root/debug options and contextual list/ls help.
+- Add pits-compatible --out-dir exports, WWWA resolved-reference projection, and offset-explicit historical export envelopes. Preserve unadvertised --out file compatibility.
+- Rebuild standalone jpit with the current sources and coordinate both jsonpit and jpit distributions at the same version.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.15` line.
+
+---
+
 ## 4.5.14
 
 - Release version: `4.5.14`

@@ -15,9 +15,10 @@ Amafu (`amafu`), RaidSeeder (`raid`), ImgSeeder (`iorg`), PitSeeder (`pits`), an
 | 5 | `RaiDiagram` | `RaiDiagram` | Diagram models and rendering |
 | 6 | `RaidSeeder` | `RaidSeeder` / `raid` | Diagram artifact commands |
 | 7 | `JsonPit` | `JsonPit` | Historical JSON persistence |
-| 8 | `ImgSeeder` | `ImgSeeder` / `iorg` | Image organization and import |
-| 9 | `PitSeeder` | `PitSeeder` / `pits` | Pit commands |
-| 10 | `RaiGuard` | `RaiGuard` / `rail` | Roslyn analysis and source refactoring |
+| 8 | `JsonPit.Python` | `jsonpit`, `jpit` / `jpit`, `jsonpit` | Python persistence and pit commands |
+| 9 | `ImgSeeder` | `ImgSeeder` / `iorg` | Image organization and import |
+| 10 | `PitSeeder` | `PitSeeder` / `pits` | Pit commands |
+| 11 | `RaiGuard` | `RaiGuard`, `RaiGuard.Analyzer` / `rail` | Roslyn analysis and source refactoring |
 
 Each child remains its own Git repository, package, solution, and release
 workflow. The umbrella workspace supplies local project wiring, coordinated
@@ -25,18 +26,20 @@ validation, dependency-order documentation, and sequential release automation.
 
 ## Current release line
 
-The prepared coordinated release is `4.5.14`. It adds tenant-scoped typed pits
-requests and public XML documentation (CR069), RAI006 migration guidance and safe
-code fixes, and the existing RAI011 fresh-item correction. Release preparation
-also verifies both Python distributions and removes Amafu's dependency on a
-future umbrella tag for its native release notes.
+The prepared coordinated release is `4.5.15`. It applies the shared help theme
+across all CLIs, aligns pits/jpit window and strict-ID options, and adds Python
+directory and WWWA export parity. Release preparation checks the shared formatter,
+cross-runtime syntax and exports, both Python distributions, and standalone jpit.
 
 All five C# CLI tools and the Python `jpit` CLI are coordinated through this
 umbrella. The release chain validates the `jsonpit` Python test suite, checks
 `pits list` / `jpit list` parity, and publishes both matching PyPI distributions
 beside the NuGet packages.
 
-All eleven packages participate in the coordinated line so fallback package dependencies remain aligned throughout the release order.
+All eleven child repositories participate in the coordinated line so fallback
+package dependencies remain aligned throughout the release order. Engenho owns
+fleet provisioning after publication; release preparation and the release chain
+do not install or upgrade tools on hosts.
 
 ## Documentation
 
@@ -48,19 +51,20 @@ The [RAIkeep Manifesto](https://github.com/Burkhardt/RAIkeep/blob/main/MANIFESTO
 explains why transparent, historical JSON matters for agentic engineering and
 defines JsonPit's asynchronous persistence and eventual-durability model.
 
-Prepared 4.5.12 release notes:
+Prepared 4.5.15 release notes:
 
-- [Amafu 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/Amafu_RELEASE_NOTES_4.x.md#4514)
-- [OsLibCore 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/OsLib_RELEASE_NOTES_4.x.md#4514)
-- [RaiUtils 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiUtils_RELEASE_NOTES_4.x.md#4514)
-- [RaiImage 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiImage_RELEASE_NOTES_4.x.md#4514)
-- [RaiDiagram 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiDiagram_RELEASE_NOTES_4.x.md#4514)
-- [RaidSeeder 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaidSeeder_RELEASE_NOTES_4.x.md#4514)
-- [JsonPit 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit_RELEASE_NOTES_4.x.md#4514)
-- [ImgSeeder 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/ImgSeeder_RELEASE_NOTES_4.x.md#4514)
-- [PitSeeder 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/PitSeeder_RELEASE_NOTES_4.x.md#4514)
-- [RaiGuard 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiGuard_RELEASE_NOTES_4.x.md#4514)
-- [RAIkeep 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#4514)
+- [Amafu 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/Amafu_RELEASE_NOTES_4.x.md#4515)
+- [OsLibCore 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/OsLib_RELEASE_NOTES_4.x.md#4515)
+- [RaiUtils 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiUtils_RELEASE_NOTES_4.x.md#4515)
+- [RaiImage 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiImage_RELEASE_NOTES_4.x.md#4515)
+- [RaiDiagram 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiDiagram_RELEASE_NOTES_4.x.md#4515)
+- [RaidSeeder 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaidSeeder_RELEASE_NOTES_4.x.md#4515)
+- [JsonPit 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit_RELEASE_NOTES_4.x.md#4515)
+- [JsonPit.Python 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit.Python_RELEASE_NOTES_4.x.md#4515)
+- [ImgSeeder 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/ImgSeeder_RELEASE_NOTES_4.x.md#4515)
+- [PitSeeder 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/PitSeeder_RELEASE_NOTES_4.x.md#4515)
+- [RaiGuard 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiGuard_RELEASE_NOTES_4.x.md#4515)
+- [RAIkeep 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#4515)
 
 The prior coordinated line remains documented in [RAIkeep 4.1.0 release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#410).
 
@@ -93,7 +97,7 @@ After approval, use one release mechanism for the chain. The established local o
 
 ```bash
 cd /Users/RSB/Projects/GitHub/RAIkeep
-scripts/release-chain.sh 4.5.9
+scripts/release-chain.sh 4.5.15
 ```
 
 Before publication begins, all eleven child release commits and their exact submodule pointers must already be committed on the umbrella `main`. The script preflights that state, then publishes each child in dependency order. Only after every child package is visible does it push and tag the umbrella commit. The umbrella tag creates the synchronized GitHub Release; it publishes no NuGet package.

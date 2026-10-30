@@ -1,6 +1,6 @@
 {
 	"$schema": "./release-manifest.schema.json",
-	"current_version": "4.5.14",
+	"current_version": "4.5.15",
 	"release_notes": [
 		"doc/releases/v{major}.x/RAIkeep_RELEASE_NOTES_{major}.x.md",
 		"doc/releases/v{major}.x/Amafu_RELEASE_NOTES_{major}.x.md",
@@ -16,6 +16,21 @@
 		"doc/releases/v{major}.x/JsonPit.Python_RELEASE_NOTES_{major}.x.md"
 	],
 	"targets": [
+		{
+			"path": "README.md",
+			"description": "Umbrella release-chain invocation",
+			"type": "readme",
+			"replacements": [
+				{
+					"pattern": "(?m)^Prepared \\d+\\.\\d+\\.\\d+ release notes:$",
+					"replacement": "Prepared {version} release notes:"
+				},
+				{
+					"pattern": "scripts/release-chain\\.sh \\d+\\.\\d+\\.\\d+",
+					"replacement": "scripts/release-chain.sh {version}"
+				}
+			]
+		},
 		{
 			"path": "Amafu/amafu/amafu.csproj",
 			"description": "Amafu CLI project file",

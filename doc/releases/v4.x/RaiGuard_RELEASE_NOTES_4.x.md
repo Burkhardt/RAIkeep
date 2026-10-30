@@ -1,5 +1,20 @@
 # RaiGuard Release Notes 4.x
 
+## 4.5.15
+
+- Release version: `4.5.15`
+- Coordination tag: `v4.5.15`
+
+### Highlights
+- Apply the shared rail help theme and extend banner rules to the complete heading width.
+- Wrap grouped descriptions and rule entries at 90 visible columns without splitting words. Align rule rows with Description, omit bullets/brackets, and keep every rule ID bold blue.
+- Use quoted-code styling for group names, italic magenta description labels, yellow description text, and cyan rule titles. Analyzer rule semantics are unchanged.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.15` line.
+
+---
+
 ## 4.5.14
 
 - Release version: `4.5.14`

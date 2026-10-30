@@ -1,6 +1,10 @@
 # Installing RAIkeep CLIs across the fleet
 
-Run the fleet installer from a RAIkeep checkout on macOS or Linux/WSL. It installs
+Engenho now owns fleet provisioning after a coordinated release. The shell and
+PowerShell installers below remain reference implementations; do not run them
+as part of release preparation or the release chain.
+
+The reference fleet installer runs from a RAIkeep checkout on macOS or Linux/WSL. It installs
 `amafu`, `raid`, `iorg`, `pits`, `rail`, and the Python commands `jpit` and `jsonpit`.
 Both the default destination list and SSH logins come from `Observers` in the
 executing machine's `~/.config/RAIkeep.json5`. There is no embedded fleet list.

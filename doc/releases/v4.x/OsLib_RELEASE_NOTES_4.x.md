@@ -1,5 +1,19 @@
 # OsLib Release Notes 4.x
 
+## 4.5.15
+
+- Release version: `4.5.15`
+- Coordination tag: `v4.5.15`
+
+### Highlights
+- Add the public CliHelpStyle formatter for space-padded help rows, glyph colors, syntax emphasis, cloud-provider badges, and headings sized to their titles.
+- Honor NO_COLOR, TERM=dumb, and redirected output. The same dependency-free source is compiled into standalone Amafu and checked for drift.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.15` line.
+
+---
+
 ## 4.5.14
 
 - Release version: `4.5.14`

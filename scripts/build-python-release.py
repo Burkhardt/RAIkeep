@@ -2,6 +2,7 @@
 """Build and smoke-test both Python distributions without publishing."""
 
 import argparse
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -11,6 +12,21 @@ import tomllib
 
 def run(*args: str) -> None:
 	subprocess.run(args, check=True)
+
+
+def verify_help(command: list[str]) -> None:
+	"""Reject stale help in the actual installed wheel or standalone artifact."""
+	environment = os.environ.copy()
+	environment["NO_COLOR"] = "1"
+	result = subprocess.run([*command, "-h", "-n"], env=environment, check=True, capture_output=True, text=True)
+	output = result.stdout
+	if "\t" in output or "\033" in output:
+		raise ValueError(f"Packaged help must be space-aligned plain text when redirected: {command}")
+	for label in ["-w, --window", "-x, --id-exists", "-r, --pitroot"]:
+		if not any(line.startswith(label) for line in output.splitlines()):
+			raise ValueError(f"Packaged help is missing the current option {label}: {command}")
+	if any(alias in output for alias in ["--retain-window", "--require-existing", "--require-exist"]):
+		raise ValueError(f"Packaged help advertises a hidden compatibility alias: {command}")
 
 
 def build(repo: Path, version: str, output: Path) -> None:
@@ -36,14 +52,16 @@ def build(repo: Path, version: str, output: Path) -> None:
 		python = bin_dir / ("python.exe" if sys.platform == "win32" else "python")
 		run(str(python), "-m", "pip", "install", "--no-index", "--no-deps", *(str(p) for p in artifacts if p.suffix == ".whl"))
 		for name in ("jpit", "jsonpit"):
+			command = bin_dir / (name + (".exe" if sys.platform == "win32" else ""))
 			for flag in ("-v", "--version"):
-				command = bin_dir / (name + (".exe" if sys.platform == "win32" else ""))
 				result = subprocess.run([str(command), flag], check=True, capture_output=True, text=True)
 				if result.stdout.strip() != f"{name} v{version}":
 					raise ValueError(f"Unexpected installed CLI output: {result.stdout!r}")
+			verify_help([str(command)])
 		result = subprocess.run([str(python), str(output / "jpit"), "--version"], check=True, capture_output=True, text=True)
 		if result.stdout.strip() != f"jpit v{version}":
 			raise ValueError(f"Unexpected standalone version: {result.stdout!r}")
+		verify_help([str(python), str(output / "jpit")])
 	print(f"Verified both Python packages and standalone jpit v{version}.")
 
 

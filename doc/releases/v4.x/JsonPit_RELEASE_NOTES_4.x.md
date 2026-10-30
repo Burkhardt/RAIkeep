@@ -1,5 +1,18 @@
 # JsonPit Release Notes 4.x
 
+## 4.5.15
+
+- Release version: `4.5.15`
+- Coordination tag: `v4.5.15`
+
+### Highlights
+- Align the coordinated dependency and package version; persistence, identity, mutation tracking, and cloud coordination contracts are unchanged.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.15` line.
+
+---
+
 ## 4.5.14
 
 - Release version: `4.5.14`

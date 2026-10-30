@@ -1,5 +1,18 @@
 # ImgSeeder Release Notes 4.x
 
+## 4.5.15
+
+- Release version: `4.5.15`
+- Coordination tag: `v4.5.15`
+
+### Highlights
+- Apply the shared CLI help theme, aligned columns, syntax colors, provider badges, and versioned headings. Media import, move, and receipt contracts are unchanged.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.15` line.
+
+---
+
 ## 4.5.14
 
 - Release version: `4.5.14`

@@ -1,5 +1,20 @@
 # RAIkeep Release Notes 4.x
 
+## 4.5.15
+
+- Release version: `4.5.15`
+- Coordination tag: `v4.5.15`
+
+### Highlights
+- Apply the approved CLI theme across pits, jpit/jsonpit, iorg, raid, rail, and standalone Amafu: aligned space-padded columns, glyph-based colors, syntax highlights, and bold/italic emphasis.
+- Align pits/jpit window and strict-ID options, preserve hidden compatibility aliases, and bring Python directory and WWWA exports into line with pits.
+- Validate shared formatter sources, ANSI output, and cross-runtime exports before release. Keep publication sequential with the umbrella last; Engenho handles subsequent fleet provisioning.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.15` line.
+
+---
+
 ## 4.5.14
 
 - Fleet installation now reads destinations and SSH logins from configured Observers, supports separate Windows/WSL targets, provides consistent `--dry-run` previews, and permits .NET-only installs with `--skip-python`.

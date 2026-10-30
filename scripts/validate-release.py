@@ -440,6 +440,7 @@ class ReleaseValidator:
 		# 3. Python tests and cross-runtime CLI discovery/help parity
 		if self.run_external_checks:
 			print("\n[3/7] Running Python tests and pits/jpit list/help parity...")
+			self.validate_command("CLI style source parity", ["python3", "scripts/sync-cli-style.py", "--check"])
 			pits_built = self.validate_command(
 				"pits parity build",
 				["dotnet", "build", "PitSeeder/pits/pits.csproj", "--nologo", "-v", "minimal", "-m:1", "-nodeReuse:false"],
@@ -471,6 +472,7 @@ class ReleaseValidator:
 					env=python_env,
 				)
 			if pits_built:
+				self.validate_command("CLI theme and export parity", [sys.executable, "scripts/test-cli-style.py"])
 				with tempfile.TemporaryDirectory(prefix="raikeep-oslib-contracts-") as temporary:
 					if self.validate_command("OsLibCore documentation pack", ["dotnet", "pack", "OsLib/OsLib.csproj", "--configuration", "Debug", "--no-build", "--no-restore", "--nologo", "--output", temporary]):
 						self.validate_command("OsLibCore packaged public pits contracts", [sys.executable, "scripts/verify-oslib-contracts.py", str(Path(temporary) / f"OsLibCore.{v}.nupkg")])

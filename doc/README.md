@@ -6,18 +6,18 @@ Each `<Package>_RELEASE_NOTES_<major>.x.md` file lists releases newest first. Ad
 
 ## Current coordinated release notes
 
-- [RAIkeep 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#4514)
-- [Amafu 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/Amafu_RELEASE_NOTES_4.x.md#4514)
-- [OsLibCore 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/OsLib_RELEASE_NOTES_4.x.md#4514)
-- [RaiUtils 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiUtils_RELEASE_NOTES_4.x.md#4514)
-- [RaiImage 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiImage_RELEASE_NOTES_4.x.md#4514)
-- [RaiDiagram 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiDiagram_RELEASE_NOTES_4.x.md#4514)
-- [RaidSeeder 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaidSeeder_RELEASE_NOTES_4.x.md#4514)
-- [JsonPit 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit_RELEASE_NOTES_4.x.md#4514)
-- [JsonPit.Python 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit.Python_RELEASE_NOTES_4.x.md#4514)
-- [ImgSeeder 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/ImgSeeder_RELEASE_NOTES_4.x.md#4514)
-- [PitSeeder 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/PitSeeder_RELEASE_NOTES_4.x.md#4514)
-- [RaiGuard 4.5.14](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiGuard_RELEASE_NOTES_4.x.md#4514)
+- [RAIkeep 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#4515)
+- [Amafu 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/Amafu_RELEASE_NOTES_4.x.md#4515)
+- [OsLibCore 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/OsLib_RELEASE_NOTES_4.x.md#4515)
+- [RaiUtils 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiUtils_RELEASE_NOTES_4.x.md#4515)
+- [RaiImage 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiImage_RELEASE_NOTES_4.x.md#4515)
+- [RaiDiagram 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiDiagram_RELEASE_NOTES_4.x.md#4515)
+- [RaidSeeder 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaidSeeder_RELEASE_NOTES_4.x.md#4515)
+- [JsonPit 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit_RELEASE_NOTES_4.x.md#4515)
+- [JsonPit.Python 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit.Python_RELEASE_NOTES_4.x.md#4515)
+- [ImgSeeder 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/ImgSeeder_RELEASE_NOTES_4.x.md#4515)
+- [PitSeeder 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/PitSeeder_RELEASE_NOTES_4.x.md#4515)
+- [RaiGuard 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiGuard_RELEASE_NOTES_4.x.md#4515)
 
 - [CR051](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR/CR051_RAI_to_RAIkeep_Multiple-Cloud-Accounts-and-Named-Shortcuts.md) — multiple cloud accounts, named shortcuts, personal OneDrive selection, and noninteractive reconciliation.
 - [CR049](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR/CR049_AIA_and_jsonpit_to_RAIkeep_Live-ID-Validation_and_Zip-Image-Import.md) — live-ID validation, ZIP image import, stdin receipts, and EXIF clarifications.
@@ -25,6 +25,9 @@ Each `<Package>_RELEASE_NOTES_<major>.x.md` file lists releases newest first. Ad
 - [CR054](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR/CR054_Compact-Range-Receipts-and-PascalCase.md) — compact image receipts, mixed ranges, EXIF opt-in, and D3 filenames.
 
 ## Technical guides
+
+- [CLI style](https://github.com/Burkhardt/RAIkeep/blob/main/doc/cli-style.md) defines help-screen layout, glyph colors, syntax highlighting, and terminal emphasis for all RAIkeep tools.
+- [Engenho CLI style handover for Rita](https://github.com/Burkhardt/RAIkeep/blob/main/doc/HANDOVER_TO_RITA_Engenho_CLI-Style.md) carries the approved formatting rules, grouped-list presentation, and preview checks into TypeScript/Deno.
 
 - [Engenho fleet installer handover for Rita](https://github.com/Burkhardt/RAIkeep/blob/main/doc/HANDOVER_TO_RITA_Engenho_Fleet-CLI-Installation.md) specifies the TypeScript port, configuration-driven destinations, optional Python tools, and dry runs.
 - [Installing CLIs across the fleet](https://github.com/Burkhardt/RAIkeep/blob/main/doc/Installing-CLIs.md) explains Windows and WSL targets, Observer logins, and prerequisite checks.

@@ -1,5 +1,20 @@
 # PitSeeder Release Notes 4.x
 
+## 4.5.15
+
+- Release version: `4.5.15`
+- Coordination tag: `v4.5.15`
+
+### Highlights
+- Apply the approved help theme with space-padded columns, consistent glyph colors, syntax emphasis, provider badges, and a versioned bold heading.
+- Advertise -w/--window and -x/--id-exists; retain --retain-window, --require-exist, and --require-existing as hidden compatibility aliases. Keep --patch as the strict-ID alias.
+- Keep ls visible in contextual list/ls usage, remove the Legacy row from general help, and show positional-argument explanations only when a pit is named.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.15` line.
+
+---
+
 ## 4.5.14
 
 - Release version: `4.5.14`
