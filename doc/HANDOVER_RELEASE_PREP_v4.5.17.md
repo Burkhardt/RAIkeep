@@ -17,6 +17,40 @@ all repositories before publication. The umbrella is pushed and tagged last,
 only after all children are published and visible. Engenho owns provisioning;
 preparation does not install tools or execute the release chain.
 
+## Recovery after RaiUtils upload
+
+The user-run chain published Amafu and OsLibCore, then stopped at RaiUtils
+workflow 41601478597. RaiUtils 4.5.17 was accepted by NuGet before a later push
+failed: the broad artifacts wildcard also selected the tracked legacy packages
+RaiUtils 2.3.1 and RaiUtilsCore 2.3.1. Trusted Publishing correctly refused the
+unrelated RaiUtilsCore package. The earlier preflight missed these tracked
+generated files; .gitignore does not exclude files already committed.
+
+Both NuGet endpoints now return 200 for Amafu, OsLibCore and RaiUtils 4.5.17.
+Resume manually with:
+
+```zsh
+scripts/release-chain.sh 4.5.17 --resume-after-raiutils
+```
+
+This mode verifies the three packages' availability and their existing remote
+tags against the unchanged prepared child pointers, then starts at RaiImage.
+It does not rerun RaiUtils's failed workflow, retag, or upload it again. The final
+visibility check and umbrella-last publication remain mandatory.
+
+Preflight now refuses tracked .nupkg and .snupkg artifacts in packages still to
+be released. All eight remaining children were checked for these artifacts.
+The RaiUtils correction is committed separately on the local branch
+`codex/raiutils-package-scope`, commit
+`6f148508ba23353b8e76fe192a48a54e38a3d570`, in
+`/private/tmp/raikeep-raiutils-package-scope`. It removes the two tracked legacy
+archives, packs into a run-specific temporary directory, validates the exact
+package ID/version from its nuspec, and pushes one explicit filename.
+Seven regression tests and actionlint passed. Hold that branch for the next
+release preparation; do not change the v4.5.17 RaiUtils tag or current gitlink.
+Recovery-order and failure-gate tests, plus tracked-artifact preflight tests,
+passed without network or publication.
+
 ## Included changes
 
 - CR076: Amafu configuration selectors for temp/backup paths, provider order,
@@ -61,7 +95,8 @@ Completed checks:
   stubbed chain-order/Amafu-recovery tests, and Markdown-link checks passed.
 - NuGet's private policy page was inspected read-only: the four new policies
   are active, scoped to their exact packages, and name publish-nuget.yaml.
-  Actual OIDC exchange will occur during the user's publication run.
+  The user-run Amafu, OsLib and RaiUtils workflows have since demonstrated
+  successful OIDC exchange and acceptance of their 4.5.17 packages.
 
 The first 4.5.17 full run failed the existing Mzansi transfer test after an
 incomplete remote seed/empty flag read. An unmodified isolated rerun passed.

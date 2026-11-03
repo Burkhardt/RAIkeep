@@ -167,6 +167,13 @@ ensure_tag_on_head() {
 	die "$name: remote tag $tag exists at $remote_tag_sha, but HEAD is $head_sha. Refusing to retag."
 }
 
+assert_no_tracked_packages() {
+	local repo_dir="$1" name="$2" tracked_packages
+	tracked_packages="$(git -C "$repo_dir" ls-files '*.nupkg' '*.snupkg')"
+	[[ -z "$tracked_packages" ]] \
+		|| die "$name tracks generated NuGet packages. Remove them from the next release source before publication: $tracked_packages"
+}
+
 preflight_submodule() {
 	local name="$1"
 	local repo_rel="$2"
@@ -175,6 +182,7 @@ preflight_submodule() {
 	local branch current_ver recorded_sha head_sha behind ahead
 
 	assert_clean "$repo_dir" "$name"
+	assert_no_tracked_packages "$repo_dir" "$name"
 	branch="$(git -C "$repo_dir" branch --show-current)"
 	[[ "$branch" == "main" ]] || die "$name must be on main, but is on '$branch'."
 
@@ -648,7 +656,12 @@ resume_after_amafu() {
 }
 
 resume_after_oslib() {
-	log "Recovery mode: preserve existing $TAG labels and resume after OsLib"
+	local raiutils_published="${1:-false}"
+	if [[ "$raiutils_published" == "true" ]]; then
+		log "Recovery mode: preserve existing $TAG labels and resume after RaiUtils"
+	else
+		log "Recovery mode: preserve existing $TAG labels and resume after OsLib"
+	fi
 	prepare_recovery
 
 	require_package_published "amafu" "$VER"
@@ -656,7 +669,12 @@ resume_after_oslib() {
 	assert_published_submodule_tag "Amafu" "Amafu"
 	assert_published_submodule_tag "OsLib" "OsLib"
 
-	assert_prepared_submodule_pointer "RaiUtils" "RaiUtils"
+	if [[ "$raiutils_published" == "true" ]]; then
+		require_package_published "raiutils" "$VER"
+		assert_published_submodule_tag "RaiUtils" "RaiUtils"
+	else
+		assert_prepared_submodule_pointer "RaiUtils" "RaiUtils"
+	fi
 	assert_prepared_submodule_pointer "RaiImage" "RaiImage"
 	assert_prepared_submodule_pointer "RaiDiagram" "RaiDiagram"
 	assert_prepared_submodule_pointer "RaidSeeder" "RaidSeeder"
@@ -666,8 +684,12 @@ resume_after_oslib() {
 	assert_prepared_submodule_pointer "PitSeeder" "PitSeeder"
 	assert_prepared_submodule_pointer "RaiGuard" "RaiGuard"
 
-	log "Preflighting the nine unpublished packages"
-	preflight_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj"
+	if [[ "$raiutils_published" == "true" ]]; then
+		log "Preflighting the eight unpublished packages"
+	else
+		log "Preflighting the nine unpublished packages"
+		preflight_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj"
+	fi
 	preflight_submodule "RaiImage" "RaiImage" "RaiImage.csproj"
 	preflight_submodule "RaiDiagram" "RaiDiagram" "RaiDiagram.csproj"
 	preflight_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj"
@@ -677,7 +699,9 @@ resume_after_oslib() {
 	preflight_submodule "PitSeeder" "PitSeeder" "pits/pits.csproj"
 	preflight_submodule "RaiGuard" "RaiGuard" "rail/rail.csproj"
 
-	release_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj" "RaiUtils.slnx" "raiutils" "publish-nuget.yaml"
+	if [[ "$raiutils_published" != "true" ]]; then
+		release_submodule "RaiUtils" "RaiUtils" "RaiUtils.csproj" "RaiUtils.slnx" "raiutils" "publish-nuget.yaml"
+	fi
 	release_submodule "RaiImage" "RaiImage" "RaiImage.csproj" "RaiImage.slnx" "raiimage" "publish-nuget.yaml"
 	release_submodule "RaiDiagram" "RaiDiagram" "RaiDiagram.csproj" "RaiDiagram.slnx" "raidiagram" "publish-nuget.yaml"
 	release_submodule "RaidSeeder" "RaidSeeder" "raid/raid.csproj" "RaidSeeder.slnx" "raidseeder" "publish-nuget.yaml"
@@ -819,9 +843,9 @@ main() {
 	require_cmd mktemp
 	[[ -n "${PYPI_TOKEN:-}" ]] || die "PYPI_TOKEN is required for coordinated PyPI publication."
 
-	[[ $# -le 2 ]] || die "Usage: scripts/release-chain.sh [version] [--resume-after-amafu|--resume-after-oslib|--resume-after-raiimage|--resume-after-raidiagram|--resume-after-raiguard]"
-	if [[ -n "$MODE" && "$MODE" != "--resume-after-amafu" && "$MODE" != "--resume-after-oslib" && "$MODE" != "--resume-after-raiimage" && "$MODE" != "--resume-after-raidiagram" && "$MODE" != "--resume-after-raiguard" ]]; then
-		die "Unknown release mode '$MODE'. Expected --resume-after-amafu, --resume-after-oslib, --resume-after-raiimage, --resume-after-raidiagram, or --resume-after-raiguard."
+	[[ $# -le 2 ]] || die "Usage: scripts/release-chain.sh [version] [--resume-after-amafu|--resume-after-oslib|--resume-after-raiutils|--resume-after-raiimage|--resume-after-raidiagram|--resume-after-raiguard]"
+	if [[ -n "$MODE" && "$MODE" != "--resume-after-amafu" && "$MODE" != "--resume-after-oslib" && "$MODE" != "--resume-after-raiutils" && "$MODE" != "--resume-after-raiimage" && "$MODE" != "--resume-after-raidiagram" && "$MODE" != "--resume-after-raiguard" ]]; then
+		die "Unknown release mode '$MODE'. Expected --resume-after-amafu, --resume-after-oslib, --resume-after-raiutils, --resume-after-raiimage, --resume-after-raidiagram, or --resume-after-raiguard."
 	fi
 	if [[ -n "$MODE" && -z "$VER" ]]; then
 		die "Recovery mode requires the interrupted release version."
@@ -837,6 +861,9 @@ main() {
 		return
 	elif [[ "$MODE" == "--resume-after-oslib" ]]; then
 		resume_after_oslib
+		return
+	elif [[ "$MODE" == "--resume-after-raiutils" ]]; then
+		resume_after_oslib true
 		return
 	elif [[ "$MODE" == "--resume-after-raiimage" ]]; then
 		resume_after_raiimage
