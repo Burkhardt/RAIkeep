@@ -29,8 +29,13 @@ the reference. Help formatting must not change command behavior or machine outpu
   description text yellow. Keep an indivisible word intact even if that word
   alone exceeds the available width.
 - The entire banner heading, including its information glyph and version, is bold
-  cyan. Decorative rules are regular cyan, at least 40 characters long, and
-  extend to the visible heading width for longer titles. Use the actual executable version.
+  cyan. Decorative rules are regular cyan and match the complete visible heading
+  width, including for short headings. Use the actual executable version.
+  End each CLI heading with `on <machine>`, using the executing operating system's
+  hostname (`Environment.MachineName` in .NET; `platform.node()` in Python).
+  Measure the complete heading, including that hostname, when sizing both rules.
+  This identifies the execution host, including its own WSL hostname, rather than
+  an Observer alias. Keep version-only, scalar, and JSON output free of the banner.
 - Do not advertise legacy syntax or add a Legacy row. Examples use canonical commands.
 - Remove spaces around choice separators: `(<PitName>|--wwwa)` and
   `(--out-dir <dir>|--json)`.

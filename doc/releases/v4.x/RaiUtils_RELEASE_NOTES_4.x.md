@@ -1,5 +1,18 @@
 # RaiUtils Release Notes 4.x
 
+## 4.5.18
+
+- Release version: `4.5.18`
+- Coordination tag: `v4.5.18`
+
+### Highlights
+- Remove tracked legacy 2.3.1 packages. Pack into an isolated run-specific directory, validate the exact package ID and version, and publish only the requested RaiUtils package.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.18` line.
+
+---
+
 ## 4.5.17
 
 - Release version: `4.5.17`

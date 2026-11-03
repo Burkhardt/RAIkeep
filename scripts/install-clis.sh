@@ -31,7 +31,7 @@ except Exception:
 }
 
 DEFAULT_VERSION="$(resolve_default_version)"
-DEFAULT_VERSION="${DEFAULT_VERSION:-4.5.17}"
+DEFAULT_VERSION="${DEFAULT_VERSION:-4.5.18}"
 
 # No machine names or SSH accounts are embedded in the installer.
 CONFIG_FILE="${RAIKEEP_CONFIG:-$HOME/.config/RAIkeep.json5}"

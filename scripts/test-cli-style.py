@@ -4,6 +4,7 @@ import argparse
 from datetime import datetime, timezone
 import json
 import os
+import platform
 from pathlib import Path
 import subprocess
 import sys
@@ -65,6 +66,21 @@ Console.Write(JsonSerializer.Serialize(new {
 				style.Row("--patch", Icons.INFO, "alias for --id-exists")], True),
 		}
 		assert actual == expected, "C# and Python help styles differ"
+
+	# Inspect the real executable headings, not only the shared formatter probe.
+	# No install or mutating command is involved; machine output remains separate.
+	cli_paths = ["Amafu/amafu", "PitSeeder/pits", "ImgSeeder", "RaidSeeder/raid", "RaiGuard/rail"]
+	cli_assemblies = ["amafu", "pits", "ImgSeeder", "raid", "rail"]
+	commands = [["dotnet", str(root / path / "bin/Debug/net10.0" / f"{assembly}.dll")]
+		for path, assembly in zip(cli_paths, cli_assemblies)]
+	commands.append([sys.executable, "-m", "jsonpit.cli"])
+	for command in commands:
+		result = subprocess.run([*command, "-h"], cwd=root / "JsonPit.Python",
+			capture_output=True, text=True, check=True, timeout=30)
+		top, heading, bottom = result.stdout.splitlines()[:3]
+		assert heading.endswith(f" on {platform.node()}"), (command, heading)
+		assert top == bottom and len(top) == len(heading), (command, top, heading, bottom)
+		assert "\033" not in result.stdout, f"Redirected help contains ANSI: {command}"
 
 	pits = subprocess.run(["dotnet", str(root / "PitSeeder/pits/bin/Debug/net10.0/pits.dll"), "-h", "-n"],
 		capture_output=True, text=True, check=True, timeout=30).stdout

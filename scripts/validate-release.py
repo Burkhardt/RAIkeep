@@ -442,6 +442,9 @@ class ReleaseValidator:
 			print("\n[3/7] Running Python tests and pits/jpit list/help parity...")
 			self.validate_command("CLI style source parity", ["python3", "scripts/sync-cli-style.py", "--check"])
 			self.validate_command("Trusted Publishing workflow and release-ref checks", ["python3", "scripts/test-trusted-publishing.py"])
+			self.validate_command("Release sequence and recovery gates", ["bash", "scripts/test-release-chain-order.sh"])
+			self.validate_command("Tracked package artifact guard", ["bash", "scripts/test-tracked-package-preflight.sh"])
+			self.validate_command("RaiUtils publication package scope", ["python3", "RaiUtils/test-publication-artifacts.py"])
 			self.validate_command("CR075/CR076 and file-size regression tests", [
 				"dotnet", "test", "RAIkeep.slnx", "--nologo", "-p:UseLocalRAIkeepSources=true",
 				"--filter", "FullyQualifiedName~InventoryMatchingTests|FullyQualifiedName~MediaContentTests|FullyQualifiedName~IorgInventoryTests|FullyQualifiedName~FileInfoLengthTests|FullyQualifiedName~ConfigurationListingTests",

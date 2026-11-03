@@ -1,5 +1,18 @@
 # OsLib Release Notes 4.x
 
+## 4.5.18
+
+- Release version: `4.5.18`
+- Coordination tag: `v4.5.18`
+
+### Highlights
+- Match decorative CLI banner rules to the complete heading width, including short headings. Keep the shared formatter synchronized with standalone Amafu.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.18` line.
+
+---
+
 ## 4.5.17
 
 - Release version: `4.5.17`

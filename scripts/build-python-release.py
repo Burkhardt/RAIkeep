@@ -3,6 +3,7 @@
 
 import argparse
 import os
+import platform
 from pathlib import Path
 import subprocess
 import sys
@@ -27,6 +28,11 @@ def verify_help(command: list[str]) -> None:
 			raise ValueError(f"Packaged help is missing the current option {label}: {command}")
 	if any(alias in output for alias in ["--retain-window", "--require-existing", "--require-exist"]):
 		raise ValueError(f"Packaged help advertises a hidden compatibility alias: {command}")
+	banner = subprocess.run([*command, "-h"], env=environment, check=True, capture_output=True, text=True).stdout.splitlines()
+	if len(banner) < 3 or not banner[1].endswith(f" on {platform.node()}"):
+		raise ValueError(f"Packaged banner is missing the execution host: {command}")
+	if banner[0] != banner[2] or len(banner[0]) != len(banner[1]):
+		raise ValueError(f"Packaged banner rules do not match the heading width: {command}")
 
 
 def build(repo: Path, version: str, output: Path) -> None:
