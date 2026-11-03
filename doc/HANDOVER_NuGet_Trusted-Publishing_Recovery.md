@@ -12,7 +12,7 @@ Open the NuGet account's Trusted Publishing page, not API Keys. Each policy uses
 - Package Owner: `Burkhardt`.
 - CI/CD Provider: `GitHub Actions`.
 - Repository Owner: `Burkhardt`.
-- Workflow File: `publish-nuget.yml` (filename only).
+- Workflow File: `publish-nuget.yaml` (filename only).
 - Environment: empty; these jobs do not declare an environment.
 - Scope: push new versions of existing packages.
 
@@ -58,24 +58,31 @@ The failed OsLib tag run uses the old static-key workflow. Rerunning that same
 run will still use the old workflow; creating a NuGet policy alone cannot fix it.
 Do not move or delete `v4.5.16` to get a different workflow.
 
-For the current release, publish the migration **branch** separately after review,
-leaving each repository's prepared release `main` and its immutable tag intact.
-Its existing default-branch workflow already has `workflow_dispatch`, so the
-corrected branch workflow can be selected explicitly for recovery.
+The standardized filename is `publish-nuget.yaml`, replacing the previous
+`publish-nuget.yml`. The NuGet policy must name the new `.yaml` file exactly.
+GitHub requires a manually dispatched workflow to exist on the default branch;
+a newly named file on a feature branch alone is insufficient. Integrate and push
+the reviewed workflow-only change to remote `main` before dispatching it.
+This is a separate rollout step, not authorization to push now.
 
-Once the OsLib branch is available remotely and its NuGet policy exists, this
+Keep the prepared local release source checkouts and existing tags at their
+original commits. Remote main will advance by the workflow-only change. Do not
+move the old release tag or silently update the umbrella's release-source
+pointers to the newer workflow commit.
+
+Once the corrected OsLib workflow is on remote main and its NuGet policy exists, this
 command is the intended manual recovery trigger; it publishes a package and must
 only be run when RAI explicitly authorizes that release step:
 
 ```zsh
-gh workflow run publish-nuget.yml \
+gh workflow run publish-nuget.yaml \
   --repo Burkhardt/OsLib \
-  --ref codex/nuget-trusted-publishing \
+  --ref main \
   -f release_ref=v4.5.16
 ```
 
-That selects the corrected workflow from the branch and builds the existing
-`v4.5.16` tag. It does not publish the migration branch's source as v4.5.16.
+That selects the corrected workflow from main and builds the existing
+`v4.5.16` tag. It does not publish main's newer source as v4.5.16.
 
 The other three repositories require the same corrected workflow when their
 original v4.5.16 source is tagged. Preserve dependency order and wait for each
@@ -83,19 +90,22 @@ package to become installable before proceeding. Their automatic original-tag
 runs still use the static-key workflow; do not mistake those runs for the
 corrected manual dispatch or blindly restart the ordinary chain.
 
-Do not merge these workflow commits into release `main` in the middle of the
-chain: changing prepared child HEADs can break umbrella pointer and tag checks.
-Likewise, the ordinary chain currently selects workflow runs by tag branch and
-does not automatically recognize a successful dispatch from a migration branch.
-Coordinate remaining recovery steps explicitly with RAI. Finalize the umbrella
+The ordinary chain's preflight rejects local release source checkouts behind
+the newer remote main, and its workflow polling selects runs by tag branch rather
+than a manual dispatch from main. Renaming the file alone does not resolve these
+recovery constraints. Coordinate remaining recovery steps explicitly with RAI;
+do not blindly restart the ordinary chain after deployment. Finalize the umbrella
 only after every child package and immutable tag has been verified. The existing
 `--resume-after-raiguard` mode is the final verification/umbrella path once all
 children have actually completed.
 
-After the interrupted release is complete, integrate the workflow-only commits
-into each repository's main branch and synchronize umbrella pointers as part of
-the next preparation. Normal future tag releases then use Trusted Publishing
-without the recovery branch. Remove unused expired static secrets after migration
+The isolated umbrella branch updates all four repositories' workflow filename
+references in `release-chain.sh` for future releases. No sequencing or tag
+validation logic is changed, and the active release script remains unchanged.
+After the interrupted release is complete, advance local child main checkouts
+and synchronize umbrella pointers as part of the next preparation. Normal future
+tag releases then use Trusted Publishing without a manual recovery dispatch.
+Remove unused expired static secrets after migration
 is verified; do not delete credentials that other workflows may still need.
 
 ## Verification completed locally

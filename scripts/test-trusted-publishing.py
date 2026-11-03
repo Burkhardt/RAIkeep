@@ -20,10 +20,18 @@ def script(source, name):
 
 
 class TrustedPublishingTests(unittest.TestCase):
+	def test_release_chain_uses_the_standardized_workflow_filename(self):
+		chain = (Path(__file__).resolve().parent / "release-chain.sh").read_text()
+		for name in REPOS:
+			calls = [line for line in chain.splitlines() if line.lstrip().startswith(f'release_submodule "{name}" ')]
+			self.assertTrue(calls, name)
+			for line in calls:
+				self.assertTrue(line.endswith('"publish-nuget.yaml"'), line)
+
 	def test_authentication_and_tag_checkout_contract(self):
 		for name in REPOS:
 			with self.subTest(repo=name):
-				source = (ROOT / name / ".github/workflows/publish-nuget.yml").read_text()
+				source = (ROOT / name / ".github/workflows/publish-nuget.yaml").read_text()
 				self.assertNotIn("secrets.NUGET_API_KEY", source)
 				self.assertIn("      id-token: write", source)
 				self.assertIn("uses: NuGet/login@v1", source)
@@ -39,7 +47,7 @@ class TrustedPublishingTests(unittest.TestCase):
 		invalid = ("", "main", "refs/heads/main", "refs/tags/v4.5.16", "4.5.16", "v4.5", "v4.5.16-rc1", "v4.5.16\nmain", "v4.5.16; touch injected", "$(touch injected)")
 		with tempfile.TemporaryDirectory() as directory:
 			for name in REPOS:
-				source = (ROOT / name / ".github/workflows/publish-nuget.yml").read_text()
+				source = (ROOT / name / ".github/workflows/publish-nuget.yaml").read_text()
 				for ref in invalid:
 					with self.subTest(repo=name, ref=ref):
 						result = subprocess.run(["bash", "-eu", "-o", "pipefail", "-c", script(source, "Validate release tag input")],
@@ -65,7 +73,7 @@ class TrustedPublishingTests(unittest.TestCase):
 				project.write_text("<Project>\n  <Version>4.5.17</Version>\n</Project>\n")
 				git("commit", "-am", "Later source", "-q")
 				git("branch", "v4.5.16")  # A colliding branch must never select later source.
-				source = (ROOT / name / ".github/workflows/publish-nuget.yml").read_text()
+				source = (ROOT / name / ".github/workflows/publish-nuget.yaml").read_text()
 				env = {**os.environ, "RELEASE_REF": "v4.5.16", "GITHUB_REF_NAME": "main"}
 				for step in ("Validate release tag input", "Validate tag matches csproj version"):
 					if step == "Validate tag matches csproj version":
