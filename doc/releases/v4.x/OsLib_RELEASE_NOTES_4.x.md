@@ -1,5 +1,19 @@
 # OsLib Release Notes 4.x
 
+## 4.5.16
+
+- Release version: `4.5.16`
+- Coordination tag: `v4.5.16`
+
+### Highlights
+- Add typed iorg inventory, match evidence and duplicate requests, preserving cloud-relative addresses for execution-host resolution over SSH.
+- Add bounded binary process output consumption and typed contained/canonical path helpers for read-only media scans.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.16` line.
+
+---
+
 ## 4.5.15
 
 - Release version: `4.5.15`

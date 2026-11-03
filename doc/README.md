@@ -6,18 +6,18 @@ Each `<Package>_RELEASE_NOTES_<major>.x.md` file lists releases newest first. Ad
 
 ## Current coordinated release notes
 
-- [RAIkeep 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#4515)
-- [Amafu 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/Amafu_RELEASE_NOTES_4.x.md#4515)
-- [OsLibCore 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/OsLib_RELEASE_NOTES_4.x.md#4515)
-- [RaiUtils 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiUtils_RELEASE_NOTES_4.x.md#4515)
-- [RaiImage 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiImage_RELEASE_NOTES_4.x.md#4515)
-- [RaiDiagram 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiDiagram_RELEASE_NOTES_4.x.md#4515)
-- [RaidSeeder 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaidSeeder_RELEASE_NOTES_4.x.md#4515)
-- [JsonPit 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit_RELEASE_NOTES_4.x.md#4515)
-- [JsonPit.Python 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit.Python_RELEASE_NOTES_4.x.md#4515)
-- [ImgSeeder 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/ImgSeeder_RELEASE_NOTES_4.x.md#4515)
-- [PitSeeder 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/PitSeeder_RELEASE_NOTES_4.x.md#4515)
-- [RaiGuard 4.5.15](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiGuard_RELEASE_NOTES_4.x.md#4515)
+- [RAIkeep 4.5.16](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#4516)
+- [Amafu 4.5.16](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/Amafu_RELEASE_NOTES_4.x.md#4516)
+- [OsLibCore 4.5.16](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/OsLib_RELEASE_NOTES_4.x.md#4516)
+- [RaiUtils 4.5.16](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiUtils_RELEASE_NOTES_4.x.md#4516)
+- [RaiImage 4.5.16](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiImage_RELEASE_NOTES_4.x.md#4516)
+- [RaiDiagram 4.5.16](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiDiagram_RELEASE_NOTES_4.x.md#4516)
+- [RaidSeeder 4.5.16](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaidSeeder_RELEASE_NOTES_4.x.md#4516)
+- [JsonPit 4.5.16](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit_RELEASE_NOTES_4.x.md#4516)
+- [JsonPit.Python 4.5.16](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit.Python_RELEASE_NOTES_4.x.md#4516)
+- [ImgSeeder 4.5.16](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/ImgSeeder_RELEASE_NOTES_4.x.md#4516)
+- [PitSeeder 4.5.16](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/PitSeeder_RELEASE_NOTES_4.x.md#4516)
+- [RaiGuard 4.5.16](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiGuard_RELEASE_NOTES_4.x.md#4516)
 
 - [CR051](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR/CR051_RAI_to_RAIkeep_Multiple-Cloud-Accounts-and-Named-Shortcuts.md) — multiple cloud accounts, named shortcuts, personal OneDrive selection, and noninteractive reconciliation.
 - [CR049](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR/CR049_AIA_and_jsonpit_to_RAIkeep_Live-ID-Validation_and_Zip-Image-Import.md) — live-ID validation, ZIP image import, stdin receipts, and EXIF clarifications.
@@ -48,6 +48,10 @@ Each `<Package>_RELEASE_NOTES_<major>.x.md` file lists releases newest first. Ad
 ## Change requests
 
 Open:
+
+- [CR075 — Structured iorg inventory and content matching](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR075_AIA_to_RAIkeep_Iorg_Structured_Inventory_and_Content_Matching.md) — ratified for v4.5.16; metadata JSON and read-only byte/visual discovery.
+
+- [Original proposal — Structured iorg inventory and content matching](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR/CR_DRAFT_Iorg_Structured-Inventory-and-Content-Matching.md) — jq-ready file metadata and read-only byte/visual matching, with single-source arrays and wildcard dictionaries; superseded by ratified CR075.
 
 - [CR052 draft — Object diagram import and PlantUML diagnostics](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR/CR052_RAI_to_RAIkeep_Object-Diagram-Import-and-PlantUML-Diagnostics.md) — source-corpus support inventory, strict diagnostics, synthetic regression drafts, and optional Nkosikazi origin list.
 

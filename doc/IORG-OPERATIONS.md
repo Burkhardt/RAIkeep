@@ -375,3 +375,66 @@ The help screen uses Nerd Font glyphs. Blink on iPadOS has been verified with
 [Jet Brains Mono Nerd Font](https://github.com/blinksh/patched-fonts/blob/main/Jet%20Brains%20Mono%20Nerd%20Font.css).
 See [TERMINAL_FONTS.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/TERMINAL_FONTS.md)
 for setup guidance.
+
+## CR075 structured inventory and content matching
+
+```zsh
+iorg list '*.mov' --cloud ICloudDrive --root . --ignore-case --long --json \
+  | jq '.[] | {RelativePath, SizeBytes, LastModifiedUtc}'
+iorg list '*' --cloud OneDrive --app AfricaStage --tenant Nomsa \
+  --long --json --all-files | jq '.[] | select(.MediaKind == null)'
+iorg list '*' --root /srv/media/ --long --json --checksum sha256
+iorg duplicates 'PLVanguard/IMG_5443.MOV' --cloud ICloudDrive --root . --json
+iorg duplicates '*' --cloud OneDrive --app AfricaStage --tenant Nomsa \
+  --match bytes --json | jq 'with_entries(select(.value | length > 0))'
+iorg duplicates '*.mov' --cloud ICloudDrive --root . --ignore-case \
+  --match visual --visual-profile strict-v1 --json
+```
+
+`--long` requires `--json`; `-l` remains the existing nologo alias. Inventory
+returns PascalCase objects including canonical full path, selected-root relative
+path, cloud-relative path, nullable managed ItemTree path, extension/media kind,
+integer bytes, UTC timestamp, cloud/root/host provenance and nullable SHA-256.
+App addressing establishes managed tree context; an arbitrary flat root does not.
+Existing `list --json` remains a filename string array. `--all-files` includes
+unrecognized regular files but cannot be combined with checksums. Pattern casing
+is unchanged unless `--ignore-case` is supplied, including on Linux.
+
+Duplicate discovery searches other eligible media in the complete selected root,
+regardless of their filename/extension. A literal source must resolve uniquely
+and returns an array; a wildcard always returns a relative-path dictionary,
+retaining unique sources with empty arrays. Narrow the selected root to restrict
+the comparison subtree. Missing, ambiguous, escaped, unreadable or changing files
+fail with nonzero exit and stderr diagnostics, not a false empty success. JSON
+is printed only once a complete result has been formed; progress and diagnostics
+never enter stdout. Check exit status when piping through jq (`set -o pipefail`).
+
+Byte mode is the default and needs no decoder: size, streamed SHA-256, then
+streamed byte confirmation. Visual mode requires explicit `strict-v1`. It checks
+all decoded video frames and their timing before normalized fingerprint equality
+or complete-sequence SSIM. Mean SSIM must be at least 0.995 and every frame at
+least 0.99. Still images use complete oriented sRGB RGBA8 pixels, exact alpha,
+and an 8-by-8-window RGB SSIM mean of at least 0.995. These are implementation
+profile thresholds, not probabilities or guarantees of human-perceived identity.
+Videos normalize to SDR YUV444P8 and must have compatible dimensions, aspect,
+color metadata and complete presentation timing. No crop/resize/tone map is
+performed. Audio is excluded and results always report AudioCompared false.
+DecodedExact describes the normalized visual profile, never original-file bytes.
+
+FFmpeg/FFprobe are required for video mode, and ImageMagick for still images.
+The evidence records the decoder version, profile, normalization, frame coverage,
+metric thresholds and ByteComparisonVerified false. HDR video, alpha-bearing
+video, multi-stream video, multi-frame still images and SVG decoding are refused
+rather than silently approximated. The profile bounds images/video to eight
+million pixels; oversized inputs fail explicitly. Two image buffers and decoder
+pipes are bounded; the file index and returned match collection grow with scope.
+Each tool has a ten-minute execution bound, and the primitives accept cancellation.
+Directory symlinks are refused as incomplete inventory; contained file aliases
+are canonicalized, and out-of-root links are rejected. Hard-linked directory
+entries remain separate paths; no hardlinks are created or removed.
+
+No source, cloud file, sidecar, media scratch file or report file is written by
+these operations. Hashing and decoding can cause cloud-provider reads/downloads.
+Metadata revalidation is not an atomic distributed snapshot. A match grants no
+permission to replace or delete a master. Visual evidence must never authorize
+canonical byte-identity decisions. AIA and Engenho own their caller migrations.

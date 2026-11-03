@@ -1,5 +1,20 @@
 # RAIkeep Release Notes 4.x
 
+## 4.5.16
+
+- Release version: `4.5.16`
+- Coordination tag: `v4.5.16`
+
+### Highlights
+- Deliver CR075 structured media inventory and filename-independent byte/visual matching across OsLib, RaiImage and iorg.
+- Add precise RAI002 file-size guidance and a semantic RaiFile.Length code fix.
+- Keep publication sequential, the umbrella last, and fleet provisioning with Engenho.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.16` line.
+
+---
+
 ## 4.5.15
 
 - Release version: `4.5.15`

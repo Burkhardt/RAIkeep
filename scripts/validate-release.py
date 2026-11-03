@@ -441,6 +441,10 @@ class ReleaseValidator:
 		if self.run_external_checks:
 			print("\n[3/7] Running Python tests and pits/jpit list/help parity...")
 			self.validate_command("CLI style source parity", ["python3", "scripts/sync-cli-style.py", "--check"])
+			self.validate_command("CR075 inventory/matching and file-size regression tests", [
+				"dotnet", "test", "RAIkeep.slnx", "--nologo", "-p:UseLocalRAIkeepSources=true",
+				"--filter", "FullyQualifiedName~InventoryMatchingTests|FullyQualifiedName~MediaContentTests|FullyQualifiedName~IorgInventoryTests|FullyQualifiedName~FileInfoLengthTests",
+			])
 			pits_built = self.validate_command(
 				"pits parity build",
 				["dotnet", "build", "PitSeeder/pits/pits.csproj", "--nologo", "-v", "minimal", "-m:1", "-nodeReuse:false"],

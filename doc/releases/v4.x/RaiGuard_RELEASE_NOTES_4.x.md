@@ -1,5 +1,20 @@
 # RaiGuard Release Notes 4.x
 
+## 4.5.16
+
+- Release version: `4.5.16`
+- Coordination tag: `v4.5.16`
+
+### Highlights
+- Extend RAI002 with explicit RaiFile.Length guidance for file-size reads during compilation and inline rail checks.
+- Add a conservative semantic Roslyn code fix that reuses a verified RaiFile receiver or constructs RaiFile from a path.
+- Preserve other RAI002 diagnostics and refuse fixes when the referenced OsLib lacks the required API.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.16` line.
+
+---
+
 ## 4.5.15
 
 - Release version: `4.5.15`

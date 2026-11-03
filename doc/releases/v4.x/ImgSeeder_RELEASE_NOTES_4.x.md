@@ -1,5 +1,20 @@
 # ImgSeeder Release Notes 4.x
 
+## 4.5.16
+
+- Release version: `4.5.16`
+- Coordination tag: `v4.5.16`
+
+### Highlights
+- Add iorg list --long --json with typed metadata, optional SHA-256, case-insensitive matching and metadata-only all-files census; preserve legacy filename JSON.
+- Add iorg duplicates with byte or explicit visual matching, literal-source arrays and wildcard dictionaries.
+- Keep discovery read-only and stdout machine-clean; errors return nonzero on stderr.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.16` line.
+
+---
+
 ## 4.5.15
 
 - Release version: `4.5.15`

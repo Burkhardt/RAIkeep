@@ -1,5 +1,20 @@
 # RaiImage Release Notes 4.x
 
+## 4.5.16
+
+- Release version: `4.5.16`
+- Coordination tag: `v4.5.16`
+
+### Highlights
+- Stream SHA-256 and byte confirmation without whole-file buffering.
+- Compare complete normalized image/video visuals under strict-v1 using decoder pipes, complete frame fingerprints and SSIM evidence; audio is excluded.
+- Fail explicitly on unsupported profiles/media, missing tools, resource limits and changing files.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.16` line.
+
+---
+
 ## 4.5.15
 
 - Release version: `4.5.15`

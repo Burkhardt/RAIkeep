@@ -4,7 +4,7 @@ Start the prepared release manually from the umbrella checkout:
 
 ```zsh
 cd /Users/RSB/Projects/GitHub/RAIkeep
-scripts/release-chain.sh 4.5.15
+scripts/release-chain.sh 4.5.16
 ```
 
 Use a zsh session with `PYPI_TOKEN` available and GitHub CLI authentication for
@@ -51,11 +51,11 @@ Read the failure before resuming. Confirm the last completed package is visible
 and its tag identifies the prepared commit. Use the applicable checkpoint:
 
 ```zsh
-scripts/release-chain.sh 4.5.15 --resume-after-amafu
-scripts/release-chain.sh 4.5.15 --resume-after-oslib
-scripts/release-chain.sh 4.5.15 --resume-after-raiimage
-scripts/release-chain.sh 4.5.15 --resume-after-raidiagram
-scripts/release-chain.sh 4.5.15 --resume-after-raiguard
+scripts/release-chain.sh 4.5.16 --resume-after-amafu
+scripts/release-chain.sh 4.5.16 --resume-after-oslib
+scripts/release-chain.sh 4.5.16 --resume-after-raiimage
+scripts/release-chain.sh 4.5.16 --resume-after-raidiagram
+scripts/release-chain.sh 4.5.16 --resume-after-raiguard
 ```
 
 Choose one command for the actual stopping point. `--resume-after-raiguard`
@@ -66,7 +66,7 @@ does not authorize retagging or changing child commits after preparation.
 
 ```zsh
 cd /Users/RSB/Projects/GitHub/RAIkeep
-python3 scripts/bump-version.py 4.5.15
+python3 scripts/bump-version.py 4.5.16
 ```
 
 For a new release, supply the chosen unused version. The manifest-driven bumper
