@@ -71,13 +71,19 @@ amafu list observer <name|all>
    - Leading 2 spaces, badged provider names separated by a single space:
      `  󰰕 OneDrive 󰯴 Dropbox 󰯽 GoogleDrive 󰰃 ICloudDrive`
 2. **`amafu list cloud all` (Explicit Tab Exception)**:
-   - Each row follows the exact contract: `\t{badge} {provider}\t\t"{path}"\n`
-   - Leading literal tab, badge + space + provider name (no colon), exactly two literal separator tabs, and double-quoted path:
+   - **RAI review amendment, 2026-11-02:** replaces the original one-line table.
+   - Each entry follows `{badge} {provider}\n\t"{path}"\n`.
+   - The glyph/name starts at the left margin with no leading whitespace or colon.
+   - The double-quoted path follows on its own line with exactly one leading tab.
      ```text
-     	󰰕 OneDrive		"/Users/RSB/Library/CloudStorage/OneDrive/OneDriveData/"
-     	󰯴 Dropbox		"/Users/RSB/Library/CloudStorage/Dropbox/DropboxData/"
-     	󰯽 GoogleDrive		"/Users/Shared/ServerData/GDriveData/"
-     	󰰃 ICloudDrive		"/Users/RSB/Library/Mobile Documents/com~apple~CloudDocs/ICloudDriveData/"
+     󰰕 OneDrive
+     \t"/Users/RSB/Library/CloudStorage/OneDrive/OneDriveData/"
+     󰯴 Dropbox
+     \t"/Users/RSB/Library/CloudStorage/Dropbox/DropboxData/"
+     󰯽 GoogleDrive
+     \t"/Users/Shared/ServerData/GDriveData/"
+     󰰃 ICloudDrive
+     \t"/Users/RSB/Library/Mobile Documents/com~apple~CloudDocs/ICloudDriveData/"
      ```
 3. **`amafu list observer all`**:
    - Space-padded alignment:
@@ -122,7 +128,7 @@ amafu list observer <name|all>
 | **AC-3** | `amafu list order NonExistent` | `0\n`, exit code 0. |
 | **AC-4** | `amafu list observer Mzansi` | `rsb@Mzansi\n`, exit code 0. |
 | **AC-5** | `amafu list all` | Fails with exit code 2 and helpful usage guidance on stderr. |
-| **AC-6** | `amafu list cloud all` | Formatted table matching `\t{badge} {name}\t\t"{path}"\n` with exact tabs. |
+| **AC-6** | `amafu list cloud all` | Formatted table matching `{badge} {name}\n\t"{path}"\n` with exactly one path-indent tab. |
 | **AC-7** | `amafu list order all` | Badged provider names in `DefaultCloudOrder` sequence with leading 2 spaces. |
 | **AC-8** | `amafu list order -h` | Context-specific help explaining 1-based order and `0` sentinel, even if config is missing. |
 | **AC-9** | Non-existent observer lookup | Fails with exit code 4 and error message on stderr; stdout is empty. |

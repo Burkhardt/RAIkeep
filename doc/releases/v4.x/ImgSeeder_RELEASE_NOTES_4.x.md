@@ -1,5 +1,18 @@
 # ImgSeeder Release Notes 4.x
 
+## 4.5.17
+
+- Release version: `4.5.17`
+- Coordination tag: `v4.5.17`
+
+### Highlights
+- Includes CR075 structured iorg inventory and read-only byte/visual duplicate discovery from the interrupted 4.5.16 preparation. Preserve legacy filename JSON output and expose metadata, hashes, execution-host provenance, and typed evidence through explicit options.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.17` line.
+
+---
+
 ## 4.5.16
 
 - Release version: `4.5.16`

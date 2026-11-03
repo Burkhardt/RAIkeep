@@ -10,6 +10,10 @@ the reference. Help formatting must not change command behavior or machine outpu
   improve the presentation; terminals without these faces still receive the text.
 - Output spaces for alignment, never tab characters. Source-code indentation may
   use tabs; whitespace inside output strings is part of the program's behavior.
+  CR076's `amafu list cloud all` collection is an explicit output-only exception:
+  each provider glyph/name starts at column zero, followed by a newline and one
+  literal tab before its double-quoted path. It has no colon or leading whitespace
+  before the glyph. Help tables and observer collections retain space padding.
 - Use three columns: option label, glyph, description. Right-pad labels to the
   longest label in the table, leave two spaces, reserve two cells for the glyph,
   then leave two spaces before the description. Continuation rows use the same columns.

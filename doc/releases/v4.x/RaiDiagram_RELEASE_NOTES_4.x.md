@@ -1,5 +1,18 @@
 # RaiDiagram Release Notes 4.x
 
+## 4.5.17
+
+- Release version: `4.5.17`
+- Coordination tag: `v4.5.17`
+
+### Highlights
+- Align package versions, dependencies, and documentation with coordinated 4.5.17. No package-specific behavior change.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.17` line.
+
+---
+
 ## 4.5.16
 
 - Release version: `4.5.16`

@@ -1,5 +1,18 @@
 # RaiImage Release Notes 4.x
 
+## 4.5.17
+
+- Release version: `4.5.17`
+- Coordination tag: `v4.5.17`
+
+### Highlights
+- Use NuGet Trusted Publishing with a standardized publish-nuget.yaml workflow. Includes CR075 streamed SHA-256/byte confirmation and strict-v1 decoded image/video matching from the interrupted 4.5.16 preparation. Visual evidence excludes audio and does not authorize deleting or replacing files.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.17` line.
+
+---
+
 ## 4.5.16
 
 - Release version: `4.5.16`

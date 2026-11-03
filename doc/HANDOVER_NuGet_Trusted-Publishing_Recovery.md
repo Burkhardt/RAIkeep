@@ -1,5 +1,10 @@
 # NuGet Trusted Publishing migration and v4.5.16 recovery
 
+Superseded recovery plan: RAI selected a fresh coordinated v4.5.17 release.
+Trusted Publishing migration remains applicable; v4.5.16 recovery commands below
+are historical and must not be executed for the v4.5.17 release. The tested
+changes are now integrated into the local v4.5.17 preparation.
+
 Date: 2026-11-02.
 Status: workflow changes prepared locally; NuGet policy configuration and rollout
 remain pending. No workflow dispatch, package upload, tag change, or remote push

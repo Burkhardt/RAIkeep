@@ -1,5 +1,18 @@
 # OsLib Release Notes 4.x
 
+## 4.5.17
+
+- Release version: `4.5.17`
+- Coordination tag: `v4.5.17`
+
+### Highlights
+- Use NuGet Trusted Publishing with a standardized publish-nuget.yaml workflow. Includes typed CR075 inventory/match contracts, remote cloud-relative requests, and bounded binary command pipes from the interrupted 4.5.16 preparation.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.17` line.
+
+---
+
 ## 4.5.16
 
 - Release version: `4.5.16`

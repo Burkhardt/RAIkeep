@@ -1,5 +1,18 @@
 # RaiGuard Release Notes 4.x
 
+## 4.5.17
+
+- Release version: `4.5.17`
+- Coordination tag: `v4.5.17`
+
+### Highlights
+- Includes RAI002 file-size diagnostics and the semantic FileInfo.Length code fix from the interrupted 4.5.16 preparation. Prefer an existing RaiFile.Length expression when its type can be proved; otherwise offer the supported typed path wrapper.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.17` line.
+
+---
+
 ## 4.5.16
 
 - Release version: `4.5.16`

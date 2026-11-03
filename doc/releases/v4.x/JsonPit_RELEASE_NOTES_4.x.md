@@ -1,5 +1,19 @@
 # JsonPit Release Notes 4.x
 
+## 4.5.17
+
+- Release version: `4.5.17`
+- Coordination tag: `v4.5.17`
+
+### Highlights
+- Renew and verify a fresh remote lease in the live synchronization test; check remote seed completion before ownership assertions. The production lease duration and persistence behavior are unchanged.
+- Use NuGet Trusted Publishing with a standardized publish-nuget.yaml workflow. Align package dependencies with the coordinated 4.5.17 release; storage and mutation behavior are unchanged.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.17` line.
+
+---
+
 ## 4.5.16
 
 - Release version: `4.5.16`

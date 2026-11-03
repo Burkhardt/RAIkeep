@@ -1,5 +1,18 @@
 # RaiUtils Release Notes 4.x
 
+## 4.5.17
+
+- Release version: `4.5.17`
+- Coordination tag: `v4.5.17`
+
+### Highlights
+- Use NuGet Trusted Publishing with a standardized publish-nuget.yaml workflow. Align the package and dependency versions with the coordinated 4.5.17 release.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.17` line.
+
+---
+
 ## 4.5.16
 
 - Release version: `4.5.16`

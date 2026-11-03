@@ -1,5 +1,9 @@
 # RAIkeep 4.5.16 release preparation
 
+Historical preparation record. The interrupted publication is superseded by the
+coordinated v4.5.17 preparation at RAI's instruction. Do not start or resume the
+v4.5.16 chain from the command below. Existing v4.5.16 tags remain historical.
+
 Prepared on 2026-11-02. CR075 is implemented; publication remains at RAI's manual gate.
 
 ## Start manually

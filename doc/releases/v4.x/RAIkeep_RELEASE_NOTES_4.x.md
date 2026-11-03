@@ -1,5 +1,18 @@
 # RAIkeep Release Notes 4.x
 
+## 4.5.17
+
+- Release version: `4.5.17`
+- Coordination tag: `v4.5.17`
+
+### Highlights
+- Add CR076 configuration selectors and contextual help to Amafu. Standardize NuGet Trusted Publishing and workflow filenames. Includes the CR075 media inventory/content matching and RAI002 file-size guidance from the interrupted 4.5.16 preparation.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.5.17` line.
+
+---
+
 ## 4.5.16
 
 - Release version: `4.5.16`

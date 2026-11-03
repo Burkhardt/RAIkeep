@@ -1,6 +1,9 @@
 # Proposed CR — Amafu configuration listing and provider presentation
 
-Status: **Draft for Adele's ratification; not approved for implementation.**
+Status: **Superseded by ratified CR076 and RAI's subsequent two-line cloud-layout amendment.**
+
+Authoritative specification: [CR076](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR076_AIA_to_RAIkeep_Amafu_Configuration_Listing_and_Provider_Style.md).
+The original proposal below is retained as a historical record, not the final output contract.
 Date: 2026-11-02.
 CR number and target release: unassigned.
 Owner: RAIkeep / Amafu. Requested by Dr. Rainer Burkhardt.

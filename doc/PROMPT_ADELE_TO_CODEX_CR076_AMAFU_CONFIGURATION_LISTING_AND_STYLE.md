@@ -18,7 +18,7 @@ Implement Deliverables in RAIkeep (Amafu and CliHelpStyle), targeting Release v4
    - amafu list order <provider>     -> 1-based position or "0\n" sentinel if absent (exit 0)
    - amafu list order all            -> Badged provider names in order with 2 leading spaces (exit 0)
    - amafu list cloud <provider>     -> Raw expanded absolute directory path + \n (exit 0)
-   - amafu list cloud all            -> Exact tab-aligned table with badged names and quoted paths (exit 0)
+   - amafu list cloud all            -> Two lines per entry: unindented badged name, then one tab before the quoted path (exit 0)
    - amafu list observer <name>      -> Raw configured SSH target string + \n (exit 0)
    - amafu list observer all         -> Space-aligned table: "  {name}:  {target}\n" (exit 0)
 
@@ -29,7 +29,7 @@ Implement Deliverables in RAIkeep (Amafu and CliHelpStyle), targeting Release v4
      * All diagnostics/errors strictly on stderr.
    - Interactive Mode (collection lookups):
      * "order all": 2 leading spaces, badged names separated by single space.
-     * "cloud all": Exact format "\t{badge} {provider}\t\t\"{path}\"\n" (tab-indented, two tabs separating name and quoted path).
+     * "cloud all": RAI review amendment: exact format "{badge} {provider}\n\t\"{path}\"\n" (no provider indentation or colon; one tab before the path on its own line).
      * "observer all": Space-padded table alignment.
 
 3. Provider Badges & Visual Styling:
