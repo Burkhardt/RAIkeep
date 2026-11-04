@@ -1,14 +1,14 @@
-# CR077: Pitlint and JsonPit Mutation Guardrails
+# CR077: Vikela and JsonPit Mutation Guardrails
 
-> **Naming Schema:** `CR077_AIA_and_AfricaStage_to_RAIkeep_Pitlint_and_JsonPit_Mutation_Guardrails.md`  
+> **Naming Schema:** `CR077_AIA_and_AfricaStage_to_RAIkeep_Vikela_and_JsonPit_Mutation_Guardrails.md`  
 > **Parent CR:** `CR040_AIA_and_jsonpit_to_RAIkeep_Protected-Attributes-and-In-Memory-Delta-Compaction.md`, `CR069_AIA_to_RAIkeep_PitsCommand-Tenant-Scoping-and-Public-Contracts.md`, `CR070_AIA_to_RAIkeep_RAI007-Test-Run-Switches-and-RAI011-RAI015-Subject-Sites.md`  
 > **Immutability Rule:** The provider agent must NEVER rename or modify this document filename.
 
 **Date:** 2026-11-04  
 **Requesting Agent / PM:** Adele (`7010`, PM AIA Platform) on behalf of AIA Platform, Eliza (`7000`, PM AfricaStage), Sipho (`7001`, AfricaStage Lead Dev), Rita (`7016`, Engenho Lead), and Dr. Rainer Burkhardt (`RAI`, Chief Product Officer)  
-**Target Provider / Repo:** Codex (`7001`, Custodian & Systems Architect) / `Burkhardt/RAIkeep` & `Burkhardt/pitlint`  
+**Target Provider / Repo:** Codex (`7001`, Custodian & Systems Architect) / `Burkhardt/RAIkeep` & `Burkhardt/vikela`  
 **Status:** Ratified & Dispatched to RAIkeep  
-**Target Release:** RAIkeep `v4.6.0` / Pitlint `v0.1.0`
+**Target Release:** RAIkeep `v4.6.0` / Vikela `v0.1.0`
 
 ---
 
@@ -22,11 +22,12 @@ Across the AIA and AfricaStage production fleet, state mutations to JsonPit enti
 4. **Preserving Natural Object-Oriented APIs:** Developers must not be forced into artificial static wrapper facades or clumsy boilerplate to satisfy an overly aggressive linter. The natural, idiomatic object model must remain primary and expressive.
 
 ### 1.2 Ratified Scope
-AIA, AfricaStage, and Engenho formally adopt and ratify the implementation plan developed by Dr. Burkhardt and Codex (`doc/PLAN_Pitlint_and_JsonPit_Guardrails.md`) as **CR077**:
-- **Establish `Pitlint`:** A dedicated Python linting tool and Pylint checker plugin (`Burkhardt/pitlint`), packaged as an optional development tool separate from the `jsonpit` runtime.
-- **Sharpen C# `RAI011` and `RAI012`:** Refine the Roslyn analyzer to track semantic receiver types, variable lifetimes, execution order, and live handles, eliminating false positives on AfricaStage fixtures.
+AIA, AfricaStage, and Engenho formally adopt and ratify the implementation plan developed by Dr. Burkhardt and Codex (`doc/PLAN_Pitlint_and_JsonPit_Guardrails.md`), establishing the canonical identity **`Vikela`** (*isiZulu: "to protect / shield"*):
+- **Establish `Vikela`:** A dedicated Python mutation guardrail tool and Pylint checker plugin (`Burkhardt/vikela`), packaged as an optional development tool separate from the `jsonpit` runtime.
+- **Sharpen C# `RAI011` and `RAI012`:** Refine the Roslyn analyzer (`RaiGuard`) to track semantic receiver types, variable lifetimes, execution order, and live handles, eliminating false positives on AfricaStage fixtures.
 - **Enforce Mutation Parity:** Preserve the object-oriented mutation contract identically across C# and Python.
-- **Zero Production Intrusion:** Keep Pitlint optional, decoupled from production runtime dependencies, and orchestrate deployment via Rita's Engenho runner.
+- **The `--qondisa` Straightening Action:** Provide an official `--qondisa` CLI alias for `--fix` (*"straighten out the mutations"*), pairing the protective shield with active rectification.
+- **Zero Production Intrusion:** Keep Vikela optional, decoupled from production runtime dependencies, and orchestrate deployment via Rita's Engenho runner.
 
 ---
 
@@ -34,14 +35,14 @@ AIA, AfricaStage, and Engenho formally adopt and ratify the implementation plan 
 
 | Surface | Canonical Name |
 | :--- | :--- |
-| **Project Name** | **Pitlint** |
-| **GitHub Repository** | `Burkhardt/pitlint` |
-| **PyPI Distribution** | `pitlint` |
-| **Python Import Module** | `pitlint` |
-| **Standalone CLI** | `pitlint` |
+| **Project Name** | **Vikela** |
+| **GitHub Repository** | `Burkhardt/vikela` |
+| **PyPI Distribution** | `vikela` |
+| **Python Import Module** | `vikela` |
+| **Standalone CLI** | `vikela` |
 
-- **Decoupling Invariant:** Pitlint is strictly optional development tooling. It must **never** be added as a required dependency of the core `jsonpit` runtime or `jpit` CLI.
-- **Dual-Mode Operation:** Functions both as a standalone CLI command (`pitlint <path>`) and as a native Pylint checker plugin (`pylint --load-plugins=pitlint ...`).
+- **Decoupling Invariant:** Vikela is strictly optional development tooling. It must **never** be added as a required dependency of the core `jsonpit` runtime or `jpit` CLI.
+- **Dual-Mode Operation:** Functions both as a standalone CLI command (`vikela <path>`) and as a native Pylint checker plugin (`pylint --load-plugins=vikela ...`).
 
 ---
 
@@ -70,7 +71,7 @@ The Python `jsonpit` implementation must guarantee the exact same observable mut
 
 ## 4. Analyzer Precision & Rule Sharpening
 
-The C# Roslyn analyzer (`RaiGuard.Analyzer`) and Python `Pitlint` checker must implement matching analytical semantics:
+The C# Roslyn analyzer (`RaiGuard.Analyzer`) and Python `Vikela` checker must implement matching analytical semantics:
 
 1. **Semantic Receiver Resolution:** Resolve actual receiver types and method signatures rather than relying on variable name heuristics (e.g. matching identifiers ending in `Pit`).
 2. **Handle Lifetime & Alias Tracking:** Track fresh items, same-owner live handles, detached projections, and unknown values across aliases, type casts, reassignments, method scopes, helpers, and collections.
@@ -84,27 +85,29 @@ The C# Roslyn analyzer (`RaiGuard.Analyzer`) and Python `Pitlint` checker must i
 ## 5. Programmer-Facing Diagnostics & CLI Experience
 
 ### 5.1 Finding Contract
-Every finding emitted by `RaiGuard` or `Pitlint` must provide:
-- Rule ID (e.g. `RAI011`, `RAI012`, or Pylint-native symbol `jsonpit-full-snapshot-write`).
+Every finding emitted by `RaiGuard` or `Vikela` must provide:
+- Rule ID (e.g. `RAI011`, `RAI012`, or Pylint-native symbol `vikela-full-snapshot-write`).
 - Severity (`Warning` / `Error`).
 - File path, Line, and Column.
 - Detailed reason explaining the concurrent cloud sync hazard.
 - Actionable object-oriented remediation guidance.
 - Canonical documentation link.
 
-### 5.2 Standalone CLI Experience (`pitlint`)
-- **Visual Styling:** Adhere strictly to `doc/cli-style.md` for terminal help, colors, and Nerdfont badge integration.
+### 5.2 Standalone CLI Experience (`vikela`)
+- **Visual Styling:** Adhere strictly to `doc/cli-style.md` for terminal help, colors, and Nerdfont badge integration (🛡️ shield badge).
 - **Machine Readability:** Support `--json` output emitting pure JSON on stdout with all diagnostics routed to stderr.
 - **Documented Exit Codes:**
   - `0`: Success, zero lint findings.
   - `1`: Lint findings detected.
   - `2`: CLI syntax or configuration error.
   - `4`: Internal or environment failure.
-- **Safety Invariant:** Default checks must **never** edit source files. Automatic fixes (`--fix`) are strictly opt-in and restricted to proven safe transformations; linters must never infer a patch by silently dropping fields.
+- **Safety Invariant & The Straightening Alias:** Default checks must **never** edit source files. Automatic fixes (`--fix`) are strictly opt-in and restricted to proven safe transformations; linters must never infer a patch by silently dropping fields.
+  - **The `--qondisa` Alias:** The CLI must support `--qondisa` as a first-class, official alias for `--fix` (*"straighten out the mutations"*), celebrating our Southern African substrate heritage.
 
-### 5.3 Editor Integrations
-- **VS Code:** Native integration via Microsoft's Pylint extension with `pitlint` configured in the active environment.
+### 5.3 Editor & Interactive Integrations
+- **VS Code:** Native integration via Microsoft's Pylint extension with `vikela` configured in the active environment (`pylint.args: ["--load-plugins=vikela"]`).
 - **PyCharm:** External Tool definition with file/line navigation in Milestone 1; native inspection plugin in Milestone 2.
+- **JupyterLab / Notebooks:** Support IPython cell magic (`%load_ext vikela`, `%%vikela`) and standalone notebook scanning (`vikela notebook.ipynb`).
 
 ---
 
@@ -132,9 +135,9 @@ Validation must verify:
 
 ## 7. Engenho Handover & Fleet Provisioning
 
-1. **Release Orchestration:** Rita's Engenho runner (`7016`) will manage package building, versioning, and fleet publication. The legacy `release-chain.sh` script is formally retired for Pitlint.
-2. **Selective Deployment:** Fleet provisioning must keep Python runtime tools (`jsonpit`, `jpit`) and optional development tools (`pitlint`) independently selectable.
-3. **Zero Production Bloat:** `pitlint` must **not** be installed on production server nodes (e.g. Mzansi, Ingwe) by default. It is provisioned exclusively on developer workstations and CI runners.
+1. **Release Orchestration:** Rita's Engenho runner (`7016`) will manage package building, versioning, and fleet publication. The legacy `release-chain.sh` script is formally retired for Vikela.
+2. **Selective Deployment:** Fleet provisioning must keep Python runtime tools (`jsonpit`, `jpit`) and optional development tools (`vikela`) independently selectable.
+3. **Zero Production Bloat:** `vikela` must **not** be installed on production server nodes (e.g. Mzansi, Ingwe) by default. It is provisioned exclusively on developer workstations and CI runners.
 
 ---
 
