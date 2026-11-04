@@ -31,3 +31,6 @@
 [submodule "RaiGuard"]
 	path = RaiGuard
 	url = https://github.com/Burkhardt/RaiGuard.git
+[submodule "vikela"]
+	path = vikela
+	url = https://github.com/Burkhardt/vikela.git
