@@ -12,8 +12,8 @@ doc/CR077_AIA_and_AfricaStage_to_RAIkeep_Vikela_and_JsonPit_Mutation_Guardrails.
 ### Mission Objective:
 Implement Deliverables in RAIkeep (RaiGuard.Analyzer, jsonpit) and establish the Vikela package (Burkhardt/vikela), targeting Release v4.6.0 / v0.1.0:
 
-1. Project Identity & Architecture:
-   - Establish Burkhardt/vikela as an optional Python development tool.
+1. Project Identity & Submodule Setup:
+   - Burkhardt/vikela is live on GitHub and wired as a git submodule in RAIkeep at `vikela/`.
    - Dual invocation: standalone CLI (`vikela`) and Pylint plugin (`pylint --load-plugins=vikela`).
    - Strict decoupling: never make Vikela a dependency of jsonpit or jpit runtimes.
 
