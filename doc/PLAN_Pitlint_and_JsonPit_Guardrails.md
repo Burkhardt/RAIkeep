@@ -1,21 +1,22 @@
-# Pitlint and JsonPit mutation guardrails
+# Vikela and JsonPit mutation guardrails
 
 Date: 2026-11-04
 
-Status: Pitlint name and overall direction agreed with Rainer. This is an
-implementation plan, not a publication record or a replacement for a ratified CR.
+Adopted and superseded where specified by ratified CR077; the historical filename is retained.
+
+Status: Vikela name and overall direction agreed with Rainer. Implementation is governed by CR077, targeting RAIkeep 4.6.0 / Vikela 0.1.0. This document is not a publication record.
 
 ## Selected identity
 
 | Surface | Name |
 |---|---|
-| Project | Pitlint |
-| Intended GitHub repository | Burkhardt/pitlint |
-| Intended PyPI distribution | pitlint |
-| Python import module | pitlint |
-| Standalone CLI | pitlint |
+| Project | Vikela |
+| Intended GitHub repository | Burkhardt/vikela |
+| Intended PyPI distribution | vikela |
+| Python import module | vikela |
+| Standalone CLI | vikela |
 
-Pitlint provides Python guardrails for JsonPit and its surrounding framework.
+Vikela provides Python guardrails for JsonPit and its surrounding framework.
 It is optional development tooling, separate from the jsonpit runtime and jpit
 CLI. The name was selected after checking PyPI and GitHub; that check does not
 reserve the name. No repository or PyPI project is created by this document.
@@ -46,7 +47,7 @@ implementation too; do not assume parity from matching method names.
 ## Analyzer work
 
 Sharpen C# RAI011 and relevant RAI012 coverage against the engine contract.
-Introduce Python counterparts through Pitlint, initially focused on these rules.
+Introduce Python counterparts through Vikela, initially focused on these rules.
 
 - Resolve actual receiver types and methods rather than identifiers ending in Pit.
 - Track fresh items, same-owner live handles, detached projections, and unknown
@@ -61,7 +62,7 @@ Introduce Python counterparts through Pitlint, initially focused on these rules.
 - Share analysis between the C# compiler analyzer and rail. State the limits of
   standalone analysis when a project's references cannot be resolved.
 
-The proposed Python implementation is a Pylint checker with a standalone Pitlint
+The proposed Python implementation is a Pylint checker with a standalone Vikela
 CLI adapter. Keep framework rule meanings aligned with RAI011/RAI012 while mapping
 them to valid Pylint-native diagnostic identifiers and descriptive symbols.
 Keep Ruff/mypy configuration; do not duplicate unrelated lint rules.
@@ -87,7 +88,7 @@ redirected plain output retain their established contracts.
 - PyCharm: first provide an External Tool setup with navigable file/line findings.
   Native inline diagnostics and quick fixes are a separate tested integration
   milestone, not an assumed property of the external command.
-- CLI and CI support are part of the first Pitlint delivery.
+- CLI and CI support are part of the first Vikela delivery.
 
 Do not add Pylint or editor integration packages as jsonpit runtime dependencies.
 
@@ -121,7 +122,7 @@ visibility checks, immutable source references, retry/recovery behavior, and the
 umbrella's final release step. Record actual verified contracts, not guessed
 Engenho endpoints or invented request properties.
 
-Provisioning must keep Python runtime tools and optional Pitlint development
+Provisioning must keep Python runtime tools and optional Vikela development
 tooling independently selectable. It must respect an explicit Python skip,
 environment ownership, supported OS/WSL targets, and exact requested versions.
 An isolated global CLI installation does not automatically make the Pylint
@@ -129,6 +130,6 @@ checker importable in a project's selected interpreter; document and verify both
 installation modes. Do not install development lint tooling on every production
 server by default.
 
-The next release number and Pitlint versioning policy will be confirmed during
-release preparation. Do not move existing release tags or add Pitlint to the old
+The next release number and Vikela versioning policy will be confirmed during
+release preparation. Do not move existing release tags or add Vikela to the old
 shell chain as part of naming or planning.

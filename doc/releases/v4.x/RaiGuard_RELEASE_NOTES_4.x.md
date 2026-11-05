@@ -1,5 +1,18 @@
 # RaiGuard Release Notes 4.x
 
+## 4.6.0
+
+- Release version: `4.6.0`
+- Coordination tag: `v4.6.0`
+
+### Highlights
+- Resolve RAI011/RAI012 receivers semantically, track chronological aliases, collections and bounded source helpers, and preserve supported same-owner live mutations. Share semantic analysis with rail and report incomplete reference resolution explicitly.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.6.0` line.
+
+---
+
 ## 4.5.18
 
 - Release version: `4.5.18`

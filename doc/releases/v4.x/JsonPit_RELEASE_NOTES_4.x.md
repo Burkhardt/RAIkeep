@@ -1,5 +1,18 @@
 # JsonPit Release Notes 4.x
 
+## 4.6.0
+
+- Release version: `4.6.0`
+- Coordination tag: `v4.6.0`
+
+### Highlights
+- Enforce live ownership during historical replay as well as normal writes. Preserve the object-oriented live-reference API and verify flush-only same-owner Add, detached-copy rejection, atomic protected-payload validation, sparse history and C#/Python process interoperability in both tracking modes.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.6.0` line.
+
+---
+
 ## 4.5.18
 
 - Release version: `4.5.18`

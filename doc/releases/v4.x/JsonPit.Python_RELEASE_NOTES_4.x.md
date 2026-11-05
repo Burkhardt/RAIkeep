@@ -1,5 +1,18 @@
 # jsonpit-python Release Notes 4.x
 
+## 4.6.0
+
+- Release version: `4.6.0`
+- Coordination tag: `v4.6.0`
+
+### Highlights
+- Make add(live_handle) flush pending changes without replaying the full live projection. Reject detached PitItem copies at client write boundaries and accept matching Id assertions consistently with C#. Validate JSON-array patches before accepting any row and append one combined sparse mutation. Add the instance merge alias and guard live lifecycle property setters in both tracking modes. Keep Vikela entirely optional.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.6.0` line.
+
+---
+
 ## 4.5.18
 
 - Release version: `4.5.18`

@@ -1,10 +1,15 @@
-# Coordinated release
+# Previous release-chain.sh reference
 
-Start the prepared release manually from the umbrella checkout:
+**CR077 / 4.6.0 and Vikela 0.1.0 use Engenho.** Follow
+[the handover for Rita](doc/HANDOVER_TO_RITA_Engenho_CR077_Vikela.md); do not use
+the script below to launch this coordinated release. This document preserves
+the previous script procedure for reference and earlier release recovery.
+
+The existing script invocation shape is:
 
 ```zsh
 cd /Users/RSB/Projects/GitHub/RAIkeep
-scripts/release-chain.sh 4.5.18
+scripts/release-chain.sh 4.6.0
 ```
 
 Use a zsh session with `PYPI_TOKEN` available and GitHub CLI authentication for
@@ -51,12 +56,12 @@ Read the failure before resuming. Confirm the last completed package is visible
 and its tag identifies the prepared commit. Use the applicable checkpoint:
 
 ```zsh
-scripts/release-chain.sh 4.5.18 --resume-after-amafu
-scripts/release-chain.sh 4.5.18 --resume-after-oslib
-scripts/release-chain.sh 4.5.18 --resume-after-raiutils
-scripts/release-chain.sh 4.5.18 --resume-after-raiimage
-scripts/release-chain.sh 4.5.18 --resume-after-raidiagram
-scripts/release-chain.sh 4.5.18 --resume-after-raiguard
+scripts/release-chain.sh 4.6.0 --resume-after-amafu
+scripts/release-chain.sh 4.6.0 --resume-after-oslib
+scripts/release-chain.sh 4.6.0 --resume-after-raiutils
+scripts/release-chain.sh 4.6.0 --resume-after-raiimage
+scripts/release-chain.sh 4.6.0 --resume-after-raidiagram
+scripts/release-chain.sh 4.6.0 --resume-after-raiguard
 ```
 
 Choose one command for the actual stopping point. `--resume-after-raiguard`
@@ -67,7 +72,7 @@ does not authorize retagging or changing child commits after preparation.
 
 ```zsh
 cd /Users/RSB/Projects/GitHub/RAIkeep
-python3 scripts/bump-version.py 4.5.18
+python3 scripts/bump-version.py 4.6.0
 ```
 
 For a new release, supply the chosen unused version. The manifest-driven bumper

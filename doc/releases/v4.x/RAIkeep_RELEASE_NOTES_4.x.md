@@ -1,5 +1,18 @@
 # RAIkeep Release Notes 4.x
 
+## 4.6.0
+
+- Release version: `4.6.0`
+- Coordination tag: `v4.6.0`
+
+### Highlights
+- Implement CR077: semantic JsonPit mutation guardrails, C#/Python runtime parity fixes, and optional Vikela 0.1.0 under the umbrella. Release/provisioning handover is for Engenho; Vikela is excluded from production provisioning by default.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.6.0` line.
+
+---
+
 ## 4.5.18
 
 - Release version: `4.5.18`

@@ -1,5 +1,15 @@
 # RAIkeep
 
+## CR077 and Vikela release orchestration
+
+RAIkeep 4.6.0 includes optional [Vikela 0.1.0](vikela/README.md) Python development
+guardrails. [CR077](doc/CR077_AIA_and_AfricaStage_to_RAIkeep_Vikela_and_JsonPit_Mutation_Guardrails.md)
+governs implementation. Publication and selective provisioning use Rita's Engenho
+runner; see the [CR077 handover](doc/HANDOVER_TO_RITA_Engenho_CR077_Vikela.md).
+The legacy shell chain does not publish Vikela. Development lint tooling is not
+installed on production servers by default.
+
+
 ## Terminal font for RAIkeep CLIs
 
 Amafu (`amafu`), RaidSeeder (`raid`), ImgSeeder (`iorg`), PitSeeder (`pits`), and RaiGuard (`rail`) use embedded Nerd Font provider and numbered-option glyphs in their help output. Installation instructions for Blink on iPadOS, macOS, and Ubuntu—including the Blink CSS font-family stylesheet URL—are in [TERMINAL_FONTS.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/TERMINAL_FONTS.md).
@@ -26,7 +36,7 @@ validation, dependency-order documentation, and sequential release automation.
 
 ## Current release line
 
-The prepared coordinated release is `4.5.18`. CR075 adds structured media
+The prepared coordinated release is `4.6.0`. CR075 adds structured media
 inventory and read-only byte/visual content matching. RAI002 now gives specific
 file-size guidance and a semantic RaiFile.Length replacement. All child package
 versions and dependencies remain aligned.
@@ -51,20 +61,20 @@ The [RAIkeep Manifesto](https://github.com/Burkhardt/RAIkeep/blob/main/MANIFESTO
 explains why transparent, historical JSON matters for agentic engineering and
 defines JsonPit's asynchronous persistence and eventual-durability model.
 
-Prepared 4.5.18 release notes:
+Prepared 4.6.0 release notes:
 
-- [Amafu 4.5.18](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/Amafu_RELEASE_NOTES_4.x.md#4518)
-- [OsLibCore 4.5.18](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/OsLib_RELEASE_NOTES_4.x.md#4518)
-- [RaiUtils 4.5.18](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiUtils_RELEASE_NOTES_4.x.md#4518)
-- [RaiImage 4.5.18](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiImage_RELEASE_NOTES_4.x.md#4518)
-- [RaiDiagram 4.5.18](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiDiagram_RELEASE_NOTES_4.x.md#4518)
-- [RaidSeeder 4.5.18](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaidSeeder_RELEASE_NOTES_4.x.md#4518)
-- [JsonPit 4.5.18](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit_RELEASE_NOTES_4.x.md#4518)
-- [JsonPit.Python 4.5.18](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit.Python_RELEASE_NOTES_4.x.md#4518)
-- [ImgSeeder 4.5.18](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/ImgSeeder_RELEASE_NOTES_4.x.md#4518)
-- [PitSeeder 4.5.18](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/PitSeeder_RELEASE_NOTES_4.x.md#4518)
-- [RaiGuard 4.5.18](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiGuard_RELEASE_NOTES_4.x.md#4518)
-- [RAIkeep 4.5.18](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#4518)
+- [Amafu 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/Amafu_RELEASE_NOTES_4.x.md#460)
+- [OsLibCore 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/OsLib_RELEASE_NOTES_4.x.md#460)
+- [RaiUtils 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiUtils_RELEASE_NOTES_4.x.md#460)
+- [RaiImage 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiImage_RELEASE_NOTES_4.x.md#460)
+- [RaiDiagram 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiDiagram_RELEASE_NOTES_4.x.md#460)
+- [RaidSeeder 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaidSeeder_RELEASE_NOTES_4.x.md#460)
+- [JsonPit 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit_RELEASE_NOTES_4.x.md#460)
+- [JsonPit.Python 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit.Python_RELEASE_NOTES_4.x.md#460)
+- [ImgSeeder 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/ImgSeeder_RELEASE_NOTES_4.x.md#460)
+- [PitSeeder 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/PitSeeder_RELEASE_NOTES_4.x.md#460)
+- [RaiGuard 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiGuard_RELEASE_NOTES_4.x.md#460)
+- [RAIkeep 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#460)
 
 The prior coordinated line remains documented in [RAIkeep 4.1.0 release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#410).
 
@@ -89,15 +99,21 @@ dotnet test PitSeeder/PitSeeder.slnx
 
 The JsonPit suite includes real cloud/remote scenarios and a separately documented open concurrency regression. Use the validation scope stated in the JsonPit release notes rather than hiding those distinctions behind incidental test-runner parallelism or local configuration substitution.
 
-## Strict release gate
+## Release execution
+
+For CR077 / 4.6.0 and Vikela 0.1.0, use Engenho with the
+[handover for Rita](doc/HANDOVER_TO_RITA_Engenho_CR077_Vikela.md). The script
+reference below records the previous mechanism; it is not the CR077 launch command.
 
 Publication requires explicit approval. Preparing versions, documentation, commits, or packages does not authorize a push, tag, workflow dispatch, or NuGet publication.
 
-After approval, use one release mechanism for the chain. The established local orchestrator is:
+### Previous local script (reference only)
+
+The existing script remains available for earlier release recovery. Its invocation shape is:
 
 ```bash
 cd /Users/RSB/Projects/GitHub/RAIkeep
-scripts/release-chain.sh 4.5.18
+scripts/release-chain.sh 4.6.0
 ```
 
 Before publication begins, all eleven child release commits and their exact submodule pointers must already be committed on the umbrella `main`. The script preflights that state, then publishes each child in dependency order. Only after every child package is visible does it push and tag the umbrella commit. The umbrella tag creates the synchronized GitHub Release; it publishes no NuGet package.

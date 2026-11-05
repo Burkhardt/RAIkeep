@@ -1,0 +1,292 @@
+{
+  "SourceCommits": {
+    "Amafu": "8cbc2917b3ae3e036543232951081418e4620b69",
+    "OsLib": "99931b4885210188ba28d948bc3811d38f87e921",
+    "RaiUtils": "f82aa15e3a2a2305d59ad9c1f5cbf508ccc0f485",
+    "RaiImage": "e23a49384c02f439aa7ebf2c651777ce2a5071ae",
+    "RaiDiagram": "964b08daff0256dbe8018e342cd3e5aedbf5fc06",
+    "RaidSeeder": "0caac84e48b42b583dae2d442ccab576ffd0d3f0",
+    "JsonPit": "dbf0269fc31c44cffa3a9477abf69cb7d0eb9c9a",
+    "JsonPit.Python": "fb953904bf9e66e86dd5cc8e7f64c8ccbbfc50fa",
+    "ImgSeeder": "93c8b37bc8f238172be68dfeb21c0793d6595389",
+    "PitSeeder": "d55fedc3088ffb5baffb7f0d4edc57f66aa14f7c",
+    "RaiGuard": "83cecd4a6af19c3b2289ff4842bd8428fa6516e6",
+    "vikela": "8b51e1376dea35fb896035fe48a7f8ad5b4be323"
+  },
+  "Artifacts": [
+    {
+      "File": "Amafu.4.6.0.nupkg",
+      "Sha256": "2f7a12b3174612899294817548a5f473deeeaa0d882943185394d3d119219afc",
+      "SizeBytes": 59221,
+      "Name": "Amafu",
+      "Version": "4.6.0"
+    },
+    {
+      "File": "ImgSeeder.4.6.0.nupkg",
+      "Sha256": "8d4c4f2453371f4f7debbb57393a6a63720ac6eba4968211b338f45cf5163f19",
+      "SizeBytes": 1861164,
+      "Name": "ImgSeeder",
+      "Version": "4.6.0"
+    },
+    {
+      "File": "JsonPit.4.6.0.nupkg",
+      "Sha256": "e83bcf0454791db9a4297de844ef9090ac75a90ec9277930c6fb4bce9c495d48",
+      "SizeBytes": 78436,
+      "Name": "JsonPit",
+      "Version": "4.6.0"
+    },
+    {
+      "File": "OsLibCore.4.6.0.nupkg",
+      "Sha256": "1f2f0c11a630d3b7a03a7680c217e575cd3997623b8b0a9191c9271a8c98ad2a",
+      "SizeBytes": 114639,
+      "Name": "OsLibCore",
+      "Version": "4.6.0"
+    },
+    {
+      "File": "PitSeeder.4.6.0.nupkg",
+      "Sha256": "d81afc0eba706874eb75b493703cc2a05d5b6c47edf81322ea8b347097e4350f",
+      "SizeBytes": 1056566,
+      "Name": "PitSeeder",
+      "Version": "4.6.0"
+    },
+    {
+      "File": "RaiDiagram.4.6.0.nupkg",
+      "Sha256": "a805c6e925509f58542a5e8e9bb6b5bc6e36615bdf9d2b4b78d11d5998f9fa1d",
+      "SizeBytes": 102637,
+      "Name": "RaiDiagram",
+      "Version": "4.6.0"
+    },
+    {
+      "File": "RaiGuard.4.6.0.nupkg",
+      "Sha256": "342d9ee4d6042ba38ec4482a7d689b4ab45e6ae03516804e7755aab71ab206c7",
+      "SizeBytes": 9540058,
+      "Name": "RaiGuard",
+      "Version": "4.6.0"
+    },
+    {
+      "File": "RaiGuard.Analyzer.4.6.0.nupkg",
+      "Sha256": "513b90cb24d374d9d07fb454d1a18a3b5d7741332cbb9cbbd65064dcc011c9c5",
+      "SizeBytes": 63367,
+      "Name": "RaiGuard.Analyzer",
+      "Version": "4.6.0"
+    },
+    {
+      "File": "RaiImage.4.6.0.nupkg",
+      "Sha256": "5a81fe15c8fcc1865a0da3c18f44292afb9eeb219bf662a04d49f3d76f5a0741",
+      "SizeBytes": 74127,
+      "Name": "RaiImage",
+      "Version": "4.6.0"
+    },
+    {
+      "File": "RaiUtils.4.6.0.nupkg",
+      "Sha256": "a044ac02bd22f7e00c2746b6cb4f8889e0f1ea5f6b59b3e1ea54493dbf588932",
+      "SizeBytes": 18529,
+      "Name": "RaiUtils",
+      "Version": "4.6.0"
+    },
+    {
+      "File": "RaidSeeder.4.6.0.nupkg",
+      "Sha256": "2204b343f89defd8cc0e52b7e4d034663dba0977028ce90c1e4b7e2a47daddd2",
+      "SizeBytes": 1588861,
+      "Name": "RaidSeeder",
+      "Version": "4.6.0"
+    },
+    {
+      "File": "jpit-4.6.0-py3-none-any.whl",
+      "Sha256": "a6ec5e84eef344559b2b71208c5484cd4df507eca080fd7c89c43f69c219ad60",
+      "SizeBytes": 4603,
+      "Name": "jpit",
+      "Version": "4.6.0",
+      "RequiresDist": [
+        "jsonpit==4.6.0"
+      ]
+    },
+    {
+      "File": "jpit-4.6.0.tar.gz",
+      "Sha256": "69fd3a2169ea757404ca939416d54d1d1f9926c876644197e436b4cbc73de0bd",
+      "SizeBytes": 1615
+    },
+    {
+      "File": "jsonpit-4.6.0-py3-none-any.whl",
+      "Sha256": "5f907a6c19258201ac7e5b5b9be899d8b37112ebbb5f30453d67f0bbb6c1d906",
+      "SizeBytes": 64182,
+      "Name": "jsonpit",
+      "Version": "4.6.0",
+      "RequiresDist": [
+        "mypy>=1.10; extra == 'dev'",
+        "pytest-cov>=5.0; extra == 'dev'",
+        "pytest>=8.0; extra == 'dev'",
+        "ruff>=0.5; extra == 'dev'"
+      ]
+    },
+    {
+      "File": "jsonpit-4.6.0.tar.gz",
+      "Sha256": "d1f27aed0c2cdf8b06638f4884d70b29455181540798b5d5d24eddb1f7dce9d9",
+      "SizeBytes": 61648
+    },
+    {
+      "File": "vikela-0.1.0-py3-none-any.whl",
+      "Sha256": "77b53ed86ce9fc3180b86aff31323e133c885be955a8ed395f0f7ccd189f7dee",
+      "SizeBytes": 18984,
+      "Name": "vikela",
+      "Version": "0.1.0",
+      "RequiresDist": [
+        "build; extra == 'dev'",
+        "ipython>=8; extra == 'dev'",
+        "pylint<5,>=3.3; extra == 'dev'",
+        "pytest>=8; extra == 'dev'",
+        "twine; extra == 'dev'",
+        "ipython>=8; extra == 'notebook'",
+        "pylint<5,>=3.3; extra == 'pylint'"
+      ]
+    },
+    {
+      "File": "vikela-0.1.0.tar.gz",
+      "Sha256": "e04f43589b49564b2de5fc087bc3ebe6b95560cb3ae7651659ad4aae32309e0c",
+      "SizeBytes": 25926
+    }
+  ],
+  "Published": false,
+  "Verification": {
+    "DotnetSolution": {
+      "Passed": 1192,
+      "Failed": 0,
+      "Skipped": 0,
+      "Command": "dotnet test RAIkeep.slnx --no-restore --nologo"
+    },
+    "PythonRuntime": {
+      "Passed": 131
+    },
+    "Vikela": {
+      "Passed": 70
+    },
+    "LegacyConsistencyChecks": 141,
+    "InstalledWheelAdapters": [
+      "CLI",
+      "Pylint",
+      "IPython"
+    ],
+    "LocalPythonVersion": "3.14",
+    "RemoteCiMatrixRun": false,
+    "EditorGuiTested": false,
+    "HistoricalSources": [
+      {
+        "Ref": "1710524",
+        "Commit": "17105246dc09d9d5e84142553ec7ab80678b539b",
+        "SourceFiles": 95,
+        "Findings": [],
+        "PositiveControlCount": 1,
+        "RealSites": [
+          {
+            "File": "Controllers/ActivityController.cs",
+            "Lines": [
+              1186
+            ]
+          },
+          {
+            "File": "Controllers/ObjectController.cs",
+            "Lines": [
+              372
+            ]
+          },
+          {
+            "File": "Services/UseCaseInstantiator.cs",
+            "Lines": [
+              131,
+              198
+            ]
+          }
+        ],
+        "ResolutionNotes": "rail: inspection compilation has unresolved or invalid code; RAI011/RAI012 report only proven cases. No finding does not establish complete mutation safety. Use the compiler analyzer for project-context validation."
+      },
+      {
+        "Ref": "8ef1bb3",
+        "Commit": "8ef1bb3bfd9da1bd2c75c73c9921e1b277b3d2f6",
+        "SourceFiles": 96,
+        "Findings": [],
+        "PositiveControlCount": 1,
+        "RealSites": [
+          {
+            "File": "Controllers/ActivityController.cs",
+            "Lines": [
+              1187
+            ]
+          },
+          {
+            "File": "Controllers/ObjectController.cs",
+            "Lines": [
+              376
+            ]
+          },
+          {
+            "File": "Services/UseCaseInstantiator.cs",
+            "Lines": [
+              136,
+              204
+            ]
+          }
+        ],
+        "ResolutionNotes": "rail: inspection compilation has unresolved or invalid code; RAI011/RAI012 report only proven cases. No finding does not establish complete mutation safety. Use the compiler analyzer for project-context validation."
+      },
+      {
+        "Ref": "2a66ee4",
+        "Commit": "2a66ee4321ea85dfb094b3022fdcde1e2b9bab64",
+        "SourceFiles": 97,
+        "Findings": [],
+        "PositiveControlCount": 1,
+        "RealSites": [
+          {
+            "File": "Controllers/ActivityController.cs",
+            "Lines": [
+              1187
+            ]
+          },
+          {
+            "File": "Controllers/ObjectController.cs",
+            "Lines": [
+              376
+            ]
+          },
+          {
+            "File": "Services/UseCaseInstantiator.cs",
+            "Lines": [
+              136,
+              204
+            ]
+          }
+        ],
+        "ResolutionNotes": "rail: inspection compilation has unresolved or invalid code; RAI011/RAI012 report only proven cases. No finding does not establish complete mutation safety. Use the compiler analyzer for project-context validation."
+      },
+      {
+        "Ref": "fbf5d32",
+        "Commit": "fbf5d32a60509a2e8db9de0be4c7a94edcbdba3c",
+        "SourceFiles": 97,
+        "Findings": [],
+        "PositiveControlCount": 1,
+        "RealSites": [
+          {
+            "File": "Controllers/ActivityController.cs",
+            "Lines": [
+              1187
+            ]
+          },
+          {
+            "File": "Controllers/ObjectController.cs",
+            "Lines": [
+              376
+            ]
+          },
+          {
+            "File": "Services/UseCaseInstantiator.cs",
+            "Lines": [
+              136,
+              205
+            ]
+          }
+        ],
+        "ResolutionNotes": "rail: inspection compilation has unresolved or invalid code; RAI011/RAI012 report only proven cases. No finding does not establish complete mutation safety. Use the compiler analyzer for project-context validation."
+      }
+    ],
+    "EarlierRemoteFailure": "An earlier full run failed RemoteSync_MasterClient_FullScenario after 12m38s. An isolated rerun passed in 9m12s; the final complete run passed it in 2m19s and the remote conflict scenario in 55s. Provider read latency was observed; root cause was not established. No service or mount changes were made."
+  }
+}
