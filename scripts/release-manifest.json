@@ -1,6 +1,116 @@
 {
 	"$schema": "./release-manifest.schema.json",
+	"name": "RAIkeep",
 	"current_version": "4.6.0",
+	"packages": [
+		{
+			"name": "Amafu",
+			"csproj": "Amafu/amafu/amafu.csproj",
+			"sln": "Amafu.slnx",
+			"packageId": "amafu",
+			"type": "nuget",
+			"workflow": "publish-nuget.yaml"
+		},
+		{
+			"name": "OsLib",
+			"csproj": "OsLib/OsLib.csproj",
+			"sln": "OsLib.slnx",
+			"packageId": "oslibcore",
+			"type": "nuget",
+			"workflow": "publish-nuget.yaml"
+		},
+		{
+			"name": "RaiUtils",
+			"csproj": "RaiUtils/RaiUtils.csproj",
+			"sln": "RaiUtils.slnx",
+			"packageId": "raiutils",
+			"type": "nuget",
+			"workflow": "publish-nuget.yaml"
+		},
+		{
+			"name": "RaiImage",
+			"csproj": "RaiImage/RaiImage.csproj",
+			"sln": "RaiImage.slnx",
+			"packageId": "raiimage",
+			"type": "nuget",
+			"workflow": "publish-nuget.yaml"
+		},
+		{
+			"name": "RaiDiagram",
+			"csproj": "RaiDiagram/RaiDiagram.csproj",
+			"sln": "RaiDiagram.slnx",
+			"packageId": "raidiagram",
+			"type": "nuget",
+			"workflow": "publish-nuget.yaml"
+		},
+		{
+			"name": "RaidSeeder",
+			"csproj": "RaidSeeder/raid/raid.csproj",
+			"sln": "RaidSeeder.slnx",
+			"packageId": "raidseeder",
+			"type": "nuget",
+			"workflow": "publish-nuget.yaml"
+		},
+		{
+			"name": "JsonPit",
+			"csproj": "JsonPit/JsonPit.csproj",
+			"sln": "JsonPit.slnx",
+			"packageId": "jsonpit",
+			"type": "nuget",
+			"workflow": "publish-nuget.yaml"
+		},
+		{
+			"name": "JsonPit.Python",
+			"pyproject": "JsonPit.Python/pyproject.toml",
+			"packageId": "jsonpit",
+			"type": "pypi",
+			"publishCommand": [
+				"twine",
+				"upload",
+				"--non-interactive",
+				"--skip-existing",
+				"/private/tmp/raikeep-4.6.0-candidates/python/jsonpit-4.6.0-py3-none-any.whl",
+				"/private/tmp/raikeep-4.6.0-candidates/python/jsonpit-4.6.0.tar.gz",
+				"/private/tmp/raikeep-4.6.0-candidates/python/jpit-4.6.0-py3-none-any.whl",
+				"/private/tmp/raikeep-4.6.0-candidates/python/jpit-4.6.0.tar.gz"
+			],
+			"extraPackages": ["jpit"]
+		},
+		{
+			"name": "vikela",
+			"pyproject": "vikela/pyproject.toml",
+			"packageId": "vikela",
+			"type": "pypi",
+			"workflow": "publish-pypi.yaml",
+			"repo": "Burkhardt/vikela",
+			"dispatch": true
+		},
+		{
+			"name": "ImgSeeder",
+			"csproj": "ImgSeeder/ImgSeeder.csproj",
+			"sln": "ImgSeeder.slnx",
+			"packageId": "imgseeder",
+			"type": "nuget",
+			"workflow": "publish-nuget.yaml"
+		},
+		{
+			"name": "PitSeeder",
+			"csproj": "PitSeeder/pits/pits.csproj",
+			"sln": "PitSeeder.slnx",
+			"packageId": "pitseeder",
+			"type": "nuget",
+			"workflow": "publish-nuget.yaml"
+		},
+		{
+			"name": "RaiGuard",
+			"csproj": "RaiGuard/rail/rail.csproj",
+			"sln": "RaiGuard.slnx",
+			"packageId": "raiguard",
+			"type": "nuget",
+			"workflow": "publish.yaml",
+			"extraPackages": ["raiguard.analyzer"]
+		}
+	],
 	"release_notes": [
 		"doc/releases/v{major}.x/RAIkeep_RELEASE_NOTES_{major}.x.md",
 		"doc/releases/v{major}.x/Amafu_RELEASE_NOTES_{major}.x.md",
