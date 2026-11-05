@@ -1,5 +1,13 @@
 # RAIkeep
 
+## CR070 in 4.6.1
+
+RAIkeep 4.6.1 adds Os.RunSwitch for process-invocation opt-ins and justified,
+rule-specific method/class exemptions in RaiGuard. See the
+[CR070 acceptance and release handover](doc/HANDOVER_CR070_RunSwitch_and_Declared_Rule_Exemptions.md).
+The suite, including optional Vikela, shares the same 4.6.1 version. Publication
+uses `engenho release 4.6.1`; provisioning remains separate.
+
 ## CR077 and Vikela release orchestration
 
 RAIkeep 4.6.0 includes optional [Vikela 4.6.0](vikela/README.md) Python development
@@ -36,7 +44,7 @@ validation, dependency-order documentation, and sequential release automation.
 
 ## Current release line
 
-The prepared coordinated release is `4.6.0`. CR075 adds structured media
+The prepared coordinated release is `4.6.1`. CR075 adds structured media
 inventory and read-only byte/visual content matching. RAI002 now gives specific
 file-size guidance and a semantic RaiFile.Length replacement. All child package
 versions and dependencies remain aligned.
@@ -61,20 +69,20 @@ The [RAIkeep Manifesto](https://github.com/Burkhardt/RAIkeep/blob/main/MANIFESTO
 explains why transparent, historical JSON matters for agentic engineering and
 defines JsonPit's asynchronous persistence and eventual-durability model.
 
-Prepared 4.6.0 release notes:
+Prepared 4.6.1 release notes:
 
-- [Amafu 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/Amafu_RELEASE_NOTES_4.x.md#460)
-- [OsLibCore 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/OsLib_RELEASE_NOTES_4.x.md#460)
-- [RaiUtils 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiUtils_RELEASE_NOTES_4.x.md#460)
-- [RaiImage 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiImage_RELEASE_NOTES_4.x.md#460)
-- [RaiDiagram 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiDiagram_RELEASE_NOTES_4.x.md#460)
-- [RaidSeeder 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaidSeeder_RELEASE_NOTES_4.x.md#460)
-- [JsonPit 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit_RELEASE_NOTES_4.x.md#460)
-- [JsonPit.Python 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit.Python_RELEASE_NOTES_4.x.md#460)
-- [ImgSeeder 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/ImgSeeder_RELEASE_NOTES_4.x.md#460)
-- [PitSeeder 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/PitSeeder_RELEASE_NOTES_4.x.md#460)
-- [RaiGuard 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiGuard_RELEASE_NOTES_4.x.md#460)
-- [RAIkeep 4.6.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#460)
+- [Amafu 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/Amafu_RELEASE_NOTES_4.x.md#461)
+- [OsLibCore 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/OsLib_RELEASE_NOTES_4.x.md#461)
+- [RaiUtils 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiUtils_RELEASE_NOTES_4.x.md#461)
+- [RaiImage 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiImage_RELEASE_NOTES_4.x.md#461)
+- [RaiDiagram 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiDiagram_RELEASE_NOTES_4.x.md#461)
+- [RaidSeeder 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaidSeeder_RELEASE_NOTES_4.x.md#461)
+- [JsonPit 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit_RELEASE_NOTES_4.x.md#461)
+- [JsonPit.Python 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit.Python_RELEASE_NOTES_4.x.md#461)
+- [ImgSeeder 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/ImgSeeder_RELEASE_NOTES_4.x.md#461)
+- [PitSeeder 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/PitSeeder_RELEASE_NOTES_4.x.md#461)
+- [RaiGuard 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiGuard_RELEASE_NOTES_4.x.md#461)
+- [RAIkeep 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#461)
 
 The prior coordinated line remains documented in [RAIkeep 4.1.0 release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#410).
 
@@ -113,7 +121,7 @@ The existing script remains available for earlier release recovery. Its invocati
 
 ```bash
 cd /Users/RSB/Projects/GitHub/RAIkeep
-scripts/release-chain.sh 4.6.0
+scripts/release-chain.sh 4.6.1
 ```
 
 Before publication begins, all eleven child release commits and their exact submodule pointers must already be committed on the umbrella `main`. The script preflights that state, then publishes each child in dependency order. Only after every child package is visible does it push and tag the umbrella commit. The umbrella tag creates the synchronized GitHub Release; it publishes no NuGet package.

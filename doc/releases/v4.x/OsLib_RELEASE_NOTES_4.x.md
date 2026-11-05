@@ -1,5 +1,20 @@
 # OsLib Release Notes 4.x
 
+## 4.6.1
+
+- Release version: `4.6.1`
+- Coordination tag: `v4.6.1`
+
+### Highlights
+- Add Os.RunSwitch(string name) for read-only developer/CI invocation switches, returning null when unset without consulting Os.Config.
+- Add RaiRuleExemptionAttribute(ruleId, justification), scoped to a method or class with an explicit rule and nonblank reason; class declarations do not inherit into derived classes.
+- Defer configuration initialization and its existing writable-temp-directory probe until first configured-runtime access, so a run-switch read needs no storage startup.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.6.1` line.
+
+---
+
 ## 4.6.0
 
 - Release version: `4.6.0`

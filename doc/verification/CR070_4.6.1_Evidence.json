@@ -1,0 +1,225 @@
+{
+  "SourceCommits": {
+    "Amafu": "0398cf425b5f7d22beb72c364b392511cb9f418f",
+    "OsLib": "724141a5faed4db9819073dd0bd16278c8321163",
+    "RaiUtils": "9e9ec5e4d369e24b0291ee7965e9caee9ede0e55",
+    "RaiImage": "08925c046beea7ca75495502954d703dd9120681",
+    "RaiDiagram": "bac3fa637c55cdbc7211675575ec52b689e3f6bb",
+    "RaidSeeder": "3189ee72f219e3b3ace30bf04abb428d025c0f4b",
+    "JsonPit": "b7f2f45f77a0c3098d181ca9d76e7559f5f9c10f",
+    "JsonPit.Python": "9dfcd565c6d2db077a5ca9fd1a6e768e524cb693",
+    "ImgSeeder": "850b7786e74966fde9e2ac13e4c8a644b6a41d5d",
+    "PitSeeder": "ecd559ec6cd9a0b40b719792f83331301cade712",
+    "RaiGuard": "70106bab1c6a9a22487b1cc6bbc7db167913a802",
+    "vikela": "e30cce4a3ce84ef815215169ee362a4d41305cc0"
+  },
+  "Artifacts": [
+    {
+      "File": "Amafu.4.6.1.nupkg",
+      "Sha256": "0211b096e6e4082c29e0a13e3ef86b3dc1959b6e1da3c6ed9f0501378aa6639d",
+      "SizeBytes": 59216,
+      "Name": "Amafu",
+      "Version": "4.6.1"
+    },
+    {
+      "File": "ImgSeeder.4.6.1.nupkg",
+      "Sha256": "0362e125760a074e5f2eba12f2928bd3756eb21bc8198ba089cd7466f24d26f2",
+      "SizeBytes": 1862175,
+      "Name": "ImgSeeder",
+      "Version": "4.6.1"
+    },
+    {
+      "File": "JsonPit.4.6.1.nupkg",
+      "Sha256": "e551e17ef7f334a67abdc9e7b528d767b74c14a9f4c148678ac200ead93e4253",
+      "SizeBytes": 87345,
+      "Name": "JsonPit",
+      "Version": "4.6.1",
+      "Icon": "assets/logo-128x128.png"
+    },
+    {
+      "File": "OsLibCore.4.6.1.nupkg",
+      "Sha256": "aed0a832f196c2b9cfa9395c02de96ac6bc3075809df55bec93466f6b1d96cab",
+      "SizeBytes": 115460,
+      "Name": "OsLibCore",
+      "Version": "4.6.1"
+    },
+    {
+      "File": "PitSeeder.4.6.1.nupkg",
+      "Sha256": "02a4eb1ea1732f07d44162f4d5029137a22a42bf9755c17500f4dc4250a260d3",
+      "SizeBytes": 1057592,
+      "Name": "PitSeeder",
+      "Version": "4.6.1"
+    },
+    {
+      "File": "RaiDiagram.4.6.1.nupkg",
+      "Sha256": "f775e2a06413684208e17a82c6d1e11e52f2d34c898f8a5b2a0641c0de7cc11b",
+      "SizeBytes": 102644,
+      "Name": "RaiDiagram",
+      "Version": "4.6.1"
+    },
+    {
+      "File": "RaiGuard.4.6.1.nupkg",
+      "Sha256": "0cbef40aae7ce9e1abc3121b1a9aa37ae03719f69aa77f52b36629cf9dc534b2",
+      "SizeBytes": 9542833,
+      "Name": "RaiGuard",
+      "Version": "4.6.1"
+    },
+    {
+      "File": "RaiGuard.Analyzer.4.6.1.nupkg",
+      "Sha256": "646116d749e773e090604ac52f69cd34859078e8c9647e03d35c08209dc2e53c",
+      "SizeBytes": 64748,
+      "Name": "RaiGuard.Analyzer",
+      "Version": "4.6.1"
+    },
+    {
+      "File": "RaiImage.4.6.1.nupkg",
+      "Sha256": "e1901c1ff948baa21ce5a2f77dc312853211d1de8798558429b15b3286353619",
+      "SizeBytes": 74136,
+      "Name": "RaiImage",
+      "Version": "4.6.1"
+    },
+    {
+      "File": "RaiUtils.4.6.1.nupkg",
+      "Sha256": "8d55c721d5b8439d888671e98252832e7e7bd82ae9765bd74cf82b0c40a022b6",
+      "SizeBytes": 18522,
+      "Name": "RaiUtils",
+      "Version": "4.6.1"
+    },
+    {
+      "File": "RaidSeeder.4.6.1.nupkg",
+      "Sha256": "3ee9e4027bb9311680c3ecfc9ded84e2c8b30be6fb4c27476e8a01652acc03ae",
+      "SizeBytes": 1589865,
+      "Name": "RaidSeeder",
+      "Version": "4.6.1"
+    },
+    {
+      "File": "jpit-4.6.1-py3-none-any.whl",
+      "Sha256": "172628715a0e2e8e3be27f573cf458d56fb5824b9b5d10109e370db8b01f14f4",
+      "SizeBytes": 4605,
+      "Name": "jpit",
+      "Version": "4.6.1",
+      "RequiresDist": [
+        "jsonpit==4.6.1"
+      ]
+    },
+    {
+      "File": "jpit-4.6.1.tar.gz",
+      "Sha256": "1034a20727016da28ab778ba59b65251e09f3ae2881d88998b32b479b8356381",
+      "SizeBytes": 1617,
+      "Name": "jpit",
+      "Version": "4.6.1"
+    },
+    {
+      "File": "jsonpit-4.6.1-py3-none-any.whl",
+      "Sha256": "81caa2c52f8da142a6351a29118cd5c04317226a6800307f13134359abb4c577",
+      "SizeBytes": 64236,
+      "Name": "jsonpit",
+      "Version": "4.6.1",
+      "RequiresDist": [
+        "mypy>=1.10; extra == 'dev'",
+        "pytest-cov>=5.0; extra == 'dev'",
+        "pytest>=8.0; extra == 'dev'",
+        "ruff>=0.5; extra == 'dev'"
+      ],
+      "RuntimeVersion": "4.6.1"
+    },
+    {
+      "File": "jsonpit-4.6.1.tar.gz",
+      "Sha256": "ef87bc19b601a79e4bb6819299b80d3f167d9cc0fde90e8b19a3175a68f8d082",
+      "SizeBytes": 230174,
+      "Name": "jsonpit",
+      "Version": "4.6.1"
+    },
+    {
+      "File": "vikela-4.6.1-py3-none-any.whl",
+      "Sha256": "5752cf6dc0fe946309ba5d172d07617dc18765ebd79b4ef1ca80e53626a57fe8",
+      "SizeBytes": 19009,
+      "Name": "vikela",
+      "Version": "4.6.1",
+      "RequiresDist": [
+        "build; extra == 'dev'",
+        "ipython>=8; extra == 'dev'",
+        "pylint<5,>=3.3; extra == 'dev'",
+        "pytest>=8; extra == 'dev'",
+        "twine; extra == 'dev'",
+        "ipython>=8; extra == 'notebook'",
+        "pylint<5,>=3.3; extra == 'pylint'"
+      ],
+      "RuntimeVersion": "4.6.1"
+    },
+    {
+      "File": "vikela-4.6.1.tar.gz",
+      "Sha256": "64a227be646bd77f7740722a2c422ae2639b0051b547841b5f0f2148921c538a",
+      "SizeBytes": 158105,
+      "Name": "vikela",
+      "Version": "4.6.1"
+    }
+  ],
+  "Published": false,
+  "Verification": {
+    "AiaBuild": {
+      "Warnings": 0,
+      "Errors": 0,
+      "Projects": 4,
+      "Packages": "private local candidate feed"
+    },
+    "AiaTests": {
+      "Passed": 1766,
+      "Failed": 0,
+      "Skipped": 6,
+      "SkipReason": "Existing explicit opt-in live checks"
+    },
+    "WorkbenchBuild": "passed",
+    "NewOsLibCases": 5,
+    "NewAnalyzerCases": 8,
+    "RaiGuardCiRehearsal": {
+      "Warnings": 0,
+      "Errors": 0,
+      "AnalyzerTests": 117,
+      "RailTests": 23
+    },
+    "DotnetSolution": {
+      "Passed": 1204,
+      "Failed": 1,
+      "Failure": "RemoteSync remote seed exceeded its normal 120-second command timeout"
+    },
+    "PythonRuntimeTests": 131,
+    "VikelaTests": 71,
+    "ConsistencyChecks": 141,
+    "RemoteRecheck": "running"
+  },
+  "SuiteVersion": "4.6.1",
+  "DistributionCount": 14,
+  "NuGetPackageCount": 11,
+  "PythonDistributionCount": 3,
+  "AssetPolicy": [
+    {
+      "Distribution": "jsonpit",
+      "SdistAssets": [
+        "assets/jsonpit-sync-logo.svg",
+        "assets/logo-128x128.png",
+        "assets/logo-192x192.png",
+        "assets/logo-512x512.png",
+        "assets/logo.png",
+        "assets/logo.svg"
+      ],
+      "WheelAssets": []
+    },
+    {
+      "Distribution": "vikela",
+      "SdistAssets": [
+        "assets/logo-128x128.png",
+        "assets/logo-192x192.png",
+        "assets/logo-512x512.png",
+        "assets/logo.png",
+        "assets/logo.svg",
+        "assets/vikela-logo.svg"
+      ],
+      "WheelAssets": []
+    }
+  ],
+  "CandidateDirectory": "/private/tmp/raikeep-4.6.0-candidates",
+  "PackagingReady": true,
+  "ReleaseGateReady": false,
+  "ConsumerCommit": "f65d2115d44c1d5dc90d0b444b02eeeda1788d98"
+}

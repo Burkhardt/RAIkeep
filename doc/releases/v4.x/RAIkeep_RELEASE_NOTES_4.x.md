@@ -1,5 +1,26 @@
 # RAIkeep Release Notes 4.x
 
+## 4.6.1
+
+- Release version: `4.6.1`
+- Coordination tag: `v4.6.1`
+
+### Highlights
+- Close CR070 with a sanctioned process-invocation switch API and explicit, justified rule-subject exemptions. AIA's seven developer/CI environment reads migrate to Os.RunSwitch; its default-parser regression retains the hazard as its assertion subject without a pragma or editorconfig bypass.
+- OsLibCore provides Os.RunSwitch and RaiRuleExemptionAttribute. Configuration and temporary-directory validation start on first configured-runtime access, independently of run-switch reads.
+- RaiGuard recommends the correct boundary for run switches versus persistent settings and honors semantic method/class exemptions. Neighboring code, unrelated rules, and derived classes remain checked.
+- Keep the complete suite, including optional Vikela and both Python distributions, synchronized at 4.6.1. Publication uses Engenho's manifest-driven runner; provisioning remains separately selected.
+
+### Adoption
+- Update suite package pins to 4.6.1. Use Os.RunSwitch(name) for developer/CI invocation reads; keep machine/cloud configuration in Os.Config.
+- Use [OsLib.RaiRuleExemption("RAI015", "Default parser coercion is this regression's subject.")] on the specific regression method. Do not blanket-exempt test assemblies.
+- See the CR070 implementation and acceptance report for exact test/build results and publication state.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.6.1` line.
+
+---
+
 ## 4.6.0
 
 - Release version: `4.6.0`

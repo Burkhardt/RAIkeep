@@ -9,7 +9,7 @@ The existing script invocation shape is:
 
 ```zsh
 cd /Users/RSB/Projects/GitHub/RAIkeep
-scripts/release-chain.sh 4.6.0
+scripts/release-chain.sh 4.6.1
 ```
 
 Use a zsh session with `PYPI_TOKEN` available and GitHub CLI authentication for
@@ -56,12 +56,12 @@ Read the failure before resuming. Confirm the last completed package is visible
 and its tag identifies the prepared commit. Use the applicable checkpoint:
 
 ```zsh
-scripts/release-chain.sh 4.6.0 --resume-after-amafu
-scripts/release-chain.sh 4.6.0 --resume-after-oslib
-scripts/release-chain.sh 4.6.0 --resume-after-raiutils
-scripts/release-chain.sh 4.6.0 --resume-after-raiimage
-scripts/release-chain.sh 4.6.0 --resume-after-raidiagram
-scripts/release-chain.sh 4.6.0 --resume-after-raiguard
+scripts/release-chain.sh 4.6.1 --resume-after-amafu
+scripts/release-chain.sh 4.6.1 --resume-after-oslib
+scripts/release-chain.sh 4.6.1 --resume-after-raiutils
+scripts/release-chain.sh 4.6.1 --resume-after-raiimage
+scripts/release-chain.sh 4.6.1 --resume-after-raidiagram
+scripts/release-chain.sh 4.6.1 --resume-after-raiguard
 ```
 
 Choose one command for the actual stopping point. `--resume-after-raiguard`
@@ -72,7 +72,7 @@ does not authorize retagging or changing child commits after preparation.
 
 ```zsh
 cd /Users/RSB/Projects/GitHub/RAIkeep
-python3 scripts/bump-version.py 4.6.0
+python3 scripts/bump-version.py 4.6.1
 ```
 
 For a new release, supply the chosen unused version. The manifest-driven bumper

@@ -1,5 +1,20 @@
 # RaiGuard Release Notes 4.x
 
+## 4.6.1
+
+- Release version: `4.6.1`
+- Coordination tag: `v4.6.1`
+
+### Highlights
+- Close CR070: RAI007 now recommends Os.RunSwitch for developer/CI run opt-ins, Os.Config for persistent machine/storage settings, and UseSetting for host settings. Process-wide environment mutation remains prohibited.
+- Honor OsLib.RaiRuleExemptionAttribute semantically on containing methods/classes in compiler analyzers and rail inspection. Require a rule-specific declaration and nonblank justification; preserve neighboring findings, other rules, and derived-class checks.
+- Include regression coverage for aliases, partial classes, invalid/unrelated declarations, raw environment reads/writes, and compiler suppression of an intentional subject in an otherwise checked fixture.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.6.1` line.
+
+---
+
 ## 4.6.0
 
 - Release version: `4.6.0`
