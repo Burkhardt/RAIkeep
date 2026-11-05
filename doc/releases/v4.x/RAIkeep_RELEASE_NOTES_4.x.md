@@ -3,13 +3,77 @@
 ## 4.6.0
 
 - Release version: `4.6.0`
-- Coordination tag: `v4.6.0`
+- Coordination tag: `v4.6.0` (target; not created by this preparation)
+- Scope: CR077 — mutation safety, C#/Python parity, and the Vikela launch
+- Status as of November 4, 2026: candidate packaging verified; full release gate has one unresolved cloud-sync test failure. Publication and provisioning have not been performed by this preparation.
 
-### Highlights
-- Implement CR077: semantic JsonPit mutation guardrails, C#/Python runtime parity fixes, and optional Vikela 4.6.0 under the umbrella. Release/provisioning handover is for Engenho; Vikela is excluded from production provisioning by default.
+### Summary for product managers
 
-### Coordinated Dependencies
-- Aligned with RAIkeep synchronized `4.6.0` line.
+RAIkeep 4.6.0 strengthens the safety of applications that share JsonPit data across
+machines and cloud drives. It improves development-time detection of unsafe
+writes, closes runtime parity gaps between C# and Python, and introduces Vikela
+as the Python counterpart to RaiGuard. Developers retain the existing natural
+object-oriented APIs; no new application wrappers or static write generators are
+required.
+
+### New features and improvements
+
+| Area | What changes | Benefit for consuming teams |
+|---|---|---|
+| **RaiGuard for C#** | RAI011/RAI012 resolve actual receiver types and track supported aliases, statement order, helpers, collections, and handle ownership. | Fewer false alarms on ordinary collection operations and valid live-item edits; clearer warnings for proven unsafe writes. |
+| **Vikela for Python** | New standalone CLI and Pylint plugin, plus notebook scanning and a non-executing `%%vikela` cell magic. Findings include location, explanation, suggested remediation, and documentation links. | Python developers and coding agents gain framework-specific mutation checks in local development and CI. VS Code uses the Pylint integration; PyCharm has an External Tool setup. |
+| **JsonPit mutation parity** | Python same-owner live-item re-adds flush pending changes without appending another full snapshot. Detached copies retain their protected-metadata provenance. | Reduces unintended replay of unrelated fields and makes Python behavior more consistent with C#. |
+| **Protected attributes and patch validation** | Python guards live Id/Modified/Deleted setters immediately, accepts matching Id assertions, adds the natural `merge(patch)` method, and validates array patches before applying a combined sparse mutation. Foreign live handles are rejected during historical replay in both languages. | Earlier, clearer rejection of invalid mutations and no partially applied array patch when a later row is invalid. |
+| **Shared identity and packaging** | Vikela joins the synchronized 4.6.0 version line. JsonPit and Vikela carry Koyo's constellation and Ihawu artwork; source archives retain assets while Python wheels remain code-only. | One suite version to communicate and verify, with recognizable product identities and small runtime distributions. |
+
+### Compatibility and rollout
+
+- Existing live indexing, property updates, merge/extend operations, fresh item
+  construction, and tracked deletions remain supported. Tombstone semantics and
+  live-reference identity are preserved.
+- Consumers relying on formerly permissive Python lifecycle setters, detached
+  snapshot writes, or foreign-owner historical replay must correct those writes;
+  these are now rejected consistently with the mutation contract.
+- Vikela remains **optional development tooling**, despite sharing the suite
+  version. It is not a required dependency of jsonpit or jpit and is not installed
+  on production servers by default.
+- `--fix` and its official alias `--qondisa` currently provide suggestions without
+  rewriting source. Native PyCharm inspections are a later milestone. Static
+  analysis is conservative and bounded; absence of findings is not proof of
+  complete mutation safety.
+- Save/disposal remain durability boundaries. This release does not introduce
+  distributed transactions or guarantee instantaneous cloud replication.
+- All 12 child repositories target 4.6.0. Their outputs are 11 NuGet packages and
+  three Python distributions (jsonpit, jpit, Vikela): **14 distributions**, all
+  version 4.6.0.
+- Release orchestration and selective provisioning belong to Rita's Engenho
+  runner. The legacy shell release chain does not publish Vikela.
+
+### Verification and release decision
+
+The latest preflight passed **131 Python runtime tests**, **71 Vikela tests**,
+and **141 consistency checks**. All candidate package builds and metadata checks
+passed. Fresh installed-wheel checks verified CLI versions, JSON diagnostics,
+Pylint loading, and IPython integration.
+
+The full .NET suite finished with **1,191 passed, one failed, zero skipped**.
+The remaining failure is the OneDrive/Mzansi master-client integration test:
+after successful local pit creation, its file did not become visible on Mzansi
+within 600 seconds. The separate remote conflict scenario and both C#/Python
+multi-process parity tests passed. The propagation failure's root cause remains
+unresolved, so the complete release acceptance gate is **not green**.
+
+The regression fixtures cover the 19 Sipho probes and seven boundary cases in
+both languages. Historical AfricaStage source scans also ran; their incomplete
+application-reference resolution is documented and does not replace a full
+consumer-project build. Editor integrations were exercised programmatically;
+VS Code/PyCharm graphical behavior was not verified locally.
+
+### Handover documents
+
+- [Implementation, compatibility changes, and verification](../../HANDOVER_CR077_Implementation_and_Verification.md)
+- [Release and provisioning handover for Rita](../../HANDOVER_TO_RITA_Engenho_CR077_Vikela.md)
+- [Exact candidate source commits, package inventory, and hashes](../../verification/CR077_Release_Evidence.json)
 
 ---
 
