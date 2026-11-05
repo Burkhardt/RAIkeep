@@ -2,7 +2,7 @@
 
 ## CR077 and Vikela release orchestration
 
-RAIkeep 4.6.0 includes optional [Vikela 0.1.0](vikela/README.md) Python development
+RAIkeep 4.6.0 includes optional [Vikela 4.6.0](vikela/README.md) Python development
 guardrails. [CR077](doc/CR077_AIA_and_AfricaStage_to_RAIkeep_Vikela_and_JsonPit_Mutation_Guardrails.md)
 governs implementation. Publication and selective provisioning use Rita's Engenho
 runner; see the [CR077 handover](doc/HANDOVER_TO_RITA_Engenho_CR077_Vikela.md).
@@ -101,7 +101,7 @@ The JsonPit suite includes real cloud/remote scenarios and a separately document
 
 ## Release execution
 
-For CR077 / 4.6.0 and Vikela 0.1.0, use Engenho with the
+For CR077 / 4.6.0 and Vikela 4.6.0, use Engenho with the
 [handover for Rita](doc/HANDOVER_TO_RITA_Engenho_CR077_Vikela.md). The script
 reference below records the previous mechanism; it is not the CR077 launch command.
 

@@ -2,8 +2,10 @@
 
 Rita, implement the CR077 publication/provisioning changes in Engenho using its
 existing typed runner and result contracts. Do not extend release-chain.sh or
-invoke it for Vikela. RAIkeep targets **4.6.0**; the independent **vikela**
-package targets **0.1.0**. Confirm the final local commit IDs with the operator
+invoke it for Vikela. RAIkeep and **vikela** target **4.6.0** together under the
+Twin-Shield Doctrine. This supersedes the original CR077 0.1.0 launch target;
+optional installation remains independent of the runtime packages. Confirm the
+final local commit IDs with the operator
 before dispatching publication; working-tree paths are not immutable references.
 
 ## Concrete changes and package identities
@@ -11,12 +13,13 @@ before dispatching publication; working-tree paths are not immutable references.
 - RAIkeep includes the existing `vikela/` git submodule, remote
   `https://github.com/Burkhardt/vikela.git`.
 - PyPI distribution/import/CLI are all `vikela`; there is no pitlint package.
-- `vikela==0.1.0` is the independent CLI with no third-party runtime dependencies.
-- `vikela[pylint]==0.1.0` adds the Pylint checker. Invocation:
+- `vikela==4.6.0` is the independent CLI with no third-party runtime dependencies.
+- `vikela[pylint]==4.6.0` adds the Pylint checker. Invocation:
   `python -m pylint --load-plugins=vikela ...`.
-- `vikela[notebook]==0.1.0` adds IPython for `%load_ext vikela` / `%%vikela`.
-- `jsonpit` and `jpit` remain separately versioned at 4.6.0 and do not depend on
-  Vikela. Provisioning them must not silently install development tooling.
+- `vikela[notebook]==4.6.0` adds IPython for `%load_ext vikela` / `%%vikela`.
+- `jsonpit` and `jpit` launch in lockstep with Vikela at 4.6.0; neither runtime
+  distribution depends on Vikela. Provisioning them must not silently install
+  development tooling.
 - RaiGuard.Analyzer/RaiGuard 4.6.0 use semantic receiver/provenance checks. CLI
   `rail check` performs non-executing source compilation with restored references;
   missing references are reported as incomplete resolution, not manufactured
@@ -44,14 +47,48 @@ positive control; its unresolved dependency notes must accompany the results.
 
 Build Vikela from its own repository with `python -m build --outdir <empty-dir>`
 and `python -m twine check <empty-dir>/*`. Confirm wheel/sdist metadata Name=vikela
-and Version=0.1.0; hash the actual artifacts. Smoke-test the wheel in a fresh venv:
+and Version=4.6.0; hash the actual artifacts. Smoke-test the wheel in a fresh venv:
 version, help, JSON, findings/clean exit codes, Pylint load, and IPython extension.
 Use the built package, not only an editable checkout.
+
+## Candidate inventory and artwork policy
+
+The 10 .NET child repositories produce **11 NuGet packages**: Amafu, OsLibCore,
+RaiUtils, RaiImage, RaiDiagram, RaidSeeder, JsonPit, ImgSeeder, PitSeeder,
+RaiGuard, and RaiGuard.Analyzer. Do not omit either RaiGuard distribution.
+Python produces **three distributions**: jsonpit, its existing jpit companion,
+and Vikela. All 14 distributions are version 4.6.0. Wheels plus sdists yield
+17 candidate artifact files when combined with the 11 nupkg files.
+
+JsonPit and Vikela source archives contain their assets directories, including
+canonical SVGs and the 128/192/512 PNGs. Python wheels deliberately contain code
+and package metadata without the artwork. Their README hero marks use absolute
+repository asset URLs so PyPI does not depend on local files. JsonPit's NuGet
+PackageIcon is assets/logo-128x128.png, included inside the nupkg.
+
+Reproduce this selection when rebuilding from the recorded child commits. Do not
+upload all files found in an old artifact directory. Check exact package IDs,
+versions, metadata, dependencies, CLI runtime versions, asset inclusion/exclusion,
+and SHA-256 digests before the runner advances to publication.
+
+## Current gate status
+
+Candidate packaging verification passed for every 4.6.0 distribution, but the
+latest full solution run is **not green**: 1,191 passed and one failed.
+RemoteSync_MasterClient_FullScenario created its local pit successfully, then
+waited 600 seconds without seeing that file on Mzansi through OneDrive. It did
+not reach the remote mutation phase. Python runtime (131), Vikela (71), and
+consistency checks (141) passed. The remote conflict and cross-language tests
+also passed. Preserve this failure as a blocking acceptance result; do not
+silently exclude the test or infer provider health from successful packaging.
+The initial implementation's successful full run is historical evidence, not a
+replacement for this preflight result. See the current evidence receipt and
+implementation report for exact sources, artifacts, and logs.
 
 ## Publication and recovery
 
 Vikela has `.github/workflows/publish-pypi.yaml`, manually dispatched with
-`release_ref: v0.1.0`. It checks the version/tag, runs tests, builds once, and
+`release_ref: v4.6.0`. It checks the version/tag, runs tests, builds once, and
 publishes those artifacts through PyPI Trusted Publishing. Required policy:
 GitHub owner Burkhardt, repository vikela, workflow publish-pypi.yaml,
 environment pypi. The owner must establish that policy before the publish step;
@@ -59,8 +96,8 @@ there are no long-lived PyPI API keys in this implementation. This workflow has
 not been remotely exercised merely because its local tests pass.
 
 Keep NuGet/JsonPit dependency order and existing verified publication contracts.
-Vikela is independent of the runtime NuGet dependency chain; maintain its separate
-0.1.0 version, never replace it with the umbrella version. Do not publish dependent
+Vikela is independent of the runtime NuGet dependency chain; keep its version aligned with the
+4.6.0 umbrella while preserving its optional development-tool packaging. Do not publish dependent
 packages until their exact dependencies are installable. The umbrella tag/release
 is the final coordinated step after successful package publication and visibility.
 
@@ -103,7 +140,7 @@ Standalone Vikela exit codes: 0 clean, 1 findings, 2 syntax/configuration,
 JSON stdout is a pure array; operational diagnostics go to stderr. Findings include
 rule, location, reason, object-oriented suggestion, and documentation URL.
 
-`--fix` and `--qondisa` are equal first-class spellings. Version 0.1.0 has no
+`--fix` and `--qondisa` are equal first-class spellings. Version 4.6.0 has no
 approved automatic rewrites: it reports suggestions and leaves files unchanged.
 Do not provision or advertise speculative repair behavior. Cell magic never
 executes its inspected cell; notebook scanning follows document order, not kernel

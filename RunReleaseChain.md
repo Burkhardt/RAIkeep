@@ -1,6 +1,6 @@
 # Previous release-chain.sh reference
 
-**CR077 / 4.6.0 and Vikela 0.1.0 use Engenho.** Follow
+**CR077 / 4.6.0 and Vikela 4.6.0 use Engenho.** Follow
 [the handover for Rita](doc/HANDOVER_TO_RITA_Engenho_CR077_Vikela.md); do not use
 the script below to launch this coordinated release. This document preserves
 the previous script procedure for reference and earlier release recovery.

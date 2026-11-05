@@ -1,6 +1,12 @@
 # CR077 implementation and verification
 
-Targets: RAIkeep **4.6.0**; optional Vikela **0.1.0**.
+Targets: RAIkeep **4.6.0**; optional Vikela **4.6.0**, synchronized under the
+Twin-Shield Doctrine. This supersedes CR077's original independent launch target.
+
+**Latest preflight: packaging verified; full release gate not green.** The fresh
+solution run passed 1,191 tests and failed one OneDrive/Mzansi propagation test.
+See the synchronized preflight below and the current evidence receipt. The
+successful initial implementation run remains recorded as historical evidence.
 
 Implementation is local. Publication and provisioning belong to Engenho; no
 release chain, package publication, fleet installation, or release retag is part
@@ -45,7 +51,7 @@ creates a distributed transaction.
 - The package is tested as an installed wheel in a fresh environment, including
   standalone JSON, Pylint and IPython extension loading.
 
-## Deliberate v0.1.0 limits
+## Deliberate v4.6.0 limits
 
 - No approved automatic rewrites. --fix and --qondisa are equivalent opt-in flags;
   findings remain suggestions and source stays unchanged. No fields are dropped
@@ -72,7 +78,8 @@ not been remotely dispatched. PyPI returned 404 for vikela during preparation;
 that observation does not reserve its name.
 
 The existing metadata bumper aligned the established suite to 4.6.0 and regenerated
-standalone jpit. Vikela retains its separate 0.1.0 version. No logic was added to
+standalone jpit. Vikela now launches in lockstep at 4.6.0 under the Twin-Shield Doctrine.
+No logic was added to
 release-chain.sh and Vikela is not inserted into its package list. Engenho must
 carry the complete coordinated release and keep the umbrella final.
 
@@ -81,7 +88,7 @@ independent selections, and production hosts receive no lint tooling by default.
 A global CLI environment does not automatically expose a Pylint plugin in a
 project interpreter or an IPython extension in a kernel.
 
-## Verification results
+## Initial implementation verification
 
 Verified locally on 2026-11-04:
 
@@ -92,7 +99,7 @@ Verified locally on 2026-11-04:
 | Vikela suite, including the 26 translated probes | **70 passed** |
 | Existing coordinated consistency validator | **141 checks passed** |
 | Full solution pack | **11 NuGet packages**, all 4.6.0 |
-| Python wheel/sdist builds and Twine metadata checks | jsonpit/jpit 4.6.0; Vikela 0.1.0 |
+| Original Python wheel/sdist builds and Twine metadata checks | jsonpit/jpit 4.6.0; initial Vikela candidate (superseded below) |
 | Fresh installed wheel checks | Vikela JSON/Pylint/IPython; jpit/jsonpit version commands |
 | CLI formatter source synchronization / git diff whitespace | Passed |
 
@@ -111,9 +118,9 @@ remained incomplete, so these results do not replace a full AfricaStage compiler
 build against the new analyzer. The unresolved-reference notes accompany the
 machine-readable evidence.
 
-[Release evidence and exact child source commits](verification/CR077_Release_Evidence.json)
-records the 17 local artifacts, their SHA-256 digests, dependency metadata, source
-SHAs, test counts, and historical-scan limitations. Local artifact directories are
+[Current release evidence and exact child source commits](verification/CR077_Release_Evidence.json)
+records the latest 17 local artifacts, their SHA-256 digests, dependency metadata, source
+SHAs, test counts, and historical-scan limitations. Initial implementation artifact directories were
 `/private/tmp/cr077-nuget-dist`, `/private/tmp/cr077-python-dist`, and
 `/private/tmp/cr077-vikela-dist`. Engenho must build and verify its own publication
 artifacts from the recorded immutable sources; this receipt does not claim a
@@ -132,3 +139,49 @@ For a local help preview before publication:
 
 All implementation commits and the umbrella synchronization are local. No push,
 tag, workflow dispatch, package publication, or fleet provisioning was performed.
+
+
+## Twin-Shield synchronized packaging preflight
+
+All 12 child repositories and all distribution identities now target **4.6.0**. The
+10 .NET repositories produce **11 NuGet packages**, because RaiGuard CLI and
+RaiGuard.Analyzer are separate packages. Python produces **three distributions**:
+jsonpit, its existing jpit companion, and Vikela. The inventory therefore contains
+**14 distributions / 17 artifact files**, rather than 12 distributions.
+
+Vikela's runtime __version__, banner, README/install examples, editor guidance,
+and workflow example now match its 4.6.0 pyproject metadata. A regression check
+asserts agreement between package metadata and the runtime version.
+
+The JsonPit sync constellation SVG and rendered 128/192/512 PNGs are preserved.
+JsonPit's NuGet icon is the bundled assets/logo-128x128.png. JsonPit.Python and
+Vikela sdists include assets; their wheels exclude artwork and remain code-only.
+README hero marks use absolute repository URLs for PyPI rendering. Local asset
+links in the supplied visual identity specifications were made portable.
+
+Candidate artifacts are in /private/tmp/raikeep-4.6.0-candidates/nuget and
+/private/tmp/raikeep-4.6.0-candidates/python. All metadata versions, dependency
+versions, console entry points, runtime version constants, source-archive asset
+bytes, PNG dimensions, wheel asset exclusion, and the NuGet icon were checked.
+Twine accepted all six Python wheel/sdist files. Builds used committed child
+sources; current source SHAs and artifact hashes are in the evidence receipt.
+
+The fresh installed-wheel environment reports jpit v4.6.0, jsonpit v4.6.0, and
+vikela v4.6.0. JSON diagnostics, Pylint loading, and the non-executing IPython
+magic passed. Standalone jpit was regenerated and reports jpit v4.6.0.
+
+Final full solution result: **1,191 passed, one failed, zero skipped**.
+RemoteSync_MasterClient_FullScenario passed local pit creation, then timed out
+waiting 600 seconds for SyncTest.pit to become visible on Mzansi. It did not reach
+the remote mutation phase. Test ID: sync-20261105005621-54453. The separate remote
+conflict scenario and both cross-language tracking-mode tests passed. The reason
+for the missing OneDrive propagation has not been established; packaging results
+must not be substituted for this failed integration gate. Read-only diagnostics confirmed that Mzansi SSH responds, its OneDrive path is
+mounted as fuse.rclone, and rclone-odata.service is active/running. Those states
+do not prove that new files are propagating. No service/mount changes or automatic
+test retries were used to turn the gate green.
+The Python runtime suite passed 131 tests; Vikela passed 71 tests. The coordinated
+consistency validator passed 141 checks. Detailed logs use the prefix
+/private/tmp/raikeep-460-preflight-; the full solution log is
+/private/tmp/raikeep-460-preflight-dotnet.log and the installed-wheel log is
+/private/tmp/raikeep-460-wheel-smoke.log. No publication or provisioning ran.

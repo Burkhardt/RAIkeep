@@ -6,7 +6,7 @@
 - Coordination tag: `v4.6.0`
 
 ### Highlights
-- Implement CR077: semantic JsonPit mutation guardrails, C#/Python runtime parity fixes, and optional Vikela 0.1.0 under the umbrella. Release/provisioning handover is for Engenho; Vikela is excluded from production provisioning by default.
+- Implement CR077: semantic JsonPit mutation guardrails, C#/Python runtime parity fixes, and optional Vikela 4.6.0 under the umbrella. Release/provisioning handover is for Engenho; Vikela is excluded from production provisioning by default.
 
 ### Coordinated Dependencies
 - Aligned with RAIkeep synchronized `4.6.0` line.

@@ -4,7 +4,7 @@ Date: 2026-11-04
 
 Adopted and superseded where specified by ratified CR077; the historical filename is retained.
 
-Status: Vikela name and overall direction agreed with Rainer. Implementation is governed by CR077, targeting RAIkeep 4.6.0 / Vikela 0.1.0. This document is not a publication record.
+Status: Vikela name and overall direction agreed with Rainer. Implementation is governed by CR077, targeting RAIkeep 4.6.0 / Vikela 4.6.0. This document is not a publication record.
 
 ## Selected identity
 

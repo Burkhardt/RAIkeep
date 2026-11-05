@@ -6,87 +6,88 @@
     "RaiImage": "e23a49384c02f439aa7ebf2c651777ce2a5071ae",
     "RaiDiagram": "964b08daff0256dbe8018e342cd3e5aedbf5fc06",
     "RaidSeeder": "0caac84e48b42b583dae2d442ccab576ffd0d3f0",
-    "JsonPit": "dbf0269fc31c44cffa3a9477abf69cb7d0eb9c9a",
-    "JsonPit.Python": "fb953904bf9e66e86dd5cc8e7f64c8ccbbfc50fa",
+    "JsonPit": "6d71eec3961d81b1e8a6c26e95558bb8f8f49297",
+    "JsonPit.Python": "3bead6133e9b9081181422fd7ca937a95a0e4214",
     "ImgSeeder": "93c8b37bc8f238172be68dfeb21c0793d6595389",
     "PitSeeder": "d55fedc3088ffb5baffb7f0d4edc57f66aa14f7c",
     "RaiGuard": "83cecd4a6af19c3b2289ff4842bd8428fa6516e6",
-    "vikela": "8b51e1376dea35fb896035fe48a7f8ad5b4be323"
+    "vikela": "5b10694d9914ceeae47cb331d9d893d5e031fec8"
   },
   "Artifacts": [
     {
       "File": "Amafu.4.6.0.nupkg",
-      "Sha256": "2f7a12b3174612899294817548a5f473deeeaa0d882943185394d3d119219afc",
+      "Sha256": "0ada6ec63b3487e854d685db93ae0d5ad26adc45ee81722b1b466ecc80d9734d",
       "SizeBytes": 59221,
       "Name": "Amafu",
       "Version": "4.6.0"
     },
     {
       "File": "ImgSeeder.4.6.0.nupkg",
-      "Sha256": "8d4c4f2453371f4f7debbb57393a6a63720ac6eba4968211b338f45cf5163f19",
-      "SizeBytes": 1861164,
+      "Sha256": "f34899d514818538d6a906a9237798a5f506224303405388cfa2c6731e3bf013",
+      "SizeBytes": 1861174,
       "Name": "ImgSeeder",
       "Version": "4.6.0"
     },
     {
       "File": "JsonPit.4.6.0.nupkg",
-      "Sha256": "e83bcf0454791db9a4297de844ef9090ac75a90ec9277930c6fb4bce9c495d48",
-      "SizeBytes": 78436,
+      "Sha256": "7c1be27c7355998406032d0a40add4785d8f57865a8ee4b2b2c385e27288f72c",
+      "SizeBytes": 87331,
       "Name": "JsonPit",
-      "Version": "4.6.0"
+      "Version": "4.6.0",
+      "Icon": "assets/logo-128x128.png"
     },
     {
       "File": "OsLibCore.4.6.0.nupkg",
-      "Sha256": "1f2f0c11a630d3b7a03a7680c217e575cd3997623b8b0a9191c9271a8c98ad2a",
+      "Sha256": "051a86699e8c2e3ea3cd82ec653a8a2f139ab85764ab7b1cda4e1e976eef47ce",
       "SizeBytes": 114639,
       "Name": "OsLibCore",
       "Version": "4.6.0"
     },
     {
       "File": "PitSeeder.4.6.0.nupkg",
-      "Sha256": "d81afc0eba706874eb75b493703cc2a05d5b6c47edf81322ea8b347097e4350f",
-      "SizeBytes": 1056566,
+      "Sha256": "39f6acdd691752f130c17c1c1e941f4c252a8d69edfddf87ab841a7974d5c517",
+      "SizeBytes": 1056569,
       "Name": "PitSeeder",
       "Version": "4.6.0"
     },
     {
       "File": "RaiDiagram.4.6.0.nupkg",
-      "Sha256": "a805c6e925509f58542a5e8e9bb6b5bc6e36615bdf9d2b4b78d11d5998f9fa1d",
+      "Sha256": "d2d87af32e4e61214319af4f735e2e0348ccd67cc6bf9bb5ef7df95a7f19fa42",
       "SizeBytes": 102637,
       "Name": "RaiDiagram",
       "Version": "4.6.0"
     },
     {
       "File": "RaiGuard.4.6.0.nupkg",
-      "Sha256": "342d9ee4d6042ba38ec4482a7d689b4ab45e6ae03516804e7755aab71ab206c7",
-      "SizeBytes": 9540058,
+      "Sha256": "7fd93294be378f3dbec17a8f1e6362cc6f7a0f46b7cfb49fef13354031274d0e",
+      "SizeBytes": 9540060,
       "Name": "RaiGuard",
       "Version": "4.6.0"
     },
     {
       "File": "RaiGuard.Analyzer.4.6.0.nupkg",
-      "Sha256": "513b90cb24d374d9d07fb454d1a18a3b5d7741332cbb9cbbd65064dcc011c9c5",
+      "Sha256": "0286faecd5e96cdae227180558b233d10f9fef595ed2e21f844d9f73c88979ff",
       "SizeBytes": 63367,
       "Name": "RaiGuard.Analyzer",
       "Version": "4.6.0"
     },
     {
       "File": "RaiImage.4.6.0.nupkg",
-      "Sha256": "5a81fe15c8fcc1865a0da3c18f44292afb9eeb219bf662a04d49f3d76f5a0741",
+      "Sha256": "60c7152a4e1a5359c3d094dacd95f18e5f78b3cbaf38866288128f755b052048",
       "SizeBytes": 74127,
       "Name": "RaiImage",
       "Version": "4.6.0"
     },
     {
       "File": "RaiUtils.4.6.0.nupkg",
-      "Sha256": "a044ac02bd22f7e00c2746b6cb4f8889e0f1ea5f6b59b3e1ea54493dbf588932",
+      "Sha256": "c3db490179af27f1c1450e69c7fda21fc76a0e8692d042556ef1298fe8015cf9",
       "SizeBytes": 18529,
       "Name": "RaiUtils",
       "Version": "4.6.0"
     },
     {
       "File": "RaidSeeder.4.6.0.nupkg",
-      "Sha256": "2204b343f89defd8cc0e52b7e4d034663dba0977028ce90c1e4b7e2a47daddd2",
+      "Sha256": "8cb6f7b5a89774c85fa5e0a57652f4fb54e442d9d4064e9265896e374dfa62b0",
       "SizeBytes": 1588861,
       "Name": "RaidSeeder",
       "Version": "4.6.0"
@@ -104,12 +105,14 @@
     {
       "File": "jpit-4.6.0.tar.gz",
       "Sha256": "69fd3a2169ea757404ca939416d54d1d1f9926c876644197e436b4cbc73de0bd",
-      "SizeBytes": 1615
+      "SizeBytes": 1615,
+      "Name": "jpit",
+      "Version": "4.6.0"
     },
     {
       "File": "jsonpit-4.6.0-py3-none-any.whl",
-      "Sha256": "5f907a6c19258201ac7e5b5b9be899d8b37112ebbb5f30453d67f0bbb6c1d906",
-      "SizeBytes": 64182,
+      "Sha256": "ebfbfdb4be7f497aee0794cc28422eca0849e44e651dabe67bf76e2904c7727c",
+      "SizeBytes": 64235,
       "Name": "jsonpit",
       "Version": "4.6.0",
       "RequiresDist": [
@@ -117,19 +120,22 @@
         "pytest-cov>=5.0; extra == 'dev'",
         "pytest>=8.0; extra == 'dev'",
         "ruff>=0.5; extra == 'dev'"
-      ]
+      ],
+      "RuntimeVersion": "4.6.0"
     },
     {
       "File": "jsonpit-4.6.0.tar.gz",
-      "Sha256": "d1f27aed0c2cdf8b06638f4884d70b29455181540798b5d5d24eddb1f7dce9d9",
-      "SizeBytes": 61648
+      "Sha256": "95e51754b093263ee274019382b4096ad98ed08e409e95c6eb330445a781bb3a",
+      "SizeBytes": 230167,
+      "Name": "jsonpit",
+      "Version": "4.6.0"
     },
     {
-      "File": "vikela-0.1.0-py3-none-any.whl",
-      "Sha256": "77b53ed86ce9fc3180b86aff31323e133c885be955a8ed395f0f7ccd189f7dee",
-      "SizeBytes": 18984,
+      "File": "vikela-4.6.0-py3-none-any.whl",
+      "Sha256": "eee8c70ab87e1cb4ecd30f951208319b71e2fe78fc72c94a93c1bfed00019b9a",
+      "SizeBytes": 18997,
       "Name": "vikela",
-      "Version": "0.1.0",
+      "Version": "4.6.0",
       "RequiresDist": [
         "build; extra == 'dev'",
         "ipython>=8; extra == 'dev'",
@@ -138,27 +144,39 @@
         "twine; extra == 'dev'",
         "ipython>=8; extra == 'notebook'",
         "pylint<5,>=3.3; extra == 'pylint'"
-      ]
+      ],
+      "RuntimeVersion": "4.6.0"
     },
     {
-      "File": "vikela-0.1.0.tar.gz",
-      "Sha256": "e04f43589b49564b2de5fc087bc3ebe6b95560cb3ae7651659ad4aae32309e0c",
-      "SizeBytes": 25926
+      "File": "vikela-4.6.0.tar.gz",
+      "Sha256": "9c8e8194ac6732b12bf74d72f095d1fb30f916f2926f4c0c1462ff17bf0682f4",
+      "SizeBytes": 158096,
+      "Name": "vikela",
+      "Version": "4.6.0"
     }
   ],
   "Published": false,
   "Verification": {
     "DotnetSolution": {
-      "Passed": 1192,
-      "Failed": 0,
+      "Status": "failed",
+      "Passed": 1191,
+      "Failed": 1,
       "Skipped": 0,
-      "Command": "dotnet test RAIkeep.slnx --no-restore --nologo"
+      "Command": "dotnet test RAIkeep.slnx --nologo",
+      "Log": "/private/tmp/raikeep-460-preflight-dotnet.log",
+      "Failure": {
+        "Test": "JsonPit.Tests.RemoteSyncTests.RemoteSync_MasterClient_FullScenario",
+        "Phase": "WaitForFileOnMzansi",
+        "Reason": "Timed out (600 s) waiting for pit file to sync to Mzansi",
+        "LocalPitCreation": "passed",
+        "RemoteMutationReached": false
+      }
     },
     "PythonRuntime": {
       "Passed": 131
     },
     "Vikela": {
-      "Passed": 70
+      "Passed": 71
     },
     "LegacyConsistencyChecks": 141,
     "InstalledWheelAdapters": [
@@ -166,7 +184,7 @@
       "Pylint",
       "IPython"
     ],
-    "LocalPythonVersion": "3.14",
+    "LocalPythonVersion": "3.14.8",
     "RemoteCiMatrixRun": false,
     "EditorGuiTested": false,
     "HistoricalSources": [
@@ -287,6 +305,49 @@
         "ResolutionNotes": "rail: inspection compilation has unresolved or invalid code; RAI011/RAI012 report only proven cases. No finding does not establish complete mutation safety. Use the compiler analyzer for project-context validation."
       }
     ],
-    "EarlierRemoteFailure": "An earlier full run failed RemoteSync_MasterClient_FullScenario after 12m38s. An isolated rerun passed in 9m12s; the final complete run passed it in 2m19s and the remote conflict scenario in 55s. Provider read latency was observed; root cause was not established. No service or mount changes were made."
-  }
+    "EarlierRemoteFailure": "An earlier full run failed RemoteSync_MasterClient_FullScenario after 12m38s. An isolated rerun passed in 9m12s; the final complete run passed it in 2m19s and the remote conflict scenario in 55s. Provider read latency was observed; root cause was not established. No service or mount changes were made.",
+    "StandaloneJpit": "Regenerated; jpit v4.6.0",
+    "Packaging": "11 NuGet packages and 3 Python distributions (wheel+sdist); all 4.6.0; Twine checks passed",
+    "WheelInstallLog": "/private/tmp/raikeep-460-wheel-smoke.log",
+    "RemoteReadOnlyDiagnostics": {
+      "SshMzansi": "responded",
+      "OneDriveMount": "/srv/ServerData/OneDriveData (fuse.rclone)",
+      "OneDriveUnit": "rclone-odata.service active/running",
+      "ServicesOrMountsChanged": false,
+      "RootCauseEstablished": false
+    }
+  },
+  "SuiteVersion": "4.6.0",
+  "DistributionCount": 14,
+  "NuGetPackageCount": 11,
+  "PythonDistributionCount": 3,
+  "AssetPolicy": [
+    {
+      "Distribution": "jsonpit",
+      "SdistAssets": [
+        "assets/jsonpit-sync-logo.svg",
+        "assets/logo-128x128.png",
+        "assets/logo-192x192.png",
+        "assets/logo-512x512.png",
+        "assets/logo.png",
+        "assets/logo.svg"
+      ],
+      "WheelAssets": []
+    },
+    {
+      "Distribution": "vikela",
+      "SdistAssets": [
+        "assets/logo-128x128.png",
+        "assets/logo-192x192.png",
+        "assets/logo-512x512.png",
+        "assets/logo.png",
+        "assets/logo.svg",
+        "assets/vikela-logo.svg"
+      ],
+      "WheelAssets": []
+    }
+  ],
+  "CandidateDirectory": "/private/tmp/raikeep-4.6.0-candidates",
+  "PackagingReady": true,
+  "ReleaseGateReady": false
 }
