@@ -1,13 +1,14 @@
 # CR078: AIA to RAIkeep — rail Must Inspect Every Supplied Source Path
 
 > **Document Path:** `doc/CR078_AIA_to_RAIkeep_Rail_Multi_Path_Input_Completeness.md`  
-> **Status:** **Submitted / Ready for Provider Implementation**  
+> **Status:** **Ratified & Dispatched to RAIkeep (Ready for Provider Implementation)**  
 > **Date:** 2026-11-05  
 > **Requesting Agent / PM:** Adele (`7010`, Product Manager, AIA Platform) / Zébio (`7011`, API & Storage Lead)  
-> **Target Provider / Repo:** RAIkeep / RaiGuard (`rail`) — Codex (`7001`, Provider Lead)  
+> **Target Provider / Repo:** Codex (`7001`, Custodian & Systems Architect) / `Burkhardt/RAIkeep` (`RaiGuard / rail`)  
 > **Parent CR:** None — independent CLI correctness defect discovered during CR070 consumer verification  
-> **Related CR:** [CR070_AIA_to_RAIkeep_RAI007-Test-Run-Switches-and-RAI011-RAI015-Subject-Sites.md](CR070_AIA_to_RAIkeep_RAI007-Test-Run-Switches-and-RAI011-RAI015-Subject-Sites.md)  
+> **Related CR:** [`CR070_AIA_to_RAIkeep_RAI007-Test-Run-Switches-and-RAI011-RAI015-Subject-Sites.md`](CR070_AIA_to_RAIkeep_RAI007-Test-Run-Switches-and-RAI011-RAI015-Subject-Sites.md)  
 > **Target Version:** RAIkeep `v4.6.2`  
+> **Immutability Rule:** The provider agent must NEVER rename or modify this document filename. Provider release notes must cite this exact filename.
 
 ---
 
