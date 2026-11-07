@@ -1,7 +1,7 @@
 {
   "Version": "4.6.3",
   "Date": "2026-11-07",
-  "Status": "Coordinated release preparation; live replication verification pending",
+  "Status": "Coordinated preparation complete; release-readiness decision requires acknowledging the unresolved live replication test",
   "ConsumerAcceptance": {
     "Status": "Accepted",
     "Record": "doc/CR082_Accepted_Jpit_Default_Cloud_Resolution_and_Missing_Export_v4_6_3.md",
@@ -41,7 +41,12 @@
     "VikelaTestsPassed": 71,
     "ReleaseToolTestsPassed": 10,
     "OriginalUnfilteredDotnetRun": "One live test failed after 600 seconds waiting for remote visibility; run stopped before a second identical wait. Not a full-suite pass.",
-    "LiveRetry": "Pending, using separate SSH connections; do not treat as passed"
+    "LiveRetry": {
+      "Result": "Same remote visibility timeout after 600 seconds with direct SSH; not a pass. Retry stopped before completing the other live case.",
+      "FailedCase": "JsonPit.Tests.RemoteCloudConcurrencyTests.TwoServerSplitMaster_LiveLocalLoser_RecoversThroughProviderSyncedConflictSignal",
+      "OtherLiveCase": "JsonPit.Tests.RemoteSyncTests: not completed",
+      "Cause": "Not established; rclone mounts confirmed active. SSH bypass did not resolve visibility."
+    }
   },
   "EnvironmentDiagnosis": {
     "OriginalClaimRetracted": "Absence of a native onedrive process/unit was incorrectly interpreted as inactive OneDrive.",

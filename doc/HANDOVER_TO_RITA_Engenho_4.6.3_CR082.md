@@ -42,10 +42,11 @@ CR069. C# pit contracts, source formats and mutation semantics are unchanged.
 ## Manual execution after preparation
 
 All 141 release checks and candidate artifact checks pass. The separate live
-replication retry remains outstanding after an initial 600-second visibility
-timeout. Mzansi's rclone mounts have been verified active; the earlier claim that
-OneDrive was inactive is retracted. See the preparation report/evidence for the
-exact scope and keep this exception visible in the release decision.
+replication retry repeated the 600-second visibility timeout despite using direct
+SSH. Mzansi's rclone mounts have been verified active; the earlier claim that
+OneDrive was inactive is retracted. One live case failed and the other was not
+completed; neither is included in the 1,244 passing .NET tests. See the preparation
+report/evidence and obtain RAI's release-readiness decision on this exception.
 
 From the prepared RAIkeep workspace:
 

@@ -4,7 +4,7 @@
 **Delivering agent:** Codex, RAIkeep Custodian  
 **Target version:** v4.6.3  
 **Consumers:** AfricaStage, AIA, Engenho and RAIkeep users  
-**Status:** CR082 independently accepted; coordinated local preparation completed. Live-replication verification remains outstanding as described below. RAI executes publication and provisioning manually.
+**Status:** CR082 independently accepted; coordinated local preparation completed. An unresolved live-replication timeout remains for the release-readiness decision below. RAI executes publication and provisioning manually.
 
 ## 1. Summary
 
@@ -82,7 +82,9 @@ new warning-free provider baseline or suppress those warnings.
 The unfiltered .NET run encountered a 600-second timeout waiting for its local
 master-claim file to become visible on Mzansi. It was stopped rather than spending
 another ten minutes on the same visibility wait. This is not a full-suite pass.
-A separate retry of the two live tests uses process-local direct SSH connections.
+A separate retry with process-local direct SSH repeated the same 600-second
+timeout in `RemoteCloudConcurrencyTests`. It was stopped before the second live
+case completed. The 1,244 passing-test count explicitly excludes both live cases.
 
 The initial provider diagnosis, “Mzansi has no active OneDrive service or
 process,” was incorrect: only native `onedrive` units/processes had been checked.
@@ -94,8 +96,11 @@ mounts alone do not explain the observed end-to-end visibility timeout; its caus
 has not been established. No cloud services or persistent SSH settings were changed.
 
 Keep the live-test result separate from CR082's accepted consumer behavior and
-the green release-consistency gate. Do not claim both live tests passed until
-their retry provides that evidence.
+the green release-consistency gate. The original native-daemon diagnosis is
+retracted, and fresh SSH connections did not fix the visibility timeout. The
+mounts were not stopped or reconfigured. A full green live-replication claim is
+not justified; RAI must decide whether to defer publication or explicitly accept
+this documented external verification exception for the point release.
 
 ## 6. Upgrade and manual execution
 
