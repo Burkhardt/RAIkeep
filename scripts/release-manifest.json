@@ -1,7 +1,7 @@
 {
 	"$schema": "./release-manifest.schema.json",
 	"name": "RAIkeep",
-	"current_version": "4.6.1",
+	"current_version": "4.6.2",
 	"packages": [
 		{
 			"name": "Amafu",
@@ -69,10 +69,10 @@
 				"upload",
 				"--non-interactive",
 				"--skip-existing",
-				"/private/tmp/raikeep-4.6.1-candidates/python/jsonpit-4.6.1-py3-none-any.whl",
-				"/private/tmp/raikeep-4.6.1-candidates/python/jsonpit-4.6.1.tar.gz",
-				"/private/tmp/raikeep-4.6.1-candidates/python/jpit-4.6.1-py3-none-any.whl",
-				"/private/tmp/raikeep-4.6.1-candidates/python/jpit-4.6.1.tar.gz"
+				"/private/tmp/raikeep-4.6.2-candidates/python/jsonpit-4.6.2-py3-none-any.whl",
+				"/private/tmp/raikeep-4.6.2-candidates/python/jsonpit-4.6.2.tar.gz",
+				"/private/tmp/raikeep-4.6.2-candidates/python/jpit-4.6.2-py3-none-any.whl",
+				"/private/tmp/raikeep-4.6.2-candidates/python/jpit-4.6.2.tar.gz"
 			],
 			"extraPackages": [
 				"jpit"

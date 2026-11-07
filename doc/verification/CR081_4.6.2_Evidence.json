@@ -1,0 +1,378 @@
+{
+  "SuiteVersion": "4.6.2",
+  "Date": "2026-11-06",
+  "ExecutionHost": "Nkosikazi",
+  "Requests": [
+    "CR078_AIA_to_RAIkeep_Rail_Multi_Path_Input_Completeness.md",
+    "CR081_AIA_to_RAIkeep_Pits_and_Jpit_Seed_Disposition_Reporting_and_Persistence_Receipt.md"
+  ],
+  "ProviderReport": "RAIkeep_RELEASE_NOTES_v4.6.2.md",
+  "PreparationComplete": true,
+  "ConsumerAccepted": false,
+  "Published": false,
+  "ReleaseExecuted": false,
+  "InstallExecuted": false,
+  "ProvisioningExecuted": false,
+  "SourceCommits": {
+    "Amafu": "9f3546a4caa17fe15c91b7171c10ce8be802d30c",
+    "OsLib": "16e8bc0907698856c9b3f623f6d668e6b843c11f",
+    "RaiUtils": "2e03befb0fc4c2635338d076b45bb879b90fe871",
+    "RaiImage": "4daaa383480e14268a94fe53831f66d99b33b942",
+    "RaiDiagram": "d643d775f264ed2cc667f15aaa1364fffa1f068c",
+    "RaidSeeder": "d836de6bf22fb23347de9ee8e21b8ce3f0b46687",
+    "JsonPit": "f8fc196828e20cd74f7c6462da5b8471a310e746",
+    "JsonPit.Python": "ff8549cbfe700410aa88efe07284063d67db9e81",
+    "ImgSeeder": "90d3705689df18fc1c102f4a0b41077ecdb39121",
+    "PitSeeder": "60ee728e431e4df9aabafd7b408d3919d25f0634",
+    "RaiGuard": "e88c4fb156aeba12bba98a4bc5d980d2c69a3bfe",
+    "vikela": "979a5c8bf4039e50846392ce00b52913dd9fa719"
+  },
+  "Tests": {
+    "DotNetSolution": {
+      "Passed": 1246,
+      "Failed": 0,
+      "Skipped": 0,
+      "Projects": 11,
+      "Log": "/private/tmp/cr081-solution-tests.log"
+    },
+    "Python": {
+      "Passed": 148,
+      "Failed": 0,
+      "NewCR081Cases": 17,
+      "Log": "/private/tmp/cr081-python-tests-final.log"
+    },
+    "Vikela": {
+      "Passed": 71,
+      "Failed": 0,
+      "Log": "/private/tmp/cr081-vikela-tests.log"
+    },
+    "TargetedJsonPitContracts": {
+      "Passed": 36,
+      "Failed": 0
+    },
+    "ReleaseConsistencyChecks": 141,
+    "ReleaseToolTests": 10
+  },
+  "NuGetPackageCount": 11,
+  "PythonDistributionCount": 3,
+  "ArtifactCount": 17,
+  "Artifacts": [
+    {
+      "File": "Amafu.4.6.2.nupkg",
+      "Sha256": "f77df775158b4fed8ae8f45a77c02dd8b6c8a31a2b9dfc0fae6a3732ed34840f",
+      "SizeBytes": 59220,
+      "Name": "Amafu",
+      "Version": "4.6.2"
+    },
+    {
+      "File": "ImgSeeder.4.6.2.nupkg",
+      "Sha256": "0a2820a4eb19525693f7ee561a055cd9ec763b4067c2a16447cefbdfb2cba0d7",
+      "SizeBytes": 1733903,
+      "Name": "ImgSeeder",
+      "Version": "4.6.2"
+    },
+    {
+      "File": "JsonPit.4.6.2.nupkg",
+      "Sha256": "77c700a5beed97878e529abfc4adfec5f6664330518eedcf09b5727ac8fe0371",
+      "SizeBytes": 87379,
+      "Name": "JsonPit",
+      "Version": "4.6.2",
+      "Icon": "assets/logo-128x128.png"
+    },
+    {
+      "File": "OsLibCore.4.6.2.nupkg",
+      "Sha256": "64c04c1b3c896604da6b7b5fc146df24febc472f2156fe18d14feb5ee6114b65",
+      "SizeBytes": 115458,
+      "Name": "OsLibCore",
+      "Version": "4.6.2"
+    },
+    {
+      "File": "PitSeeder.4.6.2.nupkg",
+      "Sha256": "d08677b07d717ceb6c04615353ea0cd6fc985e27aafe8ef2a8579ec59f85572d",
+      "SizeBytes": 962907,
+      "Name": "PitSeeder",
+      "Version": "4.6.2"
+    },
+    {
+      "File": "RaiDiagram.4.6.2.nupkg",
+      "Sha256": "9fee19e58421aa86d5a1b2279b4c7a296cffaabbfc08f9a6bcb8f8d1e42077ec",
+      "SizeBytes": 102643,
+      "Name": "RaiDiagram",
+      "Version": "4.6.2"
+    },
+    {
+      "File": "RaiGuard.4.6.2.nupkg",
+      "Sha256": "dc91db4ea162aed7a8fa1e43c68856d5e69d2e5aaf3a6cfa14fa1670381d229f",
+      "SizeBytes": 9382125,
+      "Name": "RaiGuard",
+      "Version": "4.6.2"
+    },
+    {
+      "File": "RaiGuard.Analyzer.4.6.2.nupkg",
+      "Sha256": "9f20d8cb6781a7e0c7b7e91ff7dafe73c542b0badef4e70e23a1d9a89406f0ec",
+      "SizeBytes": 65588,
+      "Name": "RaiGuard.Analyzer",
+      "Version": "4.6.2"
+    },
+    {
+      "File": "RaiImage.4.6.2.nupkg",
+      "Sha256": "337a401f66e3d9fb28785a214d61b6aee382f47e830755d51e4bccc6a0ca4498",
+      "SizeBytes": 74127,
+      "Name": "RaiImage",
+      "Version": "4.6.2"
+    },
+    {
+      "File": "RaiUtils.4.6.2.nupkg",
+      "Sha256": "1e13a045965e32538744439458af137ebdf71364c83503e934d4a98edb40b807",
+      "SizeBytes": 18529,
+      "Name": "RaiUtils",
+      "Version": "4.6.2"
+    },
+    {
+      "File": "RaidSeeder.4.6.2.nupkg",
+      "Sha256": "acd8c40c29de7c843ad3f8df9b85d835f034982192ed15a787a5cb1328799c10",
+      "SizeBytes": 1461143,
+      "Name": "RaidSeeder",
+      "Version": "4.6.2"
+    },
+    {
+      "File": "jpit-4.6.2-py3-none-any.whl",
+      "Sha256": "70bbd6299601849c95d87610f6379585f14238a8e1644c5f9bdb479aa0980b17",
+      "SizeBytes": 4605,
+      "Name": "jpit",
+      "Version": "4.6.2",
+      "RequiresDist": [
+        "jsonpit==4.6.2"
+      ]
+    },
+    {
+      "File": "jpit-4.6.2.tar.gz",
+      "Sha256": "03d06a3c6d766ce43dddf6fa83b4b59d8575e89517172b76390b2104b1566b14",
+      "SizeBytes": 1617,
+      "Name": "jpit",
+      "Version": "4.6.2"
+    },
+    {
+      "File": "jsonpit-4.6.2-py3-none-any.whl",
+      "Sha256": "55c90f0224e69efb02cca48a917a5ca10abd2ede79ad760b7cd3fc8ecda99545",
+      "SizeBytes": 65088,
+      "Name": "jsonpit",
+      "Version": "4.6.2",
+      "RequiresDist": [
+        "mypy>=1.10; extra == 'dev'",
+        "pytest-cov>=5.0; extra == 'dev'",
+        "pytest>=8.0; extra == 'dev'",
+        "ruff>=0.5; extra == 'dev'"
+      ],
+      "RuntimeVersion": "4.6.2"
+    },
+    {
+      "File": "jsonpit-4.6.2.tar.gz",
+      "Sha256": "991daa70394f6182791d255ebcf3d239ecc66fac05ddeba6ee42a8130c3729c8",
+      "SizeBytes": 231375,
+      "Name": "jsonpit",
+      "Version": "4.6.2"
+    },
+    {
+      "File": "vikela-4.6.2-py3-none-any.whl",
+      "Sha256": "e6449730e818f7fec8c205c9b06105308df850535a2c537ea2075d3b396ea82c",
+      "SizeBytes": 19009,
+      "Name": "vikela",
+      "Version": "4.6.2",
+      "RequiresDist": [
+        "build; extra == 'dev'",
+        "ipython>=8; extra == 'dev'",
+        "pylint<5,>=3.3; extra == 'dev'",
+        "pytest>=8; extra == 'dev'",
+        "twine; extra == 'dev'",
+        "ipython>=8; extra == 'notebook'",
+        "pylint<5,>=3.3; extra == 'pylint'"
+      ],
+      "RuntimeVersion": "4.6.2"
+    },
+    {
+      "File": "vikela-4.6.2.tar.gz",
+      "Sha256": "efe1a29f1a4198e9cccb8598b4c8cd27874d77fa83f9b77bcd149a8f0e9da45f",
+      "SizeBytes": 158104,
+      "Name": "vikela",
+      "Version": "4.6.2"
+    }
+  ],
+  "AssetPolicy": [
+    {
+      "Distribution": "jsonpit",
+      "SdistAssets": [
+        "assets/jsonpit-sync-logo.svg",
+        "assets/logo-128x128.png",
+        "assets/logo-192x192.png",
+        "assets/logo-512x512.png",
+        "assets/logo.png",
+        "assets/logo.svg"
+      ],
+      "WheelAssets": []
+    },
+    {
+      "Distribution": "vikela",
+      "SdistAssets": [
+        "assets/logo-128x128.png",
+        "assets/logo-192x192.png",
+        "assets/logo-512x512.png",
+        "assets/logo.png",
+        "assets/logo.svg",
+        "assets/vikela-logo.svg"
+      ],
+      "WheelAssets": []
+    }
+  ],
+  "PackageSmoke": {
+    "PitSeeder": {
+      "version": "pits v4.6.2",
+      "exit": 0
+    },
+    "RaidSeeder": {
+      "version": "raid v4.6.2",
+      "exit": 0
+    },
+    "ImgSeeder": {
+      "version": "iorg v4.6.2",
+      "exit": 0
+    },
+    "Amafu": {
+      "version": "amafu v4.6.2",
+      "exit": 0
+    },
+    "RaiGuard": {
+      "version": "rail v4.6.2",
+      "exit": 0
+    },
+    "jpit": {
+      "version": "jsonpit v4.6.2",
+      "exit": 0
+    },
+    "vikela": {
+      "version": "vikela v4.6.2",
+      "exit": 0
+    },
+    "sharedSeed": [
+      {
+        "engine": "pits",
+        "stdout": "Seeding pit from source file: /private/tmp/cr081-wheel-parity-1n1fu2mk/seed.json \n\tto destination: /private/tmp/cr081-wheel-parity-1n1fu2mk/Person/Person.pit\n[pits] 3 source items: 3 written, 0 unchanged (Pit 'Person').\n",
+        "stderr": "",
+        "exit": 0
+      },
+      {
+        "engine": "jpit",
+        "stdout": "[jpit] 3 source items: 0 written, 3 unchanged (Pit 'Person').\n",
+        "stderr": "",
+        "exit": 0
+      },
+      {
+        "engine": "jpit",
+        "stdout": "[jpit] 3 source items: 1 written, 2 unchanged (Pit 'Person').\n",
+        "stderr": "",
+        "exit": 0
+      }
+    ],
+    "railAia": {
+      "exit": 0,
+      "stdout": " No proven guardrail violations found. Checked 279 files.\n",
+      "stderr": "rail: inspection compilation has unresolved or invalid code; RAI011/RAI012 report only proven cases. No finding does not establish complete mutation safety. Use the compiler analyzer for project-context validation.\n",
+      "checked": 279
+    },
+    "railAiaSeparate": [
+      {
+        "project": "AIA.Core",
+        "checked": 84,
+        "exit": 0,
+        "stderr": "rail: inspection compilation has unresolved or invalid code; RAI011/RAI012 report only proven cases. No finding does not establish complete mutation safety. Use the compiler analyzer for project-context validation.\n"
+      },
+      {
+        "project": "AIA.Api",
+        "checked": 67,
+        "exit": 0,
+        "stderr": "rail: inspection compilation has unresolved or invalid code; RAI011/RAI012 report only proven cases. No finding does not establish complete mutation safety. Use the compiler analyzer for project-context validation.\n"
+      },
+      {
+        "project": "AIA.Core.Test",
+        "checked": 62,
+        "exit": 0,
+        "stderr": "rail: inspection compilation has unresolved or invalid code; RAI011/RAI012 report only proven cases. No finding does not establish complete mutation safety. Use the compiler analyzer for project-context validation.\n"
+      },
+      {
+        "project": "AIA.Api.Test",
+        "checked": 66,
+        "exit": 0,
+        "stderr": "rail: inspection compilation has unresolved or invalid code; RAI011/RAI012 report only proven cases. No finding does not establish complete mutation safety. Use the compiler analyzer for project-context validation.\n"
+      }
+    ],
+    "standaloneJpit": {
+      "exit": 0,
+      "version": "jpit v4.6.2"
+    }
+  },
+  "RemoteTagPreflight": {
+    ".": {
+      "checked": true,
+      "exists": false
+    },
+    "Amafu": {
+      "checked": true,
+      "exists": false
+    },
+    "OsLib": {
+      "checked": true,
+      "exists": false
+    },
+    "RaiUtils": {
+      "checked": true,
+      "exists": false
+    },
+    "RaiImage": {
+      "checked": true,
+      "exists": false
+    },
+    "RaiDiagram": {
+      "checked": true,
+      "exists": false
+    },
+    "RaidSeeder": {
+      "checked": true,
+      "exists": false
+    },
+    "JsonPit": {
+      "checked": true,
+      "exists": false
+    },
+    "JsonPit.Python": {
+      "checked": true,
+      "exists": false
+    },
+    "ImgSeeder": {
+      "checked": true,
+      "exists": false
+    },
+    "PitSeeder": {
+      "checked": true,
+      "exists": false
+    },
+    "RaiGuard": {
+      "checked": true,
+      "exists": false
+    },
+    "vikela": {
+      "checked": true,
+      "exists": false
+    }
+  },
+  "PreparationNotes": [
+    "All child commits are local; no push, tag, publication, install or provisioning performed.",
+    "Source receipts and package metadata verified against prepared child commits.",
+    "Read-only AIA check is provider verification, not independent consumer acceptance.",
+    "All Python build backends reused from existing cache; no pip install performed.",
+    "Initial unpublished global NuGet candidates moved to /private/tmp/cr081-previous-global-candidates to prevent public-feed validation contamination."
+  ],
+  "StandaloneJpit": {
+    "Path": "JsonPit.Python/bin/jpit",
+    "Sha256": "0adde1802d92addd778b32aa75398898df10a2d6f5dcfc173ff89252dcb7fd77"
+  }
+}

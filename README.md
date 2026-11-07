@@ -1,5 +1,13 @@
 # RAIkeep
 
+## Candidate 4.6.2 — CR078 and CR081
+
+`rail` now inspects every supplied source path; `pits` and `jpit` report written
+and unchanged source entries after required local persistence. See the
+[formal implementation and preparation report](doc/RAIkeep_RELEASE_NOTES_v4.6.2.md).
+Consumer CDAT is pending. Rainer runs release and provisioning manually through
+Engenho after acceptance; preparation does not authorize publication or installation.
+
 ## CR070 in 4.6.1
 
 RAIkeep 4.6.1 adds Os.RunSwitch for process-invocation opt-ins and justified,
@@ -44,20 +52,14 @@ validation, dependency-order documentation, and sequential release automation.
 
 ## Current release line
 
-The prepared coordinated release is `4.6.1`. CR075 adds structured media
-inventory and read-only byte/visual content matching. RAI002 now gives specific
-file-size guidance and a semantic RaiFile.Length replacement. All child package
-versions and dependencies remain aligned.
+The prepared coordinated release is `4.6.2`. CR078 fixes multi-path coverage in
+`rail`; CR081 adds truthful seed disposition counts and post-persistence receipts
+in `pits` and `jpit`. All twelve child repositories, including optional Vikela,
+share the same version and synchronized package dependencies.
 
-All five C# CLI tools and the Python `jpit` CLI are coordinated through this
-umbrella. The release chain validates the `jsonpit` Python test suite, checks
-`pits list` / `jpit list` parity, and publishes both matching PyPI distributions
-beside the NuGet packages.
-
-All eleven child repositories participate in the coordinated line so fallback
-package dependencies remain aligned throughout the release order. Engenho owns
-fleet provisioning after publication; release preparation and the release chain
-do not install or upgrade tools on hosts.
+Preparation includes local tests, metadata checks and candidate packaging.
+Consumer acceptance precedes publication. Engenho owns manual release and
+separately selected provisioning; neither operation runs during preparation.
 
 ## Documentation
 
@@ -69,20 +71,20 @@ The [RAIkeep Manifesto](https://github.com/Burkhardt/RAIkeep/blob/main/MANIFESTO
 explains why transparent, historical JSON matters for agentic engineering and
 defines JsonPit's asynchronous persistence and eventual-durability model.
 
-Prepared 4.6.1 release notes:
+Prepared 4.6.2 release notes:
 
-- [Amafu 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/Amafu_RELEASE_NOTES_4.x.md#461)
-- [OsLibCore 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/OsLib_RELEASE_NOTES_4.x.md#461)
-- [RaiUtils 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiUtils_RELEASE_NOTES_4.x.md#461)
-- [RaiImage 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiImage_RELEASE_NOTES_4.x.md#461)
-- [RaiDiagram 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiDiagram_RELEASE_NOTES_4.x.md#461)
-- [RaidSeeder 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaidSeeder_RELEASE_NOTES_4.x.md#461)
-- [JsonPit 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit_RELEASE_NOTES_4.x.md#461)
-- [JsonPit.Python 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit.Python_RELEASE_NOTES_4.x.md#461)
-- [ImgSeeder 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/ImgSeeder_RELEASE_NOTES_4.x.md#461)
-- [PitSeeder 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/PitSeeder_RELEASE_NOTES_4.x.md#461)
-- [RaiGuard 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiGuard_RELEASE_NOTES_4.x.md#461)
-- [RAIkeep 4.6.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#461)
+- [Amafu 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/Amafu_RELEASE_NOTES_4.x.md#462)
+- [OsLibCore 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/OsLib_RELEASE_NOTES_4.x.md#462)
+- [RaiUtils 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiUtils_RELEASE_NOTES_4.x.md#462)
+- [RaiImage 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiImage_RELEASE_NOTES_4.x.md#462)
+- [RaiDiagram 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiDiagram_RELEASE_NOTES_4.x.md#462)
+- [RaidSeeder 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaidSeeder_RELEASE_NOTES_4.x.md#462)
+- [JsonPit 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit_RELEASE_NOTES_4.x.md#462)
+- [JsonPit.Python 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit.Python_RELEASE_NOTES_4.x.md#462)
+- [ImgSeeder 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/ImgSeeder_RELEASE_NOTES_4.x.md#462)
+- [PitSeeder 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/PitSeeder_RELEASE_NOTES_4.x.md#462)
+- [RaiGuard 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiGuard_RELEASE_NOTES_4.x.md#462)
+- [RAIkeep 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#462)
 
 The prior coordinated line remains documented in [RAIkeep 4.1.0 release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#410).
 
@@ -109,47 +111,26 @@ The JsonPit suite includes real cloud/remote scenarios and a separately document
 
 ## Release execution
 
-For CR077 / 4.6.0 and Vikela 4.6.0, use Engenho with the
-[handover for Rita](doc/HANDOVER_TO_RITA_Engenho_CR077_Vikela.md). The script
-reference below records the previous mechanism; it is not the CR077 launch command.
+Rainer runs Engenho manually after the owning consumer accepts the candidate.
+Provider implementation, tests, local commits and package builds do not constitute
+consumer signoff and do not authorize publication or installation.
 
-Publication requires explicit approval. Preparing versions, documentation, commits, or packages does not authorize a push, tag, workflow dispatch, or NuGet publication.
+After CDAT acceptance, the manual release invocation is:
 
-### Previous local script (reference only)
-
-The existing script remains available for earlier release recovery. Its invocation shape is:
-
-```bash
+```zsh
 cd /Users/RSB/Projects/GitHub/RAIkeep
-scripts/release-chain.sh 4.6.1
+engenho release 4.6.2
 ```
 
-Before publication begins, all eleven child release commits and their exact submodule pointers must already be committed on the umbrella `main`. The script preflights that state, then publishes each child in dependency order. Only after every child package is visible does it push and tag the umbrella commit. The umbrella tag creates the synchronized GitHub Release; it publishes no NuGet package.
+The manifest is `scripts/release-manifest.json`. All prepared child commits and
+exact submodule pointers must be committed on umbrella `main` before execution.
+Engenho publishes children in dependency order and creates the umbrella tag only
+after package visibility gates pass. No tags are moved during preparation.
 
-It then processes packages in this exact order:
-
-```text
-Amafu → OsLibCore → RaiUtils → RaiImage → RaiDiagram → RaidSeeder → JsonPit → JsonPit.Python → ImgSeeder → PitSeeder → RaiGuard → RAIkeep umbrella
-```
-
-The Python `jsonpit` and `jpit` distributions follow C# `JsonPit` and are published to
-PyPI before ImgSeeder and PitSeeder. Preflight builds both packages, checks their
-installed commands and standalone download, and validates their documentation.
-The chain also creates the Python GitHub Release. Set `PYPI_TOKEN` in the release
-environment; the chain supplies it to Twine without placing it on the command
-line.
-
-For every package before the next repository is pushed/tagged:
-
-1. Push the prepared repository `main` only if it is ahead.
-2. Push that repository's requested version tag, such as `v4.5.2`, to trigger its publish workflow.
-3. Wait for the matching GitHub workflow to finish successfully.
-4. Verify the exact `.nupkg` and exact-version registration document are both visible from NuGet with HTTP `200`.
-5. Only then continue to the next repository.
-
-The chain waits on observed NuGet and PyPI availability rather than a fixed delay. Do not run multiple release mechanisms for the same version. The local script refuses to move an existing conflicting version tag and verifies the prepared submodule pointers before it tags the umbrella.
-
-Detailed operational guidance is in [RunReleaseChain.md](https://github.com/Burkhardt/RAIkeep/blob/main/RunReleaseChain.md).
+Provisioning is a separate manual Engenho operation after publication. Consult
+Rita's current provisioning instructions for target selection; do not run the
+legacy install script. The old shell chain remains historical recovery tooling,
+not the v4.6.2 release procedure.
 
 ## Working conventions
 

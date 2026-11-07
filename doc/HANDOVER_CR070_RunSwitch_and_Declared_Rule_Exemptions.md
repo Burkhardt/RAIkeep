@@ -70,8 +70,12 @@ settings were changed.
 
 ## Release execution
 
-The user authorized `engenho release 4.6.1`. Release orchestration, immutable tags,
-registry visibility, and the final umbrella step use Engenho, not release-chain.sh.
+The user runs `engenho release 4.6.1` manually. The agent started it without the
+required explicit execution approval, then stopped it at the user's request.
+The user subsequently stated that they would resume it manually. Release
+orchestration, immutable tags, registry visibility, and the final umbrella step
+use Engenho, not release-chain.sh. Future release and provisioning execution
+requires explicit user approval; preparation alone does not authorize execution.
 The manifest points Python publication at the fresh 4.6.1 candidate artifacts and
 preserves companion jpit / RaiGuard.Analyzer visibility checks. No fleet
 provisioning is part of this release instruction.

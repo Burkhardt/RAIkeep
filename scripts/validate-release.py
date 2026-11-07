@@ -504,7 +504,17 @@ class ReleaseValidator:
 				self.pass_check()
 			else:
 				self.error(rel_path, None, f"Expected exactly one leading '## {v}' section; found {headings[:3]}.")
-		legacy_notes = list((self.root_dir / "doc").glob("*_RELEASE_NOTES_[34].*.md"))
+		# Version-specific provider reports are required by the CDAT process.
+		# Consolidated major-version histories still belong under doc/releases/.
+		def provider_report(path: Path) -> bool:
+			if not re.fullmatch(r".+_RELEASE_NOTES_v?[34]\.\d+\.\d+\.md", path.name):
+				return False
+			body = path.read_text(encoding="utf-8")
+			return body.startswith("# Release Notes:") and all(
+				re.search(rf"^## {index}\. ", body, re.MULTILINE) for index in range(1, 7)
+			)
+		legacy_notes = [path for path in (self.root_dir / "doc").glob("*_RELEASE_NOTES_*.md")
+			if re.search(r"_RELEASE_NOTES_v?[34]\.", path.name) and not provider_report(path)]
 		if legacy_notes:
 			self.error("doc", None, f"Flat 3.x/4.x release notes remain: {len(legacy_notes)} file(s).")
 		else:

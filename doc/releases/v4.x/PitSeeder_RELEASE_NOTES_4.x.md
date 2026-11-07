@@ -1,5 +1,18 @@
 # PitSeeder Release Notes 4.x
 
+## 4.6.2
+
+- Release version: `4.6.2`
+- Coordination tag: `v4.6.2`
+
+### Highlights
+- CR081: report source-entry written/unchanged counts and unchanged IDs under debug. Emit the receipt after Save and required disposal/window release; persistence failures return nonzero without a success receipt. Preserve whole-batch validation and --window behavior.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.6.2` line.
+
+---
+
 ## 4.6.1
 
 - Release version: `4.6.1`

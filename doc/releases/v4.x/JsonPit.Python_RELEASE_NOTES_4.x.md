@@ -1,5 +1,18 @@
 # jsonpit-python Release Notes 4.x
 
+## 4.6.2
+
+- Release version: `4.6.2`
+- Coordination tag: `v4.6.2`
+
+### Highlights
+- CR081: jpit seed/put report actual per-entry dispositions after Save and context exit. Match C# latest-fragment deduplication before timestamping; report failed owned-window cleanup instead of silently succeeding. Do not suppress based on projected-state equality.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.6.2` line.
+
+---
+
 ## 4.6.1
 
 - Release version: `4.6.1`

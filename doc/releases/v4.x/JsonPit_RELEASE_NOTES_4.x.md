@@ -1,5 +1,18 @@
 # JsonPit Release Notes 4.x
 
+## 4.6.2
+
+- Release version: `4.6.2`
+- Coordination tag: `v4.6.2`
+
+### Highlights
+- CR081: document existing Add acceptance, latest-fragment deduplication and Dispose audit timing. Add regression coverage for sparse fragments, tombstones and live identity in both tracking modes. No C# AppendFragment policy or public mutation API change.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.6.2` line.
+
+---
+
 ## 4.6.1
 
 - Release version: `4.6.1`

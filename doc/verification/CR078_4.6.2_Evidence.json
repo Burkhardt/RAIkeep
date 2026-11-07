@@ -1,0 +1,136 @@
+{
+  "changeRequest": "CR078_AIA_to_RAIkeep_Rail_Multi_Path_Input_Completeness.md",
+  "providerReport": "RaiGuard_RELEASE_NOTES_4.6.2.md",
+  "date": "2026-11-05",
+  "status": "Provider verified local candidate; independent CDAT pending",
+  "executionHost": "Nkosikazi",
+  "version": "4.6.2",
+  "published": false,
+  "consumerAccepted": false,
+  "releaseExecuted": false,
+  "provisioningExecuted": false,
+  "tests": {
+    "analyzerPassed": 117,
+    "cliPassed": 53,
+    "cliNewCases": 30,
+    "failed": 0,
+    "skipped": 0,
+    "command": "dotnet test RaiGuard/RaiGuard.sln --nologo --disable-build-servers -nodeReuse:false -p:UseSharedCompilation=false",
+    "log": "/private/tmp/cr078-raiguard-tests.log"
+  },
+  "aiaSeparateAndCombinedScans": [
+    {
+      "label": "combined",
+      "exit": 0,
+      "checked": 264,
+      "stderr": "rail: inspection compilation has unresolved or invalid code; RAI011/RAI012 report only proven cases. No finding does not establish complete mutation safety. Use the compiler analyzer for project-context validation.\n"
+    },
+    {
+      "label": "AIA.Core",
+      "exit": 0,
+      "checked": 80,
+      "stderr": "rail: inspection compilation has unresolved or invalid code; RAI011/RAI012 report only proven cases. No finding does not establish complete mutation safety. Use the compiler analyzer for project-context validation.\n"
+    },
+    {
+      "label": "AIA.Api",
+      "exit": 0,
+      "checked": 61,
+      "stderr": "rail: inspection compilation has unresolved or invalid code; RAI011/RAI012 report only proven cases. No finding does not establish complete mutation safety. Use the compiler analyzer for project-context validation.\n"
+    },
+    {
+      "label": "AIA.Core.Test",
+      "exit": 0,
+      "checked": 60,
+      "stderr": "rail: inspection compilation has unresolved or invalid code; RAI011/RAI012 report only proven cases. No finding does not establish complete mutation safety. Use the compiler analyzer for project-context validation.\n"
+    },
+    {
+      "label": "AIA.Api.Test",
+      "exit": 0,
+      "checked": 63,
+      "stderr": "rail: inspection compilation has unresolved or invalid code; RAI011/RAI012 report only proven cases. No finding does not establish complete mutation safety. Use the compiler analyzer for project-context validation.\n"
+    }
+  ],
+  "packageChecks": [
+    {
+      "name": "version",
+      "arguments": [
+        "-v"
+      ],
+      "workingDirectory": "/Users/RSB/Projects/GitHub/RAIkeep",
+      "exitCode": 0,
+      "stdout": "rail v4.6.2\n",
+      "stderr": ""
+    },
+    {
+      "name": "plain-help",
+      "arguments": [
+        "-h",
+        "-n"
+      ],
+      "workingDirectory": "/Users/RSB/Projects/GitHub/RAIkeep",
+      "exitCode": 0,
+      "stdout": "Commands:         check, fix, rules, groups\n  rail check [<path> ...] [--rule <id>] [--group <name>] [--json]\n  rail fix [<path> ...] [--rule <id>] [--group <name>] [--dry-run]\n  rail rules [--rule <id>] [--group <name>] [--groups] [--json]\n  rail groups [--group <name>] [--json]\nOptions:\n-h, --help        print out all options\n-v, --version     print version info\n-n, --nologo      do not display the banner\n-b, --debug       enable debug output\n-p, --path        target file or directory; repeat to add targets (default: current directory)\n--rule            filter by rule ID (e.g. RAI001, RAI011)\n-g, --group       filter by rule group set (OsLib, CloudSync, JsonPit, CliCommand, RaiMedia, Formatting)\n--groups          list all rule groups (sets) with their member RAIxxx rules\n--json            output diagnostics in JSON format\n--dry-run         simulate code fixes without modifying source files on disk\n--                end options; following arguments are source paths\nPaths             combine positional paths and repeated -p; overlapping files are inspected once\nExit codes        check: 0 clean, 1 findings, 2 invalid input or incomplete scan (errors on stderr)\n Rules           RAI001..RAI017 across sets: OsLib, CloudSync, JsonPit, CliCommand, RaiMedia, Formatting\n",
+      "stderr": ""
+    },
+    {
+      "name": "AIA-four-projects",
+      "arguments": [
+        "check",
+        "AIA.Core",
+        "AIA.Api",
+        "AIA.Core.Test",
+        "AIA.Api.Test",
+        "-n"
+      ],
+      "workingDirectory": "/Users/RSB/Projects/GitHub/AIA",
+      "exitCode": 0,
+      "stdout": " No proven guardrail violations found. Checked 264 files.\n",
+      "stderr": "rail: inspection compilation has unresolved or invalid code; RAI011/RAI012 report only proven cases. No finding does not establish complete mutation safety. Use the compiler analyzer for project-context validation.\n"
+    },
+    {
+      "name": "invalid-later-json",
+      "arguments": [
+        "check",
+        "/Users/RSB/Projects/GitHub/AIA/AIA.Core",
+        "/private/tmp/cr078-intentionally-missing-target",
+        "--json"
+      ],
+      "workingDirectory": "/Users/RSB/Projects/GitHub/RAIkeep",
+      "exitCode": 2,
+      "stdout": "[]\n",
+      "stderr": "rail: incomplete operation: Cannot access '/private/tmp/cr078-intentionally-missing-target': Could not find file '/private/tmp/cr078-intentionally-missing-target'.\n"
+    }
+  ],
+  "candidateArtifacts": [
+    {
+      "id": "RaiGuard",
+      "version": "4.6.2",
+      "path": "/private/tmp/raikeep-cr078-candidates/RaiGuard.4.6.2.nupkg",
+      "sha256": "21b664371e369e004bb234742314be51203d92264bafdd487e97594868ac1804"
+    },
+    {
+      "id": "RaiGuard.Analyzer",
+      "version": "4.6.2",
+      "path": "/private/tmp/raikeep-cr078-candidates/RaiGuard.Analyzer.4.6.2.nupkg",
+      "sha256": "6c69b091df7c000931c9aecc82cd9fd80cb6c32b1a2edd1a014d330dd8500701"
+    }
+  ],
+  "sourceSha256": {
+    "RaiGuard/rail/Program.cs": "e0081e8b3078089c9e1cb4251346f88ff06785db11ea854af0fc347062e3f12c",
+    "RaiGuard/rail/RailArguments.cs": "0101c8522cd0ce8a80dc3d0df642071e67cbe227f9e8449e3fe9c413e4cc281e",
+    "RaiGuard/rail/SourceSelection.cs": "8428c26572bc70ae9b36b8a07ab9e840800ddd63297360c49bf516e5b08338f8",
+    "RaiGuard/rail/MutationCompilation.cs": "0ee67076f7937e9e22d2e19551aed17b10e37e4bea3d787c145e70cd59ffb4b1",
+    "RaiGuard/rail.Tests/MultiPathTests.cs": "45a222f08dded815713e272d325d4b6f4583b8268c8d38faf8702d1fd4928711",
+    "RaiGuard/rail/rail.csproj": "8e6286678964de52faa260624ca9574ef928748c71f96723c8e8283d074ab49a",
+    "RaiGuard/src/RaiGuard.Package/RaiGuard.Package.csproj": "5fc6238531e80df7bd1b26e64281e538e3c5988a9525bcd693422eccb2b182a8"
+  },
+  "limitations": [
+    "Read-only provider scan of AIA is not independent consumer signoff.",
+    "Existing CLI semantic reference-resolution advisory remains; compiler analyzer project validation is still required.",
+    "No full umbrella/cloud-sync test rerun; no Windows/Linux runtime execution claimed.",
+    "Other suite projects remain at 4.6.1 until separate post-acceptance release preparation."
+  ],
+  "EvidenceKind": "Initial CR078 provider verification (2026-11-05)",
+  "LatestBundleEvidence": "CR081_4.6.2_Evidence.json",
+  "InitialArtifactsMayBeSuperseded": true
+}

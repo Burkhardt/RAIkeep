@@ -130,6 +130,15 @@ class ReleaseToolsTests(unittest.TestCase):
 		self.assertEqual(1, len(errors))
 		self.assertIn("Amafu README contains collapsible HTML tags not supported by NuGet", errors[0])
 
+	def test_versioned_provider_report_is_allowed_but_flat_major_history_is_rejected(self):
+		report = self.root / "doc/RAIkeep_RELEASE_NOTES_v4.6.2.md"
+		report.write_text("# Release Notes: RAIkeep v4.6.2\n" + "".join(f"\n## {i}. Section\n" for i in range(1, 7)))
+		_, errors = self.validate()
+		self.assertFalse(any("Flat 3.x/4.x" in error for error in errors))
+		(self.root / "doc/Legacy_RELEASE_NOTES_4.x.md").write_text("# Old rolling history\n")
+		_, errors = self.validate()
+		self.assertTrue(any("Flat 3.x/4.x" in error for error in errors))
+
 	def test_amafu_local_release_notes_match_current_umbrella_section(self):
 		local_notes = self.root / "Amafu/RELEASE_NOTES.md"
 		workflow = self.root / "Amafu/.github/workflows/publish-nuget.yaml"

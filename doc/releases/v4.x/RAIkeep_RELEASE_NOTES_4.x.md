@@ -1,5 +1,18 @@
 # RAIkeep Release Notes 4.x
 
+## 4.6.2
+
+- Release version: `4.6.2`
+- Coordination tag: `v4.6.2`
+
+### Highlights
+- Bundle CR078 and CR081: inspect every rail target exactly once; report actual pits/jpit seed dispositions only after required local persistence. Preserve latest-fragment deduplication and documented audit timestamps. Consumer CDAT and manual Engenho release remain separate gates.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.6.2` line.
+
+---
+
 ## 4.6.1
 
 - Release version: `4.6.1`

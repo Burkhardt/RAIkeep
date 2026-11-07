@@ -1,5 +1,18 @@
 # RaiGuard Release Notes 4.x
 
+## 4.6.2
+
+- Release version: `4.6.2`
+- Coordination tag: `v4.6.2`
+
+### Highlights
+- CR078: rail check/fix and implicit checks combine all positional/repeated path inputs, deduplicate overlapping roots, preserve combined semantic analysis and reject invalid/incomplete input with exit 2. Validate all targets before fixes; preserve clean JSON and accurate counts.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.6.2` line.
+
+---
+
 ## 4.6.1
 
 - Release version: `4.6.1`
