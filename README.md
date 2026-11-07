@@ -1,12 +1,13 @@
 # RAIkeep
 
-## Candidate 4.6.2 — CR078 and CR081
+## Candidate 4.6.3 — CR082
 
-`rail` now inspects every supplied source path; `pits` and `jpit` report written
-and unchanged source entries after required local persistence. See the
-[formal implementation and preparation report](doc/RAIkeep_RELEASE_NOTES_v4.6.2.md).
-Consumer CDAT is pending. Rainer runs release and provisioning manually through
-Engenho after acceptance; preparation does not authorize publication or installation.
+Python `jpit export` now resolves bare tenant roots through configured cloud
+storage and fails honestly for missing snapshots. See the
+[implementation report](doc/JsonPit.Python_RELEASE_NOTES_4.6.3.md) and
+[independent CR082 acceptance](doc/CR082_Accepted_Jpit_Default_Cloud_Resolution_and_Missing_Export_v4_6_3.md).
+Rainer runs release and provisioning manually through Engenho; preparation
+does not execute either operation.
 
 ## CR070 in 4.6.1
 
@@ -52,10 +53,10 @@ validation, dependency-order documentation, and sequential release automation.
 
 ## Current release line
 
-The prepared coordinated release is `4.6.2`. CR078 fixes multi-path coverage in
-`rail`; CR081 adds truthful seed disposition counts and post-persistence receipts
-in `pits` and `jpit`. All twelve child repositories, including optional Vikela,
-share the same version and synchronized package dependencies.
+The prepared coordinated release is `4.6.3`. CR082 corrects Python jpit's
+default-cloud export routing and missing-source failures. All twelve child
+repositories, including optional Vikela, share the same version and synchronized
+package dependencies; the other components retain their accepted behavior.
 
 Preparation includes local tests, metadata checks and candidate packaging.
 Consumer acceptance precedes publication. Engenho owns manual release and
@@ -71,20 +72,20 @@ The [RAIkeep Manifesto](https://github.com/Burkhardt/RAIkeep/blob/main/MANIFESTO
 explains why transparent, historical JSON matters for agentic engineering and
 defines JsonPit's asynchronous persistence and eventual-durability model.
 
-Prepared 4.6.2 release notes:
+Prepared 4.6.3 release notes:
 
-- [Amafu 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/Amafu_RELEASE_NOTES_4.x.md#462)
-- [OsLibCore 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/OsLib_RELEASE_NOTES_4.x.md#462)
-- [RaiUtils 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiUtils_RELEASE_NOTES_4.x.md#462)
-- [RaiImage 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiImage_RELEASE_NOTES_4.x.md#462)
-- [RaiDiagram 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiDiagram_RELEASE_NOTES_4.x.md#462)
-- [RaidSeeder 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaidSeeder_RELEASE_NOTES_4.x.md#462)
-- [JsonPit 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit_RELEASE_NOTES_4.x.md#462)
-- [JsonPit.Python 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit.Python_RELEASE_NOTES_4.x.md#462)
-- [ImgSeeder 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/ImgSeeder_RELEASE_NOTES_4.x.md#462)
-- [PitSeeder 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/PitSeeder_RELEASE_NOTES_4.x.md#462)
-- [RaiGuard 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiGuard_RELEASE_NOTES_4.x.md#462)
-- [RAIkeep 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#462)
+- [Amafu 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/Amafu_RELEASE_NOTES_4.x.md#463)
+- [OsLibCore 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/OsLib_RELEASE_NOTES_4.x.md#463)
+- [RaiUtils 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiUtils_RELEASE_NOTES_4.x.md#463)
+- [RaiImage 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiImage_RELEASE_NOTES_4.x.md#463)
+- [RaiDiagram 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiDiagram_RELEASE_NOTES_4.x.md#463)
+- [RaidSeeder 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaidSeeder_RELEASE_NOTES_4.x.md#463)
+- [JsonPit 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit_RELEASE_NOTES_4.x.md#463)
+- [JsonPit.Python 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit.Python_RELEASE_NOTES_4.x.md#463)
+- [ImgSeeder 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/ImgSeeder_RELEASE_NOTES_4.x.md#463)
+- [PitSeeder 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/PitSeeder_RELEASE_NOTES_4.x.md#463)
+- [RaiGuard 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiGuard_RELEASE_NOTES_4.x.md#463)
+- [RAIkeep 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#463)
 
 The prior coordinated line remains documented in [RAIkeep 4.1.0 release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#410).
 

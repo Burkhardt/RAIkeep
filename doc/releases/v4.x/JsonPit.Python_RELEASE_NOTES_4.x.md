@@ -1,5 +1,18 @@
 # jsonpit-python Release Notes 4.x
 
+## 4.6.3
+
+- Release version: `4.6.3`
+- Coordination tag: `v4.6.3`
+
+### Highlights
+- CR082: Python jpit resolves bare export/WWWA roots through the configured default cloud and reports missing export snapshots with exit 1, empty stdout and unchanged destinations. Independent AfricaStage/AIA CDAT accepted; preserve CR069 explicit write destinations.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.6.3` line.
+
+---
+
 ## 4.6.2
 
 - Release version: `4.6.2`

@@ -1,0 +1,88 @@
+{
+  "change_request": "CR082_AfricaStage_to_RAIkeep_Jpit_Default_Cloud_Resolution_and_Missing_Export.md",
+  "target_version": "4.6.3",
+  "status": "Independent consumer CDAT accepted; initial Python candidate verification retained",
+  "source_tests": {
+    "command": "PYTHONPATH=JsonPit.Python python -m pytest JsonPit.Python/tests",
+    "passed": 198,
+    "cr082_cases": 50
+  },
+  "package_validation": {
+    "build": "python -m build --no-isolation for jsonpit and jpit, wheel from sdist",
+    "twine_check": "4 artifacts passed",
+    "wheel_cr082_tests_passed": 50,
+    "metadata": [
+      {
+        "name": "jpit",
+        "version": "4.6.3",
+        "requires_dist": [
+          "jsonpit==4.6.3"
+        ]
+      },
+      {
+        "name": "jsonpit",
+        "version": "4.6.3",
+        "requires_dist": [
+          "mypy>=1.10; extra == 'dev'",
+          "pytest-cov>=5.0; extra == 'dev'",
+          "pytest>=8.0; extra == 'dev'",
+          "ruff>=0.5; extra == 'dev'"
+        ]
+      }
+    ]
+  },
+  "artifact_smoke": [
+    {
+      "candidate": "source",
+      "version": "jsonpit v4.6.3",
+      "tenant_json": "passed",
+      "directory": "passed",
+      "missing_source_exit": 1,
+      "source_unchanged": true
+    },
+    {
+      "candidate": "standalone",
+      "version": "jpit v4.6.3",
+      "tenant_json": "passed",
+      "directory": "passed",
+      "missing_source_exit": 1,
+      "source_unchanged": true
+    },
+    {
+      "candidate": "wheel",
+      "version": "jsonpit v4.6.3",
+      "tenant_json": "passed",
+      "directory": "passed",
+      "missing_source_exit": 1,
+      "source_unchanged": true
+    }
+  ],
+  "standalone_matches_sources": true,
+  "artifacts": [
+    {
+      "path": "/private/tmp/raikeep-4.6.3-cr082-candidates/python/jpit-4.6.3-py3-none-any.whl",
+      "sha256": "74e218205ae3b330a46f7a2d6469c992720a8808f943462b7241bd50ae4ccb9f",
+      "bytes": 4760
+    },
+    {
+      "path": "/private/tmp/raikeep-4.6.3-cr082-candidates/python/jpit-4.6.3.tar.gz",
+      "sha256": "6be2941076609a17e66aa8cfbad5d18fa2d24dbcb0cf80a67dab8edd2db5b5f7",
+      "bytes": 1677
+    },
+    {
+      "path": "/private/tmp/raikeep-4.6.3-cr082-candidates/python/jsonpit-4.6.3-py3-none-any.whl",
+      "sha256": "6704145bde2685e39aba88d592573b9e51d8cedac1e54eaa18323a93d6b982b9",
+      "bytes": 65303
+    },
+    {
+      "path": "/private/tmp/raikeep-4.6.3-cr082-candidates/python/jsonpit-4.6.3.tar.gz",
+      "sha256": "7f818281d6869947c35d25b8fd9c303fc39c92a562b0fa7f8c8e14bfdb523f2f",
+      "bytes": 231582
+    }
+  ],
+  "release_executed": false,
+  "provisioning_executed": false,
+  "coordinated_suite_preparation": "See CR082_4.6.3_Release_Preparation.json",
+  "mutation_policy": "CR069 explicit write destinations preserved and confirmed by consumer acceptance",
+  "consumer_acceptance": "CR082_Accepted_Jpit_Default_Cloud_Resolution_and_Missing_Export_v4_6_3.md"
+}

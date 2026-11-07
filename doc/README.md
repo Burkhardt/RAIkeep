@@ -6,6 +6,9 @@ Each `<Package>_RELEASE_NOTES_<major>.x.md` file lists releases newest first. Ad
 
 ## Provider implementation reports and consumer acceptance
 
+- [RAIkeep 4.6.3 coordinated preparation report](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_v4.6.3.md)
+- [CR082 independent consumer acceptance](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR082_Accepted_Jpit_Default_Cloud_Resolution_and_Missing_Export_v4_6_3.md)
+
 Major-version histories do not replace the required version-specific provider
 report. Each delivery follows the release-notes template, cites exact CR filenames,
 and awaits independent consumer acceptance before Rainer's manual release.
@@ -18,18 +21,18 @@ and awaits independent consumer acceptance before Rainer's manual release.
 
 - [v4.5.17 release preparation](https://github.com/Burkhardt/RAIkeep/blob/main/doc/HANDOVER_RELEASE_PREP_v4.5.17.md) — manual start command, verification, and prepared commit identities.
 
-- [RAIkeep 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#462)
-- [Amafu 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/Amafu_RELEASE_NOTES_4.x.md#462)
-- [OsLibCore 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/OsLib_RELEASE_NOTES_4.x.md#462)
-- [RaiUtils 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiUtils_RELEASE_NOTES_4.x.md#462)
-- [RaiImage 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiImage_RELEASE_NOTES_4.x.md#462)
-- [RaiDiagram 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiDiagram_RELEASE_NOTES_4.x.md#462)
-- [RaidSeeder 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaidSeeder_RELEASE_NOTES_4.x.md#462)
-- [JsonPit 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit_RELEASE_NOTES_4.x.md#462)
-- [JsonPit.Python 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit.Python_RELEASE_NOTES_4.x.md#462)
-- [ImgSeeder 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/ImgSeeder_RELEASE_NOTES_4.x.md#462)
-- [PitSeeder 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/PitSeeder_RELEASE_NOTES_4.x.md#462)
-- [RaiGuard 4.6.2](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiGuard_RELEASE_NOTES_4.x.md#462)
+- [RAIkeep 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#463)
+- [Amafu 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/Amafu_RELEASE_NOTES_4.x.md#463)
+- [OsLibCore 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/OsLib_RELEASE_NOTES_4.x.md#463)
+- [RaiUtils 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiUtils_RELEASE_NOTES_4.x.md#463)
+- [RaiImage 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiImage_RELEASE_NOTES_4.x.md#463)
+- [RaiDiagram 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiDiagram_RELEASE_NOTES_4.x.md#463)
+- [RaidSeeder 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaidSeeder_RELEASE_NOTES_4.x.md#463)
+- [JsonPit 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit_RELEASE_NOTES_4.x.md#463)
+- [JsonPit.Python 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit.Python_RELEASE_NOTES_4.x.md#463)
+- [ImgSeeder 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/ImgSeeder_RELEASE_NOTES_4.x.md#463)
+- [PitSeeder 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/PitSeeder_RELEASE_NOTES_4.x.md#463)
+- [RaiGuard 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiGuard_RELEASE_NOTES_4.x.md#463)
 
 - [CR051](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR/CR051_RAI_to_RAIkeep_Multiple-Cloud-Accounts-and-Named-Shortcuts.md) — multiple cloud accounts, named shortcuts, personal OneDrive selection, and noninteractive reconciliation.
 - [CR049](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR/CR049_AIA_and_jsonpit_to_RAIkeep_Live-ID-Validation_and_Zip-Image-Import.md) — live-ID validation, ZIP image import, stdin receipts, and EXIF clarifications.

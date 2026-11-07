@@ -1,0 +1,348 @@
+{
+  "Version": "4.6.3",
+  "Date": "2026-11-07",
+  "Status": "Coordinated release preparation; live replication verification pending",
+  "ConsumerAcceptance": {
+    "Status": "Accepted",
+    "Record": "doc/CR082_Accepted_Jpit_Default_Cloud_Resolution_and_Missing_Export_v4_6_3.md",
+    "AiaMirrorCommit": "6f1fa12",
+    "AcceptanceRecordSha256": "97da41a5323b100bfc677f7d0b173e21b7256e32be2c5d4e0db63abe17357f31"
+  },
+  "SourceCommits": {
+    "Amafu": "ffeef5b8e91ff80217e71544957309721b3eeb7a",
+    "OsLib": "605433ffa925221597bf83a74a868c61b026a013",
+    "RaiUtils": "7855bee9acef1820718bce08b6295882dafea5d4",
+    "RaiImage": "e513fd7ebc65f169505f3fc9d3d25bff4af4c0a8",
+    "RaiDiagram": "cd39714866ef1d508dd3198eb0e89bc21f2b57e3",
+    "RaidSeeder": "1841ce4def9e10e18a5e2ed018f22fe69d3ba01f",
+    "JsonPit": "133760170ca9f34fddb2689fbeaa71657643e077",
+    "JsonPit.Python": "a8175618ae915363b6c59705dd061ca2feed03f3",
+    "ImgSeeder": "efeb2adf4835cc1bcfa3ae5bbd7344791df0f222",
+    "PitSeeder": "602d031d17a2462f4acdb5accb93c805920cf22d",
+    "RaiGuard": "120be1e71a1534e4ccd3193d02c83a64146ce978",
+    "vikela": "d99b5afeaff1eb48a20a2386fbb6c22760c8632f"
+  },
+  "ReleaseManifest": {
+    "Path": "scripts/release-manifest.json",
+    "CurrentVersion": "4.6.3",
+    "Sha256": "87c279ba84537cec9352c296a1646b8b0f9efa4fabd08990e0ddd4c47c64aad9"
+  },
+  "Checks": {
+    "ReleasePreflightPassed": 141,
+    "AvailableDotnetSuite": {
+      "Passed": 1244,
+      "Failed": 0,
+      "Skipped": 0,
+      "TestProjects": 11,
+      "ExplicitlyExcludedLiveTests": 2,
+      "Command": "dotnet test RAIkeep.slnx --nologo -p:UseLocalRAIkeepSources=true -m:1 -nodeReuse:false --filter 'FullyQualifiedName!~JsonPit.Tests.RemoteSyncTests&FullyQualifiedName!~JsonPit.Tests.RemoteCloudConcurrencyTests'"
+    },
+    "PythonTestsPassed": 198,
+    "VikelaTestsPassed": 71,
+    "ReleaseToolTestsPassed": 10,
+    "OriginalUnfilteredDotnetRun": "One live test failed after 600 seconds waiting for remote visibility; run stopped before a second identical wait. Not a full-suite pass.",
+    "LiveRetry": "Pending, using separate SSH connections; do not treat as passed"
+  },
+  "EnvironmentDiagnosis": {
+    "OriginalClaimRetracted": "Absence of a native onedrive process/unit was incorrectly interpreted as inactive OneDrive.",
+    "ActualMzansiMounts": {
+      "host": {
+        "exit": 0,
+        "stdout": "Mzansi",
+        "stderr": ""
+      },
+      "rclone_units": {
+        "exit": 0,
+        "stdout": "active\nactive\nactive",
+        "stderr": ""
+      },
+      "onedrive_mount": {
+        "exit": 0,
+        "stdout": "/srv/ServerData/OneDriveData fuse.rclone",
+        "stderr": ""
+      },
+      "cache_settings": {
+        "exit": 0,
+        "settings": [
+          "--dir-cache-time 30s",
+          "--poll-interval 30s",
+          "--vfs-cache-mode full"
+        ]
+      }
+    },
+    "LocalOneDrive": "Main app, sync service and file-provider processes observed running.",
+    "CloudConfigurationChanges": false,
+    "SshConfigurationChanges": false,
+    "TestProcessSshOverride": "Process-local wrapper bypasses shared ControlMaster/ControlPath only; no persistent configuration edits."
+  },
+  "Packaging": {
+    "NuGetPackages": 11,
+    "PythonDistributions": 3,
+    "Artifacts": [
+      {
+        "File": "Amafu.4.6.3.nupkg",
+        "Sha256": "41c974cb5bea1d007010df85af65bc9d5496c73c2e665aa7b648834d563d1592",
+        "SizeBytes": 59238,
+        "Name": "Amafu",
+        "Version": "4.6.3"
+      },
+      {
+        "File": "ImgSeeder.4.6.3.nupkg",
+        "Sha256": "e11008b3466ad1b4ba8b7a84d2fe76574d0026b65cf9e3b2645f7d2f2596391e",
+        "SizeBytes": 1733902,
+        "Name": "ImgSeeder",
+        "Version": "4.6.3"
+      },
+      {
+        "File": "JsonPit.4.6.3.nupkg",
+        "Sha256": "4d13738a2a05e53608394f642910e6eb484b40e8610afb0598bf1ccfbca82c1f",
+        "SizeBytes": 87356,
+        "Name": "JsonPit",
+        "Version": "4.6.3",
+        "Icon": "assets/logo-128x128.png"
+      },
+      {
+        "File": "OsLibCore.4.6.3.nupkg",
+        "Sha256": "4876f26f7c75e43193909d0ba8b001bdfbc37ba1c593639e685b86b9960471fb",
+        "SizeBytes": 115450,
+        "Name": "OsLibCore",
+        "Version": "4.6.3"
+      },
+      {
+        "File": "PitSeeder.4.6.3.nupkg",
+        "Sha256": "21f55e390613040424fa3c0d51fede9d0326f2f8a6e9b2c7385cb454ab4d920f",
+        "SizeBytes": 962907,
+        "Name": "PitSeeder",
+        "Version": "4.6.3"
+      },
+      {
+        "File": "RaiDiagram.4.6.3.nupkg",
+        "Sha256": "369725bf322143ffdbdf9d5639b227927fc1f3bae3278aa6e3174fdd29d488a3",
+        "SizeBytes": 102648,
+        "Name": "RaiDiagram",
+        "Version": "4.6.3"
+      },
+      {
+        "File": "RaiGuard.4.6.3.nupkg",
+        "Sha256": "150700848f06c7efaed119a9a087152839e701bc8d895e486430d41b27d65e05",
+        "SizeBytes": 9382162,
+        "Name": "RaiGuard",
+        "Version": "4.6.3"
+      },
+      {
+        "File": "RaiGuard.Analyzer.4.6.3.nupkg",
+        "Sha256": "3d7bc02cc9623fe88e0ef16611bbaa7700f95f96d8dd03ecfc1612cdcbc59db1",
+        "SizeBytes": 65564,
+        "Name": "RaiGuard.Analyzer",
+        "Version": "4.6.3"
+      },
+      {
+        "File": "RaiImage.4.6.3.nupkg",
+        "Sha256": "60b2aee6c5e2db06fd08d79733f6e41a673ccb970beaf015aabc72436d1714e8",
+        "SizeBytes": 74126,
+        "Name": "RaiImage",
+        "Version": "4.6.3"
+      },
+      {
+        "File": "RaiUtils.4.6.3.nupkg",
+        "Sha256": "5eb9792cf06756abe85d7a50b5dcdcdf4ee55bb99ecb880ceac21ca2ad6920a8",
+        "SizeBytes": 18519,
+        "Name": "RaiUtils",
+        "Version": "4.6.3"
+      },
+      {
+        "File": "RaidSeeder.4.6.3.nupkg",
+        "Sha256": "d766dd53062a98242c28409b670739dfff9a729199c1578ae74dc3eaea84b5ec",
+        "SizeBytes": 1461148,
+        "Name": "RaidSeeder",
+        "Version": "4.6.3"
+      },
+      {
+        "File": "jpit-4.6.3-py3-none-any.whl",
+        "Sha256": "9ceebaac610befc40ff83b471b3f6b64bd2eca9b70d48084bbdc7c5ee6685739",
+        "SizeBytes": 4666,
+        "Name": "jpit",
+        "Version": "4.6.3",
+        "RequiresDist": [
+          "jsonpit==4.6.3"
+        ]
+      },
+      {
+        "File": "jpit-4.6.3.tar.gz",
+        "Sha256": "1e27faffdbaa55e00c9550e2002fc22961842a569c386a492ac6c9bc07339579",
+        "SizeBytes": 1640,
+        "Name": "jpit",
+        "Version": "4.6.3"
+      },
+      {
+        "File": "jsonpit-4.6.3-py3-none-any.whl",
+        "Sha256": "63b0a5ae613165df3d58c79230ee989a8ecb7c07cc3928482609f15baf32e8f3",
+        "SizeBytes": 65279,
+        "Name": "jsonpit",
+        "Version": "4.6.3",
+        "RequiresDist": [
+          "mypy>=1.10; extra == 'dev'",
+          "pytest-cov>=5.0; extra == 'dev'",
+          "pytest>=8.0; extra == 'dev'",
+          "ruff>=0.5; extra == 'dev'"
+        ],
+        "RuntimeVersion": "4.6.3"
+      },
+      {
+        "File": "jsonpit-4.6.3.tar.gz",
+        "Sha256": "bb205e5d2cc4891118fff5ec474a784650849501f38d5e676c50ef4c2cf5db5a",
+        "SizeBytes": 231557,
+        "Name": "jsonpit",
+        "Version": "4.6.3"
+      },
+      {
+        "File": "vikela-4.6.3-py3-none-any.whl",
+        "Sha256": "dec4fa6d39c48ccdf40f358fbfaf213995f6072439cdfe31ff91057da724e298",
+        "SizeBytes": 19008,
+        "Name": "vikela",
+        "Version": "4.6.3",
+        "RequiresDist": [
+          "build; extra == 'dev'",
+          "ipython>=8; extra == 'dev'",
+          "pylint<5,>=3.3; extra == 'dev'",
+          "pytest>=8; extra == 'dev'",
+          "twine; extra == 'dev'",
+          "ipython>=8; extra == 'notebook'",
+          "pylint<5,>=3.3; extra == 'pylint'"
+        ],
+        "RuntimeVersion": "4.6.3"
+      },
+      {
+        "File": "vikela-4.6.3.tar.gz",
+        "Sha256": "39026b3f93e5160e2ece31f2c162e54745bca226bbdd89e433ed6d0102946680",
+        "SizeBytes": 158106,
+        "Name": "vikela",
+        "Version": "4.6.3"
+      }
+    ],
+    "AssetPolicy": [
+      {
+        "Distribution": "jsonpit",
+        "SdistAssets": [
+          "assets/jsonpit-sync-logo.svg",
+          "assets/logo-128x128.png",
+          "assets/logo-192x192.png",
+          "assets/logo-512x512.png",
+          "assets/logo.png",
+          "assets/logo.svg"
+        ],
+        "WheelAssets": []
+      },
+      {
+        "Distribution": "vikela",
+        "SdistAssets": [
+          "assets/logo-128x128.png",
+          "assets/logo-192x192.png",
+          "assets/logo-512x512.png",
+          "assets/logo.png",
+          "assets/logo.svg",
+          "assets/vikela-logo.svg"
+        ],
+        "WheelAssets": []
+      }
+    ],
+    "MetadataAndDependencyAudit": "Passed",
+    "TwineCheck": "Six Python artifacts passed",
+    "CandidateDirectory": "/private/tmp/raikeep-4.6.3-candidates",
+    "IsolatedNuGetCache": "/private/tmp/cr082-package-cache",
+    "IsolatedDotnetBuildDirectory": "/private/tmp/cr082-package-build"
+  },
+  "PackagedCliSmoke": {
+    "RaidSeeder": {
+      "version": "raid v4.6.3",
+      "exit": 0
+    },
+    "PitSeeder": {
+      "version": "pits v4.6.3",
+      "exit": 0
+    },
+    "ImgSeeder": {
+      "version": "iorg v4.6.3",
+      "exit": 0
+    },
+    "RaiGuard": {
+      "version": "rail v4.6.3",
+      "exit": 0
+    },
+    "Amafu": {
+      "version": "amafu v4.6.3",
+      "exit": 0
+    },
+    "jpit": {
+      "version": "jsonpit v4.6.3",
+      "exit": 0
+    },
+    "vikela": {
+      "version": "vikela v4.6.3",
+      "exit": 0
+    },
+    "sharedSeed": [
+      {
+        "engine": "pits",
+        "stdout": "Seeding pit from source file: /private/tmp/cr082-wheel-parity-ycct5xmc/seed.json \n\tto destination: /private/tmp/cr082-wheel-parity-ycct5xmc/Person/Person.pit\n[pits] 3 source items: 3 written, 0 unchanged (Pit 'Person').\n",
+        "stderr": "",
+        "exit": 0
+      },
+      {
+        "engine": "jpit",
+        "stdout": "[jpit] 3 source items: 0 written, 3 unchanged (Pit 'Person').\n",
+        "stderr": "",
+        "exit": 0
+      },
+      {
+        "engine": "jpit",
+        "stdout": "[jpit] 3 source items: 1 written, 2 unchanged (Pit 'Person').\n",
+        "stderr": "",
+        "exit": 0
+      }
+    ],
+    "standaloneJpit": {
+      "exit": 0,
+      "version": "jpit v4.6.3"
+    }
+  },
+  "Cr082ArtifactSmoke": [
+    {
+      "candidate": "source",
+      "version": "jsonpit v4.6.3",
+      "tenant_json": "passed",
+      "directory": "passed",
+      "missing_source_exit": 1,
+      "source_unchanged": true
+    },
+    {
+      "candidate": "standalone",
+      "version": "jpit v4.6.3",
+      "tenant_json": "passed",
+      "directory": "passed",
+      "missing_source_exit": 1,
+      "source_unchanged": true
+    },
+    {
+      "candidate": "wheel",
+      "version": "jsonpit v4.6.3",
+      "tenant_json": "passed",
+      "directory": "passed",
+      "missing_source_exit": 1,
+      "source_unchanged": true
+    }
+  ],
+  "PublicationExecuted": false,
+  "ProvisioningExecuted": false,
+  "GitPushOrTagExecuted": false,
+  "Logs": {
+    "preflight": "/private/tmp/cr082-preflight.log",
+    "available-solution-tests": "/private/tmp/cr082-available-solution-tests.log",
+    "solution-tests": "/private/tmp/cr082-solution-tests.log",
+    "python-tests-final": "/private/tmp/cr082-python-tests-final.log",
+    "vikela-tests": "/private/tmp/cr082-vikela-tests.log",
+    "release-tools-tests": "/private/tmp/cr082-release-tools-tests.log",
+    "pack": "/private/tmp/cr082-pack.log",
+    "live-tests-retry": "/private/tmp/cr082-live-tests-retry.log"
+  }
+}
