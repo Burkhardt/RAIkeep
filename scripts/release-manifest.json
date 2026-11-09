@@ -79,6 +79,31 @@
 			]
 		},
 		{
+			"name": "inqaba",
+			"pyproject": "inqaba/pyproject.toml",
+			"packageId": "inqaba",
+			"type": "pypi",
+			"workflow": "publish-pypi.yaml",
+			"repo": "Burkhardt/inqaba",
+			"dispatch": true
+		},
+		{
+			"name": "umgodi-json",
+			"pyproject": "umgodi-json/pyproject.toml",
+			"packageId": "umgodi-json",
+			"type": "pypi",
+			"workflow": "publish-pypi.yaml",
+			"repo": "Burkhardt/umgodi-json",
+			"dispatch": true,
+			"dependencies": [
+				"inqaba"
+			],
+			"extraPackages": [
+				"jpit",
+				"umgodi"
+			]
+		},
+		{
 			"name": "vikela",
 			"pyproject": "vikela/pyproject.toml",
 			"packageId": "vikela",
@@ -482,6 +507,54 @@
 			"replacements": [
 				{
 					"description": "jsonpit __version__",
+					"pattern": "(?m)^__version__\\s*=\\s*\"\\d+\\.\\d+\\.\\d+\"$",
+					"replacement": "__version__ = \"{version}\""
+				}
+			]
+		},
+		{
+			"path": "inqaba/pyproject.toml",
+			"description": "inqaba Python package metadata",
+			"type": "pyproject",
+			"replacements": [
+				{
+					"description": "inqaba Python version",
+					"pattern": "(?m)^version\\s*=\\s*\"\\d+\\.\\d+\\.\\d+\"$",
+					"replacement": "version = \"{version}\""
+				}
+			]
+		},
+		{
+			"path": "inqaba/inqaba/__init__.py",
+			"description": "inqaba Python module __version__",
+			"type": "source",
+			"replacements": [
+				{
+					"description": "inqaba __version__",
+					"pattern": "(?m)^__version__\\s*=\\s*\"\\d+\\.\\d+\\.\\d+\"$",
+					"replacement": "__version__ = \"{version}\""
+				}
+			]
+		},
+		{
+			"path": "umgodi-json/pyproject.toml",
+			"description": "umgodi-json Python package metadata",
+			"type": "pyproject",
+			"replacements": [
+				{
+					"description": "umgodi-json Python version",
+					"pattern": "(?m)^version\\s*=\\s*\"\\d+\\.\\d+\\.\\d+\"$",
+					"replacement": "version = \"{version}\""
+				}
+			]
+		},
+		{
+			"path": "umgodi-json/umgodi/__init__.py",
+			"description": "umgodi Python module __version__",
+			"type": "source",
+			"replacements": [
+				{
+					"description": "umgodi __version__",
 					"pattern": "(?m)^__version__\\s*=\\s*\"\\d+\\.\\d+\\.\\d+\"$",
 					"replacement": "__version__ = \"{version}\""
 				}

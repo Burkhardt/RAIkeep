@@ -34,3 +34,9 @@
 [submodule "vikela"]
 	path = vikela
 	url = https://github.com/Burkhardt/vikela.git
+[submodule "inqaba"]
+	path = inqaba
+	url = https://github.com/Burkhardt/inqaba.git
+[submodule "umgodi-json"]
+	path = umgodi-json
+	url = https://github.com/Burkhardt/umgodi-json.git

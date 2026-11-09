@@ -42,10 +42,13 @@ Amafu (`amafu`), RaidSeeder (`raid`), ImgSeeder (`iorg`), PitSeeder (`pits`), an
 | 5 | `RaiDiagram` | `RaiDiagram` | Diagram models and rendering |
 | 6 | `RaidSeeder` | `RaidSeeder` / `raid` | Diagram artifact commands |
 | 7 | `JsonPit` | `JsonPit` | Historical JSON persistence |
-| 8 | `JsonPit.Python` | `jsonpit`, `jpit` / `jpit`, `jsonpit` | Python persistence and pit commands |
-| 9 | `ImgSeeder` | `ImgSeeder` / `iorg` | Image organization and import |
-| 10 | `PitSeeder` | `PitSeeder` / `pits` | Pit commands |
-| 11 | `RaiGuard` | `RaiGuard`, `RaiGuard.Analyzer` / `rail` | Roslyn analysis and source refactoring |
+| 8 | `JsonPit.Python` | `jsonpit`, `jpit` / `jpit`, `jsonpit` | Python persistence and pit commands (Frozen) |
+| 9 | `inqaba` | `inqaba` | Shared Python framework boundaries |
+| 10 | `umgodi-json` | `umgodi-json` / `jpit`, `umgodi` | Pure Python distributed JSON persistence |
+| 11 | `ImgSeeder` | `ImgSeeder` / `iorg` | Image organization and import |
+| 12 | `PitSeeder` | `PitSeeder` / `pits` | Pit commands |
+| 13 | `RaiGuard` | `RaiGuard`, `RaiGuard.Analyzer` / `rail` | Roslyn analysis and source refactoring |
+| 14 | `vikela` | `vikela` / `vikela` | Python mutation guardrails |
 
 Each child remains its own Git repository, package, solution, and release
 workflow. The umbrella workspace supplies local project wiring, coordinated
@@ -54,8 +57,8 @@ validation, dependency-order documentation, and sequential release automation.
 ## Current release line
 
 The prepared coordinated release is `4.6.3`. CR082 corrects Python jpit's
-default-cloud export routing and missing-source failures. All twelve child
-repositories, including optional Vikela, share the same version and synchronized
+default-cloud export routing and missing-source failures. Child
+repositories, including inqaba, umgodi-json, and optional Vikela, share synchronized
 package dependencies; the other components retain their accepted behavior.
 
 Preparation includes local tests, metadata checks and candidate packaging.
