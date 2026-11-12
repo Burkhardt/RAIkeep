@@ -1,5 +1,30 @@
 # RAIkeep Release Notes 4.x
 
+## 4.6.4
+
+- Status: **Draft — unreleased; coordinated metadata has not been bumped.**
+- Target release version: `4.6.4`
+
+### Highlights
+
+- Isolate local JsonPit cloud fixtures in unique Dropbox run directories and
+  remove shared-root startup deletion. Dispose real-world fixture Pits before
+  cleanup.
+- Allocate Umgodi sequence-suite roots beneath configured Dropbox; reject
+  attempts to override the managed provider or escape the owned run directory.
+- Preserve genuine Nkosikazi ↔ Mzansi remote replication coverage on OneDrive
+  and read-only explicit AIA/AfricaStage tenant resolution.
+
+### Pending release gates
+
+The canonical `TestCloud: "Dropbox"` configuration CR is pending Zébio's
+coordination and is not included in the implementation above. Frozen Python
+release handling, new package publication setup, final metadata and candidate
+validation remain open. See the
+[4.6.4 preparation handover](https://github.com/Burkhardt/RAIkeep/blob/main/doc/HANDOVER_RELEASE_PREP_v4.6.4.md).
+
+---
+
 ## 4.6.3
 
 - Release version: `4.6.3`

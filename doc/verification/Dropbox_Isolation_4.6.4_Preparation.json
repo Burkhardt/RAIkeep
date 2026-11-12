@@ -1,0 +1,43 @@
+{
+  "date": "2026-11-12",
+  "target_version": "4.6.4",
+  "status": "local_preparation_pending_configuration_cr_and_release_gates",
+  "coordinated_metadata_version": "4.6.3",
+  "python_metadata_versions": {"inqaba": "0.1.0", "umgodi-json": "0.1.0"},
+  "commits": {
+    "JsonPit": "6fb4a829831fda2b9379308caf46be469d8ddefd",
+    "PitSeeder": "853d8fc923ece438fefafede65c5d56a6e343d1a",
+    "umgodi-json": "a9c006bf12bb798b8e231b91462c38760944ce3b"
+  },
+  "verification": [
+    {
+      "command": "dotnet test JsonPit/JsonPit.Tests/JsonPit.Tests.csproj --nologo -v minimal --filter 'FullyQualifiedName!~RemoteSyncTests&FullyQualifiedName!~RemoteCloudConcurrencyTests'",
+      "note": "Run before adding the separately tested CloudTestIsolationTests regression.",
+      "passed": 234, "failed": 0, "skipped": 0
+    },
+    {
+      "command": "dotnet test JsonPit/JsonPit.Tests/JsonPit.Tests.csproj --nologo -v minimal --filter FullyQualifiedName~CloudTestIsolationTests",
+      "passed": 1, "failed": 0, "skipped": 0
+    },
+    {
+      "command": "dotnet test PitSeeder/pits.Tests/pits.Tests.csproj --nologo -v minimal --filter FullyQualifiedName~PitRootCloudResolutionTests",
+      "passed": 5, "failed": 0, "skipped": 0
+    },
+    {
+      "command": "PYTHONPATH=inqaba:umgodi-json .venv-inqaba/bin/python -m pytest umgodi-json/tests -q",
+      "passed": 210, "failed": 0,
+      "note": "Includes nine isolation regressions. RAIKEEP_RUN_SEQUENCE_SUITES was not enabled; the opt-in test returns without running those suites."
+    },
+    {
+      "command": "bash scripts/check-markdown-document-links.sh",
+      "exit_code": 1,
+      "note": "Existing document-link violations remain in the umbrella README and older CR handovers; this is an outstanding release gate."
+    }
+  ],
+  "remote_suites_modified": false,
+  "remote_suites_executed": false,
+  "destructive_sequence_suites_executed": false,
+  "test_cloud_config_cr_implemented": false,
+  "version_bump_executed": false,
+  "release_dispatched": false
+}
