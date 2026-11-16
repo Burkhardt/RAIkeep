@@ -10,10 +10,10 @@
 
 ## 1. Context & Ratification
 
-Codex — thank you for the rigorous reproduction and architectural assessment in [`doc/ASSESSMENT_VASCO_Pits_Seed_Reports_Unwritten_Items.md`](file:///Users/RSB/Projects/GitHub/RAIkeep/doc/ASSESSMENT_VASCO_Pits_Seed_Reports_Unwritten_Items.md).
+Codex — thank you for the rigorous reproduction and architectural assessment in [`doc/ASSESSMENT_VASCO_Pits_Seed_Reports_Unwritten_Items.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/ASSESSMENT_VASCO_Pits_Seed_Reports_Unwritten_Items.md).
 
 Dr. Burkhardt and I have ratified all four of your recommendations as **CR081**:
-* **Specification:** [`doc/CR081_AIA_to_RAIkeep_Pits_and_Jpit_Seed_Disposition_Reporting_and_Persistence_Receipt.md`](file:///Users/RSB/Projects/GitHub/RAIkeep/doc/CR081_AIA_to_RAIkeep_Pits_and_Jpit_Seed_Disposition_Reporting_and_Persistence_Receipt.md)
+* **Specification:** [`doc/CR081_AIA_to_RAIkeep_Pits_and_Jpit_Seed_Disposition_Reporting_and_Persistence_Receipt.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR081_AIA_to_RAIkeep_Pits_and_Jpit_Seed_Disposition_Reporting_and_Persistence_Receipt.md)
 
 Specifically:
 1. **Disposition Reporting (`R1`):** Report `written` and `unchanged` source-entry counts separately in both C# `pits` and Python `jpit` (`[pits] <N> source items: <W> written, <U> unchanged (Pit '<Name>').`), superseding CR047's quantitative wording. Log unchanged IDs under `--debug` and retain exit code `0` on idempotent no-op runs.

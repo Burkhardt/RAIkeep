@@ -17,7 +17,6 @@ import subprocess
 import sys
 import tempfile
 import tomllib
-import zipfile
 from pathlib import Path
 from typing import List, Tuple
 
@@ -35,7 +34,7 @@ PACKAGE_REPOS = [
 	("RaiGuard", "RaiGuard", "rail/rail.csproj"),
 ]
 
-PYTHON_REPO = ("JsonPit.Python", "pyproject.toml")
+PYTHON_MODULES = {"inqaba": "inqaba", "umgodi-json": "umgodi", "vikela": "vikela"}
 CENTRAL_RELEASE_NOTES_ONLY = {"RaiGuard"}
 
 
@@ -157,12 +156,12 @@ class ReleaseValidator:
 				capture_output=True,
 				check=False,
 			)
-			python_env = shared_env.copy()
-			python_env["PYTHONPATH"] = str(self.root_dir / "JsonPit.Python")
+			test_env = shared_env.copy()
+			test_env["PYTHONPATH"] = os.pathsep.join(str(self.root_dir / repo) for repo in PYTHON_MODULES)
 			python = subprocess.run(
-				["python3", "-m", "jsonpit.cli", "list", "-r", "Tenant", "--all", "-n"],
+				[sys.executable, "-m", "umgodi.cli", "list", "-r", "Tenant", "--all", "-n"],
 				cwd=self.root_dir,
-				env=python_env,
+				env=test_env,
 				text=True,
 				capture_output=True,
 				check=False,
@@ -210,8 +209,8 @@ class ReleaseValidator:
 			shared_env = os.environ.copy()
 			shared_env["HOME"] = str(home)
 			shared_env["NO_COLOR"] = "1"
-			python_env = shared_env.copy()
-			python_env["PYTHONPATH"] = str(self.root_dir / "JsonPit.Python")
+			test_env = shared_env.copy()
+			test_env["PYTHONPATH"] = os.pathsep.join(str(self.root_dir / repo) for repo in PYTHON_MODULES)
 
 			seed = self.validate_command(
 				"pits WWWA help parity fixture seed",
@@ -240,13 +239,13 @@ class ReleaseValidator:
 				return self.normalize_parity_output(result.stdout)
 
 			pits = self.pits_parity_command()
-			jpit = ["python3", "-m", "jsonpit.cli"]
+			jpit = [sys.executable, "-m", "umgodi.cli"]
 			bare_csharp = run_help([*pits, "--help", "-n"], shared_env, "pits default help")
-			bare_python = run_help([*jpit, "--help", "-n"], python_env, "jpit default help")
+			bare_python = run_help([*jpit, "--help", "-n"], test_env, "jpit default help")
 			contextual_csharp = run_help([*pits, "--help", "-r", str(tenant), "-n"], shared_env, "pits contextual WWWA help")
-			contextual_python = run_help([*jpit, "--help", "-r", str(tenant), "-n"], python_env, "jpit contextual WWWA help")
+			contextual_python = run_help([*jpit, "--help", "-r", str(tenant), "-n"], test_env, "jpit contextual WWWA help")
 			explicit_csharp = run_help([*pits, "--help", "--wwwa", "-n"], shared_env, "pits explicit WWWA help")
-			explicit_python = run_help([*jpit, "--help", "--wwwa", "-n"], python_env, "jpit explicit WWWA help")
+			explicit_python = run_help([*jpit, "--help", "--wwwa", "-n"], test_env, "jpit explicit WWWA help")
 			if any(output is None for output in [bare_csharp, bare_python, contextual_csharp, contextual_python, explicit_csharp, explicit_python]):
 				return
 
@@ -323,37 +322,22 @@ class ReleaseValidator:
 					)
 
 	def validate_python_distribution(self) -> None:
-		repo = self.root_dir / PYTHON_REPO[0]
-		for relative in ["pyproject.toml", "packages/jpit/pyproject.toml"]:
+		for distribution, module in PYTHON_MODULES.items():
+			relative = f"{distribution}/pyproject.toml"
 			try:
-				project = tomllib.loads((repo / relative).read_text())["project"]
-				assert project["version"] == self.version, "package version differs from the coordinated release"
-				assert project["scripts"] == {"jpit": "jsonpit.cli:main", "jsonpit": "jsonpit.cli:main"}, "both CLI entry points are required"
-				if relative.startswith("packages/"):
-					assert project["dependencies"] == [f"jsonpit=={self.version}"], "companion must pin the exact jsonpit version"
+				project = tomllib.loads((self.root_dir / relative).read_text())["project"]
+				if (project["name"], project["version"]) != (distribution, self.version):
+					raise ValueError(f"Expected {distribution} {self.version}")
+				if distribution == "umgodi-json":
+					if project.get("scripts") != {"umgodi": "umgodi.cli:main", "jpit": "umgodi.cli:main"}:
+						raise ValueError("Expected umgodi and jpit entry points")
+					if project.get("dependencies") != [f"inqaba>={self.version}"]:
+						raise ValueError("Expected the coordinated Inqaba dependency")
 				self.pass_check()
-			except (OSError, ValueError, KeyError, AssertionError) as error:
-				self.error(f"{PYTHON_REPO[0]}/{relative}", None, str(error))
-		for relative in ["README.md", "API.md", "GettingStarted.md", "packages/jpit/README.md"]:
-			try:
-				text = (repo / relative).read_text()
-				if relative == "API.md":
-					text = text.splitlines()[0]
-				versions = set(re.findall(r"(?<!\d)\d+\.\d+\.\d+(?!\d)", text))
-				if versions != {self.version}:
-					raise ValueError(f"Current Python documentation must use {self.version}; found {sorted(versions)}.")
-				self.pass_check()
-			except (OSError, ValueError) as error:
-				self.error(f"{PYTHON_REPO[0]}/{relative}", None, str(error))
-		try:
-			with zipfile.ZipFile(repo / "bin/jpit") as archive:
-				expected = {f"jsonpit/{path.name}": path.read_bytes() for path in (repo / "jsonpit").glob("*.py")}
-				actual = {name: archive.read(name) for name in archive.namelist() if name.startswith("jsonpit/")}
-				if not expected or actual != expected or "__main__.py" not in archive.namelist():
-					raise ValueError("Standalone jpit contains stale or missing sources; run JsonPit.Python/scripts/build_standalone.py.")
-			self.pass_check()
-		except (OSError, ValueError, zipfile.BadZipFile) as error:
-			self.error(f"{PYTHON_REPO[0]}/bin/jpit", None, str(error))
+			except (OSError, ValueError, KeyError) as error:
+				self.error(relative, None, str(error))
+			self.validate_file_contains(f"{distribution}/{module}/__init__.py",
+				rf'^__version__ = "{re.escape(self.version)}"$', "module version", flags=re.MULTILINE)
 
 	def run_all_validations(self, prior_versions: List[str]) -> bool:
 		v = self.version
@@ -395,18 +379,6 @@ class ReleaseValidator:
 							)
 						else:
 							self.pass_check()
-		self.validate_file_contains(
-			f"{PYTHON_REPO[0]}/{PYTHON_REPO[1]}",
-			rf'^version\s*=\s*"{re.escape(v)}"\s*$',
-			"jsonpit Python project version",
-			flags=re.MULTILINE,
-		)
-		self.validate_file_contains(
-			f"{PYTHON_REPO[0]}/jsonpit/__init__.py",
-			rf'^__version__\s*=\s*"{re.escape(v)}"\s*$',
-			"jsonpit Python package __version__",
-			flags=re.MULTILINE,
-		)
 		self.validate_python_distribution()
 		self.validate_file_contains(
 			"RaiGuard/rail/rail.csproj",
@@ -445,20 +417,7 @@ class ReleaseValidator:
 			self.validate_command("Release sequence and recovery gates", ["bash", "scripts/test-release-chain-order.sh"])
 			self.validate_command("Tracked package artifact guard", ["bash", "scripts/test-tracked-package-preflight.sh"])
 			self.validate_command("RaiUtils publication package scope", ["python3", "RaiUtils/test-publication-artifacts.py"])
-			self.validate_command("CR075/CR076 and file-size regression tests", [
-				"dotnet", "test", "RAIkeep.slnx", "--nologo", "-p:UseLocalRAIkeepSources=true",
-				"--filter", "FullyQualifiedName~InventoryMatchingTests|FullyQualifiedName~MediaContentTests|FullyQualifiedName~IorgInventoryTests|FullyQualifiedName~FileInfoLengthTests|FullyQualifiedName~ConfigurationListingTests",
-			])
-			pits_built = self.validate_command(
-				"pits parity build",
-				["dotnet", "build", "PitSeeder/pits/pits.csproj", "--nologo", "-v", "minimal", "-m:1", "-nodeReuse:false"],
-			)
-			python_cmd = (
-				["python3", "-m", "pytest", "JsonPit.Python/tests"]
-				if subprocess.run(["python3", "-m", "pytest", "--version"], capture_output=True).returncode == 0
-				else ["python3", "JsonPit.Python/tests/run_all.py"]
-			)
-			with tempfile.TemporaryDirectory(prefix="raikeep-python-tests-") as temporary:
+			with tempfile.TemporaryDirectory(prefix="raikeep-release-tests-") as temporary:
 				# Cross-engine tests invoke the installed pits CLI. Give it an isolated
 				# valid configuration rather than depending on the user's HOME.
 				home = Path(temporary) / "home"
@@ -471,16 +430,24 @@ class ReleaseValidator:
 						"DefaultCloudOrder": ["OneDrive"], "Cloud": {"OneDrive": str(cloud_root)}}),
 					encoding="utf-8",
 				)
-				python_env = os.environ.copy()
-				python_env["HOME"] = str(home)
-				python_env["PYTHONPATH"] = str(self.root_dir / PYTHON_REPO[0])
-				self.validate_command(
-					"JsonPit.Python tests",
-					python_cmd,
-					env=python_env,
+				test_env = os.environ.copy()
+				test_env["HOME"] = str(home)
+				test_env["PYTHONPATH"] = os.pathsep.join(str(self.root_dir / repo) for repo in PYTHON_MODULES)
+				test_env.setdefault("NUGET_PACKAGES", str(Path.home() / ".nuget" / "packages"))
+				self.validate_command("CR075/CR076 and file-size regression tests", [
+					"dotnet", "test", "RAIkeep.slnx", "--nologo", "-p:UseLocalRAIkeepSources=true",
+					"--filter", "FullyQualifiedName~InventoryMatchingTests|FullyQualifiedName~MediaContentTests|FullyQualifiedName~IorgInventoryTests|FullyQualifiedName~FileInfoLengthTests|FullyQualifiedName~ConfigurationListingTests",
+				], env=test_env)
+				pits_built = self.validate_command(
+					"pits parity build",
+					["dotnet", "build", "PitSeeder/pits/pits.csproj", "--nologo", "-v", "minimal", "-m:1", "-nodeReuse:false", "-p:UseLocalRAIkeepSources=true"],
+					env=test_env,
 				)
+				for repo in PYTHON_MODULES:
+					self.validate_command(f"{repo} tests", [sys.executable, "-m", "pytest", f"{repo}/tests", "-q"], env=test_env)
+				if pits_built:
+					self.validate_command("CLI theme and export parity", [sys.executable, "scripts/test-cli-style.py"], env=test_env)
 			if pits_built:
-				self.validate_command("CLI theme and export parity", [sys.executable, "scripts/test-cli-style.py"])
 				with tempfile.TemporaryDirectory(prefix="raikeep-oslib-contracts-") as temporary:
 					if self.validate_command("OsLibCore documentation pack", ["dotnet", "pack", "OsLib/OsLib.csproj", "--configuration", "Debug", "--no-build", "--no-restore", "--nologo", "--output", temporary]):
 						self.validate_command("OsLibCore packaged public pits contracts", [sys.executable, "scripts/verify-oslib-contracts.py", str(Path(temporary) / f"OsLibCore.{v}.nupkg")])
@@ -491,7 +458,7 @@ class ReleaseValidator:
 
 		# 4. Release Notes Existence
 		print("\n[4/7] Checking Release Notes files...")
-		for name in ["RAIkeep", *(package for package, _, _ in PACKAGE_REPOS), "JsonPit.Python"]:
+		for name in ["RAIkeep", *(package for package, _, _ in PACKAGE_REPOS), *PYTHON_MODULES]:
 			rel_path = release_note_path(name, v)
 			if not self.validate_file_exists(rel_path):
 				continue
@@ -653,7 +620,7 @@ class ReleaseValidator:
 			rf"RAIkeep {re.escape(v)}",
 			"doc/README.md current release notes list",
 		)
-		for name in ["RAIkeep", *(package for package, _, _ in PACKAGE_REPOS), "JsonPit.Python"]:
+		for name in ["RAIkeep", *(package for package, _, _ in PACKAGE_REPOS), *PYTHON_MODULES]:
 			label = "OsLibCore" if name == "OsLib" else name
 			self.validate_file_contains(
 				"doc/README.md",
@@ -662,7 +629,7 @@ class ReleaseValidator:
 			)
 		self.validate_file_contains(
 			"RunReleaseChain.md",
-			rf"scripts/release-chain\.sh {re.escape(v)}",
+			rf"engenho release {re.escape(v)}",
 			"RunReleaseChain.md recommended invocation",
 		)
 
@@ -691,7 +658,7 @@ class ReleaseValidator:
 			return False
 		else:
 			print(f"✅ ALL {self.checks_passed} RELEASE CHECKS PASSED CLEANLY!")
-			print(f"   Platform is 100% synchronized and verified for release {v}.")
+			print(f"   Coordinated metadata and candidate checks passed for {v}.")
 			print("============================================================")
 			return True
 
@@ -925,7 +892,7 @@ class ReleaseBumper:
 		index_path = self.root_dir / "doc/README.md"
 		index = index_path.read_text(encoding="utf-8")
 		updated_index = index
-		for name in ["RAIkeep", *(package for package, _, _ in PACKAGE_REPOS), "JsonPit.Python"]:
+		for name in ["RAIkeep", *(package for package, _, _ in PACKAGE_REPOS), *PYTHON_MODULES]:
 			label = "OsLibCore" if name == "OsLib" else name
 			link = (
 				f"- [{label} {v}](https://github.com/Burkhardt/RAIkeep/blob/main/"
@@ -948,7 +915,7 @@ class ReleaseBumper:
 				u_readme,
 				count=1,
 			)
-			for name in ["RAIkeep", *(package for package, _, _ in PACKAGE_REPOS), "JsonPit.Python"]:
+			for name in ["RAIkeep", *(package for package, _, _ in PACKAGE_REPOS), *PYTHON_MODULES]:
 				label = "OsLibCore" if name == "OsLib" else name
 				link = (
 					f"- [{label} {v}](https://github.com/Burkhardt/RAIkeep/blob/main/"
@@ -980,10 +947,6 @@ class ReleaseBumper:
 			print(f"  💾 Updated {self.manifest_path.name} current_version to {v}")
 		else:
 			print(f"  ✔️ {self.manifest_path.name} current_version is already {v}")
-		standalone_builder = self.root_dir / "JsonPit.Python/scripts/build_standalone.py"
-		if standalone_builder.is_file():
-			subprocess.run([sys.executable, str(standalone_builder)], check=True, capture_output=True)
-
 		print(f"\n✨ Bump complete! ({changed_count} files touched/scaffolded)")
 		print("Now running release validation suite...\n")
 

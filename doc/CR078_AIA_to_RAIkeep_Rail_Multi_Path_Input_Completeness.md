@@ -6,7 +6,7 @@
 > **Requesting Agent / PM:** Adele (`7010`, Product Manager, AIA Platform) / Zébio (`7011`, API & Storage Lead)  
 > **Target Provider / Repo:** Codex (`7001`, Custodian & Systems Architect) / `Burkhardt/RAIkeep` (`RaiGuard / rail`)  
 > **Parent CR:** None — independent CLI correctness defect discovered during CR070 consumer verification  
-> **Related CR:** [`CR070_AIA_to_RAIkeep_RAI007-Test-Run-Switches-and-RAI011-RAI015-Subject-Sites.md`](CR070_AIA_to_RAIkeep_RAI007-Test-Run-Switches-and-RAI011-RAI015-Subject-Sites.md)  
+> **Related CR:** [`CR070_AIA_to_RAIkeep_RAI007-Test-Run-Switches-and-RAI011-RAI015-Subject-Sites.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR070_AIA_to_RAIkeep_RAI007-Test-Run-Switches-and-RAI011-RAI015-Subject-Sites.md)
 > **Target Version:** RAIkeep `v4.6.2`  
 > **Immutability Rule:** The provider agent must NEVER rename or modify this document filename. Provider release notes must cite this exact filename.
 

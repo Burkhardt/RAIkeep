@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-07  
 **Consumer gate:** Independently accepted by Adele for AfricaStage/AIA; see
-[CR082_Accepted_Jpit_Default_Cloud_Resolution_and_Missing_Export_v4_6_3.md](CR082_Accepted_Jpit_Default_Cloud_Resolution_and_Missing_Export_v4_6_3.md).  
+[CR082_Accepted_Jpit_Default_Cloud_Resolution_and_Missing_Export_v4_6_3.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR082_Accepted_Jpit_Default_Cloud_Resolution_and_Missing_Export_v4_6_3.md).
 **Execution owner:** Dr. Rainer Burkhardt. Preparation does not execute release or provisioning.
 
 ## Release inputs

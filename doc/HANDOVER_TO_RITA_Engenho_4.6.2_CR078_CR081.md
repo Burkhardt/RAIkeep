@@ -7,7 +7,7 @@
 **Status:** Provider preparation complete; consumer CDAT and Rainer's manual release remain required. This document does not authorize execution.
 
 The formal provider report is
-[RAIkeep_RELEASE_NOTES_v4.6.2.md](RAIkeep_RELEASE_NOTES_v4.6.2.md), addressing
+[RAIkeep_RELEASE_NOTES_v4.6.2.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_v4.6.2.md), addressing
 `CR078_AIA_to_RAIkeep_Rail_Multi_Path_Input_Completeness.md` and
 `CR081_AIA_to_RAIkeep_Pits_and_Jpit_Seed_Disposition_Reporting_and_Persistence_Receipt.md`.
 

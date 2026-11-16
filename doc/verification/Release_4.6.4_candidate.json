@@ -1,0 +1,49 @@
+{
+  "candidate": "4.6.4",
+  "date": "2026-11-15",
+  "bootstrap": {
+    "published": "0.1.0",
+    "pypi_hashes_verified": {
+      "inqaba-0.1.0.tar.gz": "d0d54102c656b18d700c5774321cb4ee22ac690b3547a16800ea7fa08695ce1e",
+      "umgodi_json-0.1.0.tar.gz": "730646c1eaf22aebcd250aad9688771813c5931c59d0e7416366fbebd3c7785e",
+      "inqaba-0.1.0-py3-none-any.whl": "f9dd8fc98b06700a5abd3e8d4051047458b5742e12e8b73709b19e7530c55a1c",
+      "umgodi_json-0.1.0-py3-none-any.whl": "c7a2d22f627a5314ebcff8d059ac4a4d6e19efa8fdec5ef3f23d409d75b158a4"
+    },
+    "clean_public_index_install": true
+  },
+  "candidate_python_sha256": {
+    "umgodi_json-4.6.4-py3-none-any.whl": "893011a4317be8d516359680bf3bfe72b0055a493af88acfb9fae84997129494",
+    "inqaba-4.6.4.tar.gz": "3b2f7818a8308d25b28d5ad206ffdb2a7f9b978aa8ceb4a920a82118211ee858",
+    "inqaba-4.6.4-py3-none-any.whl": "0209e5b05edff115e12c3bec6c44bfa559c28f530c1b78e275cf36aca9977f95",
+    "umgodi_json-4.6.4.tar.gz": "b8741e6a5f251d88fcc5e8bdda023c9abdb794723f95f02d8ea4cfbc3454dc7e"
+  },
+  "candidate_commits": {
+    "Amafu": "b24bb622ffe082718c2c0a5f4152f428c0d249ef",
+    "OsLib": "79a6138f33ebb5b74925fe5b1f0e1539ff98c17f",
+    "RaiUtils": "862bd1770d6018a4aa442e28c5abcbbca78f7fcd",
+    "RaiImage": "751afd91b1d41b8d4cd625c4c1310bc0c87e9782",
+    "RaiDiagram": "f49f5da6fd867ade475f587ae9187aa0012f7ecd",
+    "RaidSeeder": "827d2890abcd68cef87890d77a1bf3c7a9c349b5",
+    "JsonPit": "d4693b818116a471199073de4b9cc2c7f079c4c1",
+    "inqaba": "ee4d31cc28ad8c79142b9f3a915d43ec26756e23",
+    "umgodi-json": "33adf553533b987a18215303fdd78527a6a676e2",
+    "vikela": "ef4b41bd51407479fac8450f2c2300864239310c",
+    "ImgSeeder": "57280160a508c051122a588987c3c6b9753f2d40",
+    "PitSeeder": "0790f146604de0e6a18703824f211ec87740a489",
+    "RaiGuard": "b23ae3bfa431357b0573db003be781d51c99942d"
+  },
+  "frozen_distribution": "jsonpit 4.6.3",
+  "validation": {
+    "coordinated_checks": 146,
+    "dotnet_local_passed": 1247,
+    "tilde_suite_after_new_regression": 5,
+    "python_passed": {
+      "inqaba": 21,
+      "umgodi-json": 210,
+      "vikela": 71
+    },
+    "nuget_packages_built": 11,
+    "live_onedrive_remote_suites_run": false,
+    "opt_in_destructive_sequences_run": false
+  }
+}

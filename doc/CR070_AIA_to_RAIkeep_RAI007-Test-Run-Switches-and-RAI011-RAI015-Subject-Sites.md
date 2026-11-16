@@ -6,7 +6,7 @@
 > **Origin:** Zébio (`7011`, Lead Systems Engineer), for Dr. Rainer Burkhardt (`RAI`, CPO) & Adele (`7010`, PM AIA Platform)
 > **Target Provider / Repo:** `RAIkeep` (`RaiGuard.Analyzer`)
 > **Consuming Tenants:** `AIA.Core.Test`, `AIA.Api.Test`
-> **Parent Records:** [`CR069`](CR069_AIA_to_RAIkeep_PitsCommand-Tenant-Scoping-and-Public-Contracts.md)
+> **Parent Records:** [`CR069`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR069_AIA_to_RAIkeep_PitsCommand-Tenant-Scoping-and-Public-Contracts.md)
 
 ---
 

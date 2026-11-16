@@ -6,9 +6,9 @@
 **Target Release:** `RAIkeep v4.6.3` (`jsonpit-python` / `jpit v4.6.3`)  
 **Status:** **ACCEPTED (Independent Consumer CDAT Passed)**  
 **References:**
-- [`/Users/RSB/Projects/GitHub/RAIkeep/doc/CR082_AfricaStage_to_RAIkeep_Jpit_Default_Cloud_Resolution_and_Missing_Export.md`](file:///Users/RSB/Projects/GitHub/RAIkeep/doc/CR082_AfricaStage_to_RAIkeep_Jpit_Default_Cloud_Resolution_and_Missing_Export.md)
-- [`/Users/RSB/Projects/GitHub/RAIkeep/doc/JsonPit.Python_RELEASE_NOTES_4.6.3.md`](file:///Users/RSB/Projects/GitHub/RAIkeep/doc/JsonPit.Python_RELEASE_NOTES_4.6.3.md)
-- [`/Users/RSB/Projects/GitHub/AIA/doc/CR082_Accepted_Jpit_Default_Cloud_Resolution_and_Missing_Export_v4_6_3.md`](file:///Users/RSB/Projects/GitHub/AIA/doc/CR082_Accepted_Jpit_Default_Cloud_Resolution_and_Missing_Export_v4_6_3.md)
+- [`/Users/RSB/Projects/GitHub/RAIkeep/doc/CR082_AfricaStage_to_RAIkeep_Jpit_Default_Cloud_Resolution_and_Missing_Export.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR082_AfricaStage_to_RAIkeep_Jpit_Default_Cloud_Resolution_and_Missing_Export.md)
+- [`/Users/RSB/Projects/GitHub/RAIkeep/doc/JsonPit.Python_RELEASE_NOTES_4.6.3.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit.Python_RELEASE_NOTES_4.6.3.md)
+- [`/Users/RSB/Projects/GitHub/AIA/doc/CR082_Accepted_Jpit_Default_Cloud_Resolution_and_Missing_Export_v4_6_3.md`](https://github.com/Burkhardt/AIA/blob/main/doc/CR082_Accepted_Jpit_Default_Cloud_Resolution_and_Missing_Export_v4_6_3.md)
 
 ---
 

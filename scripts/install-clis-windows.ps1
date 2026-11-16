@@ -7,6 +7,12 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
+$pythonDistribution = 'jsonpit'
+$pythonAlias = 'jsonpit'
+if ([version]$Version -ge [version]'4.6.4') {
+	$pythonDistribution = 'umgodi-json'
+	$pythonAlias = 'umgodi'
+}
 
 function Find-RaiKeepPython {
 	foreach ($name in @('py', 'python', 'python3')) {
@@ -49,7 +55,7 @@ if ($DryRun) {
 		Environment = 'Windows'; User = [Environment]::UserName
 		DotnetSdk = $sdk; Python = $(if ($python) { $python.Executable } else { $null })
 		PythonRequested = !$SkipPython; Version = $Version
-		PythonPackage = $(if (!$SkipPython) { "jsonpit==$Version" } else { $null })
+		PythonPackage = $(if (!$SkipPython) { "${pythonDistribution}==$Version" } else { $null })
 		Packages = @('Amafu', 'RaidSeeder', 'ImgSeeder', 'PitSeeder', 'RaiGuard')
 		Ready = $ready
 	} | ConvertTo-Json
@@ -69,11 +75,11 @@ foreach ($package in @('Amafu', 'RaidSeeder', 'ImgSeeder', 'PitSeeder', 'RaiGuar
 }
 
 # A private virtual environment avoids modifying system Python and owns both names.
-$venv = Join-Path $env:LOCALAPPDATA 'RAIkeep\jsonpit-venv'
+$venv = Join-Path $env:LOCALAPPDATA "RAIkeep\${pythonDistribution}-venv"
 if (!$SkipPython) {
 	Invoke-RaiKeepChecked $python.Executable ($python.Prefix + @('-m', 'venv', $venv))
 	$venvPython = Join-Path $venv 'Scripts\python.exe'
-	Invoke-RaiKeepChecked $venvPython @('-m', 'pip', 'install', '--upgrade', '--no-cache-dir', "jsonpit==$Version")
+	Invoke-RaiKeepChecked $venvPython @('-m', 'pip', 'install', '--upgrade', '--no-cache-dir', "${pythonDistribution}==$Version")
 }
 
 $dotnetTools = Join-Path $env:USERPROFILE '.dotnet\tools'
@@ -95,10 +101,10 @@ if ($NoCloudSetup) {
 }
 
 $names = @('amafu', 'raid', 'iorg', 'pits', 'rail')
-if (!$SkipPython) { $names += @('jpit', 'jsonpit') }
+if (!$SkipPython) { $names += @('jpit', $pythonAlias) }
 foreach ($name in $names) {
 	$directory = $dotnetTools
-	if ($name -in @('jpit', 'jsonpit')) { $directory = $pythonTools }
+	if ($name -in @('jpit', $pythonAlias)) { $directory = $pythonTools }
 	$executable = Join-Path $directory ($name + '.exe')
 	$actual = (& $executable --version | Select-Object -First 1)
 	if ($LASTEXITCODE -ne 0 -or "$actual".Trim() -ne "$name v$Version") {

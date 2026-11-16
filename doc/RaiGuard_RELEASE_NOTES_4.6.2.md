@@ -25,7 +25,7 @@ acceptance or the compiler analyzer's project-context validation.
 
 ## 2. Resolved Change Requests (CRs)
 
-- [CR078_AIA_to_RAIkeep_Rail_Multi_Path_Input_Completeness.md](CR078_AIA_to_RAIkeep_Rail_Multi_Path_Input_Completeness.md)
+- [CR078_AIA_to_RAIkeep_Rail_Multi_Path_Input_Completeness.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR078_AIA_to_RAIkeep_Rail_Multi_Path_Input_Completeness.md)
   — Accepted for implementation by the provider on 2026-11-05; candidate
   correction and verification delivered for requester evaluation. All twelve
   acceptance scenarios have provider evidence below. Consumer signoff is pending.
@@ -229,5 +229,5 @@ CR078 evidence receipt is retained as an explicitly labeled historical measureme
 AIA has gained files since the original 264-file measurement. The final packaged
 candidate checks 279 files, matching separate counts of 84 / 67 / 62 / 66. The
 source-selection contract is complete coverage of the actual checkout, not a
-hardcoded count. See [RAIkeep_RELEASE_NOTES_v4.6.2.md](RAIkeep_RELEASE_NOTES_v4.6.2.md)
+hardcoded count. See [RAIkeep_RELEASE_NOTES_v4.6.2.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_v4.6.2.md)
 for the combined CDAT handover. Consumer acceptance is still pending.

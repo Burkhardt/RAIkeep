@@ -5,7 +5,7 @@
 **Provider:** Codex, RAIkeep / jsonpit-python  
 **Target:** RAIkeep v4.6.3  
 **Status:** Accepted for provider implementation at RAI's request; independent consumer CDAT pending  
-**Parent:** [CR069_AIA_to_RAIkeep_PitsCommand-Tenant-Scoping-and-Public-Contracts.md](CR069_AIA_to_RAIkeep_PitsCommand-Tenant-Scoping-and-Public-Contracts.md)
+**Parent:** [CR069_AIA_to_RAIkeep_PitsCommand-Tenant-Scoping-and-Public-Contracts.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR069_AIA_to_RAIkeep_PitsCommand-Tenant-Scoping-and-Public-Contracts.md)
 
 ## 1. Objective and context
 

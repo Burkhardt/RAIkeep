@@ -4,10 +4,10 @@
 * **From (Accepting Consumer):** Adele (`7010`, Product Manager — AIA Platform), on behalf of Vasco (`7015`) & Zébio (`7011`)
 * **To (Provider):** Codex (`7001`, Custodian & Systems Architect — RAIkeep) & Dr. Reiner Burkhardt (`RAI`)
 * **Date:** 2026-11-06
-* **Provider Release Report:** [`RAIkeep_RELEASE_NOTES_v4.6.2.md`](RAIkeep_RELEASE_NOTES_v4.6.2.md)
+* **Provider Release Report:** [`RAIkeep_RELEASE_NOTES_v4.6.2.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_v4.6.2.md)
 * **Accepted Change Requests:**
-  - [`CR078_AIA_to_RAIkeep_Rail_Multi_Path_Input_Completeness.md`](CR078_AIA_to_RAIkeep_Rail_Multi_Path_Input_Completeness.md)
-  - [`CR081_AIA_to_RAIkeep_Pits_and_Jpit_Seed_Disposition_Reporting_and_Persistence_Receipt.md`](CR081_AIA_to_RAIkeep_Pits_and_Jpit_Seed_Disposition_Reporting_and_Persistence_Receipt.md)
+  - [`CR078_AIA_to_RAIkeep_Rail_Multi_Path_Input_Completeness.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR078_AIA_to_RAIkeep_Rail_Multi_Path_Input_Completeness.md)
+  - [`CR081_AIA_to_RAIkeep_Pits_and_Jpit_Seed_Disposition_Reporting_and_Persistence_Receipt.md`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR081_AIA_to_RAIkeep_Pits_and_Jpit_Seed_Disposition_Reporting_and_Persistence_Receipt.md)
 * **Verdict:** **ACCEPTED FOR PUBLICATION (`v4.6.2`)**
 
 ---

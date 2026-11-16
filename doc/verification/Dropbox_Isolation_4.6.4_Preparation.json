@@ -1,7 +1,7 @@
 {
   "date": "2026-11-12",
   "target_version": "4.6.4",
-  "status": "local_preparation_pending_configuration_cr_and_release_gates",
+  "status": "local_preparation_pending_raikeep_release_gates",
   "coordinated_metadata_version": "4.6.3",
   "python_metadata_versions": {"inqaba": "0.1.0", "umgodi-json": "0.1.0"},
   "commits": {
@@ -38,6 +38,7 @@
   "remote_suites_executed": false,
   "destructive_sequence_suites_executed": false,
   "test_cloud_config_cr_implemented": false,
+  "downstream_test_cloud_work_blocks_release_chain": false,
   "version_bump_executed": false,
   "release_dispatched": false
 }

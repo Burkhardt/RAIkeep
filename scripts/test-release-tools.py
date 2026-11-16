@@ -40,8 +40,6 @@ class ReleaseToolsTests(unittest.TestCase):
 			for note in self.manifest["release_notes"]
 		)
 		paths.update(f"{repo}/README.md" for _, repo, _ in tools.PACKAGE_REPOS)
-		paths.update(str(path.relative_to(ROOT)) for path in (ROOT / "JsonPit.Python/jsonpit").glob("*.py"))
-		paths.update(["JsonPit.Python/bin/jpit", "JsonPit.Python/scripts/build_standalone.py"])
 		paths.update(
 			[
 				"README.md",
@@ -95,32 +93,29 @@ class ReleaseToolsTests(unittest.TestCase):
 		self.assertEqual(1, len(errors))
 		self.assertIn("fallback property <OsLibPackageVersion> is 0.0.1", errors[0])
 
-	def test_python_companion_and_docs_are_release_gates(self):
-		companion = self.root / "JsonPit.Python/packages/jpit/pyproject.toml"
-		companion.write_text(companion.read_text().replace(f'version = "{self.version}"', 'version = "4.5.4"'))
-		guide = self.root / "JsonPit.Python/GettingStarted.md"
-		guide.write_text(guide.read_text().replace(self.version, "4.5.5"))
+	def test_candidate_dependency_and_cli_names_are_verified(self):
+		project = self.root / "umgodi-json/pyproject.toml"
+		project.write_text(project.read_text().replace("inqaba>=", "inqaba<"))
 		success, errors = self.validate()
 		self.assertFalse(success)
-		self.assertTrue(any("packages/jpit/pyproject.toml" in error for error in errors))
-		self.assertTrue(any("GettingStarted.md" in error for error in errors))
+		self.assertTrue(any("coordinated Inqaba dependency" in error for error in errors))
+		project.write_text(project.read_text().replace("inqaba<", "inqaba>=").replace("jpit =", "jsonpit ="))
+		self.assertTrue(any("entry points" in error for error in self.validate()[1]))
 
-	def test_standalone_with_old_sources_is_rejected(self):
-		source = self.root / "JsonPit.Python/jsonpit/cli.py"
-		source.write_text(source.read_text() + "\n# New CLI implementation\n")
-		success, errors = self.validate()
-		self.assertFalse(success)
-		self.assertTrue(any("Standalone jpit contains stale" in error for error in errors))
-
-	def test_next_bump_refreshes_all_python_release_surfaces(self):
+	def test_next_bump_excludes_frozen_project_and_updates_active_python(self):
+		frozen = self.root / "JsonPit.Python"
+		frozen.mkdir()
+		metadata = frozen / "pyproject.toml"
+		metadata.write_text('version = "4.6.3"')
 		major, minor, patch = map(int, self.version.split("."))
 		next_version = f"{major}.{minor}.{patch + 1}"
 		bumper = tools.ReleaseBumper(self.root, self.root / "scripts/release-manifest.json", next_version, run_external_checks=False)
 		with contextlib.redirect_stdout(io.StringIO()):
 			self.assertTrue(bumper.bump())
-		companion = (self.root / "JsonPit.Python/packages/jpit/pyproject.toml").read_text()
-		self.assertIn(f'"jsonpit=={next_version}"', companion)
-		self.assertIn("coordinated v3.13.2", (self.root / "JsonPit.Python/API.md").read_text())
+		self.assertEqual(metadata.read_text(), 'version = "4.6.3"')
+		self.assertFalse(any(p["name"] == "JsonPit.Python" for p in self.manifest["packages"]))
+		for repo in tools.PYTHON_MODULES:
+			self.assertIn(f'version = "{next_version}"', (self.root / repo / "pyproject.toml").read_text())
 
 	def test_amafu_package_readme_rejects_html_folding(self):
 		readme = self.root / "Amafu/README.md"

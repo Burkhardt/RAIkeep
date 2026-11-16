@@ -20,7 +20,7 @@ acceptance belongs to the requesting team.
 
 ## 2. Resolved Change Requests (CRs)
 
-- [CR070_AIA_to_RAIkeep_RAI007-Test-Run-Switches-and-RAI011-RAI015-Subject-Sites.md](CR070_AIA_to_RAIkeep_RAI007-Test-Run-Switches-and-RAI011-RAI015-Subject-Sites.md)
+- [CR070_AIA_to_RAIkeep_RAI007-Test-Run-Switches-and-RAI011-RAI015-Subject-Sites.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR070_AIA_to_RAIkeep_RAI007-Test-Run-Switches-and-RAI011-RAI015-Subject-Sites.md)
   — Implement the preferred named run-switch accessor, distinguish its guidance
   from persistent configuration, and support declared rule-subject exemptions.
   Submitted for requester evaluation, not self-accepted by the provider.
@@ -119,7 +119,7 @@ The AIA zero-warning result above uses candidate packages. A build against the
 completed public release and independent requester acceptance are not yet
 recorded here. AIA adoption is committed locally, not pushed or deployed.
 
-Detailed evidence: [CR070 implementation handover](HANDOVER_CR070_RunSwitch_and_Declared_Rule_Exemptions.md)
+Detailed evidence: [CR070 implementation handover](https://github.com/Burkhardt/RAIkeep/blob/main/doc/HANDOVER_CR070_RunSwitch_and_Declared_Rule_Exemptions.md)
 and [candidate evidence receipt](verification/CR070_4.6.1_Evidence.json).
 
 ## 6. Upgrade & Consumption Instructions

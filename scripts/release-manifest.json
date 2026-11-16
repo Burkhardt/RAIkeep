@@ -1,7 +1,7 @@
 {
 	"$schema": "./release-manifest.schema.json",
 	"name": "RAIkeep",
-	"current_version": "4.6.3",
+	"current_version": "4.6.4",
 	"packages": [
 		{
 			"name": "Amafu",
@@ -60,25 +60,6 @@
 			"workflow": "publish-nuget.yaml"
 		},
 		{
-			"name": "JsonPit.Python",
-			"pyproject": "JsonPit.Python/pyproject.toml",
-			"packageId": "jsonpit",
-			"type": "pypi",
-			"publishCommand": [
-				"twine",
-				"upload",
-				"--non-interactive",
-				"--skip-existing",
-				"/private/tmp/raikeep-4.6.3-candidates/python/jsonpit-4.6.3-py3-none-any.whl",
-				"/private/tmp/raikeep-4.6.3-candidates/python/jsonpit-4.6.3.tar.gz",
-				"/private/tmp/raikeep-4.6.3-candidates/python/jpit-4.6.3-py3-none-any.whl",
-				"/private/tmp/raikeep-4.6.3-candidates/python/jpit-4.6.3.tar.gz"
-			],
-			"extraPackages": [
-				"jpit"
-			]
-		},
-		{
 			"name": "inqaba",
 			"pyproject": "inqaba/pyproject.toml",
 			"packageId": "inqaba",
@@ -97,10 +78,6 @@
 			"dispatch": true,
 			"dependencies": [
 				"inqaba"
-			],
-			"extraPackages": [
-				"jpit",
-				"umgodi"
 			]
 		},
 		{
@@ -152,7 +129,9 @@
 		"doc/releases/v{major}.x/ImgSeeder_RELEASE_NOTES_{major}.x.md",
 		"doc/releases/v{major}.x/PitSeeder_RELEASE_NOTES_{major}.x.md",
 		"doc/releases/v{major}.x/RaiGuard_RELEASE_NOTES_{major}.x.md",
-		"doc/releases/v{major}.x/JsonPit.Python_RELEASE_NOTES_{major}.x.md"
+		"doc/releases/v{major}.x/inqaba_RELEASE_NOTES_{major}.x.md",
+		"doc/releases/v{major}.x/umgodi-json_RELEASE_NOTES_{major}.x.md",
+		"doc/releases/v{major}.x/vikela_RELEASE_NOTES_{major}.x.md"
 	],
 	"targets": [
 		{
@@ -349,170 +328,6 @@
 			]
 		},
 		{
-			"path": "JsonPit.Python/pyproject.toml",
-			"description": "jsonpit Python package metadata",
-			"type": "pyproject",
-			"replacements": [
-				{
-					"description": "jsonpit Python version",
-					"pattern": "(?m)^version\\s*=\\s*\"\\d+\\.\\d+\\.\\d+\"$",
-					"replacement": "version = \"{version}\""
-				}
-			]
-		},
-		{
-			"path": "JsonPit.Python/README.md",
-			"description": "Python current release documentation",
-			"type": "documentation",
-			"replacements": [
-				{
-					"description": "Versioned documentation heading or reference",
-					"pattern": "(?<=v)\\d+\\.\\d+\\.\\d+",
-					"replacement": "{version}"
-				},
-				{
-					"description": "Latest version heading",
-					"pattern": "(## Latest Version )\\d+\\.\\d+\\.\\d+",
-					"replacement": "\\g<1>{version}"
-				},
-				{
-					"description": "Pinned Python install",
-					"pattern": "(?<=jsonpit==)\\d+\\.\\d+\\.\\d+",
-					"replacement": "{version}"
-				},
-				{
-					"description": "Fleet installer version",
-					"pattern": "(?<=bash -s -- )\\d+\\.\\d+\\.\\d+",
-					"replacement": "{version}"
-				},
-				{
-					"description": "Release notes label",
-					"pattern": "(?<=jsonpit-python )\\d+\\.\\d+\\.\\d+(?= release notes)",
-					"replacement": "{version}"
-				},
-				{
-					"description": "Release notes destination",
-					"pattern": "doc/releases/v\\d+\\.x/JsonPit\\.Python_RELEASE_NOTES_\\d+\\.x\\.md#\\d+",
-					"replacement": "doc/releases/v{major}.x/JsonPit.Python_RELEASE_NOTES_{major}.x.md#{anchor}"
-				}
-			]
-		},
-		{
-			"path": "JsonPit.Python/API.md",
-			"description": "Python current release documentation",
-			"type": "documentation",
-			"replacements": [
-				{
-					"description": "Current Python API heading",
-					"pattern": "(?m)^(# jsonpit API Reference \\(v)\\d+\\.\\d+\\.\\d+",
-					"replacement": "\\g<1>{version}"
-				}
-			]
-		},
-		{
-			"path": "JsonPit.Python/GettingStarted.md",
-			"description": "Python current release documentation",
-			"type": "documentation",
-			"replacements": [
-				{
-					"description": "Versioned documentation heading or reference",
-					"pattern": "(?<=v)\\d+\\.\\d+\\.\\d+",
-					"replacement": "{version}"
-				},
-				{
-					"description": "Latest version heading",
-					"pattern": "(## Latest Version )\\d+\\.\\d+\\.\\d+",
-					"replacement": "\\g<1>{version}"
-				},
-				{
-					"description": "Pinned Python install",
-					"pattern": "(?<=jsonpit==)\\d+\\.\\d+\\.\\d+",
-					"replacement": "{version}"
-				},
-				{
-					"description": "Fleet installer version",
-					"pattern": "(?<=bash -s -- )\\d+\\.\\d+\\.\\d+",
-					"replacement": "{version}"
-				},
-				{
-					"description": "Release notes label",
-					"pattern": "(?<=JsonPit )\\d+\\.\\d+\\.\\d+(?= release notes)",
-					"replacement": "{version}"
-				},
-				{
-					"description": "Release notes destination",
-					"pattern": "doc/releases/v\\d+\\.x/JsonPit_RELEASE_NOTES_\\d+\\.x\\.md#\\d+",
-					"replacement": "doc/releases/v{major}.x/JsonPit_RELEASE_NOTES_{major}.x.md#{anchor}"
-				}
-			]
-		},
-		{
-			"path": "JsonPit.Python/packages/jpit/README.md",
-			"description": "Python current release documentation",
-			"type": "documentation",
-			"replacements": [
-				{
-					"description": "Versioned documentation heading or reference",
-					"pattern": "(?<=v)\\d+\\.\\d+\\.\\d+",
-					"replacement": "{version}"
-				},
-				{
-					"description": "Latest version heading",
-					"pattern": "(## Latest Version )\\d+\\.\\d+\\.\\d+",
-					"replacement": "\\g<1>{version}"
-				},
-				{
-					"description": "Pinned Python install",
-					"pattern": "(?<=jsonpit==)\\d+\\.\\d+\\.\\d+",
-					"replacement": "{version}"
-				},
-				{
-					"description": "Fleet installer version",
-					"pattern": "(?<=bash -s -- )\\d+\\.\\d+\\.\\d+",
-					"replacement": "{version}"
-				},
-				{
-					"description": "Release notes label",
-					"pattern": "(?<=JsonPit )\\d+\\.\\d+\\.\\d+(?= release notes)",
-					"replacement": "{version}"
-				},
-				{
-					"description": "Release notes destination",
-					"pattern": "doc/releases/v\\d+\\.x/JsonPit_RELEASE_NOTES_\\d+\\.x\\.md#\\d+",
-					"replacement": "doc/releases/v{major}.x/JsonPit_RELEASE_NOTES_{major}.x.md#{anchor}"
-				}
-			]
-		},
-		{
-			"path": "JsonPit.Python/packages/jpit/pyproject.toml",
-			"description": "jpit companion distribution",
-			"type": "pyproject",
-			"replacements": [
-				{
-					"description": "Companion version",
-					"pattern": "(?m)^version\\s*=\\s*\"\\d+\\.\\d+\\.\\d+\"$",
-					"replacement": "version = \"{version}\""
-				},
-				{
-					"description": "Exact library dependency",
-					"pattern": "\"jsonpit(?:>=|==)\\d+\\.\\d+\\.\\d+\"",
-					"replacement": "\"jsonpit=={version}\""
-				}
-			]
-		},
-		{
-			"path": "JsonPit.Python/jsonpit/__init__.py",
-			"description": "jsonpit Python module __version__",
-			"type": "source",
-			"replacements": [
-				{
-					"description": "jsonpit __version__",
-					"pattern": "(?m)^__version__\\s*=\\s*\"\\d+\\.\\d+\\.\\d+\"$",
-					"replacement": "__version__ = \"{version}\""
-				}
-			]
-		},
-		{
 			"path": "inqaba/pyproject.toml",
 			"description": "inqaba Python package metadata",
 			"type": "pyproject",
@@ -545,6 +360,10 @@
 					"description": "umgodi-json Python version",
 					"pattern": "(?m)^version\\s*=\\s*\"\\d+\\.\\d+\\.\\d+\"$",
 					"replacement": "version = \"{version}\""
+				},
+				{
+					"pattern": "(?<=inqaba>=)\\d+\\.\\d+\\.\\d+",
+					"replacement": "{version}"
 				}
 			]
 		},
@@ -901,22 +720,8 @@
 			"type": "doc",
 			"replacements": [
 				{
-					"description": "release-chain invocation",
-					"pattern": "(?:\\./)?scripts/release-chain\\.sh \\d+\\.\\d+\\.\\d+",
-					"replacement": "scripts/release-chain.sh {version}"
-				},
-				{
-					"pattern": "scripts/bump-version\\.py \\d+\\.\\d+\\.\\d+",
-					"replacement": "scripts/bump-version.py {version}"
-				},
-				{
-					"pattern": "`v\\d+\\.\\d+\\.\\d+`(?=\\))",
-					"replacement": "`v{version}`"
-				},
-				{
-					"description": "Pinned Python recovery install",
-					"pattern": "(?<=jsonpit==)\\d+\\.\\d+\\.\\d+",
-					"replacement": "{version}"
+					"pattern": "engenho release \\d+\\.\\d+\\.\\d+",
+					"replacement": "engenho release {version}"
 				}
 			]
 		},
@@ -1042,6 +847,90 @@
 				{
 					"pattern": "(<PackageReference Include=\"(?:JsonPit|OsLibCore)\" Version=\")[^\"]+(\"[^>]*>)",
 					"replacement": "\\g<1>{version}\\g<2>"
+				}
+			]
+		},
+		{
+			"path": "vikela/pyproject.toml",
+			"description": "Coordinated release metadata",
+			"replacements": [
+				{
+					"pattern": "(?<=version = \")\\d+\\.\\d+\\.\\d+(?=\")",
+					"replacement": "{version}"
+				}
+			]
+		},
+		{
+			"path": "vikela/vikela/__init__.py",
+			"description": "Coordinated release metadata",
+			"replacements": [
+				{
+					"pattern": "(?<=__version__ = \")\\d+\\.\\d+\\.\\d+(?=\")",
+					"replacement": "{version}"
+				}
+			]
+		},
+		{
+			"path": "vikela/tests/test_analysis.py",
+			"description": "Coordinated release metadata",
+			"replacements": [
+				{
+					"pattern": "(?<=assert __version__ == project\\[\"version\"\\] == \")\\d+\\.\\d+\\.\\d+(?=\")",
+					"replacement": "{version}"
+				}
+			]
+		},
+		{
+			"path": "vikela/README.md",
+			"description": "Coordinated release metadata",
+			"replacements": [
+				{
+					"pattern": "(?<=v)\\d+\\.\\d+\\.\\d+|(?<===)\\d+\\.\\d+\\.\\d+|(?<=Version )\\d+\\.\\d+\\.\\d+|(?<=RAIkeep )\\d+\\.\\d+\\.\\d+|(?<=umgodi-json )\\d+\\.\\d+\\.\\d+",
+					"replacement": "{version}"
+				}
+			]
+		},
+		{
+			"path": "vikela/docs/editors.md",
+			"description": "Coordinated release metadata",
+			"replacements": [
+				{
+					"pattern": "(?<=v)\\d+\\.\\d+\\.\\d+|(?<===)\\d+\\.\\d+\\.\\d+|(?<=Version )\\d+\\.\\d+\\.\\d+|(?<=RAIkeep )\\d+\\.\\d+\\.\\d+|(?<=umgodi-json )\\d+\\.\\d+\\.\\d+",
+					"replacement": "{version}"
+				}
+			]
+		},
+		{
+			"path": "umgodi-json/README.md",
+			"description": "Coordinated release metadata",
+			"replacements": [
+				{
+					"pattern": "(?<=v)\\d+\\.\\d+\\.\\d+|(?<===)\\d+\\.\\d+\\.\\d+|(?<=Version )\\d+\\.\\d+\\.\\d+|(?<=RAIkeep )\\d+\\.\\d+\\.\\d+|(?<=umgodi-json )\\d+\\.\\d+\\.\\d+",
+					"replacement": "{version}"
+				},
+				{
+					"pattern": "umgodi-json_RELEASE_NOTES_\\d+.x.md#\\d+",
+					"replacement": "umgodi-json_RELEASE_NOTES_{major}.x.md#{anchor}"
+				}
+			]
+		},
+		{
+			"path": "umgodi-json/GettingStarted.md",
+			"description": "Coordinated release metadata",
+			"replacements": [
+				{
+					"pattern": "(?<=v)\\d+\\.\\d+\\.\\d+|(?<===)\\d+\\.\\d+\\.\\d+|(?<=Version )\\d+\\.\\d+\\.\\d+|(?<=RAIkeep )\\d+\\.\\d+\\.\\d+|(?<=umgodi-json )\\d+\\.\\d+\\.\\d+",
+					"replacement": "{version}"
+				}
+			]
+		},
+		{
+			"path": "umgodi-json/API.md",
+			"description": "Coordinated release metadata",
+			"replacements": [
+				{
+					"pattern": "(?<=v)\\d+\\.\\d+\\.\\d+|(?<===)\\d+\\.\\d+\\.\\d+|(?<=Version )\\d+\\.\\d+\\.\\d+|(?<=RAIkeep )\\d+\\.\\d+\\.\\d+|(?<=umgodi-json )\\d+\\.\\d+\\.\\d+",
+					"replacement": "{version}"
 				}
 			]
 		}

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-REPOSITORIES=(. Amafu OsLib RaiUtils RaiImage RaiDiagram JsonPit ImgSeeder PitSeeder RaiGuard)
+REPOSITORIES=(. Amafu OsLib RaiUtils RaiImage RaiDiagram JsonPit ImgSeeder PitSeeder RaiGuard RaidSeeder inqaba umgodi-json vikela)
 PATTERN='\[[^]\n]+\]\((?!<?(?:https?://|mailto:|#|/))<?[^)\n>]+\.md(?:#[^)\n>]*)?>?\)'
 failed=0
 
@@ -15,7 +15,8 @@ for repository in "${REPOSITORIES[@]}"; do
 	}
 
 	matches="$({
-		git -C "$repository_dir" ls-files -z '*.md' \
+		cd "$repository_dir"
+		git ls-files -z '*.md' \
 			| xargs -0 rg -n --pcre2 "$PATTERN" -- 2>/dev/null
 	} || true)"
 

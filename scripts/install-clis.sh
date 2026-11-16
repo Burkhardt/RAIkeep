@@ -31,7 +31,7 @@ except Exception:
 }
 
 DEFAULT_VERSION="$(resolve_default_version)"
-DEFAULT_VERSION="${DEFAULT_VERSION:-4.6.3}"
+DEFAULT_VERSION="${DEFAULT_VERSION:-4.6.4}"
 
 # No machine names or SSH accounts are embedded in the installer.
 CONFIG_FILE="${RAIKEEP_CONFIG:-$HOME/.config/RAIkeep.json5}"
@@ -191,6 +191,13 @@ VERSION="$1"
 SKIP_CLOUD_SETUP="$2"
 DRY_RUN="$3"
 SKIP_PYTHON="$4"
+IFS=. read -r major minor patch <<< "$VERSION"
+python_distribution=jsonpit
+python_alias=jsonpit
+if (( major > 4 || (major == 4 && (minor > 6 || (minor == 6 && patch >= 4))) )); then
+	python_distribution=umgodi-json
+	python_alias=umgodi
+fi
 
 export PATH="$HOME/.local/bin:$HOME/.dotnet/tools:$HOME/.dotnet:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/share/dotnet:/opt/dotnet:/usr/local/bin:$PATH"
 
@@ -212,7 +219,7 @@ if [[ "$DRY_RUN" == "1" ]]; then
 	if [[ "$SKIP_PYTHON" == "1" ]]; then
 		echo "Python/jsonpit/jpit skipped; no Python is required on this destination."
 	else
-		echo "Plan: jsonpit==$VERSION (jpit and jsonpit); $(python3 --version)"
+		echo "Plan: ${python_distribution}==$VERSION (jpit and $python_alias); $(python3 --version)"
 	fi
 	echo "Environment ready: $(uname -s), $(dotnet --version). Dry run; no changes made."
 	exit 0
@@ -238,18 +245,18 @@ install_dotnet_tool "ImgSeeder" "$VERSION"
 install_dotnet_tool "PitSeeder" "$VERSION"
 install_dotnet_tool "RaiGuard" "$VERSION"
 
-echo "  [3/4] Installing/Updating Python jsonpit (jpit CLI)..."
+echo "  [3/4] Installing/Updating Python $python_distribution (jpit CLI)..."
 install_jpit() {
-	local py_spec="jsonpit==$VERSION"
+	local py_spec="${python_distribution}==$VERSION"
 	mkdir -p "$HOME/.local/bin"
-	local venv_dir="$HOME/.local/share/jsonpit-venv"
+	local venv_dir="$HOME/.local/share/${python_distribution}-venv"
 	# One managed environment owns both CLI names. Never bypass PEP 668.
 	if command -v pipx >/dev/null 2>&1; then
 		pipx install --force "$py_spec" 2>&1 | sed 's/^/      /' || return 1
 	elif python3 -m venv "$venv_dir" 2>/dev/null; then
 		"$venv_dir/bin/python" -m pip install --upgrade --no-cache-dir "$py_spec" 2>&1 | sed 's/^/      /' || return 1
 		ln -sf "$venv_dir/bin/jpit" "$HOME/.local/bin/jpit"
-		ln -sf "$venv_dir/bin/jsonpit" "$HOME/.local/bin/jsonpit"
+		ln -sf "$venv_dir/bin/$python_alias" "$HOME/.local/bin/$python_alias"
 	elif command -v uv >/dev/null 2>&1; then
 		uv tool install "$py_spec" --force --refresh 2>&1 | sed 's/^/      /' || return 1
 	else
@@ -257,7 +264,7 @@ install_jpit() {
 		return 1
 	fi
 	local tool_name actual_version
-	for tool_name in jpit jsonpit; do
+	for tool_name in jpit "$python_alias"; do
 		actual_version="$("$HOME/.local/bin/$tool_name" --version)" || return 1
 		if [[ "$actual_version" != "$tool_name v$VERSION" ]]; then
 			echo "      ERROR: $tool_name reports '$actual_version'; expected '$tool_name v$VERSION'."
@@ -270,7 +277,7 @@ install_jpit() {
 	py_user_base="$(python3 -m site --user-base 2>/dev/null)/bin"
 	for p_dir in "$py_user_base" "$HOME/Library/Python/"*/bin; do
 		if [[ -d "$p_dir" ]]; then
-			for tool_name in jpit jsonpit; do
+			for tool_name in jpit "$python_alias"; do
 				if [[ -f "$p_dir/$tool_name" && ! -e "$HOME/.local/bin/$tool_name" ]]; then
 					ln -sf "$p_dir/$tool_name" "$HOME/.local/bin/$tool_name"
 				fi
@@ -321,7 +328,7 @@ CURRENT_USER="${USER:-$(id -un 2>/dev/null || whoami 2>/dev/null || echo 'user')
 echo -e "\n  🔍 Verification results for ${CURRENT_USER} on $(hostname):"
 verification_failed=0
 commands=(amafu raid iorg pits rail)
-if [[ "$SKIP_PYTHON" != "1" ]]; then commands+=(jpit jsonpit); fi
+if [[ "$SKIP_PYTHON" != "1" ]]; then commands+=(jpit "$python_alias"); fi
 for cmd in "${commands[@]}"; do
 	if command -v "$cmd" >/dev/null 2>&1; then
 		out="$("$cmd" --version 2>&1 | head -n 1 || true)"

@@ -16,9 +16,11 @@ def main() -> int:
 	parser = argparse.ArgumentParser(description=__doc__)
 	parser.parse_args()
 	root = Path(__file__).resolve().parent.parent
-	sys.path.insert(0, str(root / "JsonPit.Python"))
-	from jsonpit import cli_style as style
-	from jsonpit.icons import Icons
+	sources = [str(root / "umgodi-json"), str(root / "inqaba")]
+	sys.path[:0] = sources
+	environment = {**os.environ, "PYTHONPATH": os.pathsep.join(sources)}
+	from umgodi import cli_style as style
+	from umgodi.icons import Icons
 
 	assembly = root / "OsLib/bin/Debug/net10.0/OsLib.dll"
 	if not assembly.is_file():
@@ -73,9 +75,9 @@ Console.Write(JsonSerializer.Serialize(new {
 	cli_assemblies = ["amafu", "pits", "ImgSeeder", "raid", "rail"]
 	commands = [["dotnet", str(root / path / "bin/Debug/net10.0" / f"{assembly}.dll")]
 		for path, assembly in zip(cli_paths, cli_assemblies)]
-	commands.append([sys.executable, "-m", "jsonpit.cli"])
+	commands.append([sys.executable, "-m", "umgodi.cli"])
 	for command in commands:
-		result = subprocess.run([*command, "-h"], cwd=root / "JsonPit.Python",
+		result = subprocess.run([*command, "-h"], cwd=root, env=environment,
 			capture_output=True, text=True, check=True, timeout=30)
 		top, heading, bottom = result.stdout.splitlines()[:3]
 		assert heading.endswith(f" on {platform.node()}"), (command, heading)
@@ -85,8 +87,8 @@ Console.Write(JsonSerializer.Serialize(new {
 	pits = subprocess.run(["dotnet", str(root / "PitSeeder/pits/bin/Debug/net10.0/pits.dll"), "-h", "-n"],
 		capture_output=True, text=True, check=True, timeout=30).stdout
 	# Import the checkout rather than an installed package. Neither help command mutates pits.
-	python_help = subprocess.run([sys.executable, "-m", "jsonpit.cli", "-h", "-n"],
-		cwd=root / "JsonPit.Python", capture_output=True, text=True, check=True, timeout=30).stdout
+	python_help = subprocess.run([sys.executable, "-m", "umgodi.cli", "-h", "-n"],
+		cwd=root, env=environment, capture_output=True, text=True, check=True, timeout=30).stdout
 	labels = ["-h, --help", "-v, --version", "-n, --nologo", "-b, --debug", "-r, --pitroot",
 		"-c, --cloud", "-s, --source", "--json", "--at", "--wwwa", "-w, --window", "-x, --id-exists", "--patch"]
 	for label in labels:
@@ -101,10 +103,8 @@ Console.Write(JsonSerializer.Serialize(new {
 
 	# Export the same actual C#-written pits through both CLIs. These are explicit
 	# local filesystem fixtures, not simulated CloudDrive integration tests.
-	python_command = [sys.executable, "-m", "jsonpit.cli"]
+	python_command = [sys.executable, "-m", "umgodi.cli"]
 	pits_command = ["dotnet", str(root / "PitSeeder/pits/bin/Debug/net10.0/pits.dll")]
-	environment = os.environ.copy()
-	environment["PYTHONPATH"] = str(root / "JsonPit.Python")
 	def invoke(command: list[str]) -> str:
 		result = subprocess.run(command, env=environment, capture_output=True, text=True, timeout=30)
 		assert result.returncode == 0, f"{command}: {result.stdout}\n{result.stderr}"

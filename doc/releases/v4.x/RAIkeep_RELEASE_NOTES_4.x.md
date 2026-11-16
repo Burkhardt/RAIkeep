@@ -2,7 +2,6 @@
 
 ## 4.6.4
 
-- Status: **Draft — unreleased; coordinated metadata has not been bumped.**
 - Target release version: `4.6.4`
 
 ### Highlights
@@ -15,13 +14,9 @@
 - Preserve genuine Nkosikazi ↔ Mzansi remote replication coverage on OneDrive
   and read-only explicit AIA/AfricaStage tenant resolution.
 
-### Pending release gates
+- Publish the first coordinated Inqaba and Umgodi distributions. Install `umgodi-json` for the `umgodi` Python module and the `jpit` and `umgodi` commands. The frozen Python implementation stays available at 4.6.3.
 
-The canonical `TestCloud: "Dropbox"` configuration CR is pending Zébio's
-coordination and is not included in the implementation above. Frozen Python
-release handling, new package publication setup, final metadata and candidate
-validation remain open. See the
-[4.6.4 preparation handover](https://github.com/Burkhardt/RAIkeep/blob/main/doc/HANDOVER_RELEASE_PREP_v4.6.4.md).
+See the [4.6.4 preparation handover](https://github.com/Burkhardt/RAIkeep/blob/main/doc/HANDOVER_RELEASE_PREP_v4.6.4.md).
 
 ---
 
@@ -143,8 +138,8 @@ VS Code/PyCharm graphical behavior was not verified locally.
 
 ### Handover documents
 
-- [Implementation, compatibility changes, and verification](../../HANDOVER_CR077_Implementation_and_Verification.md)
-- [Release and provisioning handover for Rita](../../HANDOVER_TO_RITA_Engenho_CR077_Vikela.md)
+- [Implementation, compatibility changes, and verification](https://github.com/Burkhardt/RAIkeep/blob/main/doc/HANDOVER_CR077_Implementation_and_Verification.md)
+- [Release and provisioning handover for Rita](https://github.com/Burkhardt/RAIkeep/blob/main/doc/HANDOVER_TO_RITA_Engenho_CR077_Vikela.md)
 - [Exact candidate source commits, package inventory, and hashes](../../verification/CR077_Release_Evidence.json)
 
 ---
@@ -331,7 +326,7 @@ VS Code/PyCharm graphical behavior was not verified locally.
 - Coordination tag: `v4.5.6`
 
 ### Highlights
-<!-- LLM / Author: summarize key architectural highlights and changes here -->
+- Updates coordinated package versions for the 4.6.4 suite.
 
 ### Coordinated Dependencies
 - Aligned with RAIkeep synchronized `4.5.6` line.

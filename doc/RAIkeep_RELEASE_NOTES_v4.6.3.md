@@ -15,10 +15,10 @@ together at 4.6.3 across all twelve child repositories, including optional Vikel
 
 ## 2. Addressed change request and acceptance
 
-- [CR082_AfricaStage_to_RAIkeep_Jpit_Default_Cloud_Resolution_and_Missing_Export.md](CR082_AfricaStage_to_RAIkeep_Jpit_Default_Cloud_Resolution_and_Missing_Export.md)
+- [CR082_AfricaStage_to_RAIkeep_Jpit_Default_Cloud_Resolution_and_Missing_Export.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR082_AfricaStage_to_RAIkeep_Jpit_Default_Cloud_Resolution_and_Missing_Export.md)
   — provider implementation and regression tests delivered in
-  [JsonPit.Python_RELEASE_NOTES_4.6.3.md](JsonPit.Python_RELEASE_NOTES_4.6.3.md).
-- [CR082_Accepted_Jpit_Default_Cloud_Resolution_and_Missing_Export_v4_6_3.md](CR082_Accepted_Jpit_Default_Cloud_Resolution_and_Missing_Export_v4_6_3.md)
+  [JsonPit.Python_RELEASE_NOTES_4.6.3.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/JsonPit.Python_RELEASE_NOTES_4.6.3.md).
+- [CR082_Accepted_Jpit_Default_Cloud_Resolution_and_Missing_Export_v4_6_3.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR082_Accepted_Jpit_Default_Cloud_Resolution_and_Missing_Export_v4_6_3.md)
   — independent Adele/AfricaStage/AIA CDAT accepted. The user reports the AIA mirror
   at commit `6f1fa12`; the acceptance record is included in the umbrella.
 
@@ -104,7 +104,7 @@ this documented external verification exception for the point release.
 
 ## 6. Upgrade and manual execution
 
-The [Engenho handover](HANDOVER_TO_RITA_Engenho_4.6.3_CR082.md) identifies the
+The [Engenho handover](https://github.com/Burkhardt/RAIkeep/blob/main/doc/HANDOVER_TO_RITA_Engenho_4.6.3_CR082.md) identifies the
 manifest inputs and exit-status handling. RAI runs `engenho release 4.6.3`
 manually, then `engenho provision all` after successful publication and visibility.
 Provisioning keeps optional development tooling off production servers according

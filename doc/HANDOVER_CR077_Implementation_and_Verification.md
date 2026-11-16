@@ -71,7 +71,7 @@ creates a distributed transaction.
 
 ## Release and provisioning handover
 
-Use [Rita's CR077 handover](HANDOVER_TO_RITA_Engenho_CR077_Vikela.md). The new
+Use [Rita's CR077 handover](https://github.com/Burkhardt/RAIkeep/blob/main/doc/HANDOVER_TO_RITA_Engenho_CR077_Vikela.md). The new
 publish-pypi.yaml workflow uses Trusted Publishing and requires a PyPI policy for
 Burkhardt/vikela, workflow publish-pypi.yaml, environment pypi. The workflow has
 not been remotely dispatched. PyPI returned 404 for vikela during preparation;

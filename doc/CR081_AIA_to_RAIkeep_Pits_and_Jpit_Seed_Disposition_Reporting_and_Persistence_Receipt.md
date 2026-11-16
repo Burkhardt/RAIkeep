@@ -5,10 +5,10 @@
 * **To (Provider):** Codex (`7001`, Custodian & Systems Architect — RAIkeep)
 * **Cc:** Dr. Reiner Burkhardt (`RAI`), Zébio (`7011`, Lead Backend Engineer — AIA)
 * **Date:** 2026-11-06
-* **Target Release:** RAIkeep `v4.6.2` (bundled alongside [`CR078`](CR078_AIA_to_RAIkeep_Rail_Multi_Path_Input_Completeness.md))
+* **Target Release:** RAIkeep `v4.6.2` (bundled alongside [`CR078`](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR078_AIA_to_RAIkeep_Rail_Multi_Path_Input_Completeness.md))
 * **Supersedes (in part):** CR047 quantitative seed receipt wording (`Successfully committed <N> entity(ies)`)
 * **References:**
-  - [`doc/PROMPT_VASCO_TO_RAIKEEP_Pits_Seed_Reports_Unwritten_Items.md`](PROMPT_VASCO_TO_RAIKEEP_Pits_Seed_Reports_Unwritten_Items.md)
+  - [`doc/PROMPT_VASCO_TO_RAIKEEP_Pits_Seed_Reports_Unwritten_Items.md`](https://github.com/Burkhardt/AIA/blob/main/doc/PROMPT_VASCO_TO_RAIKEEP_Pits_Seed_Reports_Unwritten_Items.md)
   - `/Users/RSB/Projects/GitHub/RAIkeep/doc/ASSESSMENT_VASCO_Pits_Seed_Reports_Unwritten_Items.md`
 
 ---

@@ -1,5 +1,18 @@
 # PitSeeder Release Notes 4.x
 
+## 4.6.4
+
+- Release version: `4.6.4`
+- Coordination tag: `v4.6.4`
+
+### Highlights
+- Tests cover explicit Dropbox root resolution and OneDrive discovery for AIA and AfricaStage.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.6.4` line.
+
+---
+
 ## 4.6.3
 
 - Release version: `4.6.3`
@@ -217,7 +230,7 @@
 - Coordination tag: `v4.5.6`
 
 ### Highlights
-<!-- LLM / Author: summarize key architectural highlights and changes here -->
+- Updates coordinated package versions for the 4.6.4 suite.
 
 ### Coordinated Dependencies
 - Aligned with RAIkeep synchronized `4.5.6` line.

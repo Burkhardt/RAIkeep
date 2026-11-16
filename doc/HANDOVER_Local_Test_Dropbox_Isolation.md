@@ -43,7 +43,8 @@ The approved next coordinated patch target is 4.6.4. Isolation changes are
 committed locally in JsonPit (`6fb4a82`), PitSeeder (`853d8fc`) and Umgodi
 (`a9c006b`). No push, version bump, tag, publication or Engenho dispatch was made.
 See the [4.6.4 preparation handover](https://github.com/Burkhardt/RAIkeep/blob/main/doc/HANDOVER_RELEASE_PREP_v4.6.4.md)
-for the remaining gates and the pending TestCloud CR.
+for the remaining RAIkeep release gates. TestCloud coordination is a separate
+configuration enhancement, not a dependency on downstream work.
 
 Before the next release, prepare versions and release notes, supply publishing
 workflows/trusted publishers, and reconcile the manifest's Umgodi extraPackages

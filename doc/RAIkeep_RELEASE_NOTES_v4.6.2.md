@@ -28,16 +28,16 @@ manual Engenho release; successful publication is a separate subsequent state.
 The following requests are implemented in the candidate and submitted for
 consumer evaluation, not self-accepted or closed by the provider:
 
-- [CR078_AIA_to_RAIkeep_Rail_Multi_Path_Input_Completeness.md](CR078_AIA_to_RAIkeep_Rail_Multi_Path_Input_Completeness.md)
+- [CR078_AIA_to_RAIkeep_Rail_Multi_Path_Input_Completeness.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR078_AIA_to_RAIkeep_Rail_Multi_Path_Input_Completeness.md)
   — Combine all explicit/positional targets, deduplicate source files, inspect
   the complete semantic set, validate inputs before fixes, and report invalid or
   incomplete checks honestly. Detailed report:
-  [RaiGuard_RELEASE_NOTES_4.6.2.md](RaiGuard_RELEASE_NOTES_4.6.2.md).
-- [CR081_AIA_to_RAIkeep_Pits_and_Jpit_Seed_Disposition_Reporting_and_Persistence_Receipt.md](CR081_AIA_to_RAIkeep_Pits_and_Jpit_Seed_Disposition_Reporting_and_Persistence_Receipt.md)
+  [RaiGuard_RELEASE_NOTES_4.6.2.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiGuard_RELEASE_NOTES_4.6.2.md).
+- [CR081_AIA_to_RAIkeep_Pits_and_Jpit_Seed_Disposition_Reporting_and_Persistence_Receipt.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR081_AIA_to_RAIkeep_Pits_and_Jpit_Seed_Disposition_Reporting_and_Persistence_Receipt.md)
   — Count written/unchanged source entries, emit the receipt after required local
   persistence, preserve latest-fragment policy, and document disposal-event time.
   Supersedes the quantitative success wording in
-  [CR047_jsonpit_and_pits_Require-Existing-Patch-Flag-and-Seed-Commit-Count.md](CR/CR047_jsonpit_and_pits_Require-Existing-Patch-Flag-and-Seed-Commit-Count.md).
+  [CR047_jsonpit_and_pits_Require-Existing-Patch-Flag-and-Seed-Commit-Count.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR/CR047_jsonpit_and_pits_Require-Existing-Patch-Flag-and-Seed-Commit-Count.md).
 
 ## 3. Root Cause Analysis & Technical Resolution
 
@@ -211,7 +211,7 @@ the latest fragment, tombstones, original live identity and both tracking modes.
 ### CR078 acceptance mapping
 
 All AC-1–AC-12 provider evidence is recorded in
-[RaiGuard_RELEASE_NOTES_4.6.2.md](RaiGuard_RELEASE_NOTES_4.6.2.md). Final packaged
+[RaiGuard_RELEASE_NOTES_4.6.2.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiGuard_RELEASE_NOTES_4.6.2.md). Final packaged
 coverage on the current consumer checkout is **279 = 84 + 67 + 62 + 66**. The
 existing stderr advisory about incomplete project-reference resolution remains;
 complete file coverage does not replace compiler-analyzer validation.
@@ -277,6 +277,6 @@ publication completes, use the separately established manual Engenho provisionin
 command; no legacy install script is required or run here.
 
 Rita's integration notes are in
-[HANDOVER_TO_RITA_Engenho_4.6.2_CR078_CR081.md](HANDOVER_TO_RITA_Engenho_4.6.2_CR078_CR081.md).
+[HANDOVER_TO_RITA_Engenho_4.6.2_CR078_CR081.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/HANDOVER_TO_RITA_Engenho_4.6.2_CR078_CR081.md).
 The provider stops at this handover gate; test success is not consumer signoff,
 and preparation is not publication.

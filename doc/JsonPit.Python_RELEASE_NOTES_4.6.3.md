@@ -14,10 +14,10 @@ directory or reports a missing snapshot as a successful empty export.
 
 ## 2. Addressed change request
 
-[CR082_AfricaStage_to_RAIkeep_Jpit_Default_Cloud_Resolution_and_Missing_Export.md](CR082_AfricaStage_to_RAIkeep_Jpit_Default_Cloud_Resolution_and_Missing_Export.md)
+[CR082_AfricaStage_to_RAIkeep_Jpit_Default_Cloud_Resolution_and_Missing_Export.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR082_AfricaStage_to_RAIkeep_Jpit_Default_Cloud_Resolution_and_Missing_Export.md)
 records RAI's requested correction and the provider's acceptance scenarios.
 Requester acceptance is recorded in
-[CR082_Accepted_Jpit_Default_Cloud_Resolution_and_Missing_Export_v4_6_3.md](CR082_Accepted_Jpit_Default_Cloud_Resolution_and_Missing_Export_v4_6_3.md).
+[CR082_Accepted_Jpit_Default_Cloud_Resolution_and_Missing_Export_v4_6_3.md](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR082_Accepted_Jpit_Default_Cloud_Resolution_and_Missing_Export_v4_6_3.md).
 
 ## 3. Root cause and technical resolution
 
@@ -102,5 +102,5 @@ RAI starts the release.
 Rita's runner must check the exit status before treating an export as complete;
 an empty result alone cannot prove success. No runner implementation change or
 release-chain.sh investment is requested by this fix. See the
-[coordinated preparation report](RAIkeep_RELEASE_NOTES_v4.6.3.md) for the suite
+[coordinated preparation report](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RAIkeep_RELEASE_NOTES_v4.6.3.md) for the suite
 checks and artifacts. RAI alone runs release and provisioning manually.

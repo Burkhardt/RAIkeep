@@ -1,7 +1,14 @@
-# Previous release-chain.sh reference
+# Coordinated release through Engenho
+
+RAI runs `engenho release 4.6.4` after candidate verification and publisher setup.
+Engenho reads the package list from `scripts/release-manifest.json`. The first
+Python publications are `inqaba` followed by `umgodi-json`. The frozen `jsonpit`
+and `jpit` distributions remain available at 4.6.3.
+
+## Historical shell runner
 
 **CR077 / 4.6.0 and Vikela 4.6.0 use Engenho.** Follow
-[the handover for Rita](doc/HANDOVER_TO_RITA_Engenho_CR077_Vikela.md); do not use
+[the handover for Rita](https://github.com/Burkhardt/RAIkeep/blob/main/doc/HANDOVER_TO_RITA_Engenho_CR077_Vikela.md); do not use
 the script below to launch this coordinated release. This document preserves
 the previous script procedure for reference and earlier release recovery.
 
