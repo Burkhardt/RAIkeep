@@ -30,7 +30,7 @@ and awaits independent consumer acceptance before Rainer's manual release.
 - [RaiDiagram 4.6.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiDiagram_RELEASE_NOTES_4.x.md#464)
 - [RaidSeeder 4.6.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaidSeeder_RELEASE_NOTES_4.x.md#464)
 - [JsonPit 4.6.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit_RELEASE_NOTES_4.x.md#464)
-- [JsonPit.Python 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit.Python_RELEASE_NOTES_4.x.md#463) (Frozen)
+- [jsonpit-python 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit.Python_RELEASE_NOTES_4.x.md#463) (Frozen; continued as [umgodi-json](https://github.com/Burkhardt/umgodi-json))
 - [inqaba 4.6.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/inqaba_RELEASE_NOTES_4.x.md#464)
 - [umgodi-json 4.6.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/umgodi-json_RELEASE_NOTES_4.x.md#464)
 - [vikela 4.6.4](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/vikela_RELEASE_NOTES_4.x.md#464)

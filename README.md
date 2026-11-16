@@ -56,7 +56,12 @@ validation, dependency-order documentation, and sequential release automation.
 
 ## Current release line
 
-The prepared coordinated release is `4.6.4`. Inqaba supplies Python path, file and configuration APIs. Umgodi uses those APIs and provides the `jpit` and `umgodi` commands. Install `umgodi-json` and import `umgodi`. The legacy `jsonpit` distribution remains available at 4.6.3.
+The prepared coordinated release is `4.6.4`. Inqaba supplies Python path,
+file, and configuration APIs. Umgodi uses those APIs and provides the active
+`jpit` and `umgodi` commands. Install `umgodi-json` and import `umgodi`.
+The `jsonpit-python` implementation is frozen at 4.6.3. The documentation-only
+4.6.3.post1 release directs users to Umgodi. [PyPI sunset notice](https://pypi.org/project/jsonpit/4.6.3.post1/)
+Vikela provides the optional Python guardrails for Inqaba and Umgodi usage.
 
 Preparation includes local tests, metadata checks and candidate packaging.
 Consumer acceptance precedes publication. Engenho owns manual release and
