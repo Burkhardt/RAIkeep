@@ -6,6 +6,8 @@
 
 ### Highlights
 
+- CR087 corrects lease renewal for historical changes and verifies automatic receipt cleanup on ordinary writable opens in both engines.
+
 - Isolate local JsonPit cloud fixtures in unique Dropbox run directories and
   remove shared-root startup deletion. Dispose real-world fixture Pits before
   cleanup.

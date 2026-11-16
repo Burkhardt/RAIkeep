@@ -14,13 +14,15 @@ Local high-frequency fixtures use isolated Dropbox directories. The Nkosikazi–
 
 The manifest orders Umgodi after Inqaba and excludes the frozen Python distribution from future bumps. Tagged workflows build and test both active packages before publishing. The OsLib path regression covers nested hidden directories under the user's home.
 
+CR087 renews the master lease on canonical publication and verifies retirement of imported changes on ordinary writable opens. [Provider results and AIA lifecycle analysis](https://github.com/Burkhardt/RAIkeep/blob/main/doc/CR087_Provider_Review.md)
+
 ## 4. Public contracts
 
-Install `umgodi-json` and use `import umgodi`. Both `jpit` and `umgodi` belong to this distribution. Import the shared framework as `inqaba`. Existing installations pinned to legacy `jsonpit` 4.6.3 remain available. [Python migration notice](https://github.com/Burkhardt/jsonpit-python#jsonpit)
+Install `umgodi-json` and use `import umgodi`. Both `jpit` and `umgodi` belong to this distribution. Import the shared framework as `inqaba`. Existing installations pinned to legacy `jsonpit` 4.6.3 remain available. The 4.6.3.post1 release adds the migration notice to PyPI. [PyPI sunset notice](https://pypi.org/project/jsonpit/4.6.3.post1/)
 
 ## 5. Validation
 
-The coordinated validator passed 146 checks. The local .NET run passed 1,247 tests, followed by a five-test run including the new nested-directory regression. The Python suites passed 21 Inqaba, 210 Umgodi and 71 Vikela tests. Verification included 11 NuGet artifacts and clean Python wheel installs. The live remote suites and destructive sequence suites have separate execution requirements. [Verification record](https://github.com/Burkhardt/RAIkeep/blob/main/doc/verification/Release_4.6.4_candidate.json)
+The coordinated validator passed 146 checks. The local .NET run passed 1,255 tests including the new nested-directory and receipt cleanup regressions. The Python suites passed 21 Inqaba, 215 Umgodi and 71 Vikela tests. Verification included 11 NuGet artifacts and clean Python wheel installs. The live remote suites and destructive sequence suites have separate execution requirements. [Verification record](https://github.com/Burkhardt/RAIkeep/blob/main/doc/verification/Release_4.6.4_candidate.json)
 
 ## 6. Manual release
 

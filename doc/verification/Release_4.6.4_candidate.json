@@ -12,10 +12,10 @@
     "clean_public_index_install": true
   },
   "candidate_python_sha256": {
-    "umgodi_json-4.6.4-py3-none-any.whl": "893011a4317be8d516359680bf3bfe72b0055a493af88acfb9fae84997129494",
-    "inqaba-4.6.4.tar.gz": "3b2f7818a8308d25b28d5ad206ffdb2a7f9b978aa8ceb4a920a82118211ee858",
-    "inqaba-4.6.4-py3-none-any.whl": "0209e5b05edff115e12c3bec6c44bfa559c28f530c1b78e275cf36aca9977f95",
-    "umgodi_json-4.6.4.tar.gz": "b8741e6a5f251d88fcc5e8bdda023c9abdb794723f95f02d8ea4cfbc3454dc7e"
+    "umgodi_json-4.6.4-py3-none-any.whl": "62e8b7befd56e1a3ddfdb2601b8bf9561918628125eb545d310072561be2f8af",
+    "inqaba-4.6.4.tar.gz": "a69a7b23f0538bd4036aa2885e62d73b0374558318a8760c43f8f813b494ac8e",
+    "inqaba-4.6.4-py3-none-any.whl": "d7f7f933f3a062097d494f1c587a5957348acc57c4dffd28852d0fc5709fd8ce",
+    "umgodi_json-4.6.4.tar.gz": "1d4f3156a59b2360251cf1a49a6547497835e36877cca221b01f9ea54581bfd5"
   },
   "candidate_commits": {
     "Amafu": "b24bb622ffe082718c2c0a5f4152f428c0d249ef",
@@ -24,26 +24,32 @@
     "RaiImage": "751afd91b1d41b8d4cd625c4c1310bc0c87e9782",
     "RaiDiagram": "f49f5da6fd867ade475f587ae9187aa0012f7ecd",
     "RaidSeeder": "827d2890abcd68cef87890d77a1bf3c7a9c349b5",
-    "JsonPit": "d4693b818116a471199073de4b9cc2c7f079c4c1",
-    "inqaba": "ee4d31cc28ad8c79142b9f3a915d43ec26756e23",
-    "umgodi-json": "33adf553533b987a18215303fdd78527a6a676e2",
-    "vikela": "ef4b41bd51407479fac8450f2c2300864239310c",
+    "JsonPit": "4851ad41ee4b746f47acfb2f6be059117f900300",
+    "inqaba": "c2366ac2597a4297c154c4727c1c5b4c12621923",
+    "umgodi-json": "77bc6303a4bf33aad896e187a9a02c1280e4756d",
+    "vikela": "e4b57f5f5792ad9f8f98409015abbc4b762a7a5e",
     "ImgSeeder": "57280160a508c051122a588987c3c6b9753f2d40",
-    "PitSeeder": "0790f146604de0e6a18703824f211ec87740a489",
+    "PitSeeder": "b19e3efcd767861364ed7dfe680afedd2e9e3612",
     "RaiGuard": "b23ae3bfa431357b0573db003be781d51c99942d"
   },
-  "frozen_distribution": "jsonpit 4.6.3",
+  "frozen_distribution": "jsonpit 4.6.3.post1 (4.6.3 runtime, PyPI sunset metadata)",
   "validation": {
     "coordinated_checks": 146,
-    "dotnet_local_passed": 1247,
+    "dotnet_local_passed": 1255,
     "tilde_suite_after_new_regression": 5,
     "python_passed": {
       "inqaba": 21,
-      "umgodi-json": 210,
+      "umgodi-json": 215,
       "vikela": 71
     },
     "nuget_packages_built": 11,
     "live_onedrive_remote_suites_run": false,
-    "opt_in_destructive_sequences_run": false
+    "opt_in_destructive_sequences_run": false,
+    "ordinary_open_fixture": {
+      "changes": 102,
+      "retired_pairs": 100,
+      "retained_with_fresh_receipt": 1,
+      "new_receipt": 1
+    }
   }
 }

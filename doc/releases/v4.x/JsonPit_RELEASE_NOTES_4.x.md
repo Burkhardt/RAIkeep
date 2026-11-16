@@ -6,6 +6,8 @@
 - Coordination tag: `v4.6.4`
 
 ### Highlights
+
+- Renew the exact master lease on snapshot publication and retire imported changes after receipt grace on a writable open.
 - Local cloud test fixtures use isolated Dropbox directories. Remote Nkosikazi/Mzansi replication fixtures continue to exercise OneDrive.
 
 ### Coordinated Dependencies

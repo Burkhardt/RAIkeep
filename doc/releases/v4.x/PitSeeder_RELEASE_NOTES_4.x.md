@@ -6,6 +6,8 @@
 - Coordination tag: `v4.6.4`
 
 ### Highlights
+
+- A writable seed or maintenance pass retires eligible accounted changes, including when maintenance persists older fragments.
 - Tests cover explicit Dropbox root resolution and OneDrive discovery for AIA and AfricaStage.
 
 ### Coordinated Dependencies
