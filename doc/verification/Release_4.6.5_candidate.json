@@ -1,0 +1,47 @@
+{
+  "candidate": "4.6.5",
+  "coordinated_checks_passed": 146,
+  "dotnet_local_tests_passed": 1255,
+  "excluded_live_suites": [
+    "RemoteSyncTests",
+    "RemoteCloudConcurrencyTests"
+  ],
+  "nuget_packages_verified": [
+    "amafu",
+    "imgseeder",
+    "jsonpit",
+    "oslibcore",
+    "pitseeder",
+    "raidiagram",
+    "raidseeder",
+    "raiguard",
+    "raiguard.analyzer",
+    "raiimage",
+    "raiutils"
+  ],
+  "python_distributions_built_and_checked": [
+    "inqaba",
+    "umgodi-json",
+    "vikela"
+  ],
+  "clean_install_cli_versions": {
+    "jpit": "4.6.5",
+    "umgodi": "4.6.5",
+    "vikela": "4.6.5"
+  },
+  "candidate_commits": {
+    "Amafu": "f1a9e43cb17118869b8b36474c6adb7bfa40d66a",
+    "OsLib": "d6869146dc1ba874f2d7202b43b7004440870dc1",
+    "RaiUtils": "5cc08e9f49ad4edb2d953fec2db8d6109c3777dd",
+    "RaiImage": "cdd7e4b800eff0da0bba6ab21d15d935f0b6d76f",
+    "RaiDiagram": "ee88080100decd1354f04afe5858825e7bde123e",
+    "RaidSeeder": "a01b2ab441caecb16d81dd6cea5a07329b4cacb5",
+    "JsonPit": "c2804e34e44bc9fd9d12747207d42c98744cd7d8",
+    "inqaba": "145777e86ece8f1fd44f2fce62ee44401c9fb677",
+    "umgodi-json": "2b086a50f76766a4f84113f9b4515ce76fe56e4c",
+    "vikela": "457144df54961b90729aa814f960443f08c9db5b",
+    "ImgSeeder": "ae9361e5a1570cc120138ef725b8a219d59eb661",
+    "PitSeeder": "59ae1f2cd4a561f75f97eeebd7e4bb692f60b2f9",
+    "RaiGuard": "d5a0cf1ab86477aadd1fc55abb7cd2223da51454"
+  }
+}

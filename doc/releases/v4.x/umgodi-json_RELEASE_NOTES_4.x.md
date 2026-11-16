@@ -1,5 +1,18 @@
 # umgodi-json Release Notes 4.x
 
+## 4.6.5
+
+- Release version: `4.6.5`
+- Coordination tag: `v4.6.5`
+
+### Highlights
+- Use either `umgodi -h` or `jpit -h` to see the invoked name throughout the banner, usage lines, contextual examples, and window help.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.6.5` line.
+
+---
+
 ## 4.6.4
 
 - Release version: `4.6.4`

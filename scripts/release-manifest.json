@@ -1,7 +1,7 @@
 {
 	"$schema": "./release-manifest.schema.json",
 	"name": "RAIkeep",
-	"current_version": "4.6.4",
+	"current_version": "4.6.5",
 	"packages": [
 		{
 			"name": "Amafu",
@@ -722,6 +722,10 @@
 				{
 					"pattern": "engenho release \\d+\\.\\d+\\.\\d+",
 					"replacement": "engenho release {version}"
+				},
+				{
+					"pattern": "engenho provision all --release \\d+\\.\\d+\\.\\d+",
+					"replacement": "engenho provision all --release {version}"
 				}
 			]
 		},
@@ -930,6 +934,16 @@
 			"replacements": [
 				{
 					"pattern": "(?<=v)\\d+\\.\\d+\\.\\d+|(?<===)\\d+\\.\\d+\\.\\d+|(?<=Version )\\d+\\.\\d+\\.\\d+|(?<=RAIkeep )\\d+\\.\\d+\\.\\d+|(?<=umgodi-json )\\d+\\.\\d+\\.\\d+",
+					"replacement": "{version}"
+				}
+			]
+		},
+		{
+			"path": "umgodi-json/packages/jpit/README.md",
+			"description": "Current Umgodi CLI installation guide",
+			"replacements": [
+				{
+					"pattern": "(?<=v)\\d+\\.\\d+\\.\\d+|(?<===)\\d+\\.\\d+\\.\\d+",
 					"replacement": "{version}"
 				}
 			]

@@ -1,5 +1,18 @@
 # RAIkeep Release Notes 4.x
 
+## 4.6.5
+
+- Release version: `4.6.5`
+- Coordination tag: `v4.6.5`
+
+### Highlights
+- Umgodi help uses the command that opened it. Both `umgodi` and `jpit` show their own names in banners, subcommand usage, and examples.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.6.5` line.
+
+---
+
 ## 4.6.4
 
 - Target release version: `4.6.4`

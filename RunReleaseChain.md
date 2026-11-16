@@ -1,9 +1,8 @@
 # Coordinated release through Engenho
 
-RAI runs `engenho release 4.6.4` after candidate verification and publisher setup.
-Engenho reads the package list from `scripts/release-manifest.json`. The first
-Python publications are `inqaba` followed by `umgodi-json`. The frozen `jsonpit`
-and `jpit` distributions remain available at 4.6.3.
+From the umbrella checkout, run `engenho release 4.6.5`. Once the chain completes,
+run `engenho provision all --release 4.6.5`. Engenho installs both `umgodi` and
+`jpit` from the `umgodi-json` distribution.
 
 ## Historical shell runner
 
