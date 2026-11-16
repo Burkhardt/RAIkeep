@@ -12,7 +12,7 @@ The legacy distribution carries the successor link in its documentation-only pos
 
 The 4.6.4 manifest includes ten .NET repositories and the three Python distributions Inqaba, Umgodi JSON and Vikela. Engenho waits for Inqaba before dispatching Umgodi. The two Python workflow files are on their default branches. Each uses the GitHub environment `pypi` and verifies the dispatch tag against the package version and checkout.
 
-The remaining account setup is to register each new project's GitHub Trusted Publisher on PyPI using owner `Burkhardt`, its matching repository name, workflow `publish-pypi.yaml` and environment `pypi`. The standalone upload used a PyPI credential and therefore did not exercise GitHub OIDC.
+PyPI lists `Burkhardt/inqaba` and `Burkhardt/umgodi-json` as the GitHub Trusted Publishers for their respective projects. Both registrations specify `publish-pypi.yaml` and the `pypi` environment, matching the repositories' workflows. The standalone 0.1.0 uploads used a PyPI credential. The manual 4.6.4 release will be the first upload through GitHub OIDC.
 
 RAI starts the coordinated chain manually from the umbrella checkout with `engenho release 4.6.4`. The completed 4.6.3 checkpoint belongs to the previous release. The active installer selects Umgodi starting at 4.6.4. Older versions of the installer contract retain the frozen distribution.
 
