@@ -1,5 +1,7 @@
 # RAIkeep centralized documents
 
+[Code signing policy](https://github.com/Burkhardt/RAIkeep/blob/main/README_codesigning.md)
+
 This directory contains RAIkeep release notes, change requests, architectural decisions, and technical guides. Release histories are grouped by package and major version under [`releases/v3.x/`](https://github.com/Burkhardt/RAIkeep/tree/main/doc/releases/v3.x) and [`releases/v4.x/`](https://github.com/Burkhardt/RAIkeep/tree/main/doc/releases/v4.x).
 
 Each `<Package>_RELEASE_NOTES_<major>.x.md` file lists releases newest first. Add a new `## X.Y.Z` section at the top of its major-version file when preparing a release. Keep change requests under [`CR/`](https://github.com/Burkhardt/RAIkeep/tree/main/doc/CR) and other architectural or operational documents in `doc/`.

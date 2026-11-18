@@ -1,5 +1,7 @@
 # RAIkeep
 
+[Code signing policy](https://github.com/Burkhardt/RAIkeep/blob/main/README_codesigning.md)
+
 ## 4.6.3 — CR082
 
 Python `jpit export` now resolves bare tenant roots through configured cloud
