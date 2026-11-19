@@ -1,6 +1,18 @@
 # CR087 provider review
 
-Implemented and verified in the local 4.6.4 candidate. JsonPit, pits and Umgodi include the correction. Umgodi 0.1.0 and the legacy jsonpit 4.6.3 runtime predate it.
+Implemented in coordinated 4.6.4 and included in 4.6.5. JsonPit, pits and Umgodi include the correction. Umgodi 0.1.0 and the frozen jsonpit 4.6.3 runtime, including its documentation-only 4.6.3.post1 distribution, predate it.
+
+## Verification on November 18, 2026
+
+Re-read the original AIA CR087 and checked R1–R3 against the current source. The current implementation renews the master lease at publication time, preserves historical fragment timestamps, and revalidates ownership before eligible change retirement.
+
+- 96 C# library tests passed across receipt maintenance, master tickets, live references, reference identity, sparse deltas, and split-master recovery.
+- 56 C# CLI tests passed across subcommands and local ticket windows, including historical maintenance that requires Store.
+- All 220 Umgodi tests passed. Added direct Save coverage for five-minute-old and eight-day-old histories, plus CLI coverage that forces historical persistence while retiring an elapsed receipt and retaining a fresh one.
+- The Python cross-engine tests required access to OsLib's configured temporary directory outside the workspace sandbox. They passed with that access after rebuilding the local C# CLI.
+- A disposable fixture reproduced immediate lease expiry in the frozen Python implementation. RAI confirmed on November 18 that jsonpit remains frozen and that this verification covers C# JsonPit and active Umgodi.
+
+These checks cover the CR087 acceptance behavior through local library and CLI entry points. The live remote replication suites were outside this verification run.
 
 ## Reproduction
 

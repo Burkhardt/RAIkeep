@@ -12,7 +12,7 @@ acceptance. [Application form](https://signpath.org/apply)
 | Project Name | RAIkeep |
 | Repository URL | https://github.com/Burkhardt/RAIkeep |
 | Homepage URL | https://github.com/Burkhardt/RAIkeep#readme |
-| Download URL | https://github.com/Burkhardt/RAIkeep/blob/main/README_codesigning.md#downloads |
+| Download URL | https://www.nuget.org/packages/OsLibCore |
 | Privacy Policy URL | Leave blank under the form's optional condition; a proposed privacy statement is included in README_codesigning.md for review |
 | Wikipedia URL | Leave blank |
 | Category | Developer Tools |
@@ -58,22 +58,35 @@ https://github.com/Burkhardt/JsonPit/pulse
 
 ## URL choices
 
-The umbrella repository is the homepage. The proposed Download URL links all
-active packages and carries the SignPath application notice on the same page.
-An individual NuGet package page also provides downloads, but its published
-README would need the signing-policy notice for the form's stated requirement.
+The umbrella repository is the homepage. Use the OsLibCore NuGet page as the
+single Download URL. After the coordinated 4.6.6 release, its packaged README
+will display the SignPath preparation notice and link the umbrella signing policy.
+The other .NET packages use NuGet; Python downloads use these PyPI pages:
 
-The privacy-policy text in README_codesigning.md is a local proposal. The form allows
-an empty Privacy Policy URL when the software does not collect user data.
-RAIkeep processes user-selected application data and configured cloud files;
-that behavior is described in the proposed policy. Review and publish it before
-using its public URL. Leave the Wikipedia field empty.
+- https://pypi.org/project/inqaba/
+- https://pypi.org/project/umgodi-json/
+- https://pypi.org/project/vikela/
+
+Include those additional URLs in Reputation if space permits. The public
+[policy and inventory](../README_codesigning.md) lists all suite components and
+the proposed Windows binaries. The form has no attachment field; no separate
+upload is required. The application requests coverage of that suite, subject to
+Foundation review. Do not represent planned signing as already active.
+
+The form allows an empty Privacy Policy URL when the software does not collect
+user data. RAIkeep processes user-selected application data and configured cloud
+files; the public policy describes that behavior. Leave Wikipedia empty.
 
 ## Before submission
+
+Wait until NuGet and PyPI serve 4.6.6 and inspect their rendered README notices.
+Then resume this application. The release does not activate code signing.
 
 Confirm that the proposed maintainer roles and privacy policy accurately describe
 the project, and that the public URLs resolve after publication. Confirm MFA on
 the GitHub account and accept the Foundation's signing-approval requirements.
+The [Engenho signing handover](HANDOVER_TO_RITA_Engenho_SignPath.md) describes
+the proposed implementation and installed-launcher verification.
 The application describes a planned integration. Foundation acceptance and its
 review of the project's reputation are still required.
 [Code signing policy](../README_codesigning.md) · [Foundation terms](https://signpath.org/terms)

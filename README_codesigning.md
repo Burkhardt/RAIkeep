@@ -2,9 +2,9 @@
 
 RAIkeep is preparing an application to SignPath Foundation for free Windows code
 signing. Activation depends on Foundation acceptance and integration with the
-component build workflows. Existing releases, including 4.6.5, were published
-before this integration. A release's notes will identify its signed Windows
-artifacts when signing becomes available.
+component build workflows. The 4.6.6 documentation release does not activate
+signing; earlier releases also predate this integration. A release's notes will
+identify its signed Windows artifacts when signing becomes available.
 
 Upon acceptance and activation, the attribution for eligible signed artifacts
 will be “Free code signing provided by [SignPath.io](https://signpath.io/),
@@ -32,6 +32,48 @@ upstream provenance. [SignPath Foundation conditions](https://signpath.org/terms
 Engenho coordinates releases and provisions published packages. This application
 covers the RAIkeep artifacts that it distributes. Engenho's own software and
 licensing are managed separately.
+
+## Proposed Windows artifact inventory
+
+This inventory covers the suite in one application. The Foundation must approve
+its scope and artifact configurations before signing is enabled.
+
+| Component | RAIkeep-owned Windows artifacts |
+| --- | --- |
+| OsLibCore | `OsLib.dll` |
+| RaiUtils | `RaiUtils.dll` |
+| JsonPit | `JsonPit.dll` |
+| RaiImage | `RaiImage.dll` |
+| RaiDiagram | `RaiDiagram.dll` |
+| Amafu | `amafu.dll`, published `amafu.exe` |
+| PitSeeder | `pits.dll`, published `pits.exe` |
+| ImgSeeder | `ImgSeeder.dll`, published `ImgSeeder.exe`; installed command launcher `iorg.exe` |
+| RaidSeeder | `raid.dll`, published `raid.exe` |
+| RaiGuard / RaiGuard.Analyzer | `rail.dll`, `RaiGuard.Core.dll`, `RaiGuard.CodeFixes.dll`; installed command launcher `rail.exe` |
+
+Sign each shipped build variant, including the applicable analyzer assemblies and
+copies embedded in tool packages. Native AOT or single-file distributions can
+have different layouts; their actual build outputs determine the signing list.
+Installed tool launchers are a separate integration target, as described below;
+their names do not imply that prebuilt signed copies are currently published.
+Keep upstream binaries' original signatures and provenance. Python source/wheel
+distributions are part of the suite but are not themselves Windows PE binaries.
+Generated Python installation launchers are not claimed to be signed by RAIkeep.
+
+### NuGet installation and launchers
+
+Authenticode signing of `.exe` and `.dll` files is separate from signing a NuGet
+package. A signed `.nupkg` does not automatically Authenticode-sign its contents.
+`dotnet tool install` does not sign files with the RAIkeep publisher certificate.
+For the current framework-dependent global tools, the SDK generates a launcher
+in the user's tools directory; a signed DLL does not confer its signature on that
+new launcher. [Microsoft installation documentation](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-tool-install)
+
+The signing integration must verify both the shipped assemblies and the actual
+installed launcher on Windows. Investigate prebuilt shims or .NET 10 RID-specific
+tool packaging, and prove that installation preserves the signed executable.
+[Microsoft tool packaging documentation](https://learn.microsoft.com/en-us/dotnet/core/tools/rid-specific-tools)
+No claim of complete Windows signing coverage will be made before that test.
 
 ## Downloads
 
