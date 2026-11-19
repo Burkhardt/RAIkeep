@@ -12,12 +12,25 @@ certificate by [SignPath Foundation](https://signpath.org/).”
 
 ## Scope and release approval
 
-The application covers the RAIkeep open-source suite listed below, maintained
-under the Burkhardt GitHub account. Its packages declare Apache-2.0 licensing.
+RAIkeep is an umbrella repository that brings together separately maintained
+component Git repositories as submodules. The active suite has 13 component
+repositories, publishing 11 NuGet packages and three PyPI distributions under
+the Burkhardt account. RaiGuard publishes two NuGet packages, which is why the
+repository and package counts differ. Its packages declare Apache-2.0 licensing.
+
+This application requests signing coverage for all RAIkeep-owned Windows
+executables and DLLs across the entire active suite, not just OsLibCore, which
+is the representative download link in the form. The tables below enumerate
+the component repositories, distributions and proposed Windows signing targets.
+The frozen legacy Python implementation is listed for migration context only.
+
 The initial Windows signing targets are the project's .NET libraries, analyzer
 assemblies, and published CLI executables. Inqaba, Umgodi JSON, and Vikela are
 included in the suite inventory as Python distributions. Any Windows executable
 packaging for them will need an agreed signing configuration.
+
+[Field-by-field application instructions](https://github.com/Burkhardt/RAIkeep/blob/main/doc/SIGNPATH_APPLICATION.md)
+include the text to paste into the form; there is no attachment requirement.
 
 The proposed committer, reviewer, and signing approver is Dr. Rainer Burkhardt.
 Additional maintainers and role changes will be recorded here before they receive

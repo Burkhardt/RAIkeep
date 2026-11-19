@@ -2,6 +2,12 @@
 
 [Code signing policy](https://github.com/Burkhardt/RAIkeep/blob/main/README_codesigning.md) · SignPath Foundation application in preparation; signing is not yet active.
 
+RAIkeep is the umbrella repository for 13 active component repositories, published
+as 11 NuGet packages and three PyPI distributions. The SignPath application requests
+coverage of all project-owned Windows executables and DLLs across those components.
+See the [complete component and binary inventory](https://github.com/Burkhardt/RAIkeep/blob/main/README_codesigning.md#proposed-windows-artifact-inventory)
+and the [field-by-field SignPath application instructions](https://github.com/Burkhardt/RAIkeep/blob/main/doc/SIGNPATH_APPLICATION.md).
+
 ## 4.6.3 — CR082
 
 Python `jpit export` now resolves bare tenant roots through configured cloud

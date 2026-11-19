@@ -1,7 +1,9 @@
 # RAIkeep SignPath application draft
 
-Copy the entries below into the Foundation application form. Publish the README policy
-link and `README_codesigning.md` before supplying their public URLs. The status
+This is the field-by-field guide for [the SignPath application](https://signpath.org/apply).
+Copy the table values and the Tagline, Description and Reputation text below.
+The umbrella README and signing policy are already published. Verify the new
+NuGet/PyPI README notices after the manual release before submitting. The status
 language describes application preparation and future signing subject to
 acceptance. [Application form](https://signpath.org/apply)
 
@@ -31,7 +33,12 @@ Open-source .NET and Python foundations for data, media, and developer automatio
 
 ## Description
 
-RAIkeep is an Apache-2.0 framework of .NET and Python libraries and CLIs for historical JSON storage, cloud-backed files, images, diagrams, and code guardrails. It runs on Windows, macOS, and Linux, with packages published on NuGet and PyPI.
+RAIkeep is an Apache-2.0 umbrella project for .NET and Python libraries and CLIs covering historical JSON storage, cloud files, media and developer guardrails. Its 13 component repositories publish 11 NuGet packages and three PyPI distributions. This application requests signing of all project-owned Windows executables and DLLs across the suite. OsLibCore is the representative download link, not the entire scope.
+
+If the form imposes a smaller character limit, use this shorter description and
+include the inventory URL below in Reputation:
+
+RAIkeep is an Apache-2.0 umbrella for 13 .NET/Python component repositories, published as 11 NuGet packages and three PyPI distributions. We request signing for all project-owned Windows EXE/DLL artifacts across the suite.
 
 ## Reputation
 
@@ -44,6 +51,7 @@ https://www.nuget.org/packages/OsLibCore
 https://www.nuget.org/packages/JsonPit
 https://github.com/Burkhardt/OsLib/commits/main/
 https://github.com/Burkhardt/JsonPit/commits/main/
+https://github.com/Burkhardt/RAIkeep/blob/main/README_codesigning.md#proposed-windows-artifact-inventory
 ```
 
 GitHub calls the component repository OsLib; its NuGet package is OsLibCore.
