@@ -1,11 +1,11 @@
 # Coordinated release through Engenho
 
-From the umbrella checkout, run `engenho release 4.6.6`. Once the chain completes,
-run `engenho provision all --release 4.6.6`. Engenho installs both `umgodi` and
+From the umbrella checkout, run `engenho release 4.6.7`. Once the chain completes,
+run `engenho provision all --release 4.6.7`. Engenho installs both `umgodi` and
 `jpit` from the `umgodi-json` distribution.
 
-The [4.6.6 preflight record](doc/RELEASE_PREFLIGHT_4.6.6.md) lists the candidate
-checks and the SignPath application follow-up after publication.
+The [4.6.7 preflight record](doc/RELEASE_PREFLIGHT_4.6.7.md) lists the candidate
+checks completed for that release.
 
 ## Historical shell runner
 

@@ -1,13 +1,27 @@
 # RAIkeep Release Notes 4.x
 
+## 4.6.7
+
+- Release version: `4.6.7`
+- Coordination tag: `v4.6.7`
+
+### Highlights
+- Remove withdrawn signing-application notices and policy links from package documentation. No runtime behavior change.
+- Restore the Burkhardt castle as the C# JsonPit package icon, matching OsLib and RaiImage. Remove misplaced Python artwork from the C# repository; Python artwork is unchanged.
+- Remove the obsolete application and integration documents. Record future work to improve package discovery, examples and independent adoption.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.6.7` line.
+
+---
+
 ## 4.6.6
 
 - Release version: `4.6.6`
 - Coordination tag: `v4.6.6`
 
 ### Highlights
-- Publish a visible SignPath Foundation application notice and link the suite code-signing policy from the package README. Signing is planned and is not activated by this release.
-- Document the Windows binary inventory, NuGet/PyPI application download URLs and the signing integration handover for Engenho.
+- Update package documentation; no new runtime behavior.
 - Add Umgodi CR087 regression coverage for historical saves and maintenance cleanup; retain the already released lease correction. Frozen jsonpit remains unchanged apart from documentation.
 
 ### Coordinated Dependencies
