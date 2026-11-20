@@ -5,6 +5,10 @@ evaluate and contribute to, and to earn independent evidence of sustained use.
 These items are a backlog, not claims of adoption or a promise of eligibility
 for any external program.
 
+Windows claims must follow the [completed 4.6.7 pilot decision](DECISION_WINDOWS_DISTRIBUTION_4.6.7.md).
+Do not advertise suite-wide Smart App Control compatibility. Package discovery
+work does not authorize WinGet remediation, signing or installation-format fallback.
+
 ## Lead with JsonPit and Umgodi JSON
 
 JsonPit and `umgodi-json` should lead public introductions and examples. They

@@ -2,6 +2,10 @@
 
 Future work: [Public adoption and discoverability](PUBLIC_ADOPTION_ROADMAP.md).
 
+Current decision: [Windows distribution pilot, 4.6.7](DECISION_WINDOWS_DISTRIBUTION_4.6.7.md)
+— pilot complete; execution compatibility unresolved; signing and WinGet
+remediation paused.
+
 This directory contains RAIkeep release notes, change requests, architectural decisions, and technical guides. Release histories are grouped by package and major version under [`releases/v3.x/`](https://github.com/Burkhardt/RAIkeep/tree/main/doc/releases/v3.x) and [`releases/v4.x/`](https://github.com/Burkhardt/RAIkeep/tree/main/doc/releases/v4.x).
 
 Each `<Package>_RELEASE_NOTES_<major>.x.md` file lists releases newest first. Add a new `## X.Y.Z` section at the top of its major-version file when preparing a release. Keep change requests under [`CR/`](https://github.com/Burkhardt/RAIkeep/tree/main/doc/CR) and other architectural or operational documents in `doc/`.
