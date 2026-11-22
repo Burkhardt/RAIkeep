@@ -1,16 +1,14 @@
-# CURRENT_STATUS
+# RAIkeep release status
 
-Last updated: 2026-09-12
+The released line is **4.6.7**. The **4.7.0** candidate is under review. It covers CR084 cloud selection and CR090 JsonPit ticket handling. See the [coordinated release notes](doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md) for the changes and timing configuration.
 
-Current released package line: `4.2.10`
-
-Prepared coordinated package line: `4.3.0`
+## Historical snapshot from September 2026
 
 RAI intentionally skipped publication of the prepared v4.2.11 line. Its
 accepted CR023 and CR024 work is carried into v4.3.0; no v4.2.11 package or
 umbrella release was published.
 
-## Coordinated 4.3.0 preparation
+### Coordinated 4.3.0 preparation
 
 - Accepted CR023 renders PlantUML relationships with labels, cardinality, and
   discoverable fail-closed compiler vocabulary.
@@ -35,7 +33,7 @@ umbrella release was published.
 - No v4.3.0 push, tag, GitHub label, workflow dispatch, or NuGet publication has
   occurred; RAI retains the manual release gate.
 
-## Coordinated release tooling
+### Coordinated release tooling
 
 - `scripts/release-chain.sh` is the single coordinated release orchestrator.
 - The enforced order is `OsLibCore → RaiUtils → RaiImage → RaiDiagram → JsonPit → ImgSeeder → PitSeeder`.
@@ -45,7 +43,7 @@ umbrella release was published.
 - The umbrella label records the exact seven child commits before any package
   tag is created.
 
-## Documentation state
+### Documentation state
 
 - Every package README identifies 4.3.0 as its current prepared line and links
   to centralized release notes with absolute GitHub URLs.
@@ -54,7 +52,7 @@ umbrella release was published.
   records the corrected ItemId/ItemNumber/NameExt contract and manual gate.
 - The v4.2.11 release-note records are explicitly marked superseded before publication.
 
-## Validation
+### Validation
 
 - The complete seven-package Release suite passes with zero skipped tests:
   OsLibCore 135, RaiUtils 51, RaiImage 122, RaiDiagram 48, JsonPit 176,
@@ -68,7 +66,7 @@ umbrella release was published.
   Package inspection confirms exact identities, dependency pins, package
   READMEs, and the `iorg`/`pits` tool entry points.
 
-## 4.3.0 release readiness
+### 4.3.0 release readiness
 
 - The implementations, tests, versions, fallback dependency pins, READMEs, API
   references, CR records, and coordinated release notes are complete.

@@ -19,7 +19,7 @@ jobs:
           submodules: recursive
 
       - name: Install ripgrep
-        run: sudo apt-get update && sudo apt-get install --yes ripgrep
+        run: bash scripts/install-ubuntu-packages.sh ripgrep
 
       - name: Reject relative Markdown document links
         run: scripts/check-markdown-document-links.sh

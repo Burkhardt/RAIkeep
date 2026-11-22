@@ -1,0 +1,16 @@
+<Project>
+  <!-- Submodule projects carry their own analyzer for standalone builds.
+       OsLib implements the filesystem primitives and Amafu bootstraps configuration. -->
+  <Target Name="VerifyRaiGuardBuildConfiguration" BeforeTargets="CoreCompile">
+    <PropertyGroup>
+      <_RaiGuardExempt Condition="'$(MSBuildProjectName)' == 'OsLib' or '$(MSBuildProjectName)' == 'amafu'">true</_RaiGuardExempt>
+    </PropertyGroup>
+    <ItemGroup>
+      <_RaiGuardCore Include="@(Analyzer)" Condition="'%(Analyzer.Filename)' == 'RaiGuard.Core'" />
+    </ItemGroup>
+    <Error Condition="'$(_RaiGuardExempt)' == 'true' and '@(_RaiGuardCore)' != ''"
+           Text="$(MSBuildProjectName) must build without the RaiGuard consumer analyzer." />
+    <Error Condition="'$(_RaiGuardExempt)' != 'true' and '@(_RaiGuardCore)' == ''"
+           Text="The project must load the RaiGuard compiler analyzer." />
+  </Target>
+</Project>

@@ -20,7 +20,7 @@ public sealed class WindowsWslCloudTests(WslObserver observer, ITestOutputHelper
 		var detection = observer.Detect();
 		var providers = (JArray)detection["providers"]!;
 		Assert.NotEmpty(providers);
-		var preview = JObject.Parse(observer.Run(observer.Amafu + " init --create-links --dry-run"));
+		var preview = WslObserver.ParseOutput(observer.Run(observer.Amafu + " init --create-links --dry-run"));
 		foreach (var provider in providers.OfType<JObject>())
 		{
 			var name = (string)provider["name"]!;
@@ -44,7 +44,7 @@ public sealed class WindowsWslCloudTests(WslObserver observer, ITestOutputHelper
 		{
 			var payload = Convert.ToBase64String(Encoding.UTF8.GetBytes(provider.ToString()));
 			var script = "python3 - " + WslObserver.Quote(payload) + " <<'PY'\n" + RoundTripScript + "\nPY";
-			var result = JObject.Parse(observer.Run(script));
+			var result = WslObserver.ParseOutput(observer.Run(script));
 			Assert.True((bool)result["roundTrip"]!);
 			Assert.True((bool)result["cleaned"]!);
 			output.WriteLine(result.ToString());
@@ -58,7 +58,7 @@ public sealed class WindowsWslCloudTests(WslObserver observer, ITestOutputHelper
 		var providers = (JArray)observer.Detect()["providers"]!;
 		Assert.NotEmpty(providers);
 		var payload = Convert.ToBase64String(Encoding.UTF8.GetBytes(providers.ToString()));
-		var result = JObject.Parse(observer.Run("python3 - " + WslObserver.Quote(payload)
+		var result = WslObserver.ParseOutput(observer.Run("python3 - " + WslObserver.Quote(payload)
 			+ " <<'PY'\n" + NamespaceScript + "\nPY"));
 		Assert.True((bool)result["success"]!, result.ToString());
 		Assert.NotEmpty((JArray)result["checks"]!);
@@ -171,10 +171,10 @@ public sealed class WslObserver : IDisposable
 
 	public WslObserver()
 	{
-		var publish = Environment.GetEnvironmentVariable("RAIKEEP_AMAFU_WSL_PUBLISH");
+		var publish = Os.RunSwitch("RAIKEEP_AMAFU_WSL_PUBLISH");
 		if (string.IsNullOrEmpty(publish)) return;
 		Assert.True(new RaiPath(publish).Exists(), "Published Amafu directory is missing.");
-		var name = Environment.GetEnvironmentVariable("RAIKEEP_WSL_OBSERVER") ?? "Themba";
+		var name = Os.RunSwitch("RAIKEEP_WSL_OBSERVER") ?? "Themba";
 		var config = (JObject)Os.Config;
 		var observer = ((JArray?)config["Observers"])?.OfType<JObject>()
 			.SingleOrDefault(o => string.Equals((string?)o["Name"], name, StringComparison.OrdinalIgnoreCase));
@@ -206,7 +206,12 @@ public sealed class WslObserver : IDisposable
 		if (target is null) Assert.Skip("Run scripts/test-amafu-wsl.sh to enable the live WSL tests.");
 	}
 
-	public JObject Detect() => JObject.Parse(Run(Amafu + " detect --json --dry-run"));
+	internal static JObject ParseOutput(string output) =>
+		Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(output,
+			new Newtonsoft.Json.JsonSerializerSettings { DateParseHandling = Newtonsoft.Json.DateParseHandling.None })
+			?? throw new Newtonsoft.Json.JsonReaderException("Expected a JSON object from the observer.");
+
+	public JObject Detect() => WslObserver.ParseOutput(Run(Amafu + " detect --json --dry-run"));
 
 	public string ConfigurationState() => Run("sha256sum \"$HOME/.config/RAIkeep.json5\"; " +
 		"if [ -d \"$HOME/.CloudStorage\" ]; then find \"$HOME/.CloudStorage\" -maxdepth 1 -printf '%f %l\\n' | sort; fi");

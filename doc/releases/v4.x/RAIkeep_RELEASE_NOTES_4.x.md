@@ -1,5 +1,31 @@
 # RAIkeep Release Notes 4.x
 
+## 4.7.0 (draft)
+
+- CR084 separates local high-frequency cloud tests from live replication. See `CR084_AIA_to_RAIkeep_TestCloud_Configuration_Key.md`.
+- CR090 implements ADR-0016 in JsonPit and Umgodi. Reading a pit leaves its ticket untouched. A writer that finds the ticket occupied publishes its deltas immediately. A successful claimant waits for cloud propagation, checks ownership and expiry, merges the fresh canonical and pending changes, and explicitly returns its ticket. See `CR090_AIA_to_RAIkeep_Timing_Calibrated_Master_Ticket_Return_and_Zero_Flag_Reads.md`.
+- Library callers must unpack the acquisition result. Check `Acquired` in C# or unpack `acquired, earliest_write_utc` in Python. Upgrade writers together. Updated readers accept legacy two-field records.
+- Readers merge pending changes in memory. An explicit save or maintenance write retires canonically accounted changes after the receipt grace period. In C#, `Reload()` publishes pending local edits before refreshing from disk when necessary.
+
+- CR092 adds `Pit.SaveWithOutcome()` and `SaveWithOutcomeAsync()` alongside the existing C# save methods. Umgodi’s `save()` and `save_async()` return the equivalent result. Read `Outcome` and `FragmentCount` in C#, or `outcome` and `fragment_count` in Python. `Wrote` means the local canonical file was written. `PublishedAsChanges` counts the fragments persisted as change files. A clean save returns `NothingToWrite`, and an uninitialized pit returns `PitNotLoaded`. Read-only saves and I/O failures still raise exceptions. See `CR092_AIA_to_RAIkeep_JsonPit_Save_Discards_Store_Outcome.md`.
+- Process-window pruning requires `maintain --apply --prune-process-flags --older-than <duration>`. A changed flag or a filename/content PID mismatch defers deletion. Master and conflict tickets are excluded from this operation.
+
+### CLI migration
+
+Both engines accept `seed` and its alias `add`. To append a sparse patch, use
+`umgodi add Object --source patch.json5 --patch -r ./AfricaStage`. Include
+the item’s `Id` in the payload. Omitted properties retain their projected values.
+Scripts using Python’s former `put` or `set` verbs must migrate. Use
+`delete-item` and `delete-property` for tombstones, `export --json` for projected
+state, and `history` for the original fragments. Both engines also support
+`grep` on projected state. `jpit` and `umgodi` invoke the same Python entry point.
+
+### Calibrating cloud timings
+
+Use a dedicated probe directory on the same synchronized volume as the tenant roots. Synchronize host clocks first. Start observers on Nkosikazi, Mzansi, Mdlaka and native Themba-win. On each writer in turn, write fresh random payloads of 90 bytes and 500 KiB under unique names. Record UTC write completion and the SHA-256 of each payload. On every receiving host, poll once per second and record the first UTC instant when the complete file matches the expected hash. Repeat in both directions during normal and busy periods, including in-place updates to the same probe paths. Subtract writer completion from each observer timestamp. Use conservative upper bounds for the small and large payloads as `SyncFlagDurationSeconds` and `SyncPitDurationSeconds`. Allow for clock skew and jitter in `BufferSeconds`. Size the ticket above the sum of both windows, buffer and worst observed local write time.
+
+Store these four numbers in `<PitCloudRoot>/JsonPit/timing.json5`, alongside the tenant directories. Compiled defaults in seconds are 120 for the ticket, 60 for canonical propagation, 15 for flag propagation and 5 for the buffer. Normal operation only reads this file.
+
 ## 4.6.7
 
 - Release version: `4.6.7`
