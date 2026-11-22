@@ -1,5 +1,18 @@
 # inqaba Release Notes 4.x
 
+## 4.7.0
+
+- Release version: `4.7.0`
+- Coordination tag: `v4.7.0`
+
+### Highlights
+- Expose configured live and test cloud roles to Python clients.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.7.0` line.
+
+---
+
 ## 4.6.7
 
 - Release version: `4.6.7`

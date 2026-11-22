@@ -1,5 +1,18 @@
 # PitSeeder Release Notes 4.x
 
+## 4.7.0
+
+- Release version: `4.7.0`
+- Coordination tag: `v4.7.0`
+
+### Highlights
+- Query sparse history with grep and history, and use del and del-prop shortcuts for tombstones.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.7.0` line.
+
+---
+
 ## 4.6.7
 
 - Release version: `4.6.7`

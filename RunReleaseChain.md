@@ -1,7 +1,7 @@
 # Coordinated release through Engenho
 
-From the umbrella checkout, run `engenho release 4.6.7`. Once the chain completes,
-run `engenho provision all --release 4.6.7`. Engenho installs both `umgodi` and
+From the umbrella checkout, run `engenho release 4.7.0`. Once the chain completes,
+run `engenho provision all --release 4.7.0`. Engenho installs both `umgodi` and
 `jpit` from the `umgodi-json` distribution.
 
 The [4.6.7 preflight record](doc/RELEASE_PREFLIGHT_4.6.7.md) lists the candidate
@@ -81,12 +81,12 @@ does not authorize retagging or changing child commits after preparation.
 
 ```zsh
 cd /Users/RSB/Projects/GitHub/RAIkeep
-python3 scripts/bump-version.py 4.6.3
+python3 scripts/bump-version.py 4.7.0
 ```
 
 For a new release, supply the chosen unused version. The manifest-driven bumper
 updates package versions, current documentation, tests, Python distributions,
-and consolidated release histories. Author the new release highlights, run
+and consolidated release histories. Engenho’s simulation checks the release graph and worktrees. Run the release validator for the target version to check package metadata before starting an active release. Author the new release highlights, run
 `dotnet test RAIkeep.slnx` and the release validator, then commit the child
 repositories before committing their matching umbrella pointers.
 

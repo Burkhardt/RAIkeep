@@ -1,6 +1,6 @@
 # RAIkeep Release Notes 4.x
 
-## 4.7.0 (draft)
+## 4.7.0
 
 - CR084 separates local high-frequency cloud tests from live replication. See `CR084_AIA_to_RAIkeep_TestCloud_Configuration_Key.md`.
 - CR090 implements ADR-0016 in JsonPit and Umgodi. Reading a pit leaves its ticket untouched. A writer that finds the ticket occupied publishes its deltas immediately. A successful claimant waits for cloud propagation, checks ownership and expiry, merges the fresh canonical and pending changes, and explicitly returns its ticket. See `CR090_AIA_to_RAIkeep_Timing_Calibrated_Master_Ticket_Return_and_Zero_Flag_Reads.md`.

@@ -1,5 +1,18 @@
 # ImgSeeder Release Notes 4.x
 
+## 4.7.0
+
+- Release version: `4.7.0`
+- Coordination tag: `v4.7.0`
+
+### Highlights
+- Apply filesystem guardrails to image imports and verify inventory and import operations.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.7.0` line.
+
+---
+
 ## 4.6.7
 
 - Release version: `4.6.7`

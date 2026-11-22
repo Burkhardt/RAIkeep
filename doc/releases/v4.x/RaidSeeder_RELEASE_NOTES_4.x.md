@@ -1,5 +1,18 @@
 # RaidSeeder Release Notes 4.x
 
+## 4.7.0
+
+- Release version: `4.7.0`
+- Coordination tag: `v4.7.0`
+
+### Highlights
+- Check diagram imports and their tests with RaiGuard.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.7.0` line.
+
+---
+
 ## 4.6.7
 
 - Release version: `4.6.7`
