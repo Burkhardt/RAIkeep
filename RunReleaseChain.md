@@ -13,6 +13,8 @@ The RAIkeep custodian prepares the source and pushes the signed-off candidate. T
 
 ## Publication and provisioning
 
+The [4.7.0 preflight record](doc/RELEASE_PREFLIGHT_4.7.0.md) identifies the source candidate and its verification results.
+
 The operator starts `engenho release 4.7.0` manually. Engenho coordinates version tags, publication workflows, registry indexing and the final umbrella release. After successful publication the operator can run `engenho provision all --release 4.7.0`. Engenho installs both `umgodi` and `jpit` from the `umgodi-json` distribution.
 
 ## Historical shell runner
