@@ -628,9 +628,9 @@ class ReleaseValidator:
 				f"doc/README.md {name} release link",
 			)
 		self.validate_file_contains(
-			"RunReleaseChain.md",
+			"ReleasePrep.md",
 			rf"engenho release {re.escape(v)}",
-			"RunReleaseChain.md recommended invocation",
+			"ReleasePrep.md recommended invocation",
 		)
 
 		# 7. Scan for Stale Version Leaks in Active Install / Current Lines

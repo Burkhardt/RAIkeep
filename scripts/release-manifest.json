@@ -715,7 +715,7 @@
 			]
 		},
 		{
-			"path": "RunReleaseChain.md",
+			"path": "ReleasePrep.md",
 			"description": "Release chain instructions",
 			"type": "doc",
 			"replacements": [
