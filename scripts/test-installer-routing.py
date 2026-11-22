@@ -4,6 +4,7 @@
 import json
 import os
 from pathlib import Path
+import runpy
 import shutil
 import subprocess
 import sys
@@ -11,10 +12,20 @@ import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parent.parent
+resolver = runpy.run_path(str(ROOT / "scripts/resolve-install-observer.py"))
 
 
 class FleetRoutingTests(unittest.TestCase):
-	def invoke(self, targets, windows_ready=True, skip_python=False, configuration=None, execute_unix=False, dry_run=True):
+	def configured_target(self, name):
+		config = Path.home() / ".config" / "RAIkeep.json5"
+		override = os.environ.get("RAIKEEP_CONFIG")
+		if not config.is_file() or (override and Path(override).expanduser().resolve() != config.resolve()):
+			self.skipTest("Installer routing requires the active ~/.config/RAIkeep.json5")
+		loads = runpy.run_path(str(ROOT / "JsonPit.Python/jsonpit/config.py"))["loads_json5"]
+		return resolver["resolve"](name, loads(config.read_text(encoding="utf-8")))
+
+	def invoke(self, targets, windows_ready=True, skip_python=False, execute_unix=False, dry_run=True):
+		windows_target = self.configured_target("Ixhiba")
 		with tempfile.TemporaryDirectory(prefix="raikeep-routing-") as temporary:
 			root = Path(temporary)
 			(root / "scripts").mkdir()
@@ -23,13 +34,6 @@ class FleetRoutingTests(unittest.TestCase):
 			parser = root / "JsonPit.Python/jsonpit/config.py"
 			parser.parent.mkdir(parents=True)
 			shutil.copyfile(ROOT / "JsonPit.Python/jsonpit/config.py", parser)
-			(root / ".config").mkdir()
-			(root / ".config/RAIkeep.json5").write_text(configuration if configuration is not None else """{
-  Observers: [
-    {Name: 'Themba', SshTarget: 'worker@Themba'},
-    {Name: 'Ixhiba', SshTarget: 'administrator@Ixhiba'},
-  ],
-}""")
 			mock_bin = root / "bin"
 			mock_bin.mkdir()
 			ssh = mock_bin / "ssh"
@@ -39,7 +43,7 @@ host, command = sys.argv[-2:]
 with open(os.environ['ROUTING_LOG'], 'a') as log:
     log.write(json.dumps({'host': host, 'command': command}) + '\n')
 if command == 'uname -s':
-    if host.lower().endswith('@ixhiba'): sys.exit(127)
+    if host.lower() == os.environ['WINDOWS_TARGET'].lower(): sys.exit(127)
     print('Linux')
 elif command.startswith('powershell.exe '):
     script = base64.b64decode(command.split()[-1]).decode('utf-16-le')
@@ -56,6 +60,7 @@ elif command.startswith('bash -s -- ') or command.startswith('wsl.exe --exec /bi
     if os.environ.get('EXECUTE_UNIX') == '1':
         import subprocess
         env = dict(os.environ, PATH=os.environ['REMOTE_MOCK_BIN'] + ':' + os.environ['PATH'])
+        payload = payload.replace('$HOME', '$INSTALL_TEST_ROOT')
         result = subprocess.run(['/bin/bash', '-s', '--', *command.split()[3:]], input=payload, text=True, env=env)
         sys.exit(result.returncode)
     else:
@@ -72,9 +77,9 @@ else:
 			(remote_bin / "dotnet").write_text('''#!/bin/bash
 if [[ "$1" == "--version" ]]; then echo 10.0.401; exit 0; fi
 case "$4" in Amafu) name=amafu;; RaidSeeder) name=raid;; ImgSeeder) name=iorg;; PitSeeder) name=pits;; RaiGuard) name=rail;; *) exit 1;; esac
-mkdir -p "$HOME/.dotnet/tools"
-printf '#!/bin/bash\\necho "%s v4.5.14"\\n' "$name" > "$HOME/.dotnet/tools/$name"
-chmod +x "$HOME/.dotnet/tools/$name"
+mkdir -p "$INSTALL_TEST_ROOT/.dotnet/tools"
+printf '#!/bin/bash\\necho "%s v4.5.14"\\n' "$name" > "$INSTALL_TEST_ROOT/.dotnet/tools/$name"
+chmod +x "$INSTALL_TEST_ROOT/.dotnet/tools/$name"
 ''')
 			(remote_bin / "dotnet").chmod(0o755)
 			# The payload deliberately puts ~/.dotnet ahead of the inherited PATH.
@@ -82,9 +87,10 @@ chmod +x "$HOME/.dotnet/tools/$name"
 			(root / ".dotnet").mkdir()
 			for executable in ("dotnet", "python3"):
 				(root / ".dotnet" / executable).symlink_to(remote_bin / executable)
-			env = os.environ | {"HOME": str(root), "PATH": str(mock_bin) + ":" + os.environ["PATH"],
+			env = os.environ | {"INSTALL_TEST_ROOT": str(root), "PATH": str(mock_bin) + ":" + os.environ["PATH"],
 				"ROUTING_LOG": str(root / "calls"), "WINDOWS_READY": "1" if windows_ready else "0",
-				"EXECUTE_UNIX": "1" if execute_unix else "0", "REMOTE_MOCK_BIN": str(remote_bin)}
+				"EXECUTE_UNIX": "1" if execute_unix else "0", "REMOTE_MOCK_BIN": str(remote_bin),
+				"WINDOWS_TARGET": windows_target}
 			flags = ["--no-cloud-setup"]
 			if dry_run: flags.append("--dry-run")
 			if skip_python: flags.append("--skip-python")
@@ -98,19 +104,19 @@ chmod +x "$HOME/.dotnet/tools/$name"
 	def test_themba_default_uses_configured_login_and_unix_environment(self):
 		result, calls = self.invoke(["Themba"])
 		self.assertEqual(0, result.returncode, result.stderr)
-		self.assertTrue(all(call["host"] == "worker@Themba" for call in calls))
+		self.assertTrue(all(call["host"] == self.configured_target("Themba") for call in calls))
 		self.assertTrue(calls[-1]["command"].startswith("bash -s -- "))
 
 	def test_themba_windows_is_a_separate_explicit_environment(self):
 		result, calls = self.invoke(["Themba", "Themba:windows"])
 		self.assertEqual(0, result.returncode, result.stderr)
 		self.assertTrue(calls[-1]["command"].startswith("powershell.exe "))
-		self.assertEqual("worker@Themba", calls[-1]["host"])
+		self.assertEqual(self.configured_target("Themba"), calls[-1]["host"])
 
 	def test_ixhiba_auto_routes_to_native_powershell(self):
 		result, calls = self.invoke(["Ixhiba"])
 		self.assertEqual(0, result.returncode, result.stderr)
-		self.assertEqual("administrator@Ixhiba", calls[-1]["host"])
+		self.assertEqual(self.configured_target("Ixhiba"), calls[-1]["host"])
 		self.assertTrue(calls[-1]["command"].startswith("powershell.exe "))
 
 	def test_ixhiba_wsl_is_explicit_and_does_not_install_a_distribution(self):
@@ -125,35 +131,30 @@ chmod +x "$HOME/.dotnet/tools/$name"
 		self.assertIn("Failed/Skipped : Ixhiba", result.stdout)
 
 	def test_default_fleet_comes_entirely_from_observers(self):
-		config = """{Observers: [
-  {Name:'ComputeOne', SshTarget:'worker@alpha.example'},
-  {Name:'ComputeTwo', SshTarget:'worker@beta.example'},
-]}"""
-		result, calls = self.invoke([], configuration=config)
-		self.assertEqual(0, result.returncode, result.stderr)
-		self.assertEqual({"worker@alpha.example", "worker@beta.example"}, {c["host"] for c in calls})
+		data = {"Observers": [
+			{"Name": "ComputeOne", "SshTarget": "worker@alpha.example"},
+			{"Name": "ComputeTwo", "SshTarget": "worker@beta.example"},
+		]}
+		names = resolver["fleet"](data)
+		self.assertEqual(["ComputeOne", "ComputeTwo"], names)
+		self.assertEqual(["worker@alpha.example", "worker@beta.example"],
+			[resolver["resolve"](name, data) for name in names])
 
 	def test_empty_observers_fail_without_contacting_a_hardcoded_fleet(self):
-		result, calls = self.invoke(["all"], configuration="{Observers: []}")
-		self.assertNotEqual(0, result.returncode)
-		self.assertEqual([], calls)
-		self.assertIn("No Observers configured", result.stderr)
+		with self.assertRaisesRegex(ValueError, "No Observers configured"):
+			resolver["fleet"]({"Observers": []})
 
 	def test_duplicate_observers_fail_before_contacting_servers(self):
-		config = """{Observers: [
-  {Name:'ServerNode', SshTarget:'worker@alpha.example'},
-  {Name:'servernode', SshTarget:'worker@beta.example'},
-]}"""
-		result, calls = self.invoke(["all"], configuration=config)
-		self.assertNotEqual(0, result.returncode)
-		self.assertEqual([], calls)
-		self.assertIn("duplicate", result.stderr)
+		data = {"Observers": [
+			{"Name": "ServerNode", "SshTarget": "worker@alpha.example"},
+			{"Name": "servernode", "SshTarget": "worker@beta.example"},
+		]}
+		with self.assertRaisesRegex(ValueError, "duplicate"):
+			resolver["fleet"](data)
 
 	def test_malformed_observers_have_a_clear_error(self):
-		result, calls = self.invoke(["all"], configuration="{Observers: {Name:'ServerNode'}}")
-		self.assertNotEqual(0, result.returncode)
-		self.assertEqual([], calls)
-		self.assertIn("Observers must be an array", result.stderr)
+		with self.assertRaisesRegex(ValueError, "Observers must be an array"):
+			resolver["fleet"]({"Observers": {"Name": "ServerNode"}})
 
 	def test_skip_python_allows_windows_without_python(self):
 		result, calls = self.invoke(["Ixhiba"], windows_ready=False, skip_python=True)

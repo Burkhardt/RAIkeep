@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exercise the installer with fake package managers and an isolated home."""
+"""Exercise the installer with fake package managers and isolated install paths."""
 
 import os
 from pathlib import Path
@@ -12,6 +12,7 @@ INSTALLER = (ROOT / "scripts/install-clis.sh").read_text()
 START = INSTALLER.index("install_jpit() {")
 END = INSTALLER.index("\n}\n", START) + 2
 FUNCTION = INSTALLER[START:END]
+FUNCTION = FUNCTION.replace("$HOME", "$INSTALL_TEST_ROOT")
 selection_start = INSTALLER.index("IFS=. read -r major minor patch")
 SELECTION = INSTALLER[selection_start:INSTALLER.index("\nfi", selection_start) + 3]
 
@@ -26,12 +27,12 @@ class PythonInstallerTests(unittest.TestCase):
 				path = bin_dir / name
 				path.write_text("#!/bin/bash\n" + body)
 				path.chmod(0o755)
-			command("python3", 'if [[ "$*" == "-m site --user-base" ]]; then echo "$HOME/.local"; exit 0; fi; exit 1\n')
+			command("python3", 'if [[ "$*" == "-m site --user-base" ]]; then echo "$INSTALL_TEST_ROOT/.local"; exit 0; fi; exit 1\n')
 			command("pip3", 'echo SYSTEM_PIP_CALLED >> "$INSTALL_TEST_LOG"; exit 1\n')
 			if pipx_body is not None:
 				command("pipx", pipx_body)
 			env = os.environ.copy()
-			env.update(HOME=str(root), PATH=str(bin_dir) + ":/usr/bin:/bin", INSTALL_TEST_LOG=str(root / "calls"), TEST_VERSION=version)
+			env.update(INSTALL_TEST_ROOT=str(root), PATH=str(bin_dir) + ":/usr/bin:/bin", INSTALL_TEST_LOG=str(root / "calls"), TEST_VERSION=version)
 			result = subprocess.run(["/bin/bash", "-c", f"set -euo pipefail\nVERSION={version}\n" + SELECTION + "\n" + FUNCTION + "\ninstall_jpit"], env=env, text=True, capture_output=True)
 			log = (root / "calls").read_text() if (root / "calls").exists() else ""
 			return result, log
@@ -41,9 +42,9 @@ class PythonInstallerTests(unittest.TestCase):
 			with self.subTest(version=version):
 				result, log = self.invoke(f'''echo "$*" >> "$INSTALL_TEST_LOG"
 for name in jpit {alias}; do
-  mkdir -p "$HOME/.local/bin"
-  printf '#!/bin/bash\necho "%s v%s"\n' "$name" "$TEST_VERSION" > "$HOME/.local/bin/$name"
-  chmod +x "$HOME/.local/bin/$name"
+  mkdir -p "$INSTALL_TEST_ROOT/.local/bin"
+  printf '#!/bin/bash\necho "%s v%s"\n' "$name" "$TEST_VERSION" > "$INSTALL_TEST_ROOT/.local/bin/$name"
+  chmod +x "$INSTALL_TEST_ROOT/.local/bin/$name"
 done
 ''', version)
 				self.assertEqual(0, result.returncode, result.stderr)
