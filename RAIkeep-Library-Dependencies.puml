@@ -1,6 +1,5 @@
 @startuml RAIkeep-Library-Dependencies
-' Release: 3.13.1
-title RAIkeep Library Dependencies
+title OsLib, RaiUtils, JsonPit and RaiImage
 
 top to bottom direction
 
@@ -39,7 +38,7 @@ skinparam LegendFontName "Casual"
 skinparam LegendFontSize 14
 
 package "OsLib" as P_OsLib {
-	class "Os" as COs [[Os-ClassDiagram.svg{Open Details Diagram for class Os}]]
+	class "Os" as COs [[OsLib/Os-ClassDiagram.svg{Open Details Diagram for class Os}]]
 	class RaiFile
 	class ConfigFile
 	class RaiPath
@@ -67,6 +66,8 @@ package "JsonPit" as P_JsonPit {
 	class Pit
 	class PitItem
 	class PitItems
+	class PitSaveResult
+	class PitTiming
 	class MasterFlagFile
 	class ProcessFlagFile
 	class TimestampedValue

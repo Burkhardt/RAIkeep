@@ -1,5 +1,4 @@
 @startuml RAIkeep-Package-Dependencies
-' Release: 3.13.1
 title RAIkeep Package Dependencies
 
 top to bottom direction
@@ -38,87 +37,49 @@ skinparam NoteBorderColor #d4b106
 skinparam ArrowFontColor #374151
 skinparam ArrowFontName "Casual"
 
-package "OsLib" as P_OsLib {
-	rectangle "Ⓒ Os\nⒸ ConfigFile\nⒸ RaiFile\nⒸ RaiPath\nⒸ RaiSystem\nⒸ TextFile\nⒸ CsvFile\nⒸ TmpFile\nⒸ CanonicalFile\nⒸ CanonicalPath <<deprecated>>\nⒸ PathConventionType" as M_OsLib
+package "NuGet" {
+	[OsLibCore]
+	[RaiUtils]
+	[JsonPit]
+	[RaiImage]
+	[RaiDiagram]
+	[Amafu]
+	[PitSeeder]
+	[ImgSeeder]
+	[RaidSeeder]
+	[RaiGuard]
+	[RaiGuard.Analyzer]
 }
 
-package "OsLib.Tests" <<tests>> as T_OsLib {
-	rectangle "Ⓣ RaiFileTests\nⓉ PathConventionsTests\nⓉ CloudStorageAgreementMechanicsTests\nⓉ TmpFileTests" as M_T_OsLib
+package "PyPI" {
+	[inqaba]
+	[umgodi-json]
+	[vikela]
 }
 
-package "RaiUtils" as P_RaiUtils {
-	rectangle "Ⓒ Email\nⒸ JsonConversionExtensions\nⒸ ParameterDictionary\nⒸ RandomExtensions\nⒸ SearchExpression" as M_RaiUtils
-}
-
-package "RaiUtils.Tests" <<tests>> as T_RaiUtils {
-	rectangle "Ⓣ EmailTests\nⓉ JsonConversionExtensionTests\nⓉ ParameterDictionaryTests\nⓉ RandomExtensionsTests\nⓉ SearchExpressionTests" as M_T_RaiUtils
-}
-
-package "JsonPit" as P_JsonPit {
-	rectangle "Ⓒ Item\nⒸ ItemsBase\nⒸ JsonPitBase\nⒸ Pit\nⒸ PitItem\nⒸ PitItems\nⒸ MasterFlagFile\nⒸ ProcessFlagFile\nⒸ TimestampedValue" as M_JsonPit
-}
-
-package "JsonPit.Tests" <<tests>> as T_JsonPit {
-	rectangle "Ⓣ UnitTests\nⓉ PitAddConcurrencyTests\nⓉ PitItemSetPropertyChangeDetectionTests" as M_T_JsonPit
-}
-
-package "RaiImage" as P_RaiImage {
-	rectangle "Ⓒ WordCase\nⒸ ColorInfo\nⒸ Dye\nⒸ ImageFile\nⒸ ImageTreeFile\nⒸ ImageMagick\nⒸ ImageMagickCommand\nⒸ ImageUrl\nⒸ Src\nⒸ Tmp\nⒸ TwoSizes" as M_RaiImage
-}
-
-package "RaiImage.Tests" <<tests>> as T_RaiImage {
-	rectangle "Ⓣ ImageFileTests\nⓉ ImageTreeFileTests\nⓉ ImageMagickTests" as M_T_RaiImage
-}
-
-' 2 columns x 4 rows: package on the left, matching test package on the right.
-P_OsLib -[norank]right-> T_OsLib
-P_RaiUtils -[norank]right-> T_RaiUtils
-P_JsonPit -[norank]right-> T_JsonPit
-P_RaiImage -[norank]right-> T_RaiImage
-
-P_OsLib -[norank]down-> P_RaiUtils
-P_RaiUtils -[norank]down-> P_JsonPit
-P_JsonPit -[norank]down-> P_RaiImage
-
-P_JsonPit ..[norank]> P_OsLib : ProjectReference
-P_JsonPit ..[norank]> P_RaiUtils : ProjectReference
-P_RaiImage ..[norank]> P_OsLib : ProjectReference
-P_RaiImage ..[norank]> P_RaiUtils : ProjectReference
-
-T_OsLib ..> P_OsLib : tests
-T_RaiUtils ..> P_RaiUtils : tests
-T_JsonPit ..> P_JsonPit : tests
-T_RaiImage ..> P_RaiImage : tests
-
-note bottom of P_OsLib
-	Foundation library for OS, paths,
-	files, temp files, lazy config access,
-	and cloud-aware path/file helpers.
-end note
-
-note bottom of P_RaiUtils
-	Utility library with JSON conversion,
-	randomization, parameter, email,
-	and search helpers.
-end note
-
-note bottom of P_JsonPit
-	JsonPit depends directly on OsLib and RaiUtils.
-	Its tests also exercise those dependencies.
-end note
-
-note bottom of P_RaiImage
-	RaiImage references OsLib and RaiUtils when
-	local projects are available, and can fall back
-	to NuGet package references otherwise.
-end note
+[JsonPit] --> [OsLibCore]
+[JsonPit] --> [RaiUtils]
+[RaiImage] --> [OsLibCore]
+[RaiImage] --> [RaiUtils]
+[RaiDiagram] --> [OsLibCore]
+[RaiDiagram] --> [RaiUtils]
+[RaiDiagram] --> [RaiImage]
+[PitSeeder] --> [JsonPit]
+[PitSeeder] --> [OsLibCore]
+[ImgSeeder] --> [JsonPit]
+[ImgSeeder] --> [OsLibCore]
+[ImgSeeder] --> [RaiImage]
+[ImgSeeder] --> [RaiUtils]
+[RaidSeeder] --> [RaiDiagram]
+[RaiGuard] --> [JsonPit]
+[RaiGuard] --> [OsLibCore]
+[RaiGuard] --> [RaiDiagram]
+[RaiGuard] --> [RaiImage]
+[RaiGuard] --> [RaiUtils]
+[umgodi-json] --> [inqaba]
 
 legend bottom
-	Solid package contents show representative classes.
-	Dashed arrows show project-level dependencies.
-	<<tests>> packages represent test projects in RAIkeep.slnx.
-	Hidden right-links define the two columns.
-	Hidden down-links define the four rows.
+	Arrows point from a package to its coordinated runtime dependencies.
+	RaiGuard.Analyzer ships from the RaiGuard repository as a compiler analyzer.
 endlegend
-
 @enduml
