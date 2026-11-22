@@ -1,11 +1,19 @@
 # Coordinated release through Engenho
 
-From the umbrella checkout, run `engenho release 4.7.0`. Once the chain completes,
-run `engenho provision all --release 4.7.0`. Engenho installs both `umgodi` and
-`jpit` from the `umgodi-json` distribution.
+## Preparing the next version
 
-The [4.6.7 preflight record](doc/RELEASE_PREFLIGHT_4.6.7.md) lists the candidate
-checks completed for that release.
+The RAIkeep custodian prepares the source and pushes the signed-off candidate. The release operator starts Engenho after reviewing the preflight result.
+
+1. Check the proposed version against the component tags, registry entries and Engenho checkpoint. If publication is already underway, preserve the candidate commits and use the existing run's status for recovery.
+2. Activate the release Python environment with pytest installed. From the umbrella checkout run `python3 scripts/bump-version.py 4.7.0`, substituting the agreed version for the next release. This assigns versions in the [release manifest](scripts/release-manifest.json), project files, Python metadata and coordinated dependency references. Keep bootstrap tooling pins and frozen distributions on their intended versions.
+3. Review all current Markdown and PlantUML affected by the release. Update package install examples, API and CLI documentation, release notes, configuration examples and diagrams whose depicted behavior changed. Regenerate their tracked SVGs and check the rendered files and links. Preserve historical release records.
+4. Run `python3 scripts/validate-release.py 4.7.0 4.6.7` with the candidate and previous versions. Inspect its exit status. Run applicable builds, tests and Rail/Vikela checks. Pack the candidate, check packaged documentation and perform isolated installation and CLI smoke tests. Record results, skips and failures in a versioned preflight record under `doc/`. The [4.6.7 record](doc/RELEASE_PREFLIGHT_4.6.7.md) shows the checks used for a previous release.
+5. Commit and push each changed component to its repository. Then commit and push the exact submodule pointers, manifest, release notes and preflight documentation in the umbrella repository. Verify the remote project versions and pinned commits and check for clean worktrees.
+6. Run `engenho release 4.7.0 --dry-run` from the prepared umbrella checkout. A successful simulation verifies the graph and preflight exercised by Engenho. Check the separate package-version and release-validator results before declaring the candidate ready.
+
+## Publication and provisioning
+
+The operator starts `engenho release 4.7.0` manually. Engenho coordinates version tags, publication workflows, registry indexing and the final umbrella release. After successful publication the operator can run `engenho provision all --release 4.7.0`. Engenho installs both `umgodi` and `jpit` from the `umgodi-json` distribution.
 
 ## Historical shell runner
 
@@ -76,24 +84,6 @@ scripts/release-chain.sh 4.6.3 --resume-after-raiguard
 Choose one command for the actual stopping point. `--resume-after-raiguard`
 verifies the completed child releases and finishes the umbrella step. Recovery
 does not authorize retagging or changing child commits after preparation.
-
-## Preparing the next version
-
-```zsh
-cd /Users/RSB/Projects/GitHub/RAIkeep
-python3 scripts/bump-version.py 4.7.0
-```
-
-For a new release, supply the chosen unused version. The manifest-driven bumper
-updates package versions, current documentation, tests, Python distributions,
-and consolidated release histories. Engenho’s simulation checks the release graph and worktrees. Run the release validator for the target version to check package metadata before starting an active release. Author the new release highlights, run
-`dotnet test RAIkeep.slnx` and the release validator, then commit the child
-repositories before committing their matching umbrella pointers.
-
-The version manifest is
-[release-manifest.json](https://github.com/Burkhardt/RAIkeep/blob/main/scripts/release-manifest.json).
-The release notes live under
-[doc/releases](https://github.com/Burkhardt/RAIkeep/tree/main/doc/releases).
 
 ## Provisioning
 
