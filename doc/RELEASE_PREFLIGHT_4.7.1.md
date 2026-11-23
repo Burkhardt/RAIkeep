@@ -1,6 +1,6 @@
 # RAIkeep 4.7.1 release preflight
 
-**Status: incomplete. Do not start the release yet.** The 4.7.0 coordinated
+**Status: candidate validated; release not started.** The 4.7.0 coordinated
 release was incomplete; its published artifacts and tags remain unchanged.
 
 | Check | Result |
@@ -21,8 +21,8 @@ release was incomplete; its published artifacts and tags remain unchanged.
 | Amafu bootstrap tests | 114 passed under the explicit exemption described below |
 | Selected .NET release regressions | 73 passed, including exempt Amafu configuration-listing tests |
 | Full release validation | All 146 checks passed; the Umgodi suite was collected before the final sequence-helper refactor, which was separately verified |
-| Engenho dry-run | Not completed |
-| Candidate publication | Component and umbrella main branches must be synchronized before the dry run; no release artifacts or tags have been published |
+| Engenho dry-run | Passed; Inqaba and Vikela precede Umgodi in the release DAG |
+| Candidate branches | Component and umbrella main branches pushed; the archived local JsonPit.Python checkout remains untracked |
 
 Umgodi's release depends on both Inqaba and Vikela, so its publishing workflow
 can install the coordinated Vikela version before running the repository gate.
