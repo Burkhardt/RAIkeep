@@ -11,6 +11,8 @@ import sys
 import tempfile
 from xml.sax.saxutils import escape
 
+from cloud_test_root import CloudUnavailable, dropbox_test_root
+
 
 def main() -> int:
 	parser = argparse.ArgumentParser(description=__doc__)
@@ -21,6 +23,7 @@ def main() -> int:
 	environment = {**os.environ, "PYTHONPATH": os.pathsep.join(sources)}
 	from umgodi import cli_style as style
 	from umgodi.icons import Icons
+	from inqaba.json5 import loads_json5
 
 	assembly = root / "OsLib/bin/Debug/net10.0/OsLib.dll"
 	if not assembly.is_file():
@@ -101,12 +104,11 @@ Console.Write(JsonSerializer.Serialize(new {
 		for hidden in ["--retain-window", "--require-exist", "positional argument:"]:
 			assert hidden not in output, f"Unadvertised alias/explanation leaked: {hidden}"
 
-	# Export the same actual C#-written pits through both CLIs. These are explicit
-	# local filesystem fixtures, not simulated CloudDrive integration tests.
+	# Export the same Dropbox-hosted C#-written pits through both CLIs.
 	python_command = [sys.executable, "-m", "umgodi.cli"]
 	pits_command = ["dotnet", str(root / "PitSeeder/pits/bin/Debug/net10.0/pits.dll")]
 	def invoke(command: list[str]) -> str:
-		result = subprocess.run(command, env=environment, capture_output=True, text=True, timeout=30)
+		result = subprocess.run(command, env=environment, capture_output=True, text=True, timeout=command_timeout)
 		assert result.returncode == 0, f"{command}: {result.stdout}\n{result.stderr}"
 		return result.stdout
 	def normalize(document):
@@ -119,7 +121,15 @@ Console.Write(JsonSerializer.Serialize(new {
 			if isinstance(result.get(key), str):
 				result[key] = datetime.fromisoformat(result[key].replace("Z", "+00:00")).astimezone(timezone.utc).isoformat()
 		return result
-	with tempfile.TemporaryDirectory(prefix="raikeep-export-parity-") as temporary:
+	try:
+		cloud_root, _ = dropbox_test_root(root)
+	except CloudUnavailable as error:
+		print(f"SKIPPED directory-export parity: {error}")
+		return 0
+	timing_file = cloud_root / "JsonPit" / "timing.json5"
+	timing = loads_json5(timing_file.read_text(encoding="utf-8")) if timing_file.is_file() else {}
+	command_timeout = max(30, 2 * timing.get("TicketDurationSeconds", 120) + 30)
+	with tempfile.TemporaryDirectory(prefix="raikeep-export-parity-", dir=cloud_root) as temporary:
 		fixture = Path(temporary)
 		data = fixture / "data"
 		data.mkdir()

@@ -1,7 +1,7 @@
 {
 	"$schema": "./release-manifest.schema.json",
 	"name": "RAIkeep",
-	"current_version": "4.7.0",
+	"current_version": "4.7.1",
 	"packages": [
 		{
 			"name": "Amafu",
@@ -77,7 +77,8 @@
 			"repo": "Burkhardt/umgodi-json",
 			"dispatch": true,
 			"dependencies": [
-				"inqaba"
+				"inqaba",
+				"vikela"
 			]
 		},
 		{
@@ -363,6 +364,11 @@
 				},
 				{
 					"pattern": "(?<=inqaba>=)\\d+\\.\\d+\\.\\d+",
+					"replacement": "{version}"
+				},
+				{
+					"description": "Umgodi Vikela test gate version",
+					"pattern": "(?<=vikela\\[pylint\\]==)\\d+\\.\\d+\\.\\d+",
 					"replacement": "{version}"
 				}
 			]

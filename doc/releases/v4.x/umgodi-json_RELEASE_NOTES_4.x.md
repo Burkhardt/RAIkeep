@@ -1,5 +1,20 @@
 # umgodi-json Release Notes 4.x
 
+## 4.7.1
+
+- Release version: `4.7.1`
+- Coordination tag: `v4.7.1`
+
+### Highlights
+- Require InqPath directory arguments for Pit construction; CLI file paths are translated before opening.
+- Keep test Pits in run-owned Dropbox directories using the real configuration and realistic timing.
+- Run Vikela over the repository before pytest, accounting for explicitly annotated negative tests.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.7.1` line.
+
+---
+
 ## 4.7.0
 
 - Release version: `4.7.0`

@@ -1,5 +1,18 @@
 # RaiGuard Release Notes 4.x
 
+## 4.7.1
+
+- Release version: `4.7.1`
+- Coordination tag: `v4.7.1`
+
+### Highlights
+- Add RAI021 analysis for recognizable test configuration substitution.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.7.1` line.
+
+---
+
 ## 4.7.0
 
 - Release version: `4.7.0`

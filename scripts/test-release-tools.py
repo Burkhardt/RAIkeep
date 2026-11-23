@@ -102,6 +102,19 @@ class ReleaseToolsTests(unittest.TestCase):
 		project.write_text(project.read_text().replace("inqaba<", "inqaba>=").replace("jpit =", "jsonpit ="))
 		self.assertTrue(any("entry points" in error for error in self.validate()[1]))
 
+	def test_vikela_gate_version_and_release_order_are_verified(self):
+		project = self.root / "umgodi-json/pyproject.toml"
+		original = project.read_text()
+		project.write_text(original.replace(f"vikela[pylint]=={self.version}", "vikela[pylint]==0.0.1"))
+		self.assertTrue(any("Vikela test gate dependency" in error for error in self.validate()[1]))
+		project.write_text(original)
+		manifest_path = self.root / "scripts/release-manifest.json"
+		manifest = json.loads(manifest_path.read_text())
+		package = next(item for item in manifest["packages"] if item["name"] == "umgodi-json")
+		package["dependencies"].remove("vikela")
+		manifest_path.write_text(json.dumps(manifest))
+		self.assertTrue(any("must wait for Vikela" in error for error in self.validate()[1]))
+
 	def test_next_bump_excludes_frozen_project_and_updates_active_python(self):
 		frozen = self.root / "JsonPit.Python"
 		frozen.mkdir()

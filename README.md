@@ -46,13 +46,12 @@ Amafu (`amafu`), RaidSeeder (`raid`), ImgSeeder (`iorg`), PitSeeder (`pits`), an
 | 5 | `RaiDiagram` | `RaiDiagram` | Diagram models and rendering |
 | 6 | `RaidSeeder` | `RaidSeeder` / `raid` | Diagram artifact commands |
 | 7 | `JsonPit` | `JsonPit` | Historical JSON persistence |
-| 8 | `JsonPit.Python` | `jsonpit`, `jpit` / `jpit`, `jsonpit` | Python persistence and pit commands (Frozen) |
-| 9 | `inqaba` | `inqaba` | Shared Python framework boundaries |
-| 10 | `umgodi-json` | `umgodi-json` / `jpit`, `umgodi` | Pure Python distributed JSON persistence |
-| 11 | `ImgSeeder` | `ImgSeeder` / `iorg` | Image organization and import |
-| 12 | `PitSeeder` | `PitSeeder` / `pits` | Pit commands |
-| 13 | `RaiGuard` | `RaiGuard`, `RaiGuard.Analyzer` / `rail` | Roslyn analysis and source refactoring |
-| 14 | `vikela` | `vikela` / `vikela` | Python mutation guardrails |
+| 8 | `inqaba` | `inqaba` | Shared Python framework boundaries |
+| 9 | `umgodi-json` | `umgodi-json` / `jpit`, `umgodi` | Pure Python distributed JSON persistence |
+| 10 | `ImgSeeder` | `ImgSeeder` / `iorg` | Image organization and import |
+| 11 | `PitSeeder` | `PitSeeder` / `pits` | Pit commands |
+| 12 | `RaiGuard` | `RaiGuard`, `RaiGuard.Analyzer` / `rail` | Roslyn analysis and source refactoring |
+| 13 | `vikela` | `vikela` / `vikela` | Python mutation guardrails |
 
 Each child remains its own Git repository, package, solution, and release
 workflow. The umbrella workspace supplies local project wiring, coordinated
@@ -60,10 +59,11 @@ validation, dependency-order documentation, and sequential release automation.
 
 ## Current release line
 
-The prepared coordinated release is `4.7.0`. Inqaba supplies Python path,
+The prepared coordinated release is `4.7.1`. Inqaba supplies Python path,
 file, and configuration APIs. Umgodi uses those APIs and provides the active
 `jpit` and `umgodi` commands. Install `umgodi-json` and import `umgodi`.
-The `jsonpit-python` implementation is frozen at 4.6.3. The documentation-only
+The [archived `jsonpit-python` implementation](doc/JSONPIT_PYTHON_SUNSET.md)
+is frozen at 4.6.3 and is no longer an active submodule. The documentation-only
 4.6.3.post1 release directs users to Umgodi. [PyPI sunset notice](https://pypi.org/project/jsonpit/4.6.3.post1/)
 Vikela provides the optional Python guardrails for Inqaba and Umgodi usage.
 
@@ -81,23 +81,23 @@ The [RAIkeep Manifesto](https://github.com/Burkhardt/RAIkeep/blob/main/MANIFESTO
 explains why transparent, historical JSON matters for agentic engineering and
 defines JsonPit's asynchronous persistence and eventual-durability model.
 
-Prepared 4.7.0 release notes:
+Prepared 4.7.1 release notes:
 
-- [Amafu 4.7.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/Amafu_RELEASE_NOTES_4.x.md#470)
-- [OsLibCore 4.7.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/OsLib_RELEASE_NOTES_4.x.md#470)
-- [RaiUtils 4.7.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiUtils_RELEASE_NOTES_4.x.md#470)
-- [RaiImage 4.7.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiImage_RELEASE_NOTES_4.x.md#470)
-- [RaiDiagram 4.7.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiDiagram_RELEASE_NOTES_4.x.md#470)
-- [RaidSeeder 4.7.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaidSeeder_RELEASE_NOTES_4.x.md#470)
-- [JsonPit 4.7.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit_RELEASE_NOTES_4.x.md#470)
+- [Amafu 4.7.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/Amafu_RELEASE_NOTES_4.x.md#471)
+- [OsLibCore 4.7.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/OsLib_RELEASE_NOTES_4.x.md#471)
+- [RaiUtils 4.7.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiUtils_RELEASE_NOTES_4.x.md#471)
+- [RaiImage 4.7.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiImage_RELEASE_NOTES_4.x.md#471)
+- [RaiDiagram 4.7.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiDiagram_RELEASE_NOTES_4.x.md#471)
+- [RaidSeeder 4.7.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaidSeeder_RELEASE_NOTES_4.x.md#471)
+- [JsonPit 4.7.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit_RELEASE_NOTES_4.x.md#471)
 - [JsonPit.Python 4.6.3](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/JsonPit.Python_RELEASE_NOTES_4.x.md#463)
-- [inqaba 4.7.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/inqaba_RELEASE_NOTES_4.x.md#470)
-- [umgodi-json 4.7.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/umgodi-json_RELEASE_NOTES_4.x.md#470)
-- [vikela 4.7.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/vikela_RELEASE_NOTES_4.x.md#470)
-- [ImgSeeder 4.7.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/ImgSeeder_RELEASE_NOTES_4.x.md#470)
-- [PitSeeder 4.7.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/PitSeeder_RELEASE_NOTES_4.x.md#470)
-- [RaiGuard 4.7.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiGuard_RELEASE_NOTES_4.x.md#470)
-- [RAIkeep 4.7.0](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#470)
+- [inqaba 4.7.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/inqaba_RELEASE_NOTES_4.x.md#471)
+- [umgodi-json 4.7.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/umgodi-json_RELEASE_NOTES_4.x.md#471)
+- [vikela 4.7.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/vikela_RELEASE_NOTES_4.x.md#471)
+- [ImgSeeder 4.7.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/ImgSeeder_RELEASE_NOTES_4.x.md#471)
+- [PitSeeder 4.7.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/PitSeeder_RELEASE_NOTES_4.x.md#471)
+- [RaiGuard 4.7.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RaiGuard_RELEASE_NOTES_4.x.md#471)
+- [RAIkeep 4.7.1](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#471)
 
 The prior coordinated line remains documented in [RAIkeep 4.1.0 release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md#410).
 

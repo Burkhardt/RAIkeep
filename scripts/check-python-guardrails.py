@@ -13,7 +13,7 @@ def main():
     if not files:
         raise RuntimeError("No Python sources found")
 
-    # Both implementations test that these operations raise ProtectedAttributeError.
+    # These operations test that the runtime raises ProtectedAttributeError.
     # Match the operation, so another violation in the same test still fails.
     operations = {
         'item["Id"] = "Other"',
@@ -21,7 +21,7 @@ def main():
         'item.set_property({"Status": "Bad", "Modified": "invalid"})',
     }
     expected = {(f"{project}/tests/test_live_references.py", operation)
-                for project in ("JsonPit.Python", "umgodi-json") for operation in operations}
+                for project in ("umgodi-json",) for operation in operations}
     expected_count = len(expected)
     run = subprocess.run([sys.executable, "-m", "vikela", "--json", *files],
                          cwd=root / "vikela", stdout=subprocess.PIPE)

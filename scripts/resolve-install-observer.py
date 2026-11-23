@@ -51,11 +51,11 @@ if __name__ == "__main__":
 	try:
 		data = {}
 		if args.config.exists():
-			parser = Path(__file__).resolve().parent.parent / "JsonPit.Python/jsonpit/config.py"
+			parser = Path(__file__).resolve().parent.parent / "inqaba/inqaba/json5.py"
 			if parser.exists():
 				loads = runpy.run_path(str(parser))["loads_json5"]
 			else:
-				from jsonpit.config import loads_json5 as loads
+				from inqaba.json5 import loads_json5 as loads
 			data = loads(args.config.read_text())
 			if not isinstance(data, dict):
 				raise ValueError("RAIkeep configuration must be an object")

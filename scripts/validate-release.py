@@ -20,6 +20,8 @@ import tomllib
 from pathlib import Path
 from typing import List, Tuple
 
+from cloud_test_root import CloudUnavailable, dropbox_test_root
+
 # All 10 coordinated .NET child repositories in dependency order
 PACKAGE_REPOS = [
 	("Amafu", "Amafu", "amafu/amafu.csproj"),
@@ -99,6 +101,8 @@ class ReleaseValidator:
 			self.error(description, None, f"Could not execute {' '.join(command)}: {ex}")
 			return False
 		if result.returncode == 0:
+			if description.endswith(" tests") and result.stdout:
+				print(result.stdout.strip())
 			self.pass_check()
 			return True
 		output = (result.stdout + result.stderr).strip().replace("\n", " ")
@@ -112,33 +116,26 @@ class ReleaseValidator:
 
 	@staticmethod
 	def pits_parity_command() -> list[str]:
-		"""Run the built CLI without rebuilding inside a temporary HOME."""
+		"""Run the built CLI without rebuilding."""
 		return ["dotnet", "PitSeeder/pits/bin/Debug/net10.0/pits.dll"]
 
 	def validate_cli_list_parity(self) -> None:
-		"""Exercises the public local-root list --all contract of both CLIs."""
-		with tempfile.TemporaryDirectory(prefix="raikeep-cli-parity-") as temporary:
+		"""Exercises list --all against a run-owned TestCloud tenant."""
+		try:
+			root, settings = dropbox_test_root(self.root_dir)
+		except CloudUnavailable as error:
+			print(f"SKIPPED pits/jpit list --all parity: {error}")
+			return
+		order = settings.get("DefaultCloudOrder", ["OneDrive", "Dropbox", "GoogleDrive", "ICloudDrive"])
+		if "Dropbox" not in order:
+			print("SKIPPED pits/jpit list --all parity: Dropbox is absent from DefaultCloudOrder")
+			return
+		with tempfile.TemporaryDirectory(prefix="RAIkeepTest-", dir=root) as temporary:
 			fixture = Path(temporary)
-			home = fixture / "home"
-			cloud_root = fixture / "cloud-root"
-			temp_root = fixture / "temp"
-			tenant = cloud_root / "Tenant"
-			tenant.mkdir(parents=True)
-			temp_root.mkdir()
-			configuration = home / ".config" / "RAIkeep.json5"
-			configuration.parent.mkdir(parents=True)
-			configuration.write_text(
-				"{\n"
-				f'  TempDir: "{temp_root}",\n'
-				'  DefaultCloudOrder: ["ParityCloud"],\n'
-				f'  Cloud: {{ "ParityCloud": "{cloud_root}" }}\n'
-				"}\n",
-				encoding="utf-8",
-			)
-			source = Path(temporary) / "seed.json"
+			tenant = fixture
+			source = tenant / "seed.json"
 			source.write_text('[{"Id":"ParitySample"}]', encoding="utf-8")
 			shared_env = os.environ.copy()
-			shared_env["HOME"] = str(home)
 
 			seed = self.validate_command(
 				"pits local parity fixture seed",
@@ -149,7 +146,7 @@ class ReleaseValidator:
 				return
 
 			csharp = subprocess.run(
-				[*self.pits_parity_command(), "list", "-r", "Tenant", "--all", "-n"],
+				[*self.pits_parity_command(), "list", "-r", tenant.name, "--all", "-n"],
 				cwd=self.root_dir,
 				env=shared_env,
 				text=True,
@@ -159,7 +156,7 @@ class ReleaseValidator:
 			test_env = shared_env.copy()
 			test_env["PYTHONPATH"] = os.pathsep.join(str(self.root_dir / repo) for repo in PYTHON_MODULES)
 			python = subprocess.run(
-				[sys.executable, "-m", "umgodi.cli", "list", "-r", "Tenant", "--all", "-n"],
+				[sys.executable, "-m", "umgodi.cli", "list", "-r", tenant.name, "--all", "-n"],
 				cwd=self.root_dir,
 				env=test_env,
 				text=True,
@@ -184,30 +181,25 @@ class ReleaseValidator:
 					f"pits={csharp_output!r}; jpit={python_output!r}",
 				)
 				return
+			if "Activity" not in csharp_output:
+				self.error("pits/jpit list --all parity", None, "TestCloud tenant was not discovered")
+				return
 			self.pass_check()
 
 	def validate_cli_help_parity(self) -> None:
 		"""Exercises the conditional WWWA help block of both public CLIs."""
-		with tempfile.TemporaryDirectory(prefix="raikeep-help-parity-") as temporary:
+		try:
+			root, _ = dropbox_test_root(self.root_dir)
+		except CloudUnavailable as error:
+			print(f"SKIPPED pits/jpit WWWA help parity: {error}")
+			return
+		with tempfile.TemporaryDirectory(prefix="raikeep-help-parity-", dir=root) as temporary:
 			fixture = Path(temporary)
-			home = fixture / "home"
-			temp_root = fixture / "temp"
 			tenant = fixture / "Tenant"
 			tenant.mkdir()
-			temp_root.mkdir()
-			configuration = home / ".config" / "RAIkeep.json5"
-			configuration.parent.mkdir(parents=True)
-			configuration.write_text(
-				"{\n"
-				f'  TempDir: "{temp_root}",\n'
-				"  Cloud: {}\n"
-				"}\n",
-				encoding="utf-8",
-			)
 			source = fixture / "seed.json"
 			source.write_text('[{"Id":"ParitySample"}]', encoding="utf-8")
 			shared_env = os.environ.copy()
-			shared_env["HOME"] = str(home)
 			shared_env["NO_COLOR"] = "1"
 			test_env = shared_env.copy()
 			test_env["PYTHONPATH"] = os.pathsep.join(str(self.root_dir / repo) for repo in PYTHON_MODULES)
@@ -333,6 +325,12 @@ class ReleaseValidator:
 						raise ValueError("Expected umgodi and jpit entry points")
 					if project.get("dependencies") != [f"inqaba>={self.version}"]:
 						raise ValueError("Expected the coordinated Inqaba dependency")
+					if f"vikela[pylint]=={self.version}" not in project.get("optional-dependencies", {}).get("dev", []):
+						raise ValueError("Expected the coordinated Vikela test gate dependency")
+					manifest = json.loads((self.root_dir / "scripts/release-manifest.json").read_text())
+					package = next((item for item in manifest["packages"] if item.get("name") == distribution), None)
+					if package is None or "vikela" not in package.get("dependencies", []):
+						raise ValueError("Umgodi release must wait for Vikela")
 				self.pass_check()
 			except (OSError, ValueError, KeyError) as error:
 				self.error(relative, None, str(error))
@@ -412,41 +410,27 @@ class ReleaseValidator:
 		# 3. Python tests and cross-runtime CLI discovery/help parity
 		if self.run_external_checks:
 			print("\n[3/7] Running Python tests and pits/jpit list/help parity...")
-			self.validate_command("CLI style source parity", ["python3", "scripts/sync-cli-style.py", "--check"])
-			self.validate_command("Trusted Publishing workflow and release-ref checks", ["python3", "scripts/test-trusted-publishing.py"])
-			self.validate_command("Release sequence and recovery gates", ["bash", "scripts/test-release-chain-order.sh"])
-			self.validate_command("Tracked package artifact guard", ["bash", "scripts/test-tracked-package-preflight.sh"])
-			self.validate_command("RaiUtils publication package scope", ["python3", "RaiUtils/test-publication-artifacts.py"])
-			with tempfile.TemporaryDirectory(prefix="raikeep-release-tests-") as temporary:
-				# Cross-engine tests invoke the installed pits CLI. Give it an isolated
-				# valid configuration rather than depending on the user's HOME.
-				home = Path(temporary) / "home"
-				config = home / ".config" / "RAIkeep.json5"
-				config.parent.mkdir(parents=True)
-				cloud_root = Path(temporary) / "cloud"
-				cloud_root.mkdir()
-				config.write_text(
-					json.dumps({"TempDir": str(Path(temporary) / "temp"),
-						"DefaultCloudOrder": ["OneDrive"], "Cloud": {"OneDrive": str(cloud_root)}}),
-					encoding="utf-8",
-				)
-				test_env = os.environ.copy()
-				test_env["HOME"] = str(home)
-				test_env["PYTHONPATH"] = os.pathsep.join(str(self.root_dir / repo) for repo in PYTHON_MODULES)
-				test_env.setdefault("NUGET_PACKAGES", str(Path.home() / ".nuget" / "packages"))
-				self.validate_command("CR075/CR076 and file-size regression tests", [
-					"dotnet", "test", "RAIkeep.slnx", "--nologo", "-p:UseLocalRAIkeepSources=true",
-					"--filter", "FullyQualifiedName~InventoryMatchingTests|FullyQualifiedName~MediaContentTests|FullyQualifiedName~IorgInventoryTests|FullyQualifiedName~FileInfoLengthTests|FullyQualifiedName~ConfigurationListingTests",
-				], env=test_env)
-				pits_built = self.validate_command(
-					"pits parity build",
-					["dotnet", "build", "PitSeeder/pits/pits.csproj", "--nologo", "-v", "minimal", "-m:1", "-nodeReuse:false", "-p:UseLocalRAIkeepSources=true"],
-					env=test_env,
-				)
-				for repo in PYTHON_MODULES:
-					self.validate_command(f"{repo} tests", [sys.executable, "-m", "pytest", f"{repo}/tests", "-q"], env=test_env)
-				if pits_built:
-					self.validate_command("CLI theme and export parity", [sys.executable, "scripts/test-cli-style.py"], env=test_env)
+			self.validate_command("CLI style source parity", [sys.executable, "scripts/sync-cli-style.py", "--check"])
+			self.validate_command("Trusted Publishing workflow and release-ref checks", [sys.executable, "scripts/test-trusted-publishing.py"])
+			self.validate_command("Retired release-chain guard", ["bash", "scripts/test-retired-release-chain.sh"])
+			self.validate_command("Tracked package artifact guard", [sys.executable, "scripts/test-tracked-package-preflight.py"])
+			self.validate_command("RaiUtils publication package scope", [sys.executable, "RaiUtils/test-publication-artifacts.py"])
+			test_env = os.environ.copy()
+			test_env["PYTHONPATH"] = os.pathsep.join(str(self.root_dir / repo) for repo in PYTHON_MODULES)
+			test_env.setdefault("NUGET_PACKAGES", str(Path.home() / ".nuget" / "packages"))
+			self.validate_command("CR075/CR076 and file-size regression tests", [
+				"dotnet", "test", "RAIkeep.slnx", "--nologo", "-p:UseLocalRAIkeepSources=true",
+				"--filter", "FullyQualifiedName~InventoryMatchingTests|FullyQualifiedName~MediaContentTests|FullyQualifiedName~IorgInventoryTests|FullyQualifiedName~FileInfoLengthTests|FullyQualifiedName~ConfigurationListingTests",
+			], env=test_env)
+			pits_built = self.validate_command(
+				"pits parity build",
+				["dotnet", "build", "PitSeeder/pits/pits.csproj", "--nologo", "-v", "minimal", "-m:1", "-nodeReuse:false", "-p:UseLocalRAIkeepSources=true"],
+				env=test_env,
+			)
+			for repo in PYTHON_MODULES:
+				self.validate_command(f"{repo} tests", [sys.executable, "-m", "pytest", f"{repo}/tests", "-q", "-rs"], env=test_env)
+			if pits_built:
+				self.validate_command("CLI theme and export parity", [sys.executable, "scripts/test-cli-style.py"], env=test_env)
 			if pits_built:
 				with tempfile.TemporaryDirectory(prefix="raikeep-oslib-contracts-") as temporary:
 					if self.validate_command("OsLibCore documentation pack", ["dotnet", "pack", "OsLib/OsLib.csproj", "--configuration", "Debug", "--no-build", "--no-restore", "--nologo", "--output", temporary]):

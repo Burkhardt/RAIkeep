@@ -913,5 +913,5 @@ main() {
 }
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
-	main "$@"
+	die "This legacy release chain is retired; use AIA Engenho for coordinated releases instead."
 fi

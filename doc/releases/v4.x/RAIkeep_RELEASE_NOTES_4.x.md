@@ -1,5 +1,21 @@
 # RAIkeep Release Notes 4.x
 
+## 4.7.1
+
+- Release version: `4.7.1`
+- Coordination tag: `v4.7.1`
+
+### Highlights
+- Supersedes the incomplete 4.7.0 coordinated release; its published artifacts remain unchanged.
+- Test Pits use the configured cloud rather than substituted configuration or local temporary storage.
+- Umgodi requires InqPath directory arguments; Vikela adds configuration, Pit-location and argument guardrails.
+- The legacy jsonpit-python repository is archived; `jpit` remains an Umgodi CLI alias.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.7.1` line.
+
+---
+
 ## 4.7.0
 
 - CR084 separates local high-frequency cloud tests from live replication. See `CR084_AIA_to_RAIkeep_TestCloud_Configuration_Key.md`.

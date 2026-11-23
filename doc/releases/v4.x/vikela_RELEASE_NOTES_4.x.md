@@ -1,5 +1,18 @@
 # vikela Release Notes 4.x
 
+## 4.7.1
+
+- Release version: `4.7.1`
+- Coordination tag: `v4.7.1`
+
+### Highlights
+- Add RAI021, RAI022 and RAI023 to detect recognizable configuration substitutions, temporary Pit locations and invalid Pit path arguments.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.7.1` line.
+
+---
+
 ## 4.7.0
 
 - Release version: `4.7.0`

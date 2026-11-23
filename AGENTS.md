@@ -20,6 +20,11 @@ Actions as well as developer machines.
 Only an explicit exemption from Dr. Burkhardt permits a deviation. Apply it
 only to the tests and conditions he authorized.
 
+For 4.7.1, RAI (Dr. Burkhardt) exempted the existing Amafu bootstrap, detection, and
+configuration tests, locally and on GitHub Actions, to use substitute test
+configuration and simulated provider directories. This does not apply to
+other projects or allow modifying the user's actual configuration.
+
 ## Public commit subjects
 
 GitHub’s commit list is a public release ledger. Write each subject as a short,

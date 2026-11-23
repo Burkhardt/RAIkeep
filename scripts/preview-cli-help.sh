@@ -11,8 +11,8 @@ esac
 for tool in "${tools[@]}"; do
   printf '\n%s local help preview\n\n' "$tool"
   if [[ "$tool" == jpit || "$tool" == jsonpit ]]; then
-    PYTHONPATH="$repo_root/JsonPit.Python${PYTHONPATH:+:$PYTHONPATH}" \
-      "${PYTHON:-python3}" -m jsonpit.cli --help
+    PYTHONPATH="$repo_root/umgodi-json:$repo_root/inqaba${PYTHONPATH:+:$PYTHONPATH}" \
+      "${PYTHON:-python3}" -m umgodi.cli --help
     continue
   fi
   case "$tool" in
