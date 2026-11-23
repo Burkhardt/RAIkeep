@@ -1,5 +1,25 @@
 # RAIkeep contributor conventions
 
+## Cloud configuration and tests
+
+This agreement applies to every RAIkeep custodian and every C# and Python
+test, including unit tests, CLI tests, and release checks. Treat the user's
+actual `~/.config/RAIkeep.json5` as read-only, on disk and after loading it.
+Never edit, replace, shadow, or override it for testing. This includes
+redirecting `HOME` to a substitute config, mocking the configuration loader,
+and changing provider mappings in memory.
+
+For cloud tests, read `TestCloud` from that configuration and resolve its
+configured cloud drive. When it selects Dropbox, create an isolated,
+run-specific test directory inside the actual Dropbox root. Clean up only
+the directory owned by that run. A temporary directory named `Dropbox`
+does not qualify. If the runner lacks the required configuration or drive,
+skip the cloud-dependent test and report the reason. This applies to GitHub
+Actions as well as developer machines.
+
+Only an explicit exemption from Dr. Burkhardt permits a deviation. Apply it
+only to the tests and conditions he authorized.
+
 ## Public commit subjects
 
 GitHub’s commit list is a public release ledger. Write each subject as a short,
