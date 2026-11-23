@@ -12,15 +12,17 @@ release was incomplete; its published artifacts and tags remain unchanged.
 | .NET packages | Eleven packages built; identities, versions and declared README files verified |
 | Inqaba tests | 22 passed using the real configuration |
 | Vikela tests | 120 passed, including the IPython integration test |
-| RaiGuard RAI021 | Four focused analyzer tests passed |
+| RaiGuard RAI021 | Four focused analyzer tests passed; the scan identified non-exempt synthetic OsLib tests, which were replaced and verified |
 | Release tooling | Ten tests passed, including Vikela version and release ordering; CLI style source, trusted publishing, retired release-chain and package guard checks passed |
 | Python packages | Three wheels and three source archives built and passed Twine; wheels installed offline with dependency and CLI checks |
 | Installed Umgodi wheel | Persistence smoke passed in a run-owned directory on the configured Dropbox drive |
-| Umgodi suite | Running with the real Dropbox root and local Vikela source; result pending |
+| Umgodi suite | Full rerun: 226 passed, one optional sequence test skipped; the separately enabled sequence suites passed |
+| Optional Dropbox sequence suites | All seven suites passed after correcting real ticket timing; 16 minutes |
 | Amafu bootstrap tests | 114 passed under the explicit exemption described below |
 | Selected .NET release regressions | 73 passed, including exempt Amafu configuration-listing tests |
-| Full release validation and Engenho dry-run | Not completed |
-| Commits and remote main branches | Component candidates committed locally; umbrella candidate and branch reconciliation pending. Nothing pushed yet |
+| Full release validation | All 146 checks passed; the Umgodi suite was collected before the final sequence-helper refactor, which was separately verified |
+| Engenho dry-run | Not completed |
+| Candidate publication | Component and umbrella main branches must be synchronized before the dry run; no release artifacts or tags have been published |
 
 Umgodi's release depends on both Inqaba and Vikela, so its publishing workflow
 can install the coordinated Vikela version before running the repository gate.
