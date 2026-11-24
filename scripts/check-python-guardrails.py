@@ -34,6 +34,7 @@ def main():
         line = finding["line"]
         if finding["rule"] == "RAI012":
             operation = path.read_text(encoding="utf-8").splitlines()[line - 1].strip()
+            operation = operation.removesuffix("# vikela-expected: RAI012").rstrip()
             key = (relative.as_posix(), operation)
             if key in expected:
                 expected.remove(key)

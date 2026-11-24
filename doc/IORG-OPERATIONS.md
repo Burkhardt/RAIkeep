@@ -171,11 +171,10 @@ Organize behavior:
 - enumerates supported image files directly in the source directory;
 - normalizes each filename through RaiImage naming rules;
 - calculates its ItemId and image number;
-- copies new images directly to their final ItemTree path, leaves identical images untouched, and rewrites changed images in place;
+- copies new images directly to their final ItemTree path, and rewrites every existing destination in place, including identical files;
 - removes managed derivatives for an updated image number from that ItemTree bucket, preserving other image numbers;
 - leaves the source file untouched;
-- reports `Copied`, `Updated`, `Unchanged`, `Skipped`, and `Failed` in a compact ReceiptVersion 3 result;
-- accepts `--no-overwrite` to reject a batch with any changed existing destination before writing source images; and
+- counts every successful overwrite as `Updated` in ReceiptVersion 3, including byte-identical inputs. The compatibility field `Unchanged` stays zero;
 - never stages output in `Os.TempDir` before moving it into a CloudDrive.
 
 Use `--debug` for full source/destination paths and resolution diagnostics.

@@ -1,5 +1,18 @@
 # RaiUtils Release Notes 4.x
 
+## 4.7.2
+
+- Release version: `4.7.2`
+- Coordination tag: `v4.7.2`
+
+### Highlights
+- Align RaiUtils package metadata and current installation instructions with the coordinated 4.7.2 release.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.7.2` line.
+
+---
+
 ## 4.7.1
 
 - Release version: `4.7.1`

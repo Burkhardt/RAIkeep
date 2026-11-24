@@ -3,7 +3,7 @@
        OsLib implements the filesystem primitives and Amafu bootstraps configuration. -->
   <Target Name="VerifyRaiGuardBuildConfiguration" BeforeTargets="CoreCompile">
     <PropertyGroup>
-      <_RaiGuardExempt Condition="'$(MSBuildProjectName)' == 'OsLib' or '$(MSBuildProjectName)' == 'amafu'">true</_RaiGuardExempt>
+      <_RaiGuardExempt Condition="'$(MSBuildProjectName)' == 'OsLib' or '$(MSBuildProjectName)' == 'amafu' or '$(MSBuildProjectName)' == 'amafu.Tests'">true</_RaiGuardExempt>
     </PropertyGroup>
     <ItemGroup>
       <_RaiGuardCore Include="@(Analyzer)" Condition="'%(Analyzer.Filename)' == 'RaiGuard.Core'" />

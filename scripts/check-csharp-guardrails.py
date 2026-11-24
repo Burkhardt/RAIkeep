@@ -24,7 +24,7 @@ def main():
 
     failures = 0
     for project in sources(root, "*.csproj"):
-        if project.relative_to(root).as_posix() in {"OsLib/OsLib.csproj", "Amafu/amafu/amafu.csproj"}:
+        if project.is_relative_to(root / "Amafu") or project == root / "OsLib/OsLib.csproj":
             continue
         items = json.loads(subprocess.check_output(
             ["dotnet", "msbuild", project, "-getItem:Compile"], cwd=root, text=True

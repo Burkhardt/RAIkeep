@@ -1,5 +1,18 @@
 # ImgSeeder Release Notes 4.x
 
+## 4.7.2
+
+- Release version: `4.7.2`
+- Coordination tag: `v4.7.2`
+
+### Highlights
+- Copy adaptive video segments, manifests, captions and JSON catalogs into the Image hierarchy with exact names. Verify every overwrite, including identical replays. See CR094_AIA_to_RAIkeep_Iorg_Adaptive_Streaming_and_Manifest_Types.md.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.7.2` line.
+
+---
+
 ## 4.7.1
 
 - Release version: `4.7.1`

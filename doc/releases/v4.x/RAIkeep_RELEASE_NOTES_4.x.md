@@ -1,5 +1,18 @@
 # RAIkeep Release Notes 4.x
 
+## 4.7.2
+
+- Release version: `4.7.2`
+- Coordination tag: `v4.7.2`
+
+### Highlights
+- Deliver CR094 adaptive streaming imports, unconditional verified overwrites, and standalone Amafu tests. See [CR094 acceptance](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RELEASE_NOTE_CR094.md).
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.7.2` line.
+
+---
+
 ## 4.7.1
 
 - Release version: `4.7.1`

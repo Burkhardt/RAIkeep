@@ -1,5 +1,18 @@
 # RaiImage Release Notes 4.x
 
+## 4.7.2
+
+- Release version: `4.7.2`
+- Coordination tag: `v4.7.2`
+
+### Highlights
+- Recognize CMAF, DASH, HLS, WebVTT and JSON metadata separately from video containers and still images.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.7.2` line.
+
+---
+
 ## 4.7.1
 
 - Release version: `4.7.1`

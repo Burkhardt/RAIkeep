@@ -1,10 +1,10 @@
 """Independent Python process for CR077 configured-cloud parity acceptance."""
 import json
-from pathlib import Path
+from inqaba import InqPath
 import sys
-from jsonpit import Pit, MutationTrackingMode
+from umgodi import Pit, MutationTrackingMode
 
-root = Path(sys.argv[1])
+root = InqPath.from_directory(sys.argv[1])
 mode = MutationTrackingMode[sys.argv[2]]
 operation = sys.argv[3]
 pit = Pit(root, root.name, read_only=False, autoload=True, unflagged=True, tracking_mode=mode)

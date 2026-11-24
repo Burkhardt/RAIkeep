@@ -1,5 +1,18 @@
 # JsonPit Release Notes 4.x
 
+## 4.7.2
+
+- Release version: `4.7.2`
+- Coordination tag: `v4.7.2`
+
+### Highlights
+- Exercise the active Umgodi Python implementation in the CR077 cross-language replica test.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.7.2` line.
+
+---
+
 ## 4.7.1
 
 - Release version: `4.7.1`

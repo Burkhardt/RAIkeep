@@ -1,6 +1,6 @@
 # RAIkeep release status
 
-The released line is **4.6.7**. The **4.7.0** candidate is under review. It covers CR084 cloud selection and CR090 JsonPit ticket handling. See the [coordinated release notes](doc/releases/v4.x/RAIkeep_RELEASE_NOTES_4.x.md) for the changes and timing configuration.
+The released line is **4.7.1**. The **4.7.2** candidate adds CR094 adaptive streaming imports and keeps the Amafu executable and tests independent of RaiGuard. See the [release notes](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RaiKeep_RELEASE_NOTES_v4.7.2.md) and [preflight record](https://github.com/Burkhardt/RAIkeep/blob/main/doc/RELEASE_PREFLIGHT_4.7.2.md).
 
 ## Historical snapshot from September 2026
 
