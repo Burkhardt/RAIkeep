@@ -86,15 +86,17 @@ class ReleaseValidator:
 		command: List[str],
 		*,
 		env: dict[str, str] | None = None,
+		stream: bool = False,
 	) -> bool:
 		"""Runs a release gate command and reports its concise diagnostics."""
+		print(f"  Running {description}…", flush=True)
 		try:
 			result = subprocess.run(
 				command,
 				cwd=self.root_dir,
 				env=env,
 				text=True,
-				capture_output=True,
+				capture_output=not stream,
 				check=False,
 			)
 		except OSError as ex:
@@ -105,7 +107,7 @@ class ReleaseValidator:
 				print(result.stdout.strip())
 			self.pass_check()
 			return True
-		output = (result.stdout + result.stderr).strip().replace("\n", " ")
+		output = "See test output above." if stream else (result.stdout + result.stderr).strip().replace("\n", " ")
 		self.error(description, None, f"Command failed ({result.returncode}): {output[-1000:]}")
 		return False
 
@@ -428,7 +430,7 @@ class ReleaseValidator:
 				env=test_env,
 			)
 			for repo in PYTHON_MODULES:
-				self.validate_command(f"{repo} tests", [sys.executable, "-m", "pytest", f"{repo}/tests", "-q", "-rs"], env=test_env)
+				self.validate_command(f"{repo} tests", [sys.executable, "-u", "-m", "pytest", f"{repo}/tests", "-v", "-rs"], env=test_env, stream=True)
 			if pits_built:
 				self.validate_command("CLI theme and export parity", [sys.executable, "scripts/test-cli-style.py"], env=test_env)
 			if pits_built:
