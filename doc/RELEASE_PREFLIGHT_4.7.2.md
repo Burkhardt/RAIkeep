@@ -11,3 +11,4 @@
 | Packages | Built coordinated packages, checked NuGet metadata and READMEs, and validated all six Python artifacts with Twine. Fresh installs passed dependency checks and all eight CLI entry points reported 4.7.2. |
 | Full release validator | Dropbox-backed Umgodi tests and three CLI parity checks encountered a permission error reading the configured Dropbox timing file. Finder shows the calibrated values, but the release process needs read access to verify these checks. |
 | Optional replication sequences | The full validator skips the opt-in sequence suite by default. |
+| Engenho simulation | The 4.7.2 dry run passed for the pushed candidate at 2cc3e8c, including all thirteen components and DAG preflight. |
