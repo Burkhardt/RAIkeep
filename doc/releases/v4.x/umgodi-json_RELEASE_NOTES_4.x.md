@@ -1,5 +1,18 @@
 # umgodi-json Release Notes 4.x
 
+## 4.7.3
+
+- Release version: `4.7.3`
+- Coordination tag: `v4.7.3`
+
+### Highlights
+- The development test runner uses four pytest workers and reports the twenty slowest cases.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.7.3` line.
+
+---
+
 ## 4.7.2
 
 - Release version: `4.7.2`

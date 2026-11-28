@@ -1,5 +1,18 @@
 # RAIkeep Release Notes 4.x
 
+## 4.7.3
+
+- Release version: `4.7.3`
+- Coordination tag: `v4.7.3`
+
+### Highlights
+- CR095 adds local process turn-taking and observable cloud propagation waits to JsonPit. RaiGuard accepts supported Reload calls and role-backed Exec fixture parameters. See the [CR095 acceptance report](../../RELEASE_NOTE_CR095.md).
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.7.3` line.
+
+---
+
 ## 4.7.2
 
 - Release version: `4.7.2`

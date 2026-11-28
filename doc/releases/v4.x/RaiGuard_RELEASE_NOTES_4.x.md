@@ -1,5 +1,18 @@
 # RaiGuard Release Notes 4.x
 
+## 4.7.3
+
+- Release version: `4.7.3`
+- Coordination tag: `v4.7.3`
+
+### Highlights
+- RAI021 accepts Exec cloud parameters backed by Os.TestCloud or Os.LiveCloud. RAI013 permits pit.Reload() and continues checking pit-directory access.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.7.3` line.
+
+---
+
 ## 4.7.2
 
 - Release version: `4.7.2`

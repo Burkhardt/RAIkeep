@@ -1,5 +1,18 @@
 # Amafu Release Notes 4.x
 
+## 4.7.3
+
+- Release version: `4.7.3`
+- Coordination tag: `v4.7.3`
+
+### Highlights
+- Amafu joins the coordinated 4.7.3 release.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.7.3` line.
+
+---
+
 ## 4.7.2
 
 - Release version: `4.7.2`

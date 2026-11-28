@@ -1,5 +1,18 @@
 # ImgSeeder Release Notes 4.x
 
+## 4.7.3
+
+- Release version: `4.7.3`
+- Coordination tag: `v4.7.3`
+
+### Highlights
+- Ordinary iorg tests use isolated local directories. The configured-cloud destination test can be selected with the CloudEffect category.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.7.3` line.
+
+---
+
 ## 4.7.2
 
 - Release version: `4.7.2`

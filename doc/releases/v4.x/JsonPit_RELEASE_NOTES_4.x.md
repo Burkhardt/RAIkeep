@@ -1,5 +1,18 @@
 # JsonPit Release Notes 4.x
 
+## 4.7.3
+
+- Release version: `4.7.3`
+- Coordination tag: `v4.7.3`
+
+### Highlights
+- Eligible local ticket holders write with zero propagation wait. A returning process yields to other PIDs. Cloud pits retain the CR090 propagation wait and machine-wide cooldown. Both save APIs report `PitSaveResult.WaitedMs`.
+
+### Coordinated Dependencies
+- Aligned with RAIkeep synchronized `4.7.3` line.
+
+---
+
 ## 4.7.2
 
 - Release version: `4.7.2`
